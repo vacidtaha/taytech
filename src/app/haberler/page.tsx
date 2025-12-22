@@ -65,15 +65,15 @@ const haberler = [
 
 export default function HaberlerPage() {
   return (
-    <div className="bg-black min-h-screen pt-12">
+    <div className="bg-[#f5f5f7] min-h-screen pt-12">
       {/* Hero Bölümü */}
       <div style={{ padding: '80px 100px 60px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
-          <h1 className="text-5xl font-bold text-white">Bizden Haberler</h1>
+          <h1 className="text-5xl font-bold text-[#1d1d1f]">Bizden Haberler</h1>
           <span 
             style={{ 
-              backgroundColor: 'white', 
-              color: 'black', 
+              backgroundColor: '#1d1d1f', 
+              color: 'white', 
               padding: '6px 12px', 
               borderRadius: '6px', 
               fontSize: '12px', 
@@ -84,7 +84,7 @@ export default function HaberlerPage() {
             BETA - Hazırlanıyor
           </span>
         </div>
-        <p className="text-white/60 text-xl">Taytech'ten son gelişmeler ve duyurular</p>
+        <p className="text-[#86868b] text-xl">Taytech'ten son gelişmeler ve duyurular</p>
       </div>
 
       {/* Masonry Grid */}
@@ -106,7 +106,8 @@ export default function HaberlerPage() {
               borderRadius: '16px',
               overflow: 'hidden',
               position: 'relative',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
             }}
             className="group"
           >
@@ -172,11 +173,12 @@ export default function HaberlerPage() {
               gridColumn: 'span 1',
               gridRow: 'span 1',
               borderRadius: '16px',
-              border: '2px dashed rgba(255,255,255,0.1)',
+              border: '2px dashed rgba(0,0,0,0.1)',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              backgroundColor: 'white'
             }}
           >
             <div
@@ -184,7 +186,7 @@ export default function HaberlerPage() {
                 width: '48px',
                 height: '48px',
                 borderRadius: '8px',
-                backgroundColor: 'rgba(255,255,255,0.05)',
+                backgroundColor: 'rgba(0,0,0,0.05)',
                 marginBottom: '12px'
               }}
             />
@@ -193,7 +195,7 @@ export default function HaberlerPage() {
                 width: '80%',
                 height: '12px',
                 borderRadius: '4px',
-                backgroundColor: 'rgba(255,255,255,0.05)',
+                backgroundColor: 'rgba(0,0,0,0.05)',
                 marginBottom: '8px'
               }}
             />
@@ -202,15 +204,14 @@ export default function HaberlerPage() {
                 width: '50%',
                 height: '8px',
                 borderRadius: '4px',
-                backgroundColor: 'rgba(255,255,255,0.03)'
+                backgroundColor: 'rgba(0,0,0,0.03)'
               }}
             />
           </div>
         ))}
       </div>
 
-      <Footer />
+      <Footer theme="white" />
     </div>
   );
 }
-

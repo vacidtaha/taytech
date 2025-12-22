@@ -171,9 +171,10 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
     onMenuOpenChange?.(value);
   };
   
-  // Otomatik theme belirleme - ürün sayfalarında light
-  const lightPages = ["/urunler/akilli-kontrol-panolari", "/urunler/isi-istasyonu", "/urunler/elektronik", "/urunler/taytech-cloud", "/urunler/manyetik-filtre", "/urunler/temizleyici-sivilar"];
-  const autoTheme = lightPages.some(page => pathname?.startsWith(page)) ? "light" : "dark";
+  // Otomatik theme belirleme - ana sayfa ve ürün sayfalarında light
+  const lightPages = ["/urunler/akilli-kontrol-panolari", "/urunler/isi-istasyonu", "/urunler/elektronik", "/urunler/taytech-cloud", "/urunler/manyetik-filtre", "/urunler/temizleyici-sivilar", "/iletisim", "/kurumsal", "/cozumler", "/haberler"];
+  const isLightPage = pathname === "/" || lightPages.some(page => pathname?.startsWith(page));
+  const autoTheme = isLightPage ? "light" : "dark";
   const isDark = (theme ?? autoTheme) === "dark";
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
   const [hoveredSubCategory, setHoveredSubCategory] = useState<string | null>(null);
@@ -225,7 +226,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
           "h-12 transition-colors duration-200",
           isDark 
             ? (isProductsOpen ? "bg-[#1a1a1a]" : "bg-[#1a1a1a]/70 backdrop-blur-md")
-            : "bg-white"
+            : (isProductsOpen ? "bg-white" : "bg-white/70 backdrop-blur-md")
         )}>
           <div className="h-full px-8 flex items-center justify-between">
             {/* Left Spacer */}
@@ -240,7 +241,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                   alt="TayTech Logo"
                   width={120}
                   height={28}
-                  className={cn("h-7 w-auto", isDark ? "brightness-0 invert" : "brightness-0")}
+                  className="h-7 w-auto"
                   priority
                 />
               </Link>

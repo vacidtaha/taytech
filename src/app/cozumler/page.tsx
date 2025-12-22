@@ -59,20 +59,20 @@ export default function CozumlerPage() {
   };
 
   return (
-    <div className="bg-black pt-12">
+    <div className="bg-[#f5f5f7] pt-12">
       {/* Başlık */}
       <div style={{ paddingLeft: '400px', paddingTop: '200px', display: 'flex', alignItems: 'flex-end', gap: '300px' }}>
-        <h1 className="text-4xl md:text-5xl font-bold text-white">
+        <h1 className="text-4xl md:text-5xl font-bold text-[#dc2626]">
           Çözümlerimiz
         </h1>
-        <p className="text-2xl text-white font-medium" style={{ lineHeight: '1.4' }}>
+        <p className="text-2xl text-[#86868b] font-medium" style={{ lineHeight: '1.4' }}>
           Kontrol sistemleri endüstrisinde<br />en iyi çözümler
         </p>
       </div>
       
       {/* Hero Görsel */}
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '60px' }}>
-        <div style={{ width: '1000px', height: '500px', borderRadius: '48px', overflow: 'hidden' }}>
+        <div style={{ width: '1000px', height: '500px', borderRadius: '48px', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)' }}>
           <Image 
             src="/hero2.png"
             alt="Hero"
@@ -95,8 +95,8 @@ export default function CozumlerPage() {
                 width: '48px', 
                 height: '48px', 
                 borderRadius: '50%', 
-                backgroundColor: canScrollLeft ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.05)', 
-                border: `1px solid ${canScrollLeft ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)'}`,
+                backgroundColor: canScrollLeft ? 'rgba(0,0,0,0.05)' : 'rgba(0,0,0,0.02)', 
+                border: `1px solid ${canScrollLeft ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.05)'}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -104,7 +104,7 @@ export default function CozumlerPage() {
                 opacity: canScrollLeft ? 1 : 0.4
               }}
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1d1d1f" strokeWidth="2">
                 <path d="M15 18l-6-6 6-6"/>
               </svg>
             </button>
@@ -115,8 +115,8 @@ export default function CozumlerPage() {
                 width: '48px', 
                 height: '48px', 
                 borderRadius: '50%', 
-                backgroundColor: canScrollRight ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.05)', 
-                border: `1px solid ${canScrollRight ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)'}`,
+                backgroundColor: canScrollRight ? 'rgba(0,0,0,0.05)' : 'rgba(0,0,0,0.02)', 
+                border: `1px solid ${canScrollRight ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.05)'}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -124,7 +124,7 @@ export default function CozumlerPage() {
                 opacity: canScrollRight ? 1 : 0.4
               }}
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1d1d1f" strokeWidth="2">
                 <path d="M9 18l6-6-6-6"/>
               </svg>
             </button>
@@ -160,8 +160,9 @@ export default function CozumlerPage() {
                   cursor: 'pointer',
                   display: 'flex',
                   flexDirection: 'column',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  textDecoration: 'none'
+                  border: '1px solid rgba(0,0,0,0.08)',
+                  textDecoration: 'none',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
                 }}
                 className="group"
               >
@@ -184,17 +185,17 @@ export default function CozumlerPage() {
                 <div 
                   style={{ 
                     height: '50%',
-                    backgroundColor: '#1a1a1a',
+                    backgroundColor: 'white',
                     padding: '24px 32px',
                     transition: 'background-color 0.3s',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center'
                   }}
-                  className="group-hover:bg-[#242424]"
+                  className="group-hover:bg-[#f5f5f7]"
                 >
-                  <h3 className="text-3xl font-semibold text-white">{cozum.name}</h3>
-                  <p className="text-white/50 mt-3 text-lg group-hover:text-blue-500 transition-colors">Detayları keşfet →</p>
+                  <h3 className="text-3xl font-semibold text-[#1d1d1f]">{cozum.name}</h3>
+                  <p className="text-[#86868b] mt-3 text-lg group-hover:text-[#dc2626] transition-colors">Detayları keşfet →</p>
                 </div>
               </Link>
             );
@@ -202,11 +203,10 @@ export default function CozumlerPage() {
         </div>
       </div>
       
-      {/* Siyah Boşluk */}
+      {/* Boşluk */}
       <div style={{ height: '25vh' }}></div>
       
-      <Footer />
+      <Footer theme="white" />
     </div>
   );
 }
-

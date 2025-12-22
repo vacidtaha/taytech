@@ -53,8 +53,8 @@ export default function TemizleyiciSivilar() {
                     />
                   </div>
                   {/* Yazı Alanı - %25 */}
-                  <div className="h-[25%] flex items-center justify-center px-4 transition-colors duration-300 group-hover:bg-gray-100">
-                    <h3 className="text-[#1d1d1f] text-xl font-medium text-center">
+                  <div className="h-[25%] flex items-center justify-center px-4 transition-colors duration-300 group-hover:bg-[#dc2626]">
+                    <h3 className="text-[#1d1d1f] text-xl font-medium text-center transition-colors duration-300 group-hover:text-white">
                       {kategori.baslik}
                     </h3>
                   </div>
@@ -72,5 +72,6 @@ export default function TemizleyiciSivilar() {
     </div>
   );
 }
+
 
 

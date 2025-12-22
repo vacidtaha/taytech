@@ -16,16 +16,16 @@ import {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#1a1a1a] pt-12">
+    <div className="min-h-screen bg-[#f5f5f7] pt-12">
       <Hero />
       
       {/* Content Area */}
-      <section className="bg-[#1a1a1a]" style={{ paddingTop: "13px" }}>
+      <section className="bg-[#f5f5f7]" style={{ paddingTop: "13px" }}>
         {/* Ürün Grid */}
         <div style={{ marginLeft: "13px", marginRight: "13px" }}>
           <div className="grid grid-cols-2 gap-[13px]">
-            <Link href="/urunler/akilli-kontrol-panolari" className="bg-[#141414] aspect-[4/3] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#1f1f1f]">
-              <h3 className="text-[#f5f5f7] text-3xl font-medium text-center absolute top-[18%] left-0 right-0">Akıllı Kontrol Panoları</h3>
+            <Link href="/urunler/akilli-kontrol-panolari" className="bg-white aspect-[4/3] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm">
+              <h3 className="text-[#1d1d1f] text-3xl font-medium text-center absolute top-[18%] left-0 right-0">Akıllı Kontrol Panoları</h3>
               <Image 
                 src="/akilli-kontrol.png" 
                 alt="Akıllı Kontrol Panoları" 
@@ -34,8 +34,8 @@ export default function Home() {
                 className="absolute top-[40%] object-contain"
               />
             </Link>
-            <Link href="/urunler/isi-istasyonu" className="bg-[#141414] aspect-[4/3] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#1f1f1f]">
-              <h3 className="text-[#f5f5f7] text-3xl font-medium text-center absolute top-[18%] left-0 right-0">Isı İstasyonu Uygulamaları</h3>
+            <Link href="/urunler/isi-istasyonu" className="bg-white aspect-[4/3] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm">
+              <h3 className="text-[#1d1d1f] text-3xl font-medium text-center absolute top-[18%] left-0 right-0">Isı İstasyonu Uygulamaları</h3>
               <Image 
                 src="/isikontrol-hazir.png" 
                 alt="Isı İstasyonu" 
@@ -44,8 +44,8 @@ export default function Home() {
                 className="absolute top-[40%] object-contain"
               />
             </Link>
-            <Link href="/urunler/manyetik-filtre" className="bg-[#141414] aspect-[4/3] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#1f1f1f]">
-              <h3 className="text-[#f5f5f7] text-3xl font-medium text-center absolute top-[18%] left-0 right-0">IRONTRAP® Manyetik Filtre</h3>
+            <Link href="/urunler/manyetik-filtre" className="bg-white aspect-[4/3] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm">
+              <h3 className="text-[#1d1d1f] text-3xl font-medium text-center absolute top-[18%] left-0 right-0">IRONTRAP® Manyetik Filtre</h3>
               <Image 
                 src="/manyetik-filtre.png" 
                 alt="IRONTRAP Manyetik Filtre" 
@@ -54,8 +54,8 @@ export default function Home() {
                 className="absolute top-[40%] object-contain"
               />
             </Link>
-            <Link href="/urunler/elektronik" className="bg-[#141414] aspect-[4/3] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#1f1f1f]">
-              <h3 className="text-[#f5f5f7] text-3xl font-medium text-center absolute top-[18%] left-0 right-0">Elektronik</h3>
+            <Link href="/urunler/elektronik" className="bg-white aspect-[4/3] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm">
+              <h3 className="text-[#1d1d1f] text-3xl font-medium text-center absolute top-[18%] left-0 right-0">Elektronik</h3>
               <Image 
                 src="/elektronik.png" 
                 alt="Elektronik" 
@@ -64,8 +64,8 @@ export default function Home() {
                 className="absolute top-[40%] object-contain"
               />
             </Link>
-            <Link href="/urunler/taytech-cloud" className="bg-[#141414] aspect-[4/3] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#1f1f1f]">
-              <h3 className="text-[#f5f5f7] text-3xl font-medium text-center absolute top-[18%] left-0 right-0">Taytech Cloud</h3>
+            <Link href="/urunler/taytech-cloud" className="bg-white aspect-[4/3] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm">
+              <h3 className="text-[#1d1d1f] text-3xl font-medium text-center absolute top-[18%] left-0 right-0">Taytech Cloud</h3>
               <Image 
                 src="/cloud.png" 
                 alt="Taytech Cloud" 
@@ -74,8 +74,8 @@ export default function Home() {
                 className="absolute top-[40%] object-contain"
               />
             </Link>
-            <Link href="/urunler/temizleyici-sivilar" className="bg-[#141414] aspect-[4/3] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#1f1f1f]">
-              <h3 className="text-[#f5f5f7] text-3xl font-medium text-center absolute top-[18%] left-0 right-0">IRONTRAP® Koruyucu ve Temizleyici Sıvılar</h3>
+            <Link href="/urunler/temizleyici-sivilar" className="bg-white aspect-[4/3] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm">
+              <h3 className="text-[#1d1d1f] text-3xl font-medium text-center absolute top-[18%] left-0 right-0">IRONTRAP® Koruyucu ve Temizleyici Sıvılar</h3>
               <Image 
                 src="/temizleyici.png" 
                 alt="IRONTRAP Koruyucu ve Temizleyici Sıvılar" 
@@ -88,11 +88,14 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 13px Boşluk */}
+      <div style={{ height: '13px', backgroundColor: '#f5f5f7' }}></div>
+
       {/* Standartların Ötesinde */}
-      <div className="w-full h-[650px] bg-black grid grid-cols-2" style={{ marginTop: '13px' }}>
+      <div className="w-full h-[650px] bg-white grid grid-cols-2">
         {/* Sol Taraf - Gradyan Kutu */}
         <div className="flex items-center justify-center">
-          <div className="w-80 h-80 rounded-2xl flex items-center justify-center relative overflow-hidden" style={{ background: 'radial-gradient(circle at center, #8a8a8a 0%, #4a4a4a 50%, #1a1a1a 100%)' }}>
+          <div className="w-80 h-80 rounded-2xl flex items-center justify-center relative overflow-hidden" style={{ background: 'radial-gradient(circle at center, #ff6b6b 0%, #dc2626 50%, #991b1b 100%)' }}>
             {/* 2x2 Grid - Ortada */}
             <div className="grid grid-cols-2 gap-1">
               {/* Sol Üst - Ana Simge */}
@@ -130,7 +133,7 @@ export default function Home() {
             <h2 
               className="text-5xl md:text-6xl font-bold mb-6"
               style={{
-                background: 'linear-gradient(to bottom right, #ffffff, #9ca3af)',
+                background: 'linear-gradient(to bottom right, #dc2626, #991b1b)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text'
@@ -138,23 +141,23 @@ export default function Home() {
             >
               Standartların ötesinde.
             </h2>
-            <p className="text-xl text-white mb-12">
+            <p className="text-xl text-[#424245] mb-12">
               Kalite, Taytech için bir sonuç değil; bir başlangıç noktasıdır. Tüm üretim ve yönetim süreçlerimizi, küresel endüstriyel standartların en güncel hallerine göre yapılandırdık.
             </p>
             
             {/* ISO Badges */}
             <div className="flex gap-10">
               <div>
-                <span className="text-2xl font-bold text-white">ISO 9001:2015</span>
-                <p className="text-base text-white/50 mt-2">Kalite Yönetimi</p>
+                <span className="text-2xl font-bold text-[#dc2626]">ISO 9001:2015</span>
+                <p className="text-base text-[#86868b] mt-2">Kalite Yönetimi</p>
               </div>
               <div>
-                <span className="text-2xl font-bold text-white">ISO 14001:2015</span>
-                <p className="text-base text-white/50 mt-2">Çevresel Sorumluluk</p>
+                <span className="text-2xl font-bold text-[#dc2626]">ISO 14001:2015</span>
+                <p className="text-base text-[#86868b] mt-2">Çevresel Sorumluluk</p>
               </div>
               <div>
-                <span className="text-2xl font-bold text-white">ISO 45001:2018</span>
-                <p className="text-base text-white/50 mt-2">İş Sağlığı ve Güvenliği</p>
+                <span className="text-2xl font-bold text-[#dc2626]">ISO 45001:2018</span>
+                <p className="text-base text-[#86868b] mt-2">İş Sağlığı ve Güvenliği</p>
               </div>
             </div>
           </div>
@@ -163,7 +166,7 @@ export default function Home() {
           <div className="absolute left-16" style={{ bottom: '160px' }}>
             <Link 
               href="/kurumsal"
-              className="bg-white/80 text-black text-sm font-medium transition-all duration-300 hover:bg-white/90 w-fit inline-block"
+              className="bg-[#dc2626] text-white text-sm font-medium transition-all duration-300 hover:bg-[#b91c1c] w-fit inline-block"
               style={{ paddingLeft: '24px', paddingRight: '24px', paddingTop: '10px', paddingBottom: '10px', borderRadius: '0px' }}
             >
               Kurumsalı oku
@@ -172,16 +175,67 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Çözümler Container */}
+      <div className="w-full h-[520px] bg-[#f5f5f7] flex flex-col items-center justify-center relative overflow-hidden" style={{ marginTop: '13px' }}>
+        {/* Sol Taraf - 4 Yazı */}
+        <span className="absolute text-xl font-medium smart-text smart-text-1" style={{ top: '15%', left: '8%', color: '#dc2626' }}>Akıllı Bina</span>
+        <span className="absolute text-xl font-medium smart-text smart-text-2" style={{ top: '35%', left: '6%', color: '#dc2626' }}>Akıllı Taşıma</span>
+        <span className="absolute text-xl font-medium smart-text smart-text-3" style={{ top: '55%', left: '8%', color: '#dc2626' }}>Akıllı Şehir</span>
+        <span className="absolute text-xl font-medium smart-text smart-text-4" style={{ top: '75%', left: '6%', color: '#dc2626' }}>Akıllı Güvenlik</span>
+        
+        {/* Sağ Taraf - 4 Yazı */}
+        <span className="absolute text-xl font-medium smart-text smart-text-5" style={{ top: '15%', right: '8%', color: '#dc2626' }}>Akıllı İşletme</span>
+        <span className="absolute text-xl font-medium smart-text smart-text-6" style={{ top: '35%', right: '6%', color: '#dc2626' }}>Akıllı Mağaza</span>
+        <span className="absolute text-xl font-medium smart-text smart-text-7" style={{ top: '55%', right: '8%', color: '#dc2626' }}>Akıllı Enerji</span>
+        <span className="absolute text-xl font-medium smart-text smart-text-8" style={{ top: '75%', right: '6%', color: '#dc2626' }}>Akıllı Tarım</span>
+        
+        <h2 className="text-3xl md:text-4xl text-center mb-4 z-10" style={{ fontWeight: 450, color: '#dc2626' }}>
+          Sunduğumuz Çözümleri Keşfet
+        </h2>
+        <p className="text-lg md:text-xl text-[#86868b] text-center z-10" style={{ marginBottom: '60px', fontWeight: 450 }}>
+          Kontrol sistemleri endüstrisinde en iyi çözümler
+        </p>
+        
+        {/* Smart Çözümler - 5-4 Düzeni */}
+        <div className="flex flex-col items-center gap-10 z-10">
+          {/* İlk Satır - 5 simge */}
+          <div className="flex justify-center gap-14">
+            <Building2 size={68} strokeWidth={1.5} color="#dc2626" />
+            <Briefcase size={68} strokeWidth={1.5} color="#dc2626" />
+            <Truck size={68} strokeWidth={1.5} color="#dc2626" />
+            <Store size={68} strokeWidth={1.5} color="#dc2626" />
+            <Building size={68} strokeWidth={1.5} color="#dc2626" />
+          </div>
+          
+          {/* İkinci Satır - 4 simge */}
+          <div className="flex justify-center gap-14">
+            <Zap size={68} strokeWidth={1.5} color="#dc2626" />
+            <Leaf size={68} strokeWidth={1.5} color="#dc2626" />
+            <Landmark size={68} strokeWidth={1.5} color="#dc2626" />
+            <Shield size={68} strokeWidth={1.5} color="#dc2626" />
+          </div>
+          
+          {/* Çözümlerimiz Butonu */}
+          <Link 
+            href="/cozumler"
+            className="mt-4 bg-[#dc2626] text-white text-base font-medium transition-all duration-300 hover:bg-[#b91c1c]"
+            style={{ paddingLeft: '32px', paddingRight: '32px', paddingTop: '12px', paddingBottom: '12px', borderRadius: '20px', textDecoration: 'none' }}
+          >
+            Çözümlerimiz
+          </Link>
+        </div>
+      </div>
+
       {/* Haberler - Pinterest Tarzı */}
-      <div className="w-full bg-black" style={{ marginTop: '13px', padding: '80px 100px' }}>
+      <div className="w-full bg-white" style={{ marginTop: '13px', padding: '80px 100px' }}>
         {/* Başlık */}
         <div className="flex items-center justify-between mb-20">
           <div>
-            <h2 className="text-4xl font-bold text-white mb-2 flex items-center gap-4">
+            <h2 className="text-4xl font-bold text-[#1d1d1f] mb-2 flex items-center gap-4">
               Bizden Haberler
               <span style={{
-                backgroundColor: 'white',
-                color: 'black',
+                backgroundColor: '#1d1d1f',
+                color: 'white',
                 fontSize: '12px',
                 fontWeight: 600,
                 padding: '4px 12px',
@@ -191,17 +245,17 @@ export default function Home() {
           </div>
           <Link 
             href="/haberler"
-            className="hover:bg-white hover:text-black transition-all duration-300"
+            className="hover:bg-[#1d1d1f] hover:text-white transition-all duration-300"
             style={{
               backgroundColor: 'transparent',
-              color: 'white',
+              color: '#1d1d1f',
               fontSize: '14px',
               fontWeight: 500,
               padding: '12px 24px',
               borderRadius: '0px',
               textDecoration: 'none',
               display: 'inline-block',
-              border: '1px solid rgba(255,255,255,0.3)',
+              border: '1px solid rgba(0,0,0,0.2)',
               marginTop: '-20px'
             }}
           >
@@ -449,59 +503,8 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      {/* Mavi Container */}
-      <div className="w-full h-[520px] bg-gradient-to-b from-[#2254c0] to-[#306edc] flex flex-col items-center justify-center relative overflow-hidden" style={{ marginTop: '13px' }}>
-        {/* Sol Taraf - 4 Yazı */}
-        <span className="absolute text-xl font-medium smart-text smart-text-1" style={{ top: '15%', left: '8%', color: '#85d4fb' }}>Akıllı Bina</span>
-        <span className="absolute text-xl font-medium smart-text smart-text-2" style={{ top: '35%', left: '6%', color: '#85d4fb' }}>Akıllı Taşıma</span>
-        <span className="absolute text-xl font-medium smart-text smart-text-3" style={{ top: '55%', left: '8%', color: '#85d4fb' }}>Akıllı Şehir</span>
-        <span className="absolute text-xl font-medium smart-text smart-text-4" style={{ top: '75%', left: '6%', color: '#85d4fb' }}>Akıllı Güvenlik</span>
-        
-        {/* Sağ Taraf - 4 Yazı */}
-        <span className="absolute text-xl font-medium smart-text smart-text-5" style={{ top: '15%', right: '8%', color: '#85d4fb' }}>Akıllı İşletme</span>
-        <span className="absolute text-xl font-medium smart-text smart-text-6" style={{ top: '35%', right: '6%', color: '#85d4fb' }}>Akıllı Mağaza</span>
-        <span className="absolute text-xl font-medium smart-text smart-text-7" style={{ top: '55%', right: '8%', color: '#85d4fb' }}>Akıllı Enerji</span>
-        <span className="absolute text-xl font-medium smart-text smart-text-8" style={{ top: '75%', right: '6%', color: '#85d4fb' }}>Akıllı Tarım</span>
-        
-        <h2 className="text-3xl md:text-4xl text-white text-center mb-4 z-10" style={{ fontWeight: 450 }}>
-          Sunduğumuz Çözümleri Keşfet
-        </h2>
-        <p className="text-lg md:text-xl text-white text-center z-10" style={{ marginBottom: '60px', fontWeight: 450 }}>
-          Kontrol sistemleri endüstrisinde en iyi çözümler
-        </p>
-        
-        {/* Smart Çözümler - 5-4 Düzeni */}
-        <div className="flex flex-col items-center gap-10 z-10">
-          {/* İlk Satır - 5 simge */}
-          <div className="flex justify-center gap-14">
-            <Building2 size={68} strokeWidth={1.5} color="#85d4fb" />
-            <Briefcase size={68} strokeWidth={1.5} color="#85d4fb" />
-            <Truck size={68} strokeWidth={1.5} color="#85d4fb" />
-            <Store size={68} strokeWidth={1.5} color="#85d4fb" />
-            <Building size={68} strokeWidth={1.5} color="#85d4fb" />
-          </div>
-          
-          {/* İkinci Satır - 4 simge */}
-          <div className="flex justify-center gap-14">
-            <Zap size={68} strokeWidth={1.5} color="#85d4fb" />
-            <Leaf size={68} strokeWidth={1.5} color="#85d4fb" />
-            <Landmark size={68} strokeWidth={1.5} color="#85d4fb" />
-            <Shield size={68} strokeWidth={1.5} color="#85d4fb" />
-          </div>
-          
-          {/* Çözümlerimiz Butonu */}
-          <Link 
-            href="/cozumler"
-            className="mt-4 bg-white text-black text-base font-medium btn-instant"
-            style={{ paddingLeft: '32px', paddingRight: '32px', paddingTop: '12px', paddingBottom: '12px', borderRadius: '20px', textDecoration: 'none' }}
-          >
-            Çözümlerimiz
-          </Link>
-        </div>
-      </div>
       
-      <Footer />
+      <Footer theme="white" />
     </div>
   );
 }

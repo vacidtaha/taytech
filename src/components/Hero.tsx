@@ -77,7 +77,7 @@ export default function Hero() {
       {/* Sticky Hero */}
       <section 
         ref={heroRef}
-        className="fixed left-0 right-0 w-full bg-black overflow-hidden will-change-transform"
+        className="fixed left-0 right-0 w-full bg-[#f5f5f7] overflow-hidden will-change-transform"
         style={{ zIndex: 5, top: '48px', height: 'calc(100vh - 48px)' }}
       >
         {/* Background Image */}
@@ -94,8 +94,7 @@ export default function Hero() {
             priority
           />
         </div>
-        {/* Overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/70" />
+        {/* Overlay kaldırıldı - fotoğraf orijinal renklerde */}
         {/* Content */}
         <div className="relative z-10 h-full flex flex-col items-center justify-center px-6">
           {/* TayTech yazısı */}

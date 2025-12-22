@@ -43,6 +43,7 @@ export default function IletisimPage() {
           width={1920}
           height={600}
           className="w-full h-auto"
+          style={{ filter: 'hue-rotate(140deg) saturate(1.2)' }}
           priority
         />
         

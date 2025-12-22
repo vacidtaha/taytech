@@ -493,3 +493,4 @@ Kurulum sırasında sorun yaşarsanız:
 **Son Güncelleme:** Aralık 2024
 **Versiyon:** 1.0
 
+

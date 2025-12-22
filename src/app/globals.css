@@ -101,11 +101,11 @@ body {
 
 /* Fast hover button */
 .btn-instant {
-  transition: background-color 0.05s ease-out;
+  transition: background-color 0.15s ease-out;
 }
 
 .btn-instant:hover {
-  background-color: #e5e5e5;
+  background-color: #424245;
 }
 
 /* Akıllı yazılar - statik */

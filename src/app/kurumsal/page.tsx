@@ -44,23 +44,23 @@ export default function KurumsalPage() {
         <div className="h-12 px-8 flex items-center justify-between">
           <div className="flex items-center">
             <div className="hidden md:block w-[180px]"></div>
-            <span className="text-[21px] font-normal text-[#86868b]">Taytech</span>
-            <span className="ml-6 text-[21px] font-semibold text-[#1d1d1f]">Kurumsal</span>
+            <span className="text-[21px] font-normal text-[#dc2626]">Taytech</span>
+            <span className="ml-6 text-[21px] font-semibold text-[#dc2626]">Kurumsal</span>
           </div>
           <nav className="hidden md:flex items-center gap-8" style={{ marginRight: '100px' }}>
-            <a href="#muhendislik" className={`text-[13px] transition-colors ${activeSection === "muhendislik" ? "font-medium text-[#1d1d1f]" : "text-[#424245] hover:text-[#1d1d1f]"}`}>
+            <a href="#muhendislik" className={`text-[13px] transition-colors ${activeSection === "muhendislik" ? "font-medium text-[#dc2626]" : "text-[#424245] hover:text-[#dc2626]"}`}>
               Her detayda mühendislik.
             </a>
-            <a href="#rakamlar" className={`text-[13px] transition-colors ${activeSection === "rakamlar" ? "font-medium text-[#1d1d1f]" : "text-[#424245] hover:text-[#1d1d1f]"}`}>
+            <a href="#rakamlar" className={`text-[13px] transition-colors ${activeSection === "rakamlar" ? "font-medium text-[#dc2626]" : "text-[#424245] hover:text-[#dc2626]"}`}>
               Rakamlarla üretim gücü.
             </a>
-            <a href="#standartlar" className={`text-[13px] transition-colors ${activeSection === "standartlar" ? "font-medium text-[#1d1d1f]" : "text-[#424245] hover:text-[#1d1d1f]"}`}>
+            <a href="#standartlar" className={`text-[13px] transition-colors ${activeSection === "standartlar" ? "font-medium text-[#dc2626]" : "text-[#424245] hover:text-[#dc2626]"}`}>
               Standartların ötesinde.
             </a>
-            <a href="#surdurulebilirlik" className={`text-[13px] transition-colors ${activeSection === "surdurulebilirlik" ? "font-medium text-[#1d1d1f]" : "text-[#424245] hover:text-[#1d1d1f]"}`}>
+            <a href="#surdurulebilirlik" className={`text-[13px] transition-colors ${activeSection === "surdurulebilirlik" ? "font-medium text-[#dc2626]" : "text-[#424245] hover:text-[#dc2626]"}`}>
               Sürdürülebilirlik ve Verimlilik.
             </a>
-            <a href="#destek" className={`text-[13px] transition-colors ${activeSection === "destek" ? "font-medium text-[#1d1d1f]" : "text-[#424245] hover:text-[#1d1d1f]"}`}>
+            <a href="#destek" className={`text-[13px] transition-colors ${activeSection === "destek" ? "font-medium text-[#dc2626]" : "text-[#424245] hover:text-[#dc2626]"}`}>
               Tam destek.
             </a>
           </nav>
@@ -72,7 +72,15 @@ export default function KurumsalPage() {
       <div id="muhendislik" className="w-full">
         <div className="w-full h-[550px] bg-[#f5f5f7] flex items-center justify-center">
           <div className="max-w-3xl text-center px-8">
-            <h2 className="text-4xl md:text-5xl font-semibold text-[#1d1d1f] mb-14">
+            <h2 
+              className="text-4xl md:text-5xl font-semibold mb-14"
+              style={{
+                background: 'linear-gradient(to bottom right, #dc2626, #991b1b)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}
+            >
               Her detayda mühendislik.
             </h2>
             <p className="text-xl md:text-2xl text-[#424245] leading-relaxed">
@@ -107,7 +115,7 @@ export default function KurumsalPage() {
             <div className="sticky top-[30vh] h-fit max-w-md px-8 flex flex-col" style={{ gap: '80px' }}>
               {/* Rakamlarla üretim gücü */}
               <div>
-                <h2 className="text-3xl md:text-4xl font-semibold text-[#1d1d1f] mb-6">
+                <h2 className="text-3xl md:text-4xl font-semibold text-[#dc2626] mb-6">
                   Rakamlarla üretim gücü.
                 </h2>
                 <p className="text-xl font-medium text-[#424245] leading-relaxed">
@@ -117,7 +125,7 @@ export default function KurumsalPage() {
               
               {/* Uçtan Uca Entegrasyon */}
               <div>
-                <h3 className="text-3xl md:text-4xl font-semibold text-[#1d1d1f] mb-6">Uçtan Uca Entegrasyon</h3>
+                <h3 className="text-3xl md:text-4xl font-semibold text-[#dc2626] mb-6">Uçtan Uca Entegrasyon</h3>
                 <p className="text-xl font-medium text-[#424245] leading-relaxed">
                   Tasarımdan karta, montajdan son test aşamasına kadar her şey tek çatı altında. Bu, kalite kontrol süreçlerimizde sıfır hata hedeflememizi sağlar.
                 </p>
@@ -125,7 +133,7 @@ export default function KurumsalPage() {
               
               {/* Modern Makine Parkuru */}
               <div>
-                <h3 className="text-3xl md:text-4xl font-semibold text-[#1d1d1f] mb-6">Modern Makine Parkuru</h3>
+                <h3 className="text-3xl md:text-4xl font-semibold text-[#dc2626] mb-6">Modern Makine Parkuru</h3>
                 <p className="text-xl font-medium text-[#424245] leading-relaxed">
                   Hassas mühendislik gerektiren her parça, en güncel teknolojik ekipmanlarla ve yalın yönetim prensipleriyle işlenir.
                 </p>
@@ -141,8 +149,8 @@ export default function KurumsalPage() {
                 className="bg-[#f7f7f9] rounded-3xl shadow-lg"
                 style={{ width: '400px', height: '533px', padding: '48px 40px 40px 40px' }}
               >
-                <span className="text-7xl font-semibold text-[#1d1d1f] leading-none block">5.600 m²</span>
-                <p className="text-3xl text-black mt-6 font-semibold">Toplam Alan</p>
+                <span className="text-7xl font-semibold text-[#dc2626] leading-none block">5.600 m²</span>
+                <p className="text-3xl text-[#dc2626] mt-6 font-semibold">Toplam Alan</p>
                 <p className="text-lg text-[#86868b] mt-6 leading-relaxed font-medium">
                   Üretim ve yeniliğin birleştiği devasa bir ekosistem.
                 </p>
@@ -155,8 +163,8 @@ export default function KurumsalPage() {
                 className="bg-[#f3f3f5] rounded-3xl shadow-lg"
                 style={{ width: '400px', height: '533px', padding: '48px 40px 40px 40px' }}
               >
-                <span className="text-7xl font-semibold text-[#1d1d1f] leading-none block">4.750 m²</span>
-                <p className="text-3xl text-black mt-6 font-semibold">Üretim Parkuru</p>
+                <span className="text-7xl font-semibold text-[#dc2626] leading-none block">4.750 m²</span>
+                <p className="text-3xl text-[#dc2626] mt-6 font-semibold">Üretim Parkuru</p>
                 <p className="text-lg text-[#86868b] mt-6 leading-relaxed font-medium">
                   En son teknoloji makine hatları ve akıllı montaj istasyonlarıyla donatılmış, yüksek kapasiteli üretim merkezi.
                 </p>
@@ -169,8 +177,8 @@ export default function KurumsalPage() {
                 className="bg-[#f0f0f2] rounded-3xl shadow-lg"
                 style={{ width: '400px', height: '533px', padding: '48px 40px 40px 40px' }}
               >
-                <span className="text-7xl font-semibold text-[#1d1d1f] leading-none block">860 m²</span>
-                <p className="text-3xl text-black mt-6 font-semibold">Ar-Ge Merkezi</p>
+                <span className="text-7xl font-semibold text-[#dc2626] leading-none block">860 m²</span>
+                <p className="text-3xl text-[#dc2626] mt-6 font-semibold">Ar-Ge Merkezi</p>
                 <p className="text-lg text-[#86868b] mt-6 leading-relaxed font-medium">
                   Fikirlerin prototipe, prototiplerin standartları belirleyen teknolojilere dönüştüğü özel bir tasarım alanı.
                 </p>
@@ -191,7 +199,7 @@ export default function KurumsalPage() {
             <div className="sticky top-[15vh] h-fit max-w-md px-8 flex flex-col" style={{ gap: '60px' }}>
               {/* Standartların ötesinde */}
               <div>
-                <h2 className="text-3xl md:text-4xl font-semibold text-[#1d1d1f] mb-6">
+                <h2 className="text-3xl md:text-4xl font-semibold text-[#dc2626] mb-6">
                   Standartların ötesinde.
                 </h2>
                 <p className="text-xl font-medium text-[#424245] leading-relaxed">
@@ -202,22 +210,22 @@ export default function KurumsalPage() {
               {/* ISO Sertifikaları */}
               <div className="flex flex-col gap-4">
                 <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-[#1d1d1f]">ISO 9001:2015</span>
+                  <span className="text-lg font-semibold text-[#dc2626]">ISO 9001:2015</span>
                   <span className="text-lg text-[#86868b]">Kalite Yönetimi</span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-[#1d1d1f]">ISO 14001:2015</span>
+                  <span className="text-lg font-semibold text-[#dc2626]">ISO 14001:2015</span>
                   <span className="text-lg text-[#86868b]">Çevresel Sorumluluk</span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-[#1d1d1f]">ISO 45001:2018</span>
+                  <span className="text-lg font-semibold text-[#dc2626]">ISO 45001:2018</span>
                   <span className="text-lg text-[#86868b]">İş Sağlığı ve Güvenliği</span>
                 </div>
               </div>
               
               {/* Mevzuat Uyumu */}
               <div>
-                <h3 className="text-3xl md:text-4xl font-semibold text-[#1d1d1f] mb-6">Mevzuat Uyumu</h3>
+                <h3 className="text-3xl md:text-4xl font-semibold text-[#dc2626] mb-6">Mevzuat Uyumu</h3>
                 <p className="text-xl font-medium text-[#424245] leading-relaxed">
                   Teknik, ulusal ve uluslararası mevzuatları anlık olarak takip ediyoruz. Ürünlerimizin ve hizmetlerimizin sadece bugünün değil, geleceğin regülasyonlarına da hazır olmasını sağlıyoruz.
                 </p>
@@ -225,7 +233,7 @@ export default function KurumsalPage() {
               
               {/* Sürekli Denetim */}
               <div>
-                <h3 className="text-3xl md:text-4xl font-semibold text-[#1d1d1f] mb-6">Sürekli Denetim</h3>
+                <h3 className="text-3xl md:text-4xl font-semibold text-[#dc2626] mb-6">Sürekli Denetim</h3>
                 <p className="text-xl font-medium text-[#424245] leading-relaxed">
                   Yönetim sistemimiz, bağımsız denetçiler ve iç ekiplerimiz tarafından düzenli olarak test edilir. Bu, Taytech isminin her zaman "güvenilirlik" ile eş anlamlı kalmasını sağlar.
                 </p>
@@ -258,7 +266,7 @@ export default function KurumsalPage() {
                 </div>
                 
                 {/* Başlık */}
-                <h3 className="text-center font-bold text-[#1d1d1f] mb-10" style={{ fontSize: '24px', lineHeight: '1.4' }}>
+                <h3 className="text-center font-bold text-[#dc2626] mb-10" style={{ fontSize: '24px', lineHeight: '1.4' }}>
                   KALİTE, ÇEVRE, İŞ SAĞLIĞI ve GÜVENLİĞİ<br />
                   POLİTİKASI
                 </h3>
@@ -508,5 +516,6 @@ export default function KurumsalPage() {
     </div>
   );
 }
+
 
 
