@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import { useLanguage } from "@/context/LanguageContext";
 
 const urunler = [
   { id: 1, label: "ThermoHexa", key: "thermohexa" },
@@ -13,64 +14,65 @@ const urunler = [
   { id: 4, label: "HydroHexa UFH", key: "hydrohexa-ufh" },
 ];
 
-// Ürün verileri
-const urunVerileri: Record<string, {
-  baslik: string;
-  aciklama: string;
-  ozellikler?: string[];
-  resim: string;
-  belgeler: { isim: string; link: string }[];
-  akisDiyagrami?: string;
-  teknikOzelliklerResim?: string;
-  urunBilesenleriResim?: string;
-}> = {
-  "thermohexa": {
-    baslik: "ThermoHexa",
-    aciklama: "ThermoHexa ısı istasyonlarında kontrol sıcaklığa bağlı, yani termostatik olarak yapılır. Kullanım sıcak suyu hazırlama işlemi ile ısıtma işlemi aynı anda gerçekleşir. ThermoHexa içerisinde bulunan ve sıcaklığa bağlı çok hızlı tepki gösteren Termostatik Vana sayesinde, ısı kaybı olasılığı azalır. Kompak tasarımı sayesinde, cihazı monte etmek pratik ve kolaydır. ThermoHexa içerisinde bulunan eşanjörler ve borular, AISI 316 kalite paslanmaz çelikten imal edilmiştir, bu sayede alüminyum radyatörlerle bile kullanımına olanak sağlanmıştır.",
-    resim: "/thermohexa.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/thermohexa-datasheet.pdf" }
-    ],
-    akisDiyagrami: "/thermohexa-akis.png",
-    teknikOzelliklerResim: "/thermohexa-teknik.png",
-    urunBilesenleriResim: "/thermohexa-bilesenler.png"
-  },
-  "thermohexa-ufh": {
-    baslik: "ThermoHexa-UFH",
-    aciklama: "ThermoHexa yerden ısıtma ısı istasyonlarında kontrol sıcaklığa bağlı, yani termostatik olarak yapılır. Kullanım sıcak suyu hazırlama işlemi ile ısıtma işlemi aynı anda gerçekleşir. ThermoHexa içerisinde bulunan ve sıcaklığa bağlı çok hızlı tepki gösteren Termostatik Vana sayesinde, ısı kaybı olasılığı azalır. Kompak tasarımı sayesinde, cihazı monte etmek pratik ve kolaydır. ThermoHexa içerisinde bulunan eşanjörler ve borular, AISI 316 kalite paslanmaz çelikten imal edilmiştir, bu sayede alüminyum radyatörlerle bile kullanımına olanak sağlanmıştır. ThermoHexa, yerden ısıtma hattı sıcaklığını stabil tutmak için, bir karışım devresi içerir. Isı istasyonu içerisinde bulunan zon vanası sayesinde, daire içinde giden debi miktarı ayarlanabilir. Zon vanası üzerine aktüatör kolay bir şekilde adapte edilebilir. Bu sayede oda termostatının kapalı olduğu durumlarda, aktüatör yerden ısıtma devresini kapatarak, enerji sarfiyatının önüne geçer.",
-    resim: "/thermohexa-ufh.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/thermohexa-ufh-datasheet.pdf" }
-    ],
-    akisDiyagrami: "/thermohexa-ufh-akis.png",
-    teknikOzelliklerResim: "/thermohexa-ufh-teknik.png",
-    urunBilesenleriResim: "/thermohexa-ufh-bilesenler.png"
-  },
-  "hydrohexa": {
-    baslik: "HydroHexa",
-    aciklama: "HydroHexa ısı istasyonlarında kontrol hem hidrolik hem de termostatik olarak yapılır. Sistem soğuk eşanjör mantığı ile çalıştığı için, eşanjör içerisinde kireçlenme olasılığı ortadan kaybolur. HydroHexa ısı istasyonları kullanım sıcak suyu önceliğine sahiptir. HydroHexa'nın düşük dönüş suyu özelliği sayesinde yoğuşmalı kazanlarla verimli bir şekilde çalışabilir. HydroHexa içerisinde bulunan eşanjörler ve borular, AISI 316 kalite paslanmaz çelikten imal edilmiştir, bu sayede alüminyum radyatörlerle bile kullanımına olanak sağlanmıştır. HydroHexa, kazan dönüş hattında bulunan fark basınç vanası ve ısıtma dönüş hattında bulunan zon vanası sayesinde daire içerisinde eksiksiz balanslama yapılabilir.",
-    resim: "/hydrohexa.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/hydrohexa-datasheet.pdf" }
-    ],
-    akisDiyagrami: "/hydrohexa-akis.png",
-    teknikOzelliklerResim: "/hydrohexa-teknik.png",
-    urunBilesenleriResim: "/hydrohexa-bilesenler.png"
-  },
-  "hydrohexa-ufh": {
-    baslik: "HydroHexa UFH",
-    aciklama: "HydroHexa yerden ısıtma ısı istasyonlarında kontrol hem hidrolik hem de termostatik olarak yapılır. Sistem soğuk eşanjör mantığı ile çalıştığı için, eşanjör içerisinde kireçlenme olasılığı ortadan kaybolur. HydroHexa ısı istasyonları kullanım sıcak suyu önceliğine sahiptir. HydroHexa'nın düşük dönüş suyu özelliği sayesinde yoğuşmalı kazanlarla verimli bir şekilde çalışabilir. HydroHexa içerisinde bulunan eşanjörler ve borular, AISI 316 kalite paslanmaz çelikten imal edilmiştir, bu sayede alüminyum radyatörlerle bile kullanımına olanak sağlanmıştır. HydroHexa, kazan dönüş hattında bulunan fark basınç vanası ve ısıtma dönüş hattında bulunan zon vanası sayesinde daire içerisinde eksiksiz balanslama yapılabilir. HydroHexa, yerden ısıtma hattı sıcaklığını stabil tutmak için, bir karışım devresi içerir. Isı istasyonu içerisinde bulunan zon vanası sayesinde, daire içinde giden debi miktarı ayarlanabilir. Zon vanası üzerine aktüatör kolay bir şekilde adapte edilebilir. Bu sayede oda termostatının kapalı olduğu durumlarda, aktüatör yerden ısıtma devresini kapatarak, enerji sarfiyatının önüne geçer.",
-    resim: "/hydrohexa-ufh.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/hydrohexa-ufh-datasheet.pdf" }
-    ],
-    akisDiyagrami: "/hydrohexa-ufh-akis.png",
-    teknikOzelliklerResim: "/hydrohexa-ufh-teknik.png",
-    urunBilesenleriResim: "/hydrohexa-ufh-bilesenler.png"
-  }
-};
-
 export default function DirectIsiIstasyonu() {
+  const { t } = useLanguage();
+
+  // Ürün verileri
+  const urunVerileri: Record<string, {
+    baslik: string;
+    aciklama: string;
+    ozellikler?: string[];
+    resim: string;
+    belgeler: { isimKey: string; link: string }[];
+    akisDiyagrami?: string;
+    teknikOzelliklerResim?: string;
+    urunBilesenleriResim?: string;
+  }> = {
+    "thermohexa": {
+      baslik: "ThermoHexa",
+      aciklama: t("prod.isi.d.thermohexa.desc"),
+      resim: "/thermohexa.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/thermohexa-datasheet.pdf" }
+      ],
+      akisDiyagrami: "/thermohexa-akis.png",
+      teknikOzelliklerResim: "/thermohexa-teknik.png",
+      urunBilesenleriResim: "/thermohexa-bilesenler.png"
+    },
+    "thermohexa-ufh": {
+      baslik: "ThermoHexa-UFH",
+      aciklama: t("prod.isi.d.thermohexa-ufh.desc"),
+      resim: "/thermohexa-ufh.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/thermohexa-ufh-datasheet.pdf" }
+      ],
+      akisDiyagrami: "/thermohexa-ufh-akis.png",
+      teknikOzelliklerResim: "/thermohexa-ufh-teknik.png",
+      urunBilesenleriResim: "/thermohexa-ufh-bilesenler.png"
+    },
+    "hydrohexa": {
+      baslik: "HydroHexa",
+      aciklama: t("prod.isi.d.hydrohexa.desc"),
+      resim: "/hydrohexa.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/hydrohexa-datasheet.pdf" }
+      ],
+      akisDiyagrami: "/hydrohexa-akis.png",
+      teknikOzelliklerResim: "/hydrohexa-teknik.png",
+      urunBilesenleriResim: "/hydrohexa-bilesenler.png"
+    },
+    "hydrohexa-ufh": {
+      baslik: "HydroHexa UFH",
+      aciklama: t("prod.isi.d.hydrohexa-ufh.desc"),
+      resim: "/hydrohexa-ufh.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/hydrohexa-ufh-datasheet.pdf" }
+      ],
+      akisDiyagrami: "/hydrohexa-ufh-akis.png",
+      teknikOzelliklerResim: "/hydrohexa-ufh-teknik.png",
+      urunBilesenleriResim: "/hydrohexa-ufh-bilesenler.png"
+    }
+  };
   const searchParams = useSearchParams();
   const urunParam = searchParams.get("urun");
   const [activeUrun, setActiveUrun] = useState(urunler[0].key);
@@ -100,14 +102,14 @@ export default function DirectIsiIstasyonu() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
-          <span className="text-lg font-medium">Kategoriler</span>
+          <span className="text-lg font-medium">{t("prod.back.categories")}</span>
         </Link>
       </div>
 
       {/* Başlık */}
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "60px", paddingBottom: "40px" }}>
         <h1 className="text-[#86868b] text-5xl font-medium text-center">
-          Direct
+          {t("prod.isi.direct.title")}
         </h1>
       </section>
 
@@ -184,7 +186,7 @@ export default function DirectIsiIstasyonu() {
                 {/* Özellikler */}
                 {aktifUrunVerisi.ozellikler && aktifUrunVerisi.ozellikler.length > 0 && (
                   <div className="mb-14">
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Özellikler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.features")}</h3>
                     <div className="space-y-5">
                       {aktifUrunVerisi.ozellikler.map((ozellik, index) => (
                         <div key={index} className="flex items-start gap-4">
@@ -199,7 +201,7 @@ export default function DirectIsiIstasyonu() {
                 {/* Belgeler */}
                 {aktifUrunVerisi.belgeler.length > 0 && (
                   <div>
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Belgeler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.documents")}</h3>
                     <div className="flex flex-wrap gap-4">
                       {aktifUrunVerisi.belgeler.map((belge, index) => (
                         <a
@@ -217,7 +219,7 @@ export default function DirectIsiIstasyonu() {
                             <line x1="16" y1="17" x2="8" y2="17"/>
                             <polyline points="10 9 9 9 8 9"/>
                           </svg>
-                          {belge.isim}
+                          {t(belge.isimKey)}
                         </a>
                       ))}
                     </div>
@@ -259,7 +261,7 @@ export default function DirectIsiIstasyonu() {
                       }
                     }}
                   >
-                    Akış Diyagramı
+                    {t("prod.flowDiagram")}
                   </button>
                 )}
                 {hasTeknikOzellikler && (
@@ -286,7 +288,7 @@ export default function DirectIsiIstasyonu() {
                       }
                     }}
                   >
-                    Teknik Özellikler
+                    {t("prod.techSpecs")}
                   </button>
                 )}
                 {hasUrunBilesenleri && (
@@ -313,7 +315,7 @@ export default function DirectIsiIstasyonu() {
                       }
                     }}
                   >
-                    Ürün Bileşenleri
+                    {t("prod.components")}
                   </button>
                 )}
               </div>
@@ -325,7 +327,7 @@ export default function DirectIsiIstasyonu() {
                   <div className="p-8 flex justify-center">
                     <Image
                       src={aktifUrunVerisi.akisDiyagrami!}
-                      alt="Akış Diyagramı"
+                      alt={t("prod.flowDiagram")}
                       width={900}
                       height={600}
                       className="object-contain"
@@ -351,7 +353,7 @@ export default function DirectIsiIstasyonu() {
                   <div className="p-8 flex justify-center">
                     <Image
                       src={aktifUrunVerisi.urunBilesenleriResim!}
-                      alt="Ürün Bileşenleri"
+                      alt={t("prod.components")}
                       width={900}
                       height={600}
                       className="object-contain"
@@ -369,7 +371,7 @@ export default function DirectIsiIstasyonu() {
               {aktifUrunVerisi.baslik}
             </h2>
             <p className="text-[#6e6e73] text-xl">
-              Bu ürünün detayları yakında eklenecektir.
+              {t("prod.comingSoon")}
             </p>
         </div>
         )}

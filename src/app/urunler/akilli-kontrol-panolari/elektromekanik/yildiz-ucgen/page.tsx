@@ -5,150 +5,152 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import { useLanguage } from "@/context/LanguageContext";
 
 const urunler = [
   { id: 1, label: "Star Delta Start", key: "star-delta-start" },
 ];
 
-// Ürün verileri
-const urunVerileri: Record<string, {
-  baslik: string;
-  aciklama: string;
-  ozellikler: string[];
-  resim: string;
-  belgeler: { isim: string; link: string }[];
-  teknikOzellikler?: string[];
-  uygulamaAlanlariResim?: string;
-  teknikVerilerCoklu?: {
-    baslik: string;
-    basliklar: string[];
-    satirlar: string[][];
-  }[];
-  teknikNot?: string;
-}> = {
-  "star-delta-start": {
-    baslik: "Star Delta Start",
-    aciklama: "1 veya 3 fazlı motorlarda 4 pompaya kadar aynı anda kontrol edebilen yıldız üçgen yol vermeli kontrol paneli. Temiz su ve pis su uygulamalarındaki doldurma, boşaltma ve basınçlandırma işlemleri için tasarlanmıştır.",
-    ozellikler: [
-      "Şamandıra ve seviye elektrod bağlantısı ile, motoru durdurma, çalıştırma ve başlatmayı sağlar"
-    ],
-    resim: "/star-delta-start.png",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/star-delta-start-datasheet.pdf" },
-      { isim: "Kullanım Kılavuzu", link: "/star-delta-start-kullanim.pdf" }
-    ],
-    teknikOzellikler: [
-      "Metal / IP 55",
-      "Kilitleme mekanizmasına sahip ana kesici",
-      "Güç Beslemesi 1-50/60Hz 230V ±",
-      "Güç Beslemesi 3-50/60Hz 400V ±",
-      "Motor çalışıyor bilgisi için yeşil LED / Hatalar için Kırmızı LED",
-      "Başlatma komutu için giriş",
-      "Korumalar ve Hatalar",
-      "Motor Aşırı akım koruması",
-      "Faz kaybı ve faz sırası için koruma",
-      "Kuru çalışma koruması",
-      "Motor koruma sigortaları",
-      "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
-      "Yıldız Üçgen Kontaktörü AC3",
-      "Haftalık ayarlanabilen test",
-      "Selonoid valf çıkışı"
-    ],
-    uygulamaAlanlariResim: "/star-delta-start-uygulama.png",
-    teknikVerilerCoklu: [
-      {
-        baslik: "Star Delta Start 1 Teknik Veriler",
-        basliklar: ["Model", "COD", "Voltaj (V~)", "kW", "HP", "Akım Aralığı (A)", "Max (A)", "HxLxW (mm)", "Malzeme"],
-        satirlar: [
-          ["5.5", "23001", "3-400", "5.5", "7.5", "7.6-10", "15", "400x300x175", "ABS"],
-          ["7.5", "23002", "3-400", "7.5", "10", "7.6-10", "17", "400x300x175", "ABS"],
-          ["11", "23003", "3-400", "11", "15", "13-16", "24", "400x300x175", "ABS"],
-          ["15", "23004", "3-400", "11", "15", "16-20", "31", "600x400x220", "Metal"],
-          ["18.5", "23005", "4-400", "18.5", "25", "20-24", "38", "600x400x220", "Metal"],
-          ["22", "23006", "5-400", "22", "30", "29-35", "50", "600x400x220", "Metal"],
-          ["30", "23007", "6-400", "30", "40", "35-38", "60", "600x400x220", "Metal"],
-          ["37", "23008", "7-400", "37", "50", "44-53", "75", "600x400x220", "Metal"],
-          ["45", "23009", "8-400", "45", "60", "50-60", "100", "600x400x220", "Metal"],
-          ["55", "23010", "9-400", "55", "75", "65-78", "124", "700x500x260", "Metal"],
-          ["75", "23011", "10-400", "75", "100", "75-87", "135", "700x500x260", "Metal"],
-          ["90", "23012", "11-400", "90", "125", "80-110", "155", "800x600x260", "Metal"],
-          ["110", "23013", "12-400", "110", "150", "100-135", "200", "800x600x260", "Metal"],
-          ["132", "23014", "13-400", "132", "180", "110-142", "241", "1000x700x320", "Metal"],
-          ["160", "23015", "14-400", "160", "220", "150-200", "300", "1000x700x320", "Metal"],
-          ["200", "23016", "15-400", "185", "250", "115-380", "410", "1200x800x320", "Metal"]
-        ]
-      },
-      {
-        baslik: "Star Delta Start 2 Teknik Veriler",
-        basliklar: ["Model", "COD", "Voltaj (V~)", "kW", "HP", "Akım Aralığı (A)", "Max (A)", "HxLxW (mm)", "Malzeme"],
-        satirlar: [
-          ["5.5", "23201", "3-400", "5.5", "7.5", "7.6-10", "15", "600x400x220", "Metal"],
-          ["7.5", "23202", "3-400", "7.5", "10", "7.6-10", "17", "600x400x220", "Metal"],
-          ["11", "23203", "3-400", "11", "15", "13-16", "24", "600x400x220", "Metal"],
-          ["15", "23204", "3-400", "11", "15", "16-20", "31", "600x400x220", "Metal"],
-          ["18.5", "23205", "4-400", "18.5", "25", "20-24", "38", "700x500x260", "Metal"],
-          ["22", "23206", "5-400", "22", "30", "29-35", "50", "700x500x260", "Metal"],
-          ["30", "23207", "6-400", "30", "40", "35-38", "60", "800x600x260", "Metal"],
-          ["37", "23208", "7-400", "37", "50", "44-53", "75", "800x600x260", "Metal"],
-          ["45", "23209", "8-400", "45", "60", "50-60", "100", "1000x700x320", "Metal"],
-          ["55", "23210", "9-400", "55", "75", "65-78", "124", "1000x700x320", "Metal"],
-          ["75", "23211", "10-400", "75", "100", "75-87", "135", "1200x800x320", "Metal"],
-          ["90", "23212", "11-400", "90", "125", "80-110", "155", "1200x800x320", "Metal"],
-          ["110", "23213", "12-400", "110", "150", "100-135", "200", "1200x800x320", "Metal"],
-          ["132", "23214", "13-400", "132", "180", "110-142", "241", "1600x900x400", "Metal"],
-          ["160", "23215", "14-400", "160", "220", "150-200", "300", "1600x900x400", "Metal"],
-          ["200", "23216", "15-400", "185", "250", "115-380", "410", "1800x1100x450", "Metal"]
-        ]
-      },
-      {
-        baslik: "Star Delta Start 3 Teknik Veriler",
-        basliklar: ["Model", "COD", "Voltaj (V~)", "kW", "HP", "Akım Aralığı (A)", "Max (A)", "HxLxW (mm)", "Malzeme"],
-        satirlar: [
-          ["5.5", "23301", "3-400", "5.5", "7.5", "7.6-10", "15", "700x500x260", "Metal"],
-          ["7.5", "23302", "3-400", "7.5", "10", "7.6-10", "17", "700x500x260", "Metal"],
-          ["11", "23303", "3-400", "11", "15", "13-16", "24", "700x500x260", "Metal"],
-          ["15", "23304", "3-400", "11", "15", "16-20", "31", "700x500x260", "Metal"],
-          ["18.5", "23305", "4-400", "18.5", "25", "20-24", "38", "800x600x260", "Metal"],
-          ["22", "23306", "5-400", "22", "30", "29-35", "50", "800x600x260", "Metal"],
-          ["30", "23307", "6-400", "30", "40", "35-38", "60", "1000x700x320", "Metal"],
-          ["37", "23308", "7-400", "37", "50", "44-53", "75", "1000x700x320", "Metal"],
-          ["45", "23309", "8-400", "45", "60", "50-60", "100", "1200x800x320", "Metal"],
-          ["55", "23310", "9-400", "55", "75", "65-78", "124", "1200x800x320", "Metal"],
-          ["75", "23311", "10-400", "75", "100", "75-87", "135", "1600x900x400", "Metal"],
-          ["90", "23312", "11-400", "90", "125", "80-110", "155", "1600x900x400", "Metal"],
-          ["110", "23313", "12-400", "110", "150", "100-135", "200", "1800x1100x450", "Metal"],
-          ["132", "23314", "13-400", "132", "180", "110-142", "241", "1800x1100x450", "Metal"],
-          ["160", "23315", "14-400", "160", "220", "150-200", "300", "1800x1100x450", "Metal"],
-          ["200", "23316", "15-400", "185", "250", "115-380", "410", "2100x1400x500", "Metal"]
-        ]
-      },
-      {
-        baslik: "Star Delta Start 4 Teknik Veriler",
-        basliklar: ["Model", "COD", "Voltaj (V~)", "kW", "HP", "Akım Aralığı (A)", "Max (A)", "HxLxW (mm)", "Malzeme"],
-        satirlar: [
-          ["5.5", "23401", "3-400", "5.5", "7.5", "7.6-10", "15", "800x600x260", "Metal"],
-          ["7.5", "23402", "3-400", "7.5", "10", "7.6-10", "17", "800x600x260", "Metal"],
-          ["11", "23403", "3-400", "11", "15", "13-16", "24", "800x600x260", "Metal"],
-          ["15", "23404", "3-400", "11", "15", "16-20", "31", "800x600x260", "Metal"],
-          ["18.5", "23405", "4-400", "18.5", "25", "20-24", "38", "1000x700x320", "Metal"],
-          ["22", "23406", "5-400", "22", "30", "29-35", "50", "1000x700x320", "Metal"],
-          ["30", "23407", "6-400", "30", "40", "35-38", "60", "1200x800x340", "Metal"],
-          ["37", "23408", "7-400", "37", "50", "44-53", "75", "1200x800x340", "Metal"],
-          ["45", "23409", "8-400", "45", "60", "50-60", "100", "1200x800x340", "Metal"],
-          ["55", "23410", "9-400", "55", "75", "65-78", "124", "1750x940x450", "Metal"],
-          ["75", "23411", "10-400", "75", "100", "75-87", "135", "1750x940x450", "Metal"],
-          ["90", "23412", "11-400", "90", "125", "80-110", "155", "2100x1400x500", "Metal"],
-          ["110", "23413", "12-400", "110", "150", "100-135", "200", "2100x1400x500", "Metal"],
-          ["132", "23414", "13-400", "132", "180", "110-142", "241", "2100x1400x500", "Metal"],
-          ["160", "23415", "14-400", "160", "220", "150-200", "300", "2100x1400x500", "Metal"],
-          ["200", "23416", "15-400", "185", "250", "115-380", "410", "2100x1400x500", "Metal"]
-        ]
-      }
-    ]
-  }
-};
-
 export default function YildizUcgenYolVerme() {
+  const { t } = useLanguage();
+
+  // Ürün verileri
+  const urunVerileri: Record<string, {
+    baslik: string;
+    aciklama: string;
+    ozellikler: string[];
+    resim: string;
+    belgeler: { isimKey: string; link: string }[];
+    teknikOzellikler?: string[];
+    uygulamaAlanlariResim?: string;
+    teknikVerilerCoklu?: {
+      baslik: string;
+      basliklar: string[];
+      satirlar: string[][];
+    }[];
+    teknikNot?: string;
+  }> = {
+    "star-delta-start": {
+      baslik: "Star Delta Start",
+      aciklama: t("prod.yildizUcgenEM.star-delta-start.desc"),
+      ozellikler: [
+        t("prod.yildizUcgenEM.star-delta-start.feat1")
+      ],
+      resim: "/star-delta-start.png",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/star-delta-start-datasheet.pdf" },
+        { isimKey: "prod.userManual", link: "/star-delta-start-kullanim.pdf" }
+      ],
+      teknikOzellikler: [
+        "Metal / IP 55",
+        "Kilitleme mekanizmasına sahip ana kesici",
+        "Güç Beslemesi 1-50/60Hz 230V ±",
+        "Güç Beslemesi 3-50/60Hz 400V ±",
+        "Motor çalışıyor bilgisi için yeşil LED / Hatalar için Kırmızı LED",
+        "Başlatma komutu için giriş",
+        "Korumalar ve Hatalar",
+        "Motor Aşırı akım koruması",
+        "Faz kaybı ve faz sırası için koruma",
+        "Kuru çalışma koruması",
+        "Motor koruma sigortaları",
+        "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
+        "Yıldız Üçgen Kontaktörü AC3",
+        "Haftalık ayarlanabilen test",
+        "Selonoid valf çıkışı"
+      ],
+      uygulamaAlanlariResim: "/star-delta-start-uygulama.png",
+      teknikVerilerCoklu: [
+        {
+          baslik: "Star Delta Start 1 Teknik Veriler",
+          basliklar: ["Model", "COD", "Voltaj (V~)", "kW", "HP", "Akım Aralığı (A)", "Max (A)", "HxLxW (mm)", "Malzeme"],
+          satirlar: [
+            ["5.5", "23001", "3-400", "5.5", "7.5", "7.6-10", "15", "400x300x175", "ABS"],
+            ["7.5", "23002", "3-400", "7.5", "10", "7.6-10", "17", "400x300x175", "ABS"],
+            ["11", "23003", "3-400", "11", "15", "13-16", "24", "400x300x175", "ABS"],
+            ["15", "23004", "3-400", "11", "15", "16-20", "31", "600x400x220", "Metal"],
+            ["18.5", "23005", "4-400", "18.5", "25", "20-24", "38", "600x400x220", "Metal"],
+            ["22", "23006", "5-400", "22", "30", "29-35", "50", "600x400x220", "Metal"],
+            ["30", "23007", "6-400", "30", "40", "35-38", "60", "600x400x220", "Metal"],
+            ["37", "23008", "7-400", "37", "50", "44-53", "75", "600x400x220", "Metal"],
+            ["45", "23009", "8-400", "45", "60", "50-60", "100", "600x400x220", "Metal"],
+            ["55", "23010", "9-400", "55", "75", "65-78", "124", "700x500x260", "Metal"],
+            ["75", "23011", "10-400", "75", "100", "75-87", "135", "700x500x260", "Metal"],
+            ["90", "23012", "11-400", "90", "125", "80-110", "155", "800x600x260", "Metal"],
+            ["110", "23013", "12-400", "110", "150", "100-135", "200", "800x600x260", "Metal"],
+            ["132", "23014", "13-400", "132", "180", "110-142", "241", "1000x700x320", "Metal"],
+            ["160", "23015", "14-400", "160", "220", "150-200", "300", "1000x700x320", "Metal"],
+            ["200", "23016", "15-400", "185", "250", "115-380", "410", "1200x800x320", "Metal"]
+          ]
+        },
+        {
+          baslik: "Star Delta Start 2 Teknik Veriler",
+          basliklar: ["Model", "COD", "Voltaj (V~)", "kW", "HP", "Akım Aralığı (A)", "Max (A)", "HxLxW (mm)", "Malzeme"],
+          satirlar: [
+            ["5.5", "23201", "3-400", "5.5", "7.5", "7.6-10", "15", "600x400x220", "Metal"],
+            ["7.5", "23202", "3-400", "7.5", "10", "7.6-10", "17", "600x400x220", "Metal"],
+            ["11", "23203", "3-400", "11", "15", "13-16", "24", "600x400x220", "Metal"],
+            ["15", "23204", "3-400", "11", "15", "16-20", "31", "600x400x220", "Metal"],
+            ["18.5", "23205", "4-400", "18.5", "25", "20-24", "38", "700x500x260", "Metal"],
+            ["22", "23206", "5-400", "22", "30", "29-35", "50", "700x500x260", "Metal"],
+            ["30", "23207", "6-400", "30", "40", "35-38", "60", "800x600x260", "Metal"],
+            ["37", "23208", "7-400", "37", "50", "44-53", "75", "800x600x260", "Metal"],
+            ["45", "23209", "8-400", "45", "60", "50-60", "100", "1000x700x320", "Metal"],
+            ["55", "23210", "9-400", "55", "75", "65-78", "124", "1000x700x320", "Metal"],
+            ["75", "23211", "10-400", "75", "100", "75-87", "135", "1200x800x320", "Metal"],
+            ["90", "23212", "11-400", "90", "125", "80-110", "155", "1200x800x320", "Metal"],
+            ["110", "23213", "12-400", "110", "150", "100-135", "200", "1200x800x320", "Metal"],
+            ["132", "23214", "13-400", "132", "180", "110-142", "241", "1600x900x400", "Metal"],
+            ["160", "23215", "14-400", "160", "220", "150-200", "300", "1600x900x400", "Metal"],
+            ["200", "23216", "15-400", "185", "250", "115-380", "410", "1800x1100x450", "Metal"]
+          ]
+        },
+        {
+          baslik: "Star Delta Start 3 Teknik Veriler",
+          basliklar: ["Model", "COD", "Voltaj (V~)", "kW", "HP", "Akım Aralığı (A)", "Max (A)", "HxLxW (mm)", "Malzeme"],
+          satirlar: [
+            ["5.5", "23301", "3-400", "5.5", "7.5", "7.6-10", "15", "700x500x260", "Metal"],
+            ["7.5", "23302", "3-400", "7.5", "10", "7.6-10", "17", "700x500x260", "Metal"],
+            ["11", "23303", "3-400", "11", "15", "13-16", "24", "700x500x260", "Metal"],
+            ["15", "23304", "3-400", "11", "15", "16-20", "31", "700x500x260", "Metal"],
+            ["18.5", "23305", "4-400", "18.5", "25", "20-24", "38", "800x600x260", "Metal"],
+            ["22", "23306", "5-400", "22", "30", "29-35", "50", "800x600x260", "Metal"],
+            ["30", "23307", "6-400", "30", "40", "35-38", "60", "1000x700x320", "Metal"],
+            ["37", "23308", "7-400", "37", "50", "44-53", "75", "1000x700x320", "Metal"],
+            ["45", "23309", "8-400", "45", "60", "50-60", "100", "1200x800x320", "Metal"],
+            ["55", "23310", "9-400", "55", "75", "65-78", "124", "1200x800x320", "Metal"],
+            ["75", "23311", "10-400", "75", "100", "75-87", "135", "1600x900x400", "Metal"],
+            ["90", "23312", "11-400", "90", "125", "80-110", "155", "1600x900x400", "Metal"],
+            ["110", "23313", "12-400", "110", "150", "100-135", "200", "1800x1100x450", "Metal"],
+            ["132", "23314", "13-400", "132", "180", "110-142", "241", "1800x1100x450", "Metal"],
+            ["160", "23315", "14-400", "160", "220", "150-200", "300", "1800x1100x450", "Metal"],
+            ["200", "23316", "15-400", "185", "250", "115-380", "410", "2100x1400x500", "Metal"]
+          ]
+        },
+        {
+          baslik: "Star Delta Start 4 Teknik Veriler",
+          basliklar: ["Model", "COD", "Voltaj (V~)", "kW", "HP", "Akım Aralığı (A)", "Max (A)", "HxLxW (mm)", "Malzeme"],
+          satirlar: [
+            ["5.5", "23401", "3-400", "5.5", "7.5", "7.6-10", "15", "800x600x260", "Metal"],
+            ["7.5", "23402", "3-400", "7.5", "10", "7.6-10", "17", "800x600x260", "Metal"],
+            ["11", "23403", "3-400", "11", "15", "13-16", "24", "800x600x260", "Metal"],
+            ["15", "23404", "3-400", "11", "15", "16-20", "31", "800x600x260", "Metal"],
+            ["18.5", "23405", "4-400", "18.5", "25", "20-24", "38", "1000x700x320", "Metal"],
+            ["22", "23406", "5-400", "22", "30", "29-35", "50", "1000x700x320", "Metal"],
+            ["30", "23407", "6-400", "30", "40", "35-38", "60", "1200x800x340", "Metal"],
+            ["37", "23408", "7-400", "37", "50", "44-53", "75", "1200x800x340", "Metal"],
+            ["45", "23409", "8-400", "45", "60", "50-60", "100", "1200x800x340", "Metal"],
+            ["55", "23410", "9-400", "55", "75", "65-78", "124", "1750x940x450", "Metal"],
+            ["75", "23411", "10-400", "75", "100", "75-87", "135", "1750x940x450", "Metal"],
+            ["90", "23412", "11-400", "90", "125", "80-110", "155", "2100x1400x500", "Metal"],
+            ["110", "23413", "12-400", "110", "150", "100-135", "200", "2100x1400x500", "Metal"],
+            ["132", "23414", "13-400", "132", "180", "110-142", "241", "2100x1400x500", "Metal"],
+            ["160", "23415", "14-400", "160", "220", "150-200", "300", "2100x1400x500", "Metal"],
+            ["200", "23416", "15-400", "185", "250", "115-380", "410", "2100x1400x500", "Metal"]
+          ]
+        }
+      ]
+    }
+  };
   const searchParams = useSearchParams();
   const urunParam = searchParams.get("urun");
   const [activeUrun, setActiveUrun] = useState(urunler[0].key);
@@ -178,14 +180,14 @@ export default function YildizUcgenYolVerme() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
-          <span className="text-lg font-medium">Kategoriler</span>
+          <span className="text-lg font-medium">{t("prod.back.categories")}</span>
         </Link>
       </div>
 
       {/* Başlık */}
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "60px", paddingBottom: "40px" }}>
         <h1 className="text-[#86868b] text-5xl font-medium text-center">
-          Yıldız / Üçgen Yol Verme
+          {t("prod.akilli.yildizUcgenEM.title")}
         </h1>
       </section>
 
@@ -262,7 +264,7 @@ export default function YildizUcgenYolVerme() {
                 {/* Özellikler */}
                 {aktifUrunVerisi.ozellikler.length > 0 && (
                   <div className="mb-14">
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Özellikler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.features")}</h3>
                     <div className="space-y-5">
                       {aktifUrunVerisi.ozellikler.map((ozellik, index) => (
                         <div key={index} className="flex items-start gap-4">
@@ -277,7 +279,7 @@ export default function YildizUcgenYolVerme() {
                 {/* Belgeler */}
                 {aktifUrunVerisi.belgeler.length > 0 && (
                   <div>
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Belgeler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.documents")}</h3>
                     <div className="flex flex-wrap gap-4">
                       {aktifUrunVerisi.belgeler.map((belge, index) => (
                         <a
@@ -295,7 +297,7 @@ export default function YildizUcgenYolVerme() {
                             <line x1="16" y1="17" x2="8" y2="17"/>
                             <polyline points="10 9 9 9 8 9"/>
                           </svg>
-                          {belge.isim}
+                          {t(belge.isimKey)}
                         </a>
                       ))}
                     </div>
@@ -337,7 +339,7 @@ export default function YildizUcgenYolVerme() {
                       }
                     }}
                   >
-                    Teknik Özellikler
+                    {t("prod.techSpecs")}
                   </button>
                 )}
                 {hasUygulamaAlanlari && (
@@ -364,7 +366,7 @@ export default function YildizUcgenYolVerme() {
                       }
                     }}
                   >
-                    Uygulama Alanları
+                    {t("prod.appAreas")}
                   </button>
                 )}
                 {hasTeknikVeriler && (
@@ -391,7 +393,7 @@ export default function YildizUcgenYolVerme() {
                       }
                     }}
                   >
-                    Teknik Veriler
+                    {t("prod.techData")}
                   </button>
                 )}
               </div>
@@ -478,7 +480,7 @@ export default function YildizUcgenYolVerme() {
               {aktifUrunVerisi.baslik}
             </h2>
             <p className="text-[#6e6e73] text-xl">
-              Bu ürünün detayları yakında eklenecektir.
+              {t("prod.comingSoon")}
             </p>
           </div>
         )}

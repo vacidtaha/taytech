@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import { useLanguage } from "@/context/LanguageContext";
 
 const urunler = [
   { id: 1, label: "TP100+", key: "tp100" },
@@ -12,106 +13,107 @@ const urunler = [
   { id: 3, label: "TP130+", key: "tp130" },
 ];
 
-// Ürün verileri
-const urunVerileri: Record<string, {
-  baslik: string;
-  aciklama: string;
-  ozellikler: string[];
-  resim: string;
-  belgeler: { isim: string; link: string }[];
-  teknikOzellikler?: string[];
-  kullanimAvantajlari?: string[];
-}> = {
-  "tp100": {
-    baslik: "TP100+",
-    aciklama: "Güçlü ve etkili formülü ile sistemde aşınma ve yıpranmayla oluşan manyetit ve diğer tortuların oluşumunu durdurur. Merkezi sistemi koruyarak kazanların verimli çalışmasını sağlar. Sistemin uzun ömürlü olmasına yardımcı olur.",
-    ozellikler: [
-      "Korozyona ve kireçlenmeye karşı korur",
-      "Isıtma verimliliğini korur",
-      "Sistemin ömrünü uzatır",
-      "Bakım maliyetlerini azaltır"
-    ],
-    resim: "/tp100-plus.png",
-    belgeler: [],
-    teknikOzellikler: [
-      "Görünüm: Sıvı",
-      "Renk: Sarı",
-      "pH: 8,5",
-      "Çevre Bilgileri:",
-      "Tehlikesiz",
-      "Biyolojik olarak parçalanır",
-      "Toksik değil",
-      "Drain edilir"
-    ],
-    kullanimAvantajlari: [
-      "Yapısındaki inhibitörler sayesinde sistem mukavemetini artırır",
-      "Isıtma ve soğutma her iki sistemde de kullanılır",
-      "Tüm metaller ile uyumludur",
-      "Kireçlenmeyi önler",
-      "Tüm IronTrap sıvıları ile uyumludur",
-      "Metaller ile birleşerek yüzeyde film tabakası oluşturarak korozyonu önler"
-    ]
-  },
-  "tp120": {
-    baslik: "TP120+",
-    aciklama: "Biyosit formülasyonu ile yosun ve biyolojik kalıntıların birikimi ile mücadele eder. Sistemi bakteri oluşumuna karşı korur. Yerden ısıtma ve soğutma sistemlerinde ortaya çıkan sorunları önlemede güçlü formülü ile etkilidir.",
-    ozellikler: [
-      "Yerden ısıtma için etkilidir",
-      "Bakteri oluşumunun önüne geçer",
-      "Sistem çalışmasını daha verimli hale getirir",
-      "PPRC boru tesisatlarında etkilidir"
-    ],
-    resim: "/tp120-plus.png",
-    belgeler: [],
-    teknikOzellikler: [
-      "Görünüm: Sıvı",
-      "Renk: Turkuaz",
-      "pH: 2,5",
-      "Çevre Bilgileri:",
-      "Tehlikesiz",
-      "Drain edilir"
-    ],
-    kullanimAvantajlari: [
-      "Bakterileri ve yosun birikmesini önler",
-      "Yerden ısıtma sistemlerine uygundur",
-      "Soğutma sistem kullanımına uygundur",
-      "Sistemde bırakılır",
-      "Yüksek performanslı biyosit içerir",
-      "Koruma inhibitörü TP100+ kullanımı ile kullanımı uygundur"
-    ]
-  },
-  "tp130": {
-    baslik: "TP130+",
-    aciklama: "TP130+ ısıtma ve soğutma sistemlerini donmaya karşı korumak için geliştirilmiş bir sıvıdır. İçerisinde yer alan koruyucular sayesinde sistemi korozyon ve kireç oluşumundan korur. Merkezi sistemlerde sadece soğuk havalarda değil, tüm koşullarda etkin koruma sağlar.",
-    ozellikler: [
-      "Merkezi ısıtmada suyun donmasını engeller",
-      "Korozyon ve kireçlenmeye karşı korur",
-      "Sistem verimliliğini korur",
-      "Bakım maliyetlerini azaltır",
-      "Isı transferinin etkin ve hızlı gerçekleşmesini sağlar"
-    ],
-    resim: "/tp130-plus.png",
-    belgeler: [],
-    teknikOzellikler: [
-      "Görünüm: Sıvı",
-      "Renk: Açık Mavi",
-      "pH: 8,5",
-      "Yoğunluk: 1,1",
-      "Çevre Bilgileri:",
-      "Tehlikesiz",
-      "Drain edilir"
-    ],
-    kullanimAvantajlari: [
-      "Tüm metaller ile kullanımı uyumludur",
-      "Isıtma soğutma sistemleri için uygundur",
-      "Korozyon ve kireçlenmeye karşı koruma sağlar",
-      "Yüksek performanslı inhibitör ile güçlü koruma sağlar",
-      "Manyetit ve çamur oluşmasını önler"
-    ]
-  }
-};
-
 export default function KoruyucuSivilar() {
+  const { t } = useLanguage();
+
+  // Ürün verileri
+  const urunVerileri: Record<string, {
+    baslik: string;
+    aciklama: string;
+    ozellikler: string[];
+    resim: string;
+    belgeler: { isimKey: string; link: string }[];
+    teknikOzellikler?: string[];
+    kullanimAvantajlari?: string[];
+  }> = {
+    "tp100": {
+      baslik: "TP100+",
+      aciklama: t("prod.koruyucu.tp100.desc"),
+      ozellikler: [
+        t("prod.koruyucu.tp100.feat1"),
+        t("prod.koruyucu.tp100.feat2"),
+        t("prod.koruyucu.tp100.feat3"),
+        t("prod.koruyucu.tp100.feat4")
+      ],
+      resim: "/tp100-plus.png",
+      belgeler: [],
+      teknikOzellikler: [
+        "Görünüm: Sıvı",
+        "Renk: Sarı",
+        "pH: 8,5",
+        "Çevre Bilgileri:",
+        "Tehlikesiz",
+        "Biyolojik olarak parçalanır",
+        "Toksik değil",
+        "Drain edilir"
+      ],
+      kullanimAvantajlari: [
+        "Yapısındaki inhibitörler sayesinde sistem mukavemetini artırır",
+        "Isıtma ve soğutma her iki sistemde de kullanılır",
+        "Tüm metaller ile uyumludur",
+        "Kireçlenmeyi önler",
+        "Tüm IronTrap sıvıları ile uyumludur",
+        "Metaller ile birleşerek yüzeyde film tabakası oluşturarak korozyonu önler"
+      ]
+    },
+    "tp120": {
+      baslik: "TP120+",
+      aciklama: t("prod.koruyucu.tp120.desc"),
+      ozellikler: [
+        t("prod.koruyucu.tp120.feat1"),
+        t("prod.koruyucu.tp120.feat2"),
+        t("prod.koruyucu.tp120.feat3"),
+        t("prod.koruyucu.tp120.feat4")
+      ],
+      resim: "/tp120-plus.png",
+      belgeler: [],
+      teknikOzellikler: [
+        "Görünüm: Sıvı",
+        "Renk: Turkuaz",
+        "pH: 2,5",
+        "Çevre Bilgileri:",
+        "Tehlikesiz",
+        "Drain edilir"
+      ],
+      kullanimAvantajlari: [
+        "Bakterileri ve yosun birikmesini önler",
+        "Yerden ısıtma sistemlerine uygundur",
+        "Soğutma sistem kullanımına uygundur",
+        "Sistemde bırakılır",
+        "Yüksek performanslı biyosit içerir",
+        "Koruma inhibitörü TP100+ kullanımı ile kullanımı uygundur"
+      ]
+    },
+    "tp130": {
+      baslik: "TP130+",
+      aciklama: t("prod.koruyucu.tp130.desc"),
+      ozellikler: [
+        t("prod.koruyucu.tp130.feat1"),
+        t("prod.koruyucu.tp130.feat2"),
+        t("prod.koruyucu.tp130.feat3"),
+        t("prod.koruyucu.tp130.feat4"),
+        t("prod.koruyucu.tp130.feat5")
+      ],
+      resim: "/tp130-plus.png",
+      belgeler: [],
+      teknikOzellikler: [
+        "Görünüm: Sıvı",
+        "Renk: Açık Mavi",
+        "pH: 8,5",
+        "Yoğunluk: 1,1",
+        "Çevre Bilgileri:",
+        "Tehlikesiz",
+        "Drain edilir"
+      ],
+      kullanimAvantajlari: [
+        "Tüm metaller ile kullanımı uyumludur",
+        "Isıtma soğutma sistemleri için uygundur",
+        "Korozyon ve kireçlenmeye karşı koruma sağlar",
+        "Yüksek performanslı inhibitör ile güçlü koruma sağlar",
+        "Manyetit ve çamur oluşmasını önler"
+      ]
+    }
+  };
   const searchParams = useSearchParams();
   const urunParam = searchParams.get("urun");
   const [activeUrun, setActiveUrun] = useState(urunler[0].key);
@@ -140,14 +142,14 @@ export default function KoruyucuSivilar() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
-          <span className="text-lg font-medium">Kategoriler</span>
+          <span className="text-lg font-medium">{t("prod.back.categories")}</span>
         </Link>
       </div>
 
       {/* Başlık */}
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "60px", paddingBottom: "40px" }}>
         <h1 className="text-[#86868b] text-5xl font-medium text-center">
-          Koruyucu Sıvılar
+          {t("mega.prod.koruyucu")}
         </h1>
       </section>
 
@@ -224,7 +226,7 @@ export default function KoruyucuSivilar() {
                 {/* Özellikler */}
                 {aktifUrunVerisi.ozellikler.length > 0 && (
                   <div className="mb-14">
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Özellikler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.features")}</h3>
                     <div className="space-y-5">
                       {aktifUrunVerisi.ozellikler.map((ozellik, index) => (
                         <div key={index} className="flex items-start gap-4">
@@ -239,7 +241,7 @@ export default function KoruyucuSivilar() {
                 {/* Belgeler */}
                 {aktifUrunVerisi.belgeler.length > 0 && (
                   <div>
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Belgeler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.documents")}</h3>
                     <div className="flex flex-wrap gap-4">
                       {aktifUrunVerisi.belgeler.map((belge, index) => (
                         <a
@@ -257,7 +259,7 @@ export default function KoruyucuSivilar() {
                             <line x1="16" y1="17" x2="8" y2="17"/>
                             <polyline points="10 9 9 9 8 9"/>
                           </svg>
-                          {belge.isim}
+                          {t(belge.isimKey)}
                         </a>
                       ))}
                     </div>
@@ -299,7 +301,7 @@ export default function KoruyucuSivilar() {
                       }
                     }}
                   >
-                    Teknik Özellikler
+                    {t("prod.techSpecs")}
                   </button>
                 )}
                 {hasKullanimAvantajlari && (
@@ -326,7 +328,7 @@ export default function KoruyucuSivilar() {
                       }
                     }}
                   >
-                    Kullanım Avantajları
+                    {t("prod.usageAdvantages")}
                   </button>
                 )}
               </div>
@@ -373,7 +375,7 @@ export default function KoruyucuSivilar() {
               {aktifUrunVerisi.baslik}
             </h2>
             <p className="text-[#6e6e73] text-xl">
-              Bu ürünün detayları yakında eklenecektir.
+              {t("prod.comingSoon")}
             </p>
         </div>
         )}

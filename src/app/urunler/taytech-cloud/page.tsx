@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import { useLanguage } from "@/context/LanguageContext";
 
 const urunler = [
   { id: 1, label: "Dataloger", key: "dataloger" },
@@ -13,140 +14,141 @@ const urunler = [
   { id: 4, label: "M-Bus Converter", key: "m-bus-converter" },
 ];
 
-// Ürün verileri
-const urunVerileri: Record<string, {
-  baslik: string;
-  aciklama: string;
-  ozellikler: string[];
-  resim: string;
-  belgeler: { isim: string; link: string }[];
-  teknikOzellikler?: string[];
-  uygulamaAlanlariResim?: string;
-}> = {
-  "dataloger": {
-    baslik: "Dataloger",
-    aciklama: "DS-YK Datalogger/Gateway M-Bus dönüştürücülerden sayaç verilerini toplayıp kaydederek kablolu/kablosuz ağ ya da GPRS modem üzerinden ilgili uzak servislere / bulut uygulamalarına aktarmak için kullanılan akıllı bir veri toplama cihazıdır.",
-    ozellikler: [
-      "Yüksek performanslı işlemcisi, geniş hafızası ve gömülü işletim sistemi sayesinde akıllı, hızlı ve esnek veri toplama/değerlendirme kabiliyetine sahiptir",
-      "RS232, RS485 ve Ethernet ara yüzlü EN1434 uyumlu çeşitli marka/model M-Bus dönüştürücülerle bağlantı kurabilir",
-      "Dahili Ethernet / WiFi bağlantısı ve harici GPRS bağlantı seçenekleri ile uzak veritabanına / buluta erişim imkanı sağlar",
-      "DS-YK02 modeli tek dönüştürücü ile 8 M-Bus bloğundan okuma yapabilir",
-      "Farklı montaj seçenekleri için bağlantı kiti seçenekleri mevcuttur"
-    ],
-    resim: "/dataloger.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/dataloger-datasheet.pdf" }
-    ],
-    teknikOzellikler: [
-      "Ray montajlı ABS muhafaza",
-      "Gömülü işletim sistemi ile çalışan 4 çekirdekli 64-bit işlemci",
-      "32GB SD flash, 1GB DDR bellek",
-      "Pil destekli dahili tarih/saat saklama özelliği",
-      "2x16 karakter aydınlatmalı LCD, 3 x buton ve 1 LED ile kolay kullanıcı arayüzü",
-      "Donanım üzerinden seçilebilir RS232 veya RS485 portu",
-      "4 x USB 2.0 port",
-      "Dahili 10/100 Mb destekli Ethernet bağlantısı",
-      "802.11b/g/n destekli WiFi bağlantısı",
-      "Opsiyonel DS-GM01 GPRS modem üzerinden uzak bağlantı seçeneği",
-      "2 x kuru kontak dijital giriş",
-      "2 x 5A röle çıkışı",
-      "Opsiyonel 8 x 5A röle çıkışı (DS-YK02)",
-      "9-36V D.C. Besleme gerilimi",
-      "Ölçüler: 160x100x50mm"
-    ],
-    uygulamaAlanlariResim: "/dataloger-siparis-kodu.jpg"
-  },
-  "dataloger-gateway": {
-    baslik: "Dataloger Gateway",
-    aciklama: "DS-YK Datalogger/Gateway M-Bus dönüştürücülerden sayaç verilerini toplayıp kaydederek kablolu/kablosuz ağ ya da GPRS modem üzerinden ilgili uzak servislere / bulut uygulamalarına aktarmak için kullanılan akıllı bir veri toplama cihazıdır.",
-    ozellikler: [
-      "Yüksek performanslı işlemcisi, geniş hafızası ve gömülü işletim sistemi sayesinde akıllı, hızlı ve esnek veri toplama/değerlendirme kabiliyetine sahiptir",
-      "RS232, RS485 ve Ethernet ara yüzlü EN1434 uyumlu çeşitli marka/model M-Bus dönüştürücülerle bağlantı kurabilir",
-      "Dahili Ethernet / WiFi bağlantısı ve harici GPRS bağlantı seçenekleri ile uzak veritabanına / buluta erişim imkanı sağlar",
-      "DS-YK02 modeli tek dönüştürücü ile 8 M-Bus bloğundan okuma yapabilir",
-      "Farklı montaj seçenekleri için bağlantı kiti seçenekleri mevcuttur"
-    ],
-    resim: "/dataloger-gateway.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/dataloger-gateway-datasheet.pdf" }
-    ],
-    teknikOzellikler: [
-      "Ray montajlı ABS muhafaza",
-      "Gömülü işletim sistemi ile çalışan 4 çekirdekli 64-bit işlemci",
-      "32GB SD flash, 1GB DDR bellek",
-      "Pil destekli dahili tarih/saat saklama özelliği",
-      "2x16 karakter aydınlatmalı LCD, 3 x buton ve 1 LED ile kolay kullanıcı arayüzü",
-      "Donanım üzerinden seçilebilir RS232 veya RS485 portu",
-      "4 x USB 2.0 port",
-      "Dahili 10/100 Mb destekli Ethernet bağlantısı",
-      "802.11b/g/n destekli WiFi bağlantısı",
-      "Opsiyonel DS-GM01 GPRS modem üzerinden uzak bağlantı seçeneği",
-      "2 x kuru kontak dijital giriş",
-      "2 x 5A röle çıkışı",
-      "Opsiyonel 8 x 5A röle çıkışı (DS-YK02)",
-      "9-36V D.C. Besleme gerilimi",
-      "Ölçüler: 160x100x50mm"
-    ],
-    uygulamaAlanlariResim: "/dataloger-gateway-siparis-kodu.jpg"
-  },
-  "gsm-modem": {
-    baslik: "GSM Modem",
-    aciklama: "DS-GM01, RS232 veya RS485 bağlantılı cihazların uzak sunuculara GPRS bağlantısı ile veri aktarması için kullanılan akıllı bir GPRS modemdir.",
-    ozellikler: [
-      "Dahili mikrodenetleyicisi ve RS232/RS485 bağlantısı sayesinde endüstriyel cihazlarla esnek bağlantı imkanı",
-      "3 LED ile kolay anlaşılır çalışma bilgisi",
-      "Opsiyonel M-Bus / Modbus protokol desteği"
-    ],
-    resim: "/gsm-modem.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/gsm-modem-datasheet.pdf" }
-    ],
-    teknikOzellikler: [
-      "Ray montajlı ABS muhafaza",
-      "Gömülü internet servis protokollerine sahip quad band GSM GPRS modem",
-      "Harici anten seçenekleri için SMA anten portu",
-      "SIM kart konnektörü",
-      "Kolay diyagnostik için 3 x LED",
-      "10-30V D.C. besleme gerilimi",
-      "Harici cihaz bağlantıları için RS232 / RS485 portu"
-    ]
-  },
-  "m-bus-converter": {
-    baslik: "M-Bus Converter",
-    aciklama: "Mbus hattında bağlı cihazlardan verilerin analiz edilmesi ve işlenmesi için verileri RS232 ve USB arayüzü üzerinden bilgisayar ortamına aktarılmasını sağlar.",
-    ozellikler: [
-      "Repeater özelliği ile 1 den fazla konverter üzerinden sayaçlara bağlanabilir",
-      "250 Adet sayaca kadar iki farklı giriş noktası ile kolay sayaç bağlantı imkanı sunar",
-      "RS232 haberleşmesi sayesinde bilgisayar ile veri aktarımı sağlar",
-      "USB arayüzü ile direk bilgisayar bağlantısı imkanı sunar (Opsiyonlu)",
-      "Akım koruması sayesinde herhangi bir kısa devre veya olası bir yüksek akımda korumaya geçer ve mbus hattının kapanmasını sağlar",
-      "Panel üzerinde bulunan görsel indikatörler sayesinde kullanıcıyı bilgilendirir: Enerji var, RX, TX, USB, Aşırı Akım",
-      "Esnek bağlantısı ile ray ve duvar montaj olarak bağlantı imkanı sunar",
-      "Donanım üzerinde bulunan sesli indikatör sayesinde aşırı akım anında kullanıcıya sesli olarak uyarı verir",
-      "Geniş çaplı bağlantı çapları sayesinde kolay montaj yapılmasını sağlar"
-    ],
-    resim: "/m-bus-converter.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/m-bus-converter-datasheet.pdf" }
-    ],
-    teknikOzellikler: [
-      "Çalışma Voltajı: 24VDC",
-      "Mbus Hat Voltajı: 36VDC",
-      "32 Bit Mikroişlemci Tabanlı yüksek hızlı işlemci",
-      "USB Portu (Opsiyonel)",
-      "RS232 Haberleşme",
-      "İletişim Hızı: 2400 Baud",
-      "LED ile durum göstergesi",
-      "250 Adet Sayaç Desteği",
-      "Aşırı akım koruması >500mA",
-      "Boyut(mm) 157,4 x 91 x 58,4",
-      "Ray montaj ABS Plastik IP20 korumaya sahip kutu",
-      "Çalışma Sıcaklığı -20°C ~ 50°C"
-    ]
-  }
-};
-
 export default function TaytechCloud() {
+  const { t } = useLanguage();
+
+  // Ürün verileri
+  const urunVerileri: Record<string, {
+    baslik: string;
+    aciklama: string;
+    ozellikler: string[];
+    resim: string;
+    belgeler: { isimKey: string; link: string }[];
+    teknikOzellikler?: string[];
+    uygulamaAlanlariResim?: string;
+  }> = {
+    "dataloger": {
+      baslik: "Dataloger",
+      aciklama: t("prod.cloud.dataloger.desc"),
+      ozellikler: [
+        t("prod.cloud.dataloger.feat1"),
+        t("prod.cloud.dataloger.feat2"),
+        t("prod.cloud.dataloger.feat3"),
+        t("prod.cloud.dataloger.feat4"),
+        t("prod.cloud.dataloger.feat5")
+      ],
+      resim: "/dataloger.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/dataloger-datasheet.pdf" }
+      ],
+      teknikOzellikler: [
+        "Ray montajlı ABS muhafaza",
+        "Gömülü işletim sistemi ile çalışan 4 çekirdekli 64-bit işlemci",
+        "32GB SD flash, 1GB DDR bellek",
+        "Pil destekli dahili tarih/saat saklama özelliği",
+        "2x16 karakter aydınlatmalı LCD, 3 x buton ve 1 LED ile kolay kullanıcı arayüzü",
+        "Donanım üzerinden seçilebilir RS232 veya RS485 portu",
+        "4 x USB 2.0 port",
+        "Dahili 10/100 Mb destekli Ethernet bağlantısı",
+        "802.11b/g/n destekli WiFi bağlantısı",
+        "Opsiyonel DS-GM01 GPRS modem üzerinden uzak bağlantı seçeneği",
+        "2 x kuru kontak dijital giriş",
+        "2 x 5A röle çıkışı",
+        "Opsiyonel 8 x 5A röle çıkışı (DS-YK02)",
+        "9-36V D.C. Besleme gerilimi",
+        "Ölçüler: 160x100x50mm"
+      ],
+      uygulamaAlanlariResim: "/dataloger-siparis-kodu.jpg"
+    },
+    "dataloger-gateway": {
+      baslik: "Dataloger Gateway",
+      aciklama: t("prod.cloud.dataloger-gateway.desc"),
+      ozellikler: [
+        t("prod.cloud.dataloger-gateway.feat1"),
+        t("prod.cloud.dataloger-gateway.feat2"),
+        t("prod.cloud.dataloger-gateway.feat3"),
+        t("prod.cloud.dataloger-gateway.feat4"),
+        t("prod.cloud.dataloger-gateway.feat5")
+      ],
+      resim: "/dataloger-gateway.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/dataloger-gateway-datasheet.pdf" }
+      ],
+      teknikOzellikler: [
+        "Ray montajlı ABS muhafaza",
+        "Gömülü işletim sistemi ile çalışan 4 çekirdekli 64-bit işlemci",
+        "32GB SD flash, 1GB DDR bellek",
+        "Pil destekli dahili tarih/saat saklama özelliği",
+        "2x16 karakter aydınlatmalı LCD, 3 x buton ve 1 LED ile kolay kullanıcı arayüzü",
+        "Donanım üzerinden seçilebilir RS232 veya RS485 portu",
+        "4 x USB 2.0 port",
+        "Dahili 10/100 Mb destekli Ethernet bağlantısı",
+        "802.11b/g/n destekli WiFi bağlantısı",
+        "Opsiyonel DS-GM01 GPRS modem üzerinden uzak bağlantı seçeneği",
+        "2 x kuru kontak dijital giriş",
+        "2 x 5A röle çıkışı",
+        "Opsiyonel 8 x 5A röle çıkışı (DS-YK02)",
+        "9-36V D.C. Besleme gerilimi",
+        "Ölçüler: 160x100x50mm"
+      ],
+      uygulamaAlanlariResim: "/dataloger-gateway-siparis-kodu.jpg"
+    },
+    "gsm-modem": {
+      baslik: "GSM Modem",
+      aciklama: t("prod.cloud.gsm-modem.desc"),
+      ozellikler: [
+        t("prod.cloud.gsm-modem.feat1"),
+        t("prod.cloud.gsm-modem.feat2"),
+        t("prod.cloud.gsm-modem.feat3")
+      ],
+      resim: "/gsm-modem.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/gsm-modem-datasheet.pdf" }
+      ],
+      teknikOzellikler: [
+        "Ray montajlı ABS muhafaza",
+        "Gömülü internet servis protokollerine sahip quad band GSM GPRS modem",
+        "Harici anten seçenekleri için SMA anten portu",
+        "SIM kart konnektörü",
+        "Kolay diyagnostik için 3 x LED",
+        "10-30V D.C. besleme gerilimi",
+        "Harici cihaz bağlantıları için RS232 / RS485 portu"
+      ]
+    },
+    "m-bus-converter": {
+      baslik: "M-Bus Converter",
+      aciklama: t("prod.cloud.m-bus-converter.desc"),
+      ozellikler: [
+        t("prod.cloud.m-bus-converter.feat1"),
+        t("prod.cloud.m-bus-converter.feat2"),
+        t("prod.cloud.m-bus-converter.feat3"),
+        t("prod.cloud.m-bus-converter.feat4"),
+        t("prod.cloud.m-bus-converter.feat5"),
+        t("prod.cloud.m-bus-converter.feat6"),
+        t("prod.cloud.m-bus-converter.feat7"),
+        t("prod.cloud.m-bus-converter.feat8"),
+        t("prod.cloud.m-bus-converter.feat9")
+      ],
+      resim: "/m-bus-converter.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/m-bus-converter-datasheet.pdf" }
+      ],
+      teknikOzellikler: [
+        "Çalışma Voltajı: 24VDC",
+        "Mbus Hat Voltajı: 36VDC",
+        "32 Bit Mikroişlemci Tabanlı yüksek hızlı işlemci",
+        "USB Portu (Opsiyonel)",
+        "RS232 Haberleşme",
+        "İletişim Hızı: 2400 Baud",
+        "LED ile durum göstergesi",
+        "250 Adet Sayaç Desteği",
+        "Aşırı akım koruması >500mA",
+        "Boyut(mm) 157,4 x 91 x 58,4",
+        "Ray montaj ABS Plastik IP20 korumaya sahip kutu",
+        "Çalışma Sıcaklığı -20°C ~ 50°C"
+      ]
+    }
+  };
   const searchParams = useSearchParams();
   const urunParam = searchParams.get("urun");
   const [activeUrun, setActiveUrun] = useState(urunler[0].key);
@@ -175,14 +177,14 @@ export default function TaytechCloud() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
-          <span className="text-lg font-medium">Ana Sayfa</span>
+          <span className="text-lg font-medium">{t("prod.back.home")}</span>
         </Link>
       </div>
 
       {/* Başlık */}
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "60px", paddingBottom: "40px" }}>
         <h1 className="text-[#86868b] text-5xl font-medium text-center">
-          Taytech Cloud
+          {t("prod.cloud.title")}
         </h1>
       </section>
 
@@ -259,7 +261,7 @@ export default function TaytechCloud() {
                 {/* Özellikler */}
                 {aktifUrunVerisi.ozellikler.length > 0 && (
                   <div className="mb-14">
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Özellikler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.features")}</h3>
                     <div className="space-y-5">
                       {aktifUrunVerisi.ozellikler.map((ozellik, index) => (
                         <div key={index} className="flex items-start gap-4">
@@ -274,7 +276,7 @@ export default function TaytechCloud() {
                 {/* Belgeler */}
                 {aktifUrunVerisi.belgeler.length > 0 && (
                   <div>
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Belgeler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.documents")}</h3>
                     <div className="flex flex-wrap gap-4">
                       {aktifUrunVerisi.belgeler.map((belge, index) => (
                         <a
@@ -292,7 +294,7 @@ export default function TaytechCloud() {
                             <line x1="16" y1="17" x2="8" y2="17"/>
                             <polyline points="10 9 9 9 8 9"/>
                           </svg>
-                          {belge.isim}
+                          {t(belge.isimKey)}
                         </a>
                       ))}
                     </div>
@@ -334,7 +336,7 @@ export default function TaytechCloud() {
                       }
                     }}
                   >
-                    Teknik Özellikler
+                    {t("prod.techSpecs")}
                   </button>
                 )}
                 {hasUygulamaAlanlari && (
@@ -361,7 +363,7 @@ export default function TaytechCloud() {
                       }
                     }}
                   >
-                    Sipariş Kodu
+                    {t("prod.orderCode")}
                   </button>
                 )}
               </div>
@@ -405,7 +407,7 @@ export default function TaytechCloud() {
               {aktifUrunVerisi.baslik}
             </h2>
             <p className="text-[#6e6e73] text-xl">
-              Bu ürünün detayları yakında eklenecektir.
+              {t("prod.comingSoon")}
             </p>
         </div>
         )}

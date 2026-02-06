@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import { useLanguage } from "@/context/LanguageContext";
 
 const urunler = [
   { id: 1, label: "Smart Box", key: "smart-box" },
@@ -15,397 +16,398 @@ const urunler = [
   { id: 6, label: "Smart Exclusive D", key: "smart-exclusive-d" },
 ];
 
-// Ürün verileri
-const urunVerileri: Record<string, {
-  baslik: string;
-  aciklama: string;
-  ozellikler: string[];
-  resim: string;
-  belgeler: { isim: string; link: string }[];
-  teknikOzellikler?: string[];
-  uygulamaAlanlariResim?: string;
-  teknikVeriler?: {
-    basliklar: string[];
-    satirlar: string[][];
-  };
-  teknikVerilerCoklu?: {
-    baslik: string;
-    basliklar: string[];
-    satirlar: string[][];
-  }[];
-  teknikNot?: string;
-}> = {
-  "smart-box": {
-    baslik: "Smart Box",
-    aciklama: "Mikrokontrolörlü Kontrol Panoları, 1 fazlı pompaları kontrol etmek için tasarlanmıştır. Smart Box sisteminizi yönetmeyi, parametreleri değiştirmeyi, olayları ve mesajları kayıt altına alma vb. gibi bir çok işlemi pratik bir şekilde yapmanızı sağlar. Temiz su uygulamalarına yönelik olarak boşaltma veya doldurma işlemlerini gerçekleştirir.",
-    ozellikler: [
-      "Kolay ve hızlı bir şekilde yönlendirme butonlarını kullanarak, net şekilde okunabilir LCD ekran üzerinden ayarların yapılması",
-      "Farklı tipteki bağlantılar ile motoru başlatma veya durdurma; basınç anahtarı, akış anahtarı vb.",
-      "Suya dayanıklı IP 55 ABS malzemeden üretilmiş özel dizayn kutuya monte edilir"
-    ],
-    resim: "/smart-box.png",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/smart-box-datasheet.pdf" },
-      { isim: "Kullanım Kılavuzu", link: "/smart-box-kullanim.pdf" }
-    ],
-    teknikOzellikler: [
-      "Termoplastik (ABS) / IP 55",
-      "Güç Beslemesi 1 Faz-50/60Hz 230V ±",
-      "128 x 64 LCD Grafik Ekran",
-      "Motor Çalışıyor için Yeşil LED / Hatalar için Kırmızı LED",
-      "Başlatmak için NO bağlantısı",
-      "Volt, Amper, Alarmlar, Olaylar ve Ana Sayfada Gün / Zaman Ekranı",
-      "Korumalar ve Hatalar",
-      "Motor Aşırı akım / Düşük Akım (Ayarlanabilir)",
-      "Faz Yok ve Faz Sırası Hatası",
-      "Min / Max Voltaj (Ayarlanabilir)",
-      "Kuru Çalışma Koruması",
-      "Pompa Çalışma Zamanı Gösterme",
-      "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
-      "Verileri dışarıya aktarmak için USB arayüzü. (Son 500 kayıt)",
-      "MODBus Bağlantısı"
-    ],
-    uygulamaAlanlariResim: "/smart-box-uygulama.png",
-    teknikVeriler: {
-      basliklar: ["Smart Box", "COD", "VOLTAJ (V~)", "MAX GÜÇ (kW)", "MAX GÜÇ (HP)", "AKIM Aralığı (A)", "AKIM Max (A)", "KUTU D (mm)", "KUTU E (mm)", "KUTU G (mm)", "Malzeme", "AĞIRLIK (KG)"],
-      satirlar: [
-        ["SmartBox / 1 Faz", "10001", "1 - 230", "2.2", "3", "0-18", "18", "230", "130", "120", "ABS", "-"]
-      ]
-    }
-  },
-  "smart-booster": {
-    baslik: "Smart Booster",
-    aciklama: "Smart Booster, hidrofor sistemleri için geliştirilmiş mikrokontrolörlü kontrol panosudur. Tek veya çift pompalı sistemlerde sabit basınç kontrolü sağlar. Gelişmiş koruma özellikleri ve kullanıcı dostu arayüzü ile profesyonel su basınçlandırma çözümleri sunar.",
-    ozellikler: [
-      "Tek veya çift pompalı hidrofor sistemleri için tasarlanmıştır",
-      "Sabit basınç kontrolü ile optimum performans",
-      "Otomatik pompa değişimi ve yük dengeleme",
-      "Gelişmiş koruma ve alarm sistemi"
-    ],
-    resim: "/smart-booster.png",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/smart-booster-datasheet.pdf" },
-      { isim: "Kullanım Kılavuzu", link: "/smart-booster-kullanim.pdf" }
-    ],
-    teknikOzellikler: [
-      "Termoplastik (ABS) / IP 55",
-      "Güç Beslemesi 1 Faz-50/60Hz 230V ±",
-      "Güç Beslemesi 3 Faz-50/60Hz 400V ±",
-      "128 x 64 LCD Grafik Ekran",
-      "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
-      "Başlatma bilgisi için komut girişi (Basınç anahtarı veya sensör)",
-      "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
-      "Oto-Manuel Durum bilgisi görüntüleme",
-      "Korumalar ve Hatalar",
-      "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
-      "Faz kaybı ve Faz sırası hatası",
-      "Min / Max Voltaj (Ayarlanabilir)",
-      "Motor başlama zamanı",
-      "Kuru çalışma koruması",
-      "Kilit mekanizmalı ana anahtar",
-      "Motor koruma sigortaları",
-      "Pompa çalışma süre bilgisi",
-      "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
-      "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
-      "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
-      "MODBus Bağlantısı"
-    ],
-    uygulamaAlanlariResim: "/smart-booster-uygulama.png",
-    teknikVerilerCoklu: [
-      {
-        baslik: "Smart Booster 1",
-        basliklar: ["Model", "Voltaj (V~)", "Max Güç (kW / HP)", "Akım Aralığı (A)", "Ölçüler (H/L/W)", "Malzeme"],
-        satirlar: [
-          ["Mono", "1−230", "2.2 / 3", "0−18", "310×250×130 mm", "ABS"],
-          ["4 / Tri", "3−400", "4 / 5.5", "0−8.6", "310×250×130 mm", "ABS"],
-          ["5.5 / Tri", "3−400", "5.5 / 7.5", "0−11.6", "310×250×130 mm", "ABS"],
-          ["7.5 / Tri", "3−400", "7.5 / 10", "0−15.8", "310×250×130 mm", "ABS"],
-          ["11 / Tri", "3−400", "11 / 15", "0−25", "310×250×130 mm", "ABS"],
-          ["15 / Tri", "3−400", "15 / 20", "0−32", "310×250×130 mm", "ABS"]
-        ]
-      },
-      {
-        baslik: "Smart Booster 2",
-        basliklar: ["Model", "Voltaj (V~)", "Max Güç (kW / HP)", "Akım Aralığı (A)", "Ölçüler (H/L/W)", "Malzeme"],
-        satirlar: [
-          ["Mono", "1−230", "2.2 / 3", "0−18", "310×250×130 mm", "ABS"],
-          ["4 / Tri", "3−400", "4 / 5.5", "0−8.6", "310×250×130 mm", "ABS"],
-          ["5.5 / Tri", "3−400", "5.5 / 7.5", "0−11.6", "310×250×130 mm", "ABS"],
-          ["7.5 / Tri", "3−400", "7.5 / 10", "0−15.8", "310×250×130 mm", "ABS"],
-          ["11 / Tri", "3−400", "11 / 15", "0−25", "310×250×130 mm", "ABS"],
-          ["15 / Tri", "3−400", "15 / 20", "0−32", "310×250×130 mm", "ABS"]
-        ]
-      }
-    ],
-    teknikNot: "*Talep üzerine 18.5 kW ve üzeri pompaların tasarımı gerçekleştirilebilir.\n\n**Projeye özel tasarımlar için lütfen bizimle iletişime geçin."
-  },
-  "smart-wastewater": {
-    baslik: "Smart Wastewater",
-    aciklama: "Smart Wastewater, atık su ve pis su pompa sistemleri için geliştirilmiş mikrokontrolörlü kontrol panosudur. Tek veya çift pompalı sistemlerde güvenli ve verimli atık su tahliyesi sağlar. Taşma koruması ve seviye kontrolü ile profesyonel atık su yönetimi sunar.",
-    ozellikler: [
-      "Atık su ve pis su pompa sistemleri için tasarlanmıştır",
-      "Seviye elektrodu veya şamandıra ile otomatik kontrol",
-      "Taşma uyarısı ve kuru çalışma koruması",
-      "Pompa gövdesi su kaçağı algılama"
-    ],
-    resim: "/smart-wastewater.png",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/smart-wastewater-datasheet.pdf" },
-      { isim: "Kullanım Kılavuzu", link: "/smart-wastewater-kullanim.pdf" }
-    ],
-    teknikOzellikler: [
-      "Termoplastik (ABS) / IP 55",
-      "Güç Beslemesi 1 Faz-50/60Hz 230V ±",
-      "Güç Beslemesi 3 Faz-50/60Hz 400V ±",
-      "128 x 64 LCD Grafik Ekran",
-      "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
-      "Başlatma bilgisi için komut girişi (Seviye Elektrodu veya Şamandıra)",
-      "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
-      "Oto-Manuel Durum bilgisi görüntüleme",
-      "Korumalar ve Hatalar",
-      "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
-      "Faz kaybı ve Faz sırası hatası",
-      "Min / Max Voltaj (Ayarlanabilir)",
-      "Motor başlama zamanı",
-      "Taşma uyarısı fonksiyonu",
-      "Kuru çalışma koruması",
-      "Pompa gövdesi su kaçağı uyarısı",
-      "Kilit mekanizmalı ana anahtar",
-      "Motor koruma sigortaları",
-      "Pompa çalışma süre bilgisi",
-      "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
-      "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
-      "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)"
-    ],
-    uygulamaAlanlariResim: "/smart-wastewater-uygulama.png",
-    teknikVerilerCoklu: [
-      {
-        baslik: "Smart Wastewater 1",
-        basliklar: ["Model", "COD", "Voltaj (V~)", "Güç (kW/HP)", "Akım (A)", "Ölçüler (mm)", "Malzeme"],
-        satirlar: [
-          ["Mono", "1031", "1 - 230", "2.2 / 3", "0 - 18", "310x250x130", "ABS"],
-          ["4 / Tri", "12001", "3 - 400", "4 / 5.5", "0 - 8.6", "310x250x130", "ABS"],
-          ["5.5 / Tri", "12002", "3 - 400", "5.5 / 7.5", "0 - 11.6", "310x250x130", "ABS"],
-          ["7.5 / Tri", "12003", "3 - 400", "7.5 / 10", "0 - 15.8", "310x250x130", "ABS"],
-          ["11 / Tri", "12004", "3 - 400", "11 / 15", "0 - 25", "310x250x130", "ABS"],
-          ["15 / Tri", "12005", "3 - 400", "15 / 20", "0 - 32", "310x250x130", "ABS"]
-        ]
-      },
-      {
-        baslik: "Smart Wastewater 2",
-        basliklar: ["Model", "COD", "Voltaj (V~)", "Güç (kW/HP)", "Akım (A)", "Ölçüler (mm)", "Malzeme"],
-        satirlar: [
-          ["Mono", "1041", "1 - 230", "2.2 / 3", "0 - 18", "310x250x130", "ABS"],
-          ["4 / Tri", "12201", "3 - 400", "4 / 5.5", "0 - 8.6", "310x250x130", "ABS"],
-          ["5.5 / Tri", "12202", "3 - 400", "5.5 / 7.5", "0 - 11.6", "310x250x130", "ABS"],
-          ["7.5 / Tri", "12203", "3 - 400", "7.5 / 10", "0 - 15.8", "310x250x130", "ABS"],
-          ["11 / Tri", "12204", "3 - 400", "11 / 15", "0 - 25", "310x250x130", "ABS"],
-          ["15 / Tri", "12205", "3 - 400", "15 / 20", "0 - 32", "310x250x130", "ABS"]
-        ]
-      }
-    ]
-  },
-  "smart-bore-hole": {
-    baslik: "Smart Bore Hole",
-    aciklama: "Mikroişlemcili kontrol panoları, tek faz veya trifaz olarak 2 pompaya kadar sistemi kontrol eder. Smart Bore Hole, sisteminizi yönetmeyi, parametreleri değiştirmeyi, olayları ve mesajları kayıt altına alma vb. gibi bir çok işlemi pratik bir şekilde yapmanızı sağlar. Pis su ve temiz su uygulamalarında ki doldurma ve boşaltma süreçlerini gerçekleştirir.",
-    ozellikler: [
-      "3G / WI-FI modül sayesinde, uzak bir noktadan sistemi işletme ve verileri görüntüleme",
-      "Kolay ve hızlı bir şekilde yönlendirme butonlarını kullanarak, net şekilde okunabilir LCD ekran üzerinden ayarların yapılması",
-      "Şamandıra veya seviye elektrotlarından gelen bilgi ile, sistemi açar, çalıştırır ve durdurur",
-      "Suya dayanıklı IP 55 ABS malzemeden üretilmiş özel dizayn kutuya monte edilir"
-    ],
-    resim: "/smart-bore-hole.png",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/smart-bore-hole-datasheet.pdf" },
-      { isim: "Kullanım Kılavuzu", link: "/smart-bore-hole-kullanim.pdf" }
-    ],
-    teknikOzellikler: [
-      "Termoplastik (ABS) / IP 55",
-      "Güç Beslemesi 1 Faz-50/60Hz 230V ±",
-      "Güç Beslemesi 3 Faz-50/60Hz 400V ±",
-      "128 x 64 LCD Grafik Ekran",
-      "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
-      "Başlatma bilgisi için komut girişi (Seviye Elektrodu veya Şamandıra)",
-      "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
-      "Oto-Manuel Durum bilgisi görüntüleme",
-      "Korumalar ve Hatalar",
-      "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
-      "Faz kaybı ve Faz sırası hatası",
-      "Min / Max Voltaj (Ayarlanabilir)",
-      "Motor başlama zamanı",
-      "Taşma uyarısı fonksiyonu",
-      "Kuru çalışma koruması",
-      "Kilit mekanizmalı ana anahtar",
-      "Motor koruma sigortaları",
-      "Pompa çalışma süre bilgisi",
-      "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
-      "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
-      "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
-      "MODBus Bağlantısı"
-    ],
-    uygulamaAlanlariResim: "/smart-bore-hole-uygulama.png",
-    teknikVerilerCoklu: [
-      {
-        baslik: "Smart Bore Hole 1",
-        basliklar: ["Model", "COD", "Voltaj (V~)", "Güç (kW/HP)", "Akım (A)", "Ölçüler (mm)", "Malzeme"],
-        satirlar: [
-          ["Mono", "1051", "1−230", "2.2 / 3", "0−18", "310×250×130", "ABS"],
-          ["4 / Tri", "13001", "3−400", "4 / 5.5", "0−8.6", "310×250×130", "ABS"],
-          ["5.5 / Tri", "13002", "3−400", "5.5 / 7.5", "0−11.6", "310×250×130", "ABS"],
-          ["7.5 / Tri", "13003", "3−400", "7.5 / 10", "0−15.8", "310×250×130", "ABS"],
-          ["11 / Tri", "13004", "3−400", "11 / 15", "0−25", "310×250×130", "ABS"],
-          ["15 / Tri", "13005", "3−400", "15 / 20", "0−32", "310×250×130", "ABS"]
-        ]
-      },
-      {
-        baslik: "Smart Bore Hole 2",
-        basliklar: ["Model", "COD", "Voltaj (V~)", "Güç (kW/HP)", "Akım (A)", "Ölçüler (mm)", "Malzeme"],
-        satirlar: [
-          ["Mono", "1061", "1−230", "2.2 / 3", "0−18", "310×250×130", "ABS"],
-          ["4 / Tri", "13201", "3−400", "4 / 5.5", "0−8.6", "310×250×130", "ABS"],
-          ["5.5 / Tri", "13202", "3−400", "5.5 / 7.5", "0−11.6", "310×250×130", "ABS"],
-          ["7.5 / Tri", "13203", "3−400", "7.5 / 10", "0−15.8", "310×250×130", "ABS"],
-          ["11 / Tri", "13204", "3−400", "11 / 15", "0−25", "310×250×130", "ABS"],
-          ["15 / Tri", "13205", "3−400", "15 / 20", "0−32", "310×250×130", "ABS"]
-        ]
-      }
-    ],
-    teknikNot: "*Talep üzerine 18.5 kW ve üzeri pompaların tasarımı gerçekleştirilebilir.\n\n**Projeye özel tasarımlar için lütfen bizimle iletişime geçin."
-  },
-  "smart-grinder": {
-    baslik: "Smart Grinder",
-    aciklama: "Mikroişlemcili kontrol panoları, tek faz veya trifaz olarak 2 pompaya kadar sistemi kontrol eder. Smart Grinder, sisteminizi yönetmeyi, parametreleri değiştirmeyi, olayları ve mesajları kayıt altına alma vb. gibi bir çok işlemi pratik bir şekilde yapmanızı sağlar.",
-    ozellikler: [
-      "3G / WI-FI modül sayesinde, uzak bir noktadan sistemi işletme ve verileri görüntüleme",
-      "Kolay ve hızlı bir şekilde yönlendirme butonlarını kullanarak, net şekilde okunabilir LCD ekran üzerinden ayarların yapılması",
-      "Şamandıradan gelen bilgi ile, sistemi açar, çalıştırır ve durdurur",
-      "Suya dayanıklı IP 55 ABS malzemeden üretilmiş özel dizayn kutuya monte edilir"
-    ],
-    resim: "/smart-grinder.png",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/smart-grinder-datasheet.pdf" },
-      { isim: "Kullanım Kılavuzu", link: "/smart-grinder-kullanim.pdf" }
-    ],
-    teknikOzellikler: [
-      "Termoplastik (ABS) / IP 55",
-      "Kilitleme mekanizmasına sahip Ana kesici",
-      "Güç Beslemesi 1 Faz-50/60Hz 230V ±",
-      "Güç Beslemesi 3 Faz-50/60Hz 400V ±",
-      "128 x 64 LCD Grafik Ekran",
-      "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
-      "Başlatma bilgisi için komut girişi (Seviye Elektrodu veya Şamandıra)",
-      "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
-      "Oto-Manuel Durum bilgisi görüntüleme",
-      "Korumalar ve Hatalar",
-      "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
-      "Faz kaybı ve Faz sırası hatası",
-      "Min / Max Voltaj (Ayarlanabilir)",
-      "Motor başlama zamanı",
-      "Taşma uyarısı fonksiyonu",
-      "Kuru çalışma koruması",
-      "Motor koruma sigortaları",
-      "Pompa çalışma süre bilgisi",
-      "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
-      "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
-      "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
-      "MODBus Bağlantısı",
-      "Ayarlanabilir motor geri yönlendirme"
-    ],
-    teknikVerilerCoklu: [
-      {
-        baslik: "Smart Grinder 1",
-        basliklar: ["Model", "COD", "Voltaj (V~)", "Güç (kW/HP)", "Akım (A)", "Ölçüler (mm)", "Malzeme"],
-        satirlar: [
-          ["4 / Tri", "14001", "3−400", "4 / 5.5", "0−8.6", "310×250×130", "ABS"],
-          ["5.5 / Tri", "14002", "3−400", "5.5 / 7.5", "0−11.6", "310×250×130", "ABS"],
-          ["7.5 / Tri", "14003", "3−400", "7.5 / 10", "0−15.8", "310×250×130", "ABS"],
-          ["11 / Tri", "14004", "3−400", "11 / 15", "0−25", "310×250×130", "ABS"],
-          ["15 / Tri", "14005", "3−400", "15 / 20", "0−32", "310×250×130", "ABS"]
-        ]
-      },
-      {
-        baslik: "Smart Grinder 2",
-        basliklar: ["Model", "COD", "Voltaj (V~)", "Güç (kW/HP)", "Akım (A)", "Ölçüler (mm)", "Malzeme"],
-        satirlar: [
-          ["4 / Tri", "14201", "3−400", "4 / 5.5", "0−8.6", "310×250×130", "ABS"],
-          ["5.5 / Tri", "14202", "3−400", "5.5 / 7.5", "0−11.6", "310×250×130", "ABS"],
-          ["7.5 / Tri", "14203", "3−400", "7.5 / 10", "0−15.8", "310×250×130", "ABS"],
-          ["11 / Tri", "14204", "3−400", "11 / 15", "0−25", "310×250×130", "ABS"],
-          ["15 / Tri", "14205", "3−400", "15 / 20", "0−32", "310×250×130", "ABS"]
-        ]
-      }
-    ],
-    teknikNot: "*Talep üzerine 18.5 kW ve üzeri pompaların tasarımı gerçekleştirilebilir.\n\n**Projeye özel tasarımlar için lütfen bizimle iletişime geçin."
-  },
-  "smart-exclusive-d": {
-    baslik: "Smart Exclusive D",
-    aciklama: "Mikroişlemcili kontrol panoları, tek faz veya trifaz olarak 4 pompaya kadar sistemi kontrol eder. Smart Exclusive D, sisteminizi yönetmeyi, parametreleri değiştirmeyi, olayları ve mesajları kayıt altına alma vb. gibi bir çok işlemi pratik bir şekilde yapmanızı sağlar. Atık su ve Temiz su uygulamaları için basınçlandırma, boşaltma, doldurma işlemlerinde geçerlidir.",
-    ozellikler: [
-      "3G / WI-FI modül sayesinde, uzak bir noktadan sistemi işletme, verileri görüntüleme ve sistemi kontrol etme",
-      "Kolay ve hızlı bir şekilde yönlendirme butonlarını kullanarak, net şekilde okunabilir LCD ekran üzerinden ayarların yapılması",
-      "Şamandıradan, basınç sensöründen ve anahtarından veya seviye elektrodundan gelen bilgiler ile, sistemi açar, çalıştırır ve durdurur"
-    ],
-    resim: "/smart-exclusive-d.png",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/smart-exclusive-d-datasheet.pdf" },
-      { isim: "Kullanım Kılavuzu", link: "/smart-exclusive-d-kullanim.pdf" }
-    ],
-    teknikOzellikler: [
-      "Metal Kutu / IP 55",
-      "Kilitleme mekanizmasına sahip Ana kesici",
-      "Güç Beslemesi 1 Faz-50/60Hz 230V ±",
-      "Güç Beslemesi 3 Faz-50/60Hz 400V ±",
-      "128 x 64 LCD Grafik Ekran",
-      "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
-      "Başlatma bilgisi için komut girişi (Seviye Elektrodu veya Şamandıra)",
-      "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
-      "Oto-Manuel Durum bilgisi görüntüleme",
-      "Korumalar ve Hatalar",
-      "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
-      "Faz kaybı ve Faz sırası hatası",
-      "Min / Max Voltaj (Ayarlanabilir)",
-      "Motor başlama zamanı",
-      "Taşma uyarısı fonksiyonu",
-      "Kuru çalışma koruması",
-      "Motor koruma sigortaları",
-      "Pompa çalışma süre bilgisi",
-      "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
-      "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
-      "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
-      "MODBus Bağlantısı"
-    ],
-    uygulamaAlanlariResim: "/smart-exclusive-d-uygulama.png",
-    teknikVerilerCoklu: [
-      {
-        baslik: "Smart Exclusive D 3",
-        basliklar: ["Model", "COD", "Voltaj (V~)", "Güç (kW/HP)", "Akım (A)", "Ölçüler (mm)", "Malzeme"],
-        satirlar: [
-          ["Mono", "1071", "1−230", "2.2 / 3", "0−18", "600×400×200", "Metal"],
-          ["4 / Tri", "15001", "3−400", "4 / 5.5", "0−8.6", "600×400×200", "Metal"],
-          ["5.5 / Tri", "15002", "3−400", "5.5 / 7.5", "0−11.6", "600×400×200", "Metal"],
-          ["7.5 / Tri", "15003", "3−400", "7.5 / 10", "0−15.8", "600×400×200", "Metal"],
-          ["11 / Tri", "15004", "3−400", "11 / 15", "0−25", "600×400×200", "Metal"],
-          ["15 / Tri", "15005", "3−400", "15 / 20", "0−32", "600×400×200", "Metal"]
-        ]
-      },
-      {
-        baslik: "Smart Exclusive D 4",
-        basliklar: ["Model", "COD", "Voltaj (V~)", "Güç (kW/HP)", "Akım (A)", "Ölçüler (mm)", "Malzeme"],
-        satirlar: [
-          ["Mono", "1081", "1−230", "2.2 / 3", "0−18", "600×400×200", "Metal"],
-          ["4 / Tri", "15201", "3−400", "4 / 5.5", "0−8.6", "600×400×200", "Metal"],
-          ["5.5 / Tri", "15202", "3−400", "5.5 / 7.5", "0−11.6", "600×400×200", "Metal"],
-          ["7.5 / Tri", "15203", "3−400", "7.5 / 10", "0−15.8", "600×400×200", "Metal"],
-          ["11 / Tri", "15204", "3−400", "11 / 15", "0−25", "600×400×200", "Metal"],
-          ["15 / Tri", "15205", "3−400", "15 / 20", "0−32", "600×400×200", "Metal"]
-        ]
-      }
-    ],
-    teknikNot: "*Talep üzerine 18.5 kW ve üzeri pompaların tasarımı gerçekleştirilebilir.\n\n**Projeye özel tasarımlar için lütfen bizimle iletişime geçin."
-  }
-};
-
 export default function DirectStart() {
+  const { t } = useLanguage();
+
+  // Ürün verileri
+  const urunVerileri: Record<string, {
+    baslik: string;
+    aciklama: string;
+    ozellikler: string[];
+    resim: string;
+    belgeler: { isimKey: string; link: string }[];
+    teknikOzellikler?: string[];
+    uygulamaAlanlariResim?: string;
+    teknikVeriler?: {
+      basliklar: string[];
+      satirlar: string[][];
+    };
+    teknikVerilerCoklu?: {
+      baslik: string;
+      basliklar: string[];
+      satirlar: string[][];
+    }[];
+    teknikNot?: string;
+  }> = {
+    "smart-box": {
+      baslik: "Smart Box",
+      aciklama: t("prod.directStart.smart-box.desc"),
+      ozellikler: [
+        t("prod.directStart.smart-box.feat1"),
+        t("prod.directStart.smart-box.feat2"),
+        t("prod.directStart.smart-box.feat3")
+      ],
+      resim: "/smart-box.png",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/smart-box-datasheet.pdf" },
+        { isimKey: "prod.userManual", link: "/smart-box-kullanim.pdf" }
+      ],
+      teknikOzellikler: [
+        "Termoplastik (ABS) / IP 55",
+        "Güç Beslemesi 1 Faz-50/60Hz 230V ±",
+        "128 x 64 LCD Grafik Ekran",
+        "Motor Çalışıyor için Yeşil LED / Hatalar için Kırmızı LED",
+        "Başlatmak için NO bağlantısı",
+        "Volt, Amper, Alarmlar, Olaylar ve Ana Sayfada Gün / Zaman Ekranı",
+        "Korumalar ve Hatalar",
+        "Motor Aşırı akım / Düşük Akım (Ayarlanabilir)",
+        "Faz Yok ve Faz Sırası Hatası",
+        "Min / Max Voltaj (Ayarlanabilir)",
+        "Kuru Çalışma Koruması",
+        "Pompa Çalışma Zamanı Gösterme",
+        "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
+        "Verileri dışarıya aktarmak için USB arayüzü. (Son 500 kayıt)",
+        "MODBus Bağlantısı"
+      ],
+      uygulamaAlanlariResim: "/smart-box-uygulama.png",
+      teknikVeriler: {
+        basliklar: ["Smart Box", "COD", "VOLTAJ (V~)", "MAX GÜÇ (kW)", "MAX GÜÇ (HP)", "AKIM Aralığı (A)", "AKIM Max (A)", "KUTU D (mm)", "KUTU E (mm)", "KUTU G (mm)", "Malzeme", "AĞIRLIK (KG)"],
+        satirlar: [
+          ["SmartBox / 1 Faz", "10001", "1 - 230", "2.2", "3", "0-18", "18", "230", "130", "120", "ABS", "-"]
+        ]
+      }
+    },
+    "smart-booster": {
+      baslik: "Smart Booster",
+      aciklama: t("prod.directStart.smart-booster.desc"),
+      ozellikler: [
+        t("prod.directStart.smart-booster.feat1"),
+        t("prod.directStart.smart-booster.feat2"),
+        t("prod.directStart.smart-booster.feat3"),
+        t("prod.directStart.smart-booster.feat4")
+      ],
+      resim: "/smart-booster.png",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/smart-booster-datasheet.pdf" },
+        { isimKey: "prod.userManual", link: "/smart-booster-kullanim.pdf" }
+      ],
+      teknikOzellikler: [
+        "Termoplastik (ABS) / IP 55",
+        "Güç Beslemesi 1 Faz-50/60Hz 230V ±",
+        "Güç Beslemesi 3 Faz-50/60Hz 400V ±",
+        "128 x 64 LCD Grafik Ekran",
+        "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
+        "Başlatma bilgisi için komut girişi (Basınç anahtarı veya sensör)",
+        "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
+        "Oto-Manuel Durum bilgisi görüntüleme",
+        "Korumalar ve Hatalar",
+        "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
+        "Faz kaybı ve Faz sırası hatası",
+        "Min / Max Voltaj (Ayarlanabilir)",
+        "Motor başlama zamanı",
+        "Kuru çalışma koruması",
+        "Kilit mekanizmalı ana anahtar",
+        "Motor koruma sigortaları",
+        "Pompa çalışma süre bilgisi",
+        "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
+        "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
+        "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
+        "MODBus Bağlantısı"
+      ],
+      uygulamaAlanlariResim: "/smart-booster-uygulama.png",
+      teknikVerilerCoklu: [
+        {
+          baslik: "Smart Booster 1",
+          basliklar: ["Model", "Voltaj (V~)", "Max Güç (kW / HP)", "Akım Aralığı (A)", "Ölçüler (H/L/W)", "Malzeme"],
+          satirlar: [
+            ["Mono", "1−230", "2.2 / 3", "0−18", "310×250×130 mm", "ABS"],
+            ["4 / Tri", "3−400", "4 / 5.5", "0−8.6", "310×250×130 mm", "ABS"],
+            ["5.5 / Tri", "3−400", "5.5 / 7.5", "0−11.6", "310×250×130 mm", "ABS"],
+            ["7.5 / Tri", "3−400", "7.5 / 10", "0−15.8", "310×250×130 mm", "ABS"],
+            ["11 / Tri", "3−400", "11 / 15", "0−25", "310×250×130 mm", "ABS"],
+            ["15 / Tri", "3−400", "15 / 20", "0−32", "310×250×130 mm", "ABS"]
+          ]
+        },
+        {
+          baslik: "Smart Booster 2",
+          basliklar: ["Model", "Voltaj (V~)", "Max Güç (kW / HP)", "Akım Aralığı (A)", "Ölçüler (H/L/W)", "Malzeme"],
+          satirlar: [
+            ["Mono", "1−230", "2.2 / 3", "0−18", "310×250×130 mm", "ABS"],
+            ["4 / Tri", "3−400", "4 / 5.5", "0−8.6", "310×250×130 mm", "ABS"],
+            ["5.5 / Tri", "3−400", "5.5 / 7.5", "0−11.6", "310×250×130 mm", "ABS"],
+            ["7.5 / Tri", "3−400", "7.5 / 10", "0−15.8", "310×250×130 mm", "ABS"],
+            ["11 / Tri", "3−400", "11 / 15", "0−25", "310×250×130 mm", "ABS"],
+            ["15 / Tri", "3−400", "15 / 20", "0−32", "310×250×130 mm", "ABS"]
+          ]
+        }
+      ],
+      teknikNot: "*Talep üzerine 18.5 kW ve üzeri pompaların tasarımı gerçekleştirilebilir.\n\n**Projeye özel tasarımlar için lütfen bizimle iletişime geçin."
+    },
+    "smart-wastewater": {
+      baslik: "Smart Wastewater",
+      aciklama: t("prod.directStart.smart-wastewater.desc"),
+      ozellikler: [
+        t("prod.directStart.smart-wastewater.feat1"),
+        t("prod.directStart.smart-wastewater.feat2"),
+        t("prod.directStart.smart-wastewater.feat3"),
+        t("prod.directStart.smart-wastewater.feat4")
+      ],
+      resim: "/smart-wastewater.png",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/smart-wastewater-datasheet.pdf" },
+        { isimKey: "prod.userManual", link: "/smart-wastewater-kullanim.pdf" }
+      ],
+      teknikOzellikler: [
+        "Termoplastik (ABS) / IP 55",
+        "Güç Beslemesi 1 Faz-50/60Hz 230V ±",
+        "Güç Beslemesi 3 Faz-50/60Hz 400V ±",
+        "128 x 64 LCD Grafik Ekran",
+        "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
+        "Başlatma bilgisi için komut girişi (Seviye Elektrodu veya Şamandıra)",
+        "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
+        "Oto-Manuel Durum bilgisi görüntüleme",
+        "Korumalar ve Hatalar",
+        "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
+        "Faz kaybı ve Faz sırası hatası",
+        "Min / Max Voltaj (Ayarlanabilir)",
+        "Motor başlama zamanı",
+        "Taşma uyarısı fonksiyonu",
+        "Kuru çalışma koruması",
+        "Pompa gövdesi su kaçağı uyarısı",
+        "Kilit mekanizmalı ana anahtar",
+        "Motor koruma sigortaları",
+        "Pompa çalışma süre bilgisi",
+        "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
+        "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
+        "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)"
+      ],
+      uygulamaAlanlariResim: "/smart-wastewater-uygulama.png",
+      teknikVerilerCoklu: [
+        {
+          baslik: "Smart Wastewater 1",
+          basliklar: ["Model", "COD", "Voltaj (V~)", "Güç (kW/HP)", "Akım (A)", "Ölçüler (mm)", "Malzeme"],
+          satirlar: [
+            ["Mono", "1031", "1 - 230", "2.2 / 3", "0 - 18", "310x250x130", "ABS"],
+            ["4 / Tri", "12001", "3 - 400", "4 / 5.5", "0 - 8.6", "310x250x130", "ABS"],
+            ["5.5 / Tri", "12002", "3 - 400", "5.5 / 7.5", "0 - 11.6", "310x250x130", "ABS"],
+            ["7.5 / Tri", "12003", "3 - 400", "7.5 / 10", "0 - 15.8", "310x250x130", "ABS"],
+            ["11 / Tri", "12004", "3 - 400", "11 / 15", "0 - 25", "310x250x130", "ABS"],
+            ["15 / Tri", "12005", "3 - 400", "15 / 20", "0 - 32", "310x250x130", "ABS"]
+          ]
+        },
+        {
+          baslik: "Smart Wastewater 2",
+          basliklar: ["Model", "COD", "Voltaj (V~)", "Güç (kW/HP)", "Akım (A)", "Ölçüler (mm)", "Malzeme"],
+          satirlar: [
+            ["Mono", "1041", "1 - 230", "2.2 / 3", "0 - 18", "310x250x130", "ABS"],
+            ["4 / Tri", "12201", "3 - 400", "4 / 5.5", "0 - 8.6", "310x250x130", "ABS"],
+            ["5.5 / Tri", "12202", "3 - 400", "5.5 / 7.5", "0 - 11.6", "310x250x130", "ABS"],
+            ["7.5 / Tri", "12203", "3 - 400", "7.5 / 10", "0 - 15.8", "310x250x130", "ABS"],
+            ["11 / Tri", "12204", "3 - 400", "11 / 15", "0 - 25", "310x250x130", "ABS"],
+            ["15 / Tri", "12205", "3 - 400", "15 / 20", "0 - 32", "310x250x130", "ABS"]
+          ]
+        }
+      ]
+    },
+    "smart-bore-hole": {
+      baslik: "Smart Bore Hole",
+      aciklama: t("prod.directStart.smart-bore-hole.desc"),
+      ozellikler: [
+        t("prod.directStart.smart-bore-hole.feat1"),
+        t("prod.directStart.smart-bore-hole.feat2"),
+        t("prod.directStart.smart-bore-hole.feat3"),
+        t("prod.directStart.smart-bore-hole.feat4")
+      ],
+      resim: "/smart-bore-hole.png",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/smart-bore-hole-datasheet.pdf" },
+        { isimKey: "prod.userManual", link: "/smart-bore-hole-kullanim.pdf" }
+      ],
+      teknikOzellikler: [
+        "Termoplastik (ABS) / IP 55",
+        "Güç Beslemesi 1 Faz-50/60Hz 230V ±",
+        "Güç Beslemesi 3 Faz-50/60Hz 400V ±",
+        "128 x 64 LCD Grafik Ekran",
+        "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
+        "Başlatma bilgisi için komut girişi (Seviye Elektrodu veya Şamandıra)",
+        "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
+        "Oto-Manuel Durum bilgisi görüntüleme",
+        "Korumalar ve Hatalar",
+        "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
+        "Faz kaybı ve Faz sırası hatası",
+        "Min / Max Voltaj (Ayarlanabilir)",
+        "Motor başlama zamanı",
+        "Taşma uyarısı fonksiyonu",
+        "Kuru çalışma koruması",
+        "Kilit mekanizmalı ana anahtar",
+        "Motor koruma sigortaları",
+        "Pompa çalışma süre bilgisi",
+        "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
+        "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
+        "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
+        "MODBus Bağlantısı"
+      ],
+      uygulamaAlanlariResim: "/smart-bore-hole-uygulama.png",
+      teknikVerilerCoklu: [
+        {
+          baslik: "Smart Bore Hole 1",
+          basliklar: ["Model", "COD", "Voltaj (V~)", "Güç (kW/HP)", "Akım (A)", "Ölçüler (mm)", "Malzeme"],
+          satirlar: [
+            ["Mono", "1051", "1−230", "2.2 / 3", "0−18", "310×250×130", "ABS"],
+            ["4 / Tri", "13001", "3−400", "4 / 5.5", "0−8.6", "310×250×130", "ABS"],
+            ["5.5 / Tri", "13002", "3−400", "5.5 / 7.5", "0−11.6", "310×250×130", "ABS"],
+            ["7.5 / Tri", "13003", "3−400", "7.5 / 10", "0−15.8", "310×250×130", "ABS"],
+            ["11 / Tri", "13004", "3−400", "11 / 15", "0−25", "310×250×130", "ABS"],
+            ["15 / Tri", "13005", "3−400", "15 / 20", "0−32", "310×250×130", "ABS"]
+          ]
+        },
+        {
+          baslik: "Smart Bore Hole 2",
+          basliklar: ["Model", "COD", "Voltaj (V~)", "Güç (kW/HP)", "Akım (A)", "Ölçüler (mm)", "Malzeme"],
+          satirlar: [
+            ["Mono", "1061", "1−230", "2.2 / 3", "0−18", "310×250×130", "ABS"],
+            ["4 / Tri", "13201", "3−400", "4 / 5.5", "0−8.6", "310×250×130", "ABS"],
+            ["5.5 / Tri", "13202", "3−400", "5.5 / 7.5", "0−11.6", "310×250×130", "ABS"],
+            ["7.5 / Tri", "13203", "3−400", "7.5 / 10", "0−15.8", "310×250×130", "ABS"],
+            ["11 / Tri", "13204", "3−400", "11 / 15", "0−25", "310×250×130", "ABS"],
+            ["15 / Tri", "13205", "3−400", "15 / 20", "0−32", "310×250×130", "ABS"]
+          ]
+        }
+      ],
+      teknikNot: "*Talep üzerine 18.5 kW ve üzeri pompaların tasarımı gerçekleştirilebilir.\n\n**Projeye özel tasarımlar için lütfen bizimle iletişime geçin."
+    },
+    "smart-grinder": {
+      baslik: "Smart Grinder",
+      aciklama: t("prod.directStart.smart-grinder.desc"),
+      ozellikler: [
+        t("prod.directStart.smart-grinder.feat1"),
+        t("prod.directStart.smart-grinder.feat2"),
+        t("prod.directStart.smart-grinder.feat3"),
+        t("prod.directStart.smart-grinder.feat4")
+      ],
+      resim: "/smart-grinder.png",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/smart-grinder-datasheet.pdf" },
+        { isimKey: "prod.userManual", link: "/smart-grinder-kullanim.pdf" }
+      ],
+      teknikOzellikler: [
+        "Termoplastik (ABS) / IP 55",
+        "Kilitleme mekanizmasına sahip Ana kesici",
+        "Güç Beslemesi 1 Faz-50/60Hz 230V ±",
+        "Güç Beslemesi 3 Faz-50/60Hz 400V ±",
+        "128 x 64 LCD Grafik Ekran",
+        "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
+        "Başlatma bilgisi için komut girişi (Seviye Elektrodu veya Şamandıra)",
+        "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
+        "Oto-Manuel Durum bilgisi görüntüleme",
+        "Korumalar ve Hatalar",
+        "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
+        "Faz kaybı ve Faz sırası hatası",
+        "Min / Max Voltaj (Ayarlanabilir)",
+        "Motor başlama zamanı",
+        "Taşma uyarısı fonksiyonu",
+        "Kuru çalışma koruması",
+        "Motor koruma sigortaları",
+        "Pompa çalışma süre bilgisi",
+        "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
+        "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
+        "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
+        "MODBus Bağlantısı",
+        "Ayarlanabilir motor geri yönlendirme"
+      ],
+      teknikVerilerCoklu: [
+        {
+          baslik: "Smart Grinder 1",
+          basliklar: ["Model", "COD", "Voltaj (V~)", "Güç (kW/HP)", "Akım (A)", "Ölçüler (mm)", "Malzeme"],
+          satirlar: [
+            ["4 / Tri", "14001", "3−400", "4 / 5.5", "0−8.6", "310×250×130", "ABS"],
+            ["5.5 / Tri", "14002", "3−400", "5.5 / 7.5", "0−11.6", "310×250×130", "ABS"],
+            ["7.5 / Tri", "14003", "3−400", "7.5 / 10", "0−15.8", "310×250×130", "ABS"],
+            ["11 / Tri", "14004", "3−400", "11 / 15", "0−25", "310×250×130", "ABS"],
+            ["15 / Tri", "14005", "3−400", "15 / 20", "0−32", "310×250×130", "ABS"]
+          ]
+        },
+        {
+          baslik: "Smart Grinder 2",
+          basliklar: ["Model", "COD", "Voltaj (V~)", "Güç (kW/HP)", "Akım (A)", "Ölçüler (mm)", "Malzeme"],
+          satirlar: [
+            ["4 / Tri", "14201", "3−400", "4 / 5.5", "0−8.6", "310×250×130", "ABS"],
+            ["5.5 / Tri", "14202", "3−400", "5.5 / 7.5", "0−11.6", "310×250×130", "ABS"],
+            ["7.5 / Tri", "14203", "3−400", "7.5 / 10", "0−15.8", "310×250×130", "ABS"],
+            ["11 / Tri", "14204", "3−400", "11 / 15", "0−25", "310×250×130", "ABS"],
+            ["15 / Tri", "14205", "3−400", "15 / 20", "0−32", "310×250×130", "ABS"]
+          ]
+        }
+      ],
+      teknikNot: "*Talep üzerine 18.5 kW ve üzeri pompaların tasarımı gerçekleştirilebilir.\n\n**Projeye özel tasarımlar için lütfen bizimle iletişime geçin."
+    },
+    "smart-exclusive-d": {
+      baslik: "Smart Exclusive D",
+      aciklama: t("prod.directStart.smart-exclusive-d.desc"),
+      ozellikler: [
+        t("prod.directStart.smart-exclusive-d.feat1"),
+        t("prod.directStart.smart-exclusive-d.feat2"),
+        t("prod.directStart.smart-exclusive-d.feat3")
+      ],
+      resim: "/smart-exclusive-d.png",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/smart-exclusive-d-datasheet.pdf" },
+        { isimKey: "prod.userManual", link: "/smart-exclusive-d-kullanim.pdf" }
+      ],
+      teknikOzellikler: [
+        "Metal Kutu / IP 55",
+        "Kilitleme mekanizmasına sahip Ana kesici",
+        "Güç Beslemesi 1 Faz-50/60Hz 230V ±",
+        "Güç Beslemesi 3 Faz-50/60Hz 400V ±",
+        "128 x 64 LCD Grafik Ekran",
+        "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
+        "Başlatma bilgisi için komut girişi (Seviye Elektrodu veya Şamandıra)",
+        "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
+        "Oto-Manuel Durum bilgisi görüntüleme",
+        "Korumalar ve Hatalar",
+        "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
+        "Faz kaybı ve Faz sırası hatası",
+        "Min / Max Voltaj (Ayarlanabilir)",
+        "Motor başlama zamanı",
+        "Taşma uyarısı fonksiyonu",
+        "Kuru çalışma koruması",
+        "Motor koruma sigortaları",
+        "Pompa çalışma süre bilgisi",
+        "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
+        "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
+        "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
+        "MODBus Bağlantısı"
+      ],
+      uygulamaAlanlariResim: "/smart-exclusive-d-uygulama.png",
+      teknikVerilerCoklu: [
+        {
+          baslik: "Smart Exclusive D 3",
+          basliklar: ["Model", "COD", "Voltaj (V~)", "Güç (kW/HP)", "Akım (A)", "Ölçüler (mm)", "Malzeme"],
+          satirlar: [
+            ["Mono", "1071", "1−230", "2.2 / 3", "0−18", "600×400×200", "Metal"],
+            ["4 / Tri", "15001", "3−400", "4 / 5.5", "0−8.6", "600×400×200", "Metal"],
+            ["5.5 / Tri", "15002", "3−400", "5.5 / 7.5", "0−11.6", "600×400×200", "Metal"],
+            ["7.5 / Tri", "15003", "3−400", "7.5 / 10", "0−15.8", "600×400×200", "Metal"],
+            ["11 / Tri", "15004", "3−400", "11 / 15", "0−25", "600×400×200", "Metal"],
+            ["15 / Tri", "15005", "3−400", "15 / 20", "0−32", "600×400×200", "Metal"]
+          ]
+        },
+        {
+          baslik: "Smart Exclusive D 4",
+          basliklar: ["Model", "COD", "Voltaj (V~)", "Güç (kW/HP)", "Akım (A)", "Ölçüler (mm)", "Malzeme"],
+          satirlar: [
+            ["Mono", "1081", "1−230", "2.2 / 3", "0−18", "600×400×200", "Metal"],
+            ["4 / Tri", "15201", "3−400", "4 / 5.5", "0−8.6", "600×400×200", "Metal"],
+            ["5.5 / Tri", "15202", "3−400", "5.5 / 7.5", "0−11.6", "600×400×200", "Metal"],
+            ["7.5 / Tri", "15203", "3−400", "7.5 / 10", "0−15.8", "600×400×200", "Metal"],
+            ["11 / Tri", "15204", "3−400", "11 / 15", "0−25", "600×400×200", "Metal"],
+            ["15 / Tri", "15205", "3−400", "15 / 20", "0−32", "600×400×200", "Metal"]
+          ]
+        }
+      ],
+      teknikNot: "*Talep üzerine 18.5 kW ve üzeri pompaların tasarımı gerçekleştirilebilir.\n\n**Projeye özel tasarımlar için lütfen bizimle iletişime geçin."
+    }
+  };
   const searchParams = useSearchParams();
   const urunParam = searchParams.get("urun");
   const [activeUrun, setActiveUrun] = useState(urunler[0].key);
@@ -435,14 +437,14 @@ export default function DirectStart() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
-          <span className="text-lg font-medium">Kategoriler</span>
+          <span className="text-lg font-medium">{t("prod.back.categories")}</span>
         </Link>
       </div>
 
       {/* Başlık */}
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "60px", paddingBottom: "40px" }}>
         <h1 className="text-[#86868b] text-5xl font-medium text-center">
-          Direct Start
+          {t("prod.akilli.directStart.title")}
         </h1>
       </section>
 
@@ -519,7 +521,7 @@ export default function DirectStart() {
                 {/* Özellikler */}
                 {aktifUrunVerisi.ozellikler.length > 0 && (
                   <div className="mb-14">
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Özellikler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.features")}</h3>
                     <div className="space-y-5">
                       {aktifUrunVerisi.ozellikler.map((ozellik, index) => (
                         <div key={index} className="flex items-start gap-4">
@@ -534,7 +536,7 @@ export default function DirectStart() {
                 {/* Belgeler */}
                 {aktifUrunVerisi.belgeler.length > 0 && (
                   <div>
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Belgeler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.documents")}</h3>
                     <div className="flex flex-wrap gap-4">
                       {aktifUrunVerisi.belgeler.map((belge, index) => (
                         <a
@@ -552,7 +554,7 @@ export default function DirectStart() {
                             <line x1="16" y1="17" x2="8" y2="17"/>
                             <polyline points="10 9 9 9 8 9"/>
                           </svg>
-                          {belge.isim}
+                          {t(belge.isimKey)}
                         </a>
                       ))}
                     </div>
@@ -594,7 +596,7 @@ export default function DirectStart() {
                       }
                     }}
                   >
-                    Teknik Özellikler
+                    {t("prod.techSpecs")}
                   </button>
                 )}
                 {hasUygulamaAlanlari && (
@@ -621,7 +623,7 @@ export default function DirectStart() {
                       }
                     }}
                   >
-                    Uygulama Alanları
+                    {t("prod.appAreas")}
                   </button>
                 )}
                 {hasTeknikVeriler && (
@@ -648,7 +650,7 @@ export default function DirectStart() {
                       }
                     }}
                   >
-                    Teknik Veriler
+                    {t("prod.techData")}
                   </button>
                 )}
               </div>
@@ -749,7 +751,7 @@ export default function DirectStart() {
               {aktifUrunVerisi.baslik}
             </h2>
             <p className="text-[#6e6e73] text-xl">
-              Bu ürünün detayları yakında eklenecektir.
+              {t("prod.comingSoon")}
             </p>
           </div>
         )}

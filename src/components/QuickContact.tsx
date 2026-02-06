@@ -6,7 +6,6 @@ import Link from "next/link";
 
 export default function QuickContact() {
   const [isVisible, setIsVisible] = useState(false);
-  const [isFormOpen, setIsFormOpen] = useState(false);
   const pathname = usePathname();
   const isHomePage = pathname === "/";
 
@@ -42,100 +41,9 @@ export default function QuickContact() {
         gap: '12px'
       }}
     >
-      {/* Hızlı İletişim Formu */}
-      {isFormOpen && (
-        <div 
-          style={{ 
-            backgroundColor: 'rgba(0,0,0,0.95)',
-            borderRadius: '16px',
-            padding: '24px',
-            width: '320px',
-            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-            border: '1px solid rgba(255,255,255,0.1)'
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-            <h3 style={{ color: 'white', fontWeight: 600, fontSize: '18px', margin: 0 }}>Hızlı İletişim</h3>
-            <button 
-              onClick={() => setIsFormOpen(false)}
-              style={{ 
-                background: 'none', 
-                border: 'none', 
-                color: 'rgba(255,255,255,0.5)', 
-                cursor: 'pointer',
-                padding: '4px'
-              }}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M18 6L6 18M6 6l12 12"/>
-              </svg>
-            </button>
-          </div>
-          <form style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <input 
-              type="text" 
-              placeholder="Adınız"
-              style={{ 
-                backgroundColor: 'rgba(255,255,255,0.1)',
-                border: '1px solid rgba(255,255,255,0.15)',
-                borderRadius: '8px',
-                padding: '12px 16px',
-                color: 'white',
-                fontSize: '14px',
-                outline: 'none'
-              }}
-            />
-            <input 
-              type="tel" 
-              placeholder="Telefon"
-              style={{ 
-                backgroundColor: 'rgba(255,255,255,0.1)',
-                border: '1px solid rgba(255,255,255,0.15)',
-                borderRadius: '8px',
-                padding: '12px 16px',
-                color: 'white',
-                fontSize: '14px',
-                outline: 'none'
-              }}
-            />
-            <textarea 
-              placeholder="Mesajınız"
-              rows={3}
-              style={{ 
-                backgroundColor: 'rgba(255,255,255,0.1)',
-                border: '1px solid rgba(255,255,255,0.15)',
-                borderRadius: '8px',
-                padding: '12px 16px',
-                color: 'white',
-                fontSize: '14px',
-                outline: 'none',
-                resize: 'none',
-                fontFamily: 'inherit'
-              }}
-            />
-            <button 
-              type="submit"
-              style={{ 
-                backgroundColor: 'white',
-                color: 'black',
-                fontWeight: 500,
-                padding: '12px',
-                borderRadius: '8px',
-                fontSize: '14px',
-                border: 'none',
-                cursor: 'pointer',
-                marginTop: '4px'
-              }}
-            >
-              Gönder
-            </button>
-          </form>
-        </div>
-      )}
-
       {/* WhatsApp Butonu */}
       <Link
-        href="https://wa.me/905551234567"
+        href="https://wa.me/902625025149"
         target="_blank"
         style={{ 
           backgroundColor: '#25D366',
@@ -154,26 +62,6 @@ export default function QuickContact() {
         </svg>
       </Link>
 
-      {/* İletişim Formu Butonu */}
-      <button
-        onClick={() => setIsFormOpen(!isFormOpen)}
-        style={{ 
-          backgroundColor: 'black',
-          width: '56px',
-          height: '56px',
-          borderRadius: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 10px 25px rgba(0,0,0,0.3)',
-          border: '1px solid rgba(255,255,255,0.2)',
-          cursor: 'pointer'
-        }}
-      >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-        </svg>
-      </button>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import { useLanguage } from "@/context/LanguageContext";
 
 const resimler = [
   "/manyetik-filtre-1.png",
@@ -12,40 +13,41 @@ const resimler = [
 ];
 
 export default function ManyetikFiltre() {
+  const { t } = useLanguage();
   const [activeImage, setActiveImage] = useState(0);
   const [activeTab, setActiveTab] = useState("teknik-ozellikler");
 
   const ozellikler = [
-    "Geleneksel yöntemlere göre %65 daha iyi performans gösterir",
-    "Sistem verimliliğinin geri kazanılmasında %35 daha iyi performans gösterir",
-    "Bakım maliyetlerini azaltır",
-    "Güçlü Neodyum mıknatıslar kolay çıkartılır ve takılır",
-    "Kolay kurulum ile sade işletmeyi sağlar",
-    "Basınçlı kaplar yönetmeliğine uygun üretilmiştir"
+    t("prod.manyetik.feat1"),
+    t("prod.manyetik.feat2"),
+    t("prod.manyetik.feat3"),
+    t("prod.manyetik.feat4"),
+    t("prod.manyetik.feat5"),
+    t("prod.manyetik.feat6"),
   ];
 
   const teknikOzellikler = [
-    "Maksimum Çalışma Basıncı: 10 BAR",
-    "Maksimum Çalışma Sıcaklığı: 100°C",
-    "GÖVDE - Malzeme: TS EN 10219",
-    "GÖVDE - Drenaj: 1\"",
-    "GÖVDE - Vakum Vanası: 1/2\"",
-    "GÖVDE - Hava Prüjör: Otomatik hava atma prujör 1/2\"",
-    "MAGNET - Malzeme: Yüksek performans",
-    "SEPERATÖR FİLTRE - Malzeme: 304 Paslanmaz Çelik",
-    "SEPERATÖR FİLTRE - Gözenek Büyüklüğü: 1000 mikron",
-    "BAĞLANTI FLANŞI - Malzeme: TS EN 1092-1",
-    "BAĞLANTI FLANŞI - Basınç Sınıfı: PN16"
+    t("prod.manyetik.tech1"),
+    t("prod.manyetik.tech2"),
+    t("prod.manyetik.tech3"),
+    t("prod.manyetik.tech4"),
+    t("prod.manyetik.tech5"),
+    t("prod.manyetik.tech6"),
+    t("prod.manyetik.tech7"),
+    t("prod.manyetik.tech8"),
+    t("prod.manyetik.tech9"),
+    t("prod.manyetik.tech10"),
+    t("prod.manyetik.tech11"),
   ];
 
   const kullanimAvantajlari = [
-    "Tüm Isıtma-Soğutma Sistemleri ile Uyumludur",
-    "Erken Arıza ve Yüksek Bakım Maliyetini Azaltır",
-    "Sistem Ekipmanlarının Kullanım Ömrünü Uzatır",
-    "Sistem Veriminin Geri Kazanılmasına Yardımcı Olur",
-    "Yüksek Performanslı Manyetik Çubuklar En Küçük Manyetik Parçacıkları Bile Yakalar",
-    "Kurulumu ve Bakımı Kolaydır",
-    "Vakum Vanası Sayesinde Hızlı Temizleme Olanağı Sağlar"
+    t("prod.manyetik.adv1"),
+    t("prod.manyetik.adv2"),
+    t("prod.manyetik.adv3"),
+    t("prod.manyetik.adv4"),
+    t("prod.manyetik.adv5"),
+    t("prod.manyetik.adv6"),
+    t("prod.manyetik.adv7"),
   ];
 
   const nextImage = () => {
@@ -67,14 +69,14 @@ export default function ManyetikFiltre() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
-          <span className="text-lg font-medium">Ana Sayfa</span>
+          <span className="text-lg font-medium">{t("prod.back.home")}</span>
         </Link>
       </div>
 
       {/* Başlık */}
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "60px", paddingBottom: "80px" }}>
         <h1 className="text-[#86868b] text-5xl font-medium text-center">
-          IRONTRAP® Manyetik Filtre
+          {t("prod.manyetik.title")}
         </h1>
       </section>
 
@@ -86,7 +88,7 @@ export default function ManyetikFiltre() {
             <div className="relative" style={{ width: "450px", height: "450px" }}>
               <Image
                 src={resimler[activeImage]}
-                alt={`IRONTRAP Manyetik Filtre ${activeImage + 1}`}
+                alt={`IRONTRAP ${t("prod.manyetik.title")} ${activeImage + 1}`}
                 fill
                 className="object-contain"
               />
@@ -131,17 +133,17 @@ export default function ManyetikFiltre() {
             <div className="max-w-lg">
               {/* Ürün Başlığı */}
               <h2 className="text-4xl font-semibold text-[#1d1d1f] mb-10">
-                IRONTRAP® Manyetik Filtre
+                {t("prod.manyetik.title")}
               </h2>
               
               {/* Açıklama */}
               <p className="text-[#6e6e73] text-lg leading-relaxed mb-14">
-                Korozyona ve manyetite karşı koruma sağlayan IronTrap manyetik filtreler otomatik hava atma prüjörüne entegre olarak tasarlanmıştır. Hava bir katalizördür, bu sebeple ısıtma soğutma sistemlerinde korozyon gelişmesine sebep olur. Devreye alma ve boşaltma esnasında sisteme gelen hava otomatik hava atma prujörü ile sistem dışına atılır. Sistem çalışır durumdayken IronTrap manyetik filtresi üzerinden geçen akışkanın içerisindeki havayı otomatik hava atma purjörü üzerinden dışarıya atar.
+                {t("prod.manyetik.desc")}
               </p>
 
               {/* Özellikler */}
               <div className="mb-14">
-                <h3 className="text-xl font-semibold text-[#86868b] mb-6">Özellikler</h3>
+                <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.features")}</h3>
                 <div className="space-y-5">
                   {ozellikler.map((ozellik, index) => (
                     <div key={index} className="flex items-start gap-4">
@@ -154,7 +156,7 @@ export default function ManyetikFiltre() {
 
               {/* Belgeler */}
               <div>
-                <h3 className="text-xl font-semibold text-[#86868b] mb-6">Belgeler</h3>
+                <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.documents")}</h3>
                 <div className="flex flex-wrap gap-4">
                   <a
                     href="/manyetik-filtre-datasheet.pdf"
@@ -170,7 +172,7 @@ export default function ManyetikFiltre() {
                       <line x1="16" y1="17" x2="8" y2="17"/>
                       <polyline points="10 9 9 9 8 9"/>
                     </svg>
-                    Teknik Veri Sayfası
+                    {t("prod.datasheet")}
                   </a>
                 </div>
               </div>
@@ -208,33 +210,33 @@ export default function ManyetikFiltre() {
                 }
               }}
             >
-              Teknik Özellikler
+              {t("prod.techSpecs")}
             </button>
-              <button
+            <button
               onClick={() => setActiveTab("kullanim-avantajlari")}
-                style={{ 
-                  padding: '12px 24px',
-                  borderRadius: '10px',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  transition: 'all 0.2s ease',
+              style={{ 
+                padding: '12px 24px',
+                borderRadius: '10px',
+                fontSize: '14px',
+                fontWeight: 500,
+                transition: 'all 0.2s ease',
                 backgroundColor: activeTab === "kullanim-avantajlari" ? 'white' : 'transparent',
                 color: activeTab === "kullanim-avantajlari" ? '#1d1d1f' : '#6e6e73',
                 boxShadow: activeTab === "kullanim-avantajlari" ? '0 1px 3px rgba(0,0,0,0.1)' : 'none'
-                }}
-                onMouseEnter={(e) => {
+              }}
+              onMouseEnter={(e) => {
                 if (activeTab !== "kullanim-avantajlari") {
-                    e.currentTarget.style.color = '#1d1d1f';
-                  }
-                }}
-                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = '#1d1d1f';
+                }
+              }}
+              onMouseLeave={(e) => {
                 if (activeTab !== "kullanim-avantajlari") {
-                    e.currentTarget.style.color = '#6e6e73';
-                  }
-                }}
-              >
-              Kullanım Avantajları
-              </button>
+                  e.currentTarget.style.color = '#6e6e73';
+                }
+              }}
+            >
+              {t("prod.usageAdvantages")}
+            </button>
           </div>
 
           {/* Tab İçerikleri */}

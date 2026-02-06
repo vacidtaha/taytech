@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import { useLanguage } from "@/context/LanguageContext";
 
 const urunler = [
   { id: 1, label: "Indirect HydroHexa", key: "indirect-hydrohexa" },
@@ -12,53 +13,54 @@ const urunler = [
   { id: 3, label: "Smart Hexa", key: "smart-hexa" },
 ];
 
-// Ürün verileri
-const urunVerileri: Record<string, {
-  baslik: string;
-  aciklama: string;
-  ozellikler?: string[];
-  resim: string;
-  belgeler: { isim: string; link: string }[];
-  akisDiyagrami?: string;
-  teknikOzelliklerResim?: string;
-  urunBilesenleriResim?: string;
-}> = {
-  "indirect-hydrohexa": {
-    baslik: "Indirect HydroHexa",
-    aciklama: "HydroHexa ısı istasyonlarında kontrol hem hidrolik hem de termostatik olarak yapılır. Sistem soğuk eşanjör mantığı ile çalıştığı için, eşanjör içerisinde kireçlenme olasılığı ortadan kaybolur. HydroHexa ısı istasyonları kullanım sıcak suyu önceliğine sahiptir. HydroHexa'nın düşük dönüş suyu özelliği sayesinde yoğuşmalı kazanlarla verimli bir şekilde çalışabilir. HydroHexa içerisinde bulunan eşanjörler ve borular, AISI 316 kalite paslanmaz çelikten imal edilmiştir, bu sayede alüminyum radyatörlerle bile kullanımına olanak sağlanmıştır. HydroHexa, kazan dönüş hattında bulunan fark basınç vanası ve ısıtma dönüş hattında bulunan zon vanası sayesinde daire içerisinde eksiksiz balanslama yapılabilir. Indirect serisi HydroHexa, yüksek katlı binalarda basınç kırıcı görevi görerek, kat aralarında bulunan mekanik odaların kaldırılmasına ve bu alanların ticari olarak kullanılmasına olanak sağlar. Isıtma, ayrı bir eşanjör devresi ile kapalı sistem olarak çalıştırılır. Daire ısıtmasını kontrol etmek için, opsiyonel olarak dış hava kompanzasyon kontrolü de eklenebilir.",
-    resim: "/indirect-hydrohexa.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/indirect-hydrohexa-datasheet.pdf" }
-    ],
-    akisDiyagrami: "/indirect-hydrohexa-akis.png",
-    teknikOzelliklerResim: "/indirect-hydrohexa-teknik.png",
-    urunBilesenleriResim: "/indirect-hydrohexa-bilesenler.png"
-  },
-  "indirect-thermohexa": {
-    baslik: "Indirect ThermoHexa",
-    aciklama: "ThermoHexa ısı istasyonlarında kontrol sıcaklığa bağlı, yani termostatik olarak yapılır. Kullanım sıcak suyu hazırlama işlemi ile ısıtma işlemi aynı anda gerçekleşir. ThermoHexa içerisinde bulunan ve sıcaklığa bağlı çok hızlı tepki gösteren Termostatik Vana sayesinde, ısı kaybı olasılığı azalır. Kompak tasarımı sayesinde, cihazı monte etmek pratik ve kolaydır. ThermoHexa içerisinde bulunan eşanjörler ve borular, AISI 316 kalite paslanmaz çelikten imal edilmiştir, bu sayede alüminyum radyatörlerle bile kullanımına olanak sağlanmıştır. Indirect serisi ThermoHexa, yüksek katlı binalarda basınç kırıcı görevi görerek, kat aralarında bulunan mekanik odaların kaldırılmasına ve bu alanların ticari olarak kullanılmasına olanak sağlar. Isıtma, ayrı bir eşanjör devresi ile kapalı sistem olarak çalıştırılır. Daire ısıtmasını kontrol etmek için, opsiyonel olarak dış hava kompanzasyon kontrolü de eklenebilir.",
-    resim: "/indirect-thermohexa.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/indirect-thermohexa-datasheet.pdf" }
-    ],
-    akisDiyagrami: "/indirect-thermohexa-akis.png",
-    teknikOzelliklerResim: "/indirect-thermohexa-teknik.png",
-    urunBilesenleriResim: "/indirect-thermohexa-bilesenler.png"
-  },
-  "smart-hexa": {
-    baslik: "Smart Hexa",
-    aciklama: "SmartHexa ısı istasyonlarında kontrol hem hidrolik hem de termostatik olarak yapılır. Sistem soğuk eşanjör mantığı ile çalıştığı için, eşanjör içerisinde kireçlenme olasılığı ortadan kaybolur. SmartHexa ısı istasyonları kullanım sıcak suyu önceliğine sahiptir. SmartHexa, ısı istasyonu üzerinden sıcaklık, basınç ve akış değerlerini ölçümler. Bu sayede enerji kazanımı ısı istasyonunda gerçekleşmiş olur. Ayrıca, SmartHexa tarafından ölçümlenen bu veriler, son kullanıcıya GSM veya Ethernet yolu ile aktarılabilir. SmartHexa'nın düşük dönüş suyu özelliği sayesinde yoğuşmalı kazanlarla verimli bir şekilde çalışabilir. SmartHexa içerisinde bulunan eşanjörler ve borular, AISI 316 kalite paslanmaz çelikten imal edilmiştir, bu sayede alüminyum radyatörlerle bile kullanımına olanak sağlanmıştır. Indirect serisi SmartHexa, yüksek katlı binalarda basınç kırıcı görevi görerek, kat aralarında bulunan mekanik odaların kaldırılmasına ve bu alanların ticari olarak kullanılmasına olanak sağlar. Isıtma, ayrı bir eşanjör devresi ile kapalı sistem olarak çalıştırılır. Daire ısıtmasını kontrol etmek için, opsiyonel olarak dış hava kompanzasyon kontrolü de eklenebilir.",
-    resim: "/smart-hexa.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/smart-hexa-datasheet.pdf" }
-    ],
-    akisDiyagrami: "/smart-hexa-akis.png",
-    teknikOzelliklerResim: "/smart-hexa-teknik.png",
-    urunBilesenleriResim: "/smart-hexa-bilesenler.png"
-  }
-};
-
 export default function IndirectIsiIstasyonu() {
+  const { t } = useLanguage();
+
+  // Ürün verileri
+  const urunVerileri: Record<string, {
+    baslik: string;
+    aciklama: string;
+    ozellikler?: string[];
+    resim: string;
+    belgeler: { isimKey: string; link: string }[];
+    akisDiyagrami?: string;
+    teknikOzelliklerResim?: string;
+    urunBilesenleriResim?: string;
+  }> = {
+    "indirect-hydrohexa": {
+      baslik: "Indirect HydroHexa",
+      aciklama: t("prod.isi.i.indirect-hydrohexa.desc"),
+      resim: "/indirect-hydrohexa.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/indirect-hydrohexa-datasheet.pdf" }
+      ],
+      akisDiyagrami: "/indirect-hydrohexa-akis.png",
+      teknikOzelliklerResim: "/indirect-hydrohexa-teknik.png",
+      urunBilesenleriResim: "/indirect-hydrohexa-bilesenler.png"
+    },
+    "indirect-thermohexa": {
+      baslik: "Indirect ThermoHexa",
+      aciklama: t("prod.isi.i.indirect-thermohexa.desc"),
+      resim: "/indirect-thermohexa.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/indirect-thermohexa-datasheet.pdf" }
+      ],
+      akisDiyagrami: "/indirect-thermohexa-akis.png",
+      teknikOzelliklerResim: "/indirect-thermohexa-teknik.png",
+      urunBilesenleriResim: "/indirect-thermohexa-bilesenler.png"
+    },
+    "smart-hexa": {
+      baslik: "Smart Hexa",
+      aciklama: t("prod.isi.i.smart-hexa.desc"),
+      resim: "/smart-hexa.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/smart-hexa-datasheet.pdf" }
+      ],
+      akisDiyagrami: "/smart-hexa-akis.png",
+      teknikOzelliklerResim: "/smart-hexa-teknik.png",
+      urunBilesenleriResim: "/smart-hexa-bilesenler.png"
+    }
+  };
   const searchParams = useSearchParams();
   const urunParam = searchParams.get("urun");
   const [activeUrun, setActiveUrun] = useState(urunler[0].key);
@@ -88,14 +90,14 @@ export default function IndirectIsiIstasyonu() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
-          <span className="text-lg font-medium">Kategoriler</span>
+          <span className="text-lg font-medium">{t("prod.back.categories")}</span>
         </Link>
       </div>
 
       {/* Başlık */}
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "60px", paddingBottom: "40px" }}>
         <h1 className="text-[#86868b] text-5xl font-medium text-center">
-          Indirect
+          {t("prod.isi.indirect.title")}
         </h1>
       </section>
 
@@ -172,7 +174,7 @@ export default function IndirectIsiIstasyonu() {
                 {/* Özellikler */}
                 {aktifUrunVerisi.ozellikler && aktifUrunVerisi.ozellikler.length > 0 && (
                   <div className="mb-14">
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Özellikler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.features")}</h3>
                     <div className="space-y-5">
                       {aktifUrunVerisi.ozellikler.map((ozellik, index) => (
                         <div key={index} className="flex items-start gap-4">
@@ -187,7 +189,7 @@ export default function IndirectIsiIstasyonu() {
                 {/* Belgeler */}
                 {aktifUrunVerisi.belgeler.length > 0 && (
                   <div>
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Belgeler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.documents")}</h3>
                     <div className="flex flex-wrap gap-4">
                       {aktifUrunVerisi.belgeler.map((belge, index) => (
                         <a
@@ -205,7 +207,7 @@ export default function IndirectIsiIstasyonu() {
                             <line x1="16" y1="17" x2="8" y2="17"/>
                             <polyline points="10 9 9 9 8 9"/>
                           </svg>
-                          {belge.isim}
+                          {t(belge.isimKey)}
                         </a>
                       ))}
                     </div>
@@ -247,7 +249,7 @@ export default function IndirectIsiIstasyonu() {
                       }
                     }}
                   >
-                    Akış Diyagramı
+                    {t("prod.flowDiagram")}
                   </button>
                 )}
                 {hasTeknikOzellikler && (
@@ -274,7 +276,7 @@ export default function IndirectIsiIstasyonu() {
                       }
                     }}
                   >
-                    Teknik Özellikler
+                    {t("prod.techSpecs")}
                   </button>
                 )}
                 {hasUrunBilesenleri && (
@@ -301,7 +303,7 @@ export default function IndirectIsiIstasyonu() {
                       }
                     }}
                   >
-                    Ürün Bileşenleri
+                    {t("prod.components")}
                   </button>
                 )}
               </div>
@@ -313,7 +315,7 @@ export default function IndirectIsiIstasyonu() {
                   <div className="p-8 flex justify-center">
                     <Image
                       src={aktifUrunVerisi.akisDiyagrami!}
-                      alt="Akış Diyagramı"
+                      alt={t("prod.flowDiagram")}
                       width={900}
                       height={600}
                       className="object-contain"
@@ -339,7 +341,7 @@ export default function IndirectIsiIstasyonu() {
                   <div className="p-8 flex justify-center">
                     <Image
                       src={aktifUrunVerisi.urunBilesenleriResim!}
-                      alt="Ürün Bileşenleri"
+                      alt={t("prod.components")}
                       width={900}
                       height={600}
                       className="object-contain"
@@ -357,7 +359,7 @@ export default function IndirectIsiIstasyonu() {
               {aktifUrunVerisi.baslik}
             </h2>
             <p className="text-[#6e6e73] text-xl">
-              Bu ürünün detayları yakında eklenecektir.
+              {t("prod.comingSoon")}
             </p>
         </div>
         )}

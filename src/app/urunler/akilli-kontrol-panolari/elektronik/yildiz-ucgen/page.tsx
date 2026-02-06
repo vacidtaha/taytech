@@ -5,177 +5,179 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import { useLanguage } from "@/context/LanguageContext";
 
 const urunler = [
   { id: 1, label: "Smart Exclusive S", key: "smart-exclusive-s" },
 ];
 
-// Ürün verileri
-const urunVerileri: Record<string, {
-  baslik: string;
-  aciklama: string;
-  ozellikler: string[];
-  resim: string;
-  belgeler: { isim: string; link: string }[];
-  teknikOzellikler?: string[];
-  uygulamaAlanlariResim?: string;
-  teknikVerilerCoklu?: {
-    baslik: string;
-    basliklar: string[];
-    satirlar: string[][];
-  }[];
-  teknikNot?: string;
-}> = {
-  "smart-exclusive-s": {
-    baslik: "Smart Exclusive S",
-    aciklama: "Mikroişlemcili kontrol panoları, tek faz veya trifaz olarak 4 pompaya kadar sistemi kontrol eder. Smart Exclusive S, sisteminizi yönetmeyi, parametreleri değiştirmeyi, olayları ve mesajları kayıt altına alma vb. gibi bir çok işlemi pratik bir şekilde yapmanızı sağlar.",
-    ozellikler: [
-      "3G / WI-FI modül sayesinde, uzak bir noktadan sistemi işletme, verileri görüntüleme ve sistemi kontrol etme",
-      "Kolay ve hızlı bir şekilde yönlendirme butonlarını kullanarak, net şekilde okunabilir LCD ekran üzerinden ayarların yapılması",
-      "Şamandıradan, basınç sensöründen ve anahtarından veya seviye elektrodundan gelen bilgiler ile, sistemi açar, çalıştırır ve durdurur"
-    ],
-    resim: "/smart-exclusive-s.png",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/smart-exclusive-s-datasheet.pdf" },
-      { isim: "Kullanım Kılavuzu", link: "/smart-exclusive-s-kullanim.pdf" }
-    ],
-    teknikOzellikler: [
-      "Metal Kutu / IP 55",
-      "Kilitleme mekanizmasına sahip Ana kesici",
-      "Güç Beslemesi 1 Faz-50/60Hz 230V ±",
-      "Güç Beslemesi 3 Faz-50/60Hz 400V ±",
-      "128 x 64 LCD Grafik Ekran",
-      "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
-      "Başlatma bilgisi için komut girişi (Seviye Elektrodu veya Şamandıra)",
-      "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
-      "Oto-Manuel Durum bilgisi görüntüleme",
-      "Korumalar ve Hatalar",
-      "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
-      "Faz kaybı ve Faz sırası hatası",
-      "Min / Max Voltaj (Ayarlanabilir)",
-      "Motor başlama zamanı",
-      "Taşma uyarısı fonksiyonu",
-      "Kuru çalışma koruması",
-      "Motor koruma sigortaları",
-      "Pompa çalışma süre bilgisi",
-      "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
-      "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
-      "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
-      "Ayarlanabilir haftalık test",
-      "MODBus Bağlantısı",
-      "Selonoid valve çıkışı"
-    ],
-    uygulamaAlanlariResim: "/smart-exclusive-s-uygulama.png",
-    teknikVerilerCoklu: [
-      {
-        baslik: "Smart Exclusive S 1 Teknik Veriler",
-        basliklar: ["Model", "COD", "Güç (kW)", "HP", "Akım Aralığı (A)", "Kutu Ölçüleri (HxLxW)", "Malzeme"],
-        satirlar: [
-          ["Exclusive S 1 - 7.5 / Tri", "16001", "7.5", "10", "0-15.8", "400x300x175", "ABS"],
-          ["Exclusive S 1 - 11 / Tri", "16002", "11", "15", "0-25", "400x300x175", "ABS"],
-          ["Exclusive S 1 - 15 / Tri", "16003", "15", "20", "0-31.9", "600x400x200", "Metal"],
-          ["Exclusive S 1 - 18.5 / Tri", "16004", "18.5", "25", "0-37.1", "600x400x200", "Metal"],
-          ["Exclusive S 1 - 22 / Tri", "16005", "22", "30", "0-42.7", "600x400x200", "Metal"],
-          ["Exclusive S 1 - 30 / Tri", "16006", "30", "40", "0-57.6", "600x400x200", "Metal"],
-          ["Exclusive S 1 - 37 / Tri", "16007", "37", "50", "0-70.2", "600x400x200", "Metal"],
-          ["Exclusive S 1 - 45 / Tri", "16008", "45", "60", "0-83.5", "700x500x200", "Metal"],
-          ["Exclusive S 1 - 55 / Tri", "16009", "55", "75", "0-100.9", "700x500x200", "Metal"],
-          ["Exclusive S 1 - 75 / Tri", "16010", "75", "100", "0-140.7", "700x500x200", "Metal"],
-          ["Exclusive S 1 - 90 / Tri", "16011", "90", "125", "0-165.1", "800x600x290", "Metal"],
-          ["Exclusive S 1 - 110 / Tri", "16012", "110", "150", "0-201.9", "800x600x290", "Metal"],
-          ["Exclusive S 1 - 132 / Tri", "16013", "132", "180", "0-242.2", "1000x700x320", "Metal"],
-          ["Exclusive S 1 - 160 / Tri", "16014", "160", "220", "0-290.6", "1000x700x320", "Metal"],
-          ["Exclusive S 1 - 185 / Tri", "16015", "185", "250", "0-332.4", "1200x800x340", "Metal"],
-          ["Exclusive S 1 - 200 / Tri", "16016", "200", "270", "0-355.4", "1200x800x340", "Metal"],
-          ["Exclusive S 1 - 250 / Tri", "16017", "250", "340", "0-444.3", "1200x800x340", "Metal"],
-          ["Exclusive S 1 - 315 / Tri", "16018", "315", "430", "0-553.6", "1300x900x360", "Metal"],
-          ["Exclusive S 1 - 355 / Tri", "16019", "355", "485", "0-623.9", "1300x900x360", "Metal"],
-          ["Exclusive S 1 - 400 / Tri", "16020", "400", "544", "0-703", "1300x900x360", "Metal"]
-        ]
-      },
-      {
-        baslik: "Smart Exclusive S 2 Teknik Veriler",
-        basliklar: ["Model", "COD", "Güç (kW)", "HP", "Akım Aralığı (A)", "Kutu Ölçüleri (HxLxW)", "Malzeme"],
-        satirlar: [
-          ["Exclusive S 2 - 7.5 / Tri", "16201", "7.5", "10", "0-15.8", "600x400x200", "Metal"],
-          ["Exclusive S 2 - 11 / Tri", "16202", "11", "15", "0-25", "600x400x200", "Metal"],
-          ["Exclusive S 2 - 15 / Tri", "16203", "15", "20", "0-31.9", "600x400x200", "Metal"],
-          ["Exclusive S 2 - 18.5 / Tri", "16204", "18.5", "25", "0-37.1", "600x400x200", "Metal"],
-          ["Exclusive S 2 - 22 / Tri", "16205", "22", "30", "0-42.7", "700x500x260", "Metal"],
-          ["Exclusive S 2 - 30 / Tri", "16206", "30", "40", "0-57.6", "700x500x260", "Metal"],
-          ["Exclusive S 2 - 37 / Tri", "16207", "37", "50", "0-70.2", "800x600x290", "Metal"],
-          ["Exclusive S 2 - 45 / Tri", "16208", "45", "60", "0-83.5", "1000x700x320", "Metal"],
-          ["Exclusive S 2 - 55 / Tri", "16209", "55", "75", "0-100.9", "1000x700x320", "Metal"],
-          ["Exclusive S 2 - 75 / Tri", "16210", "75", "100", "0-140.7", "1200x800x340", "Metal"],
-          ["Exclusive S 2 - 90 / Tri", "16211", "90", "125", "0-165.1", "1400x800x340", "Metal"],
-          ["Exclusive S 2 - 110 / Tri", "16212", "110", "150", "0-201.9", "1400x800x340", "Metal"],
-          ["Exclusive S 2 - 132 / Tri", "16213", "132", "180", "0-242.2", "1800x950x360", "Metal"],
-          ["Exclusive S 2 - 160 / Tri", "16214", "160", "220", "0-290.6", "1800x950x360", "Metal"],
-          ["Exclusive S 2 - 185 / Tri", "16215", "185", "250", "0-332.4", "2000x1000x420", "Metal"],
-          ["Exclusive S 2 - 200 / Tri", "16216", "200", "270", "0-355.4", "2000x1000x420", "Metal"],
-          ["Exclusive S 2 - 250 / Tri", "16217", "250", "340", "0-444.3", "2000x1000x420", "Metal"],
-          ["Exclusive S 2 - 315 / Tri", "16218", "315", "430", "0-553.6", "2100x1600x500", "Metal"],
-          ["Exclusive S 2 - 355 / Tri", "16219", "355", "485", "0-623.9", "2100x1600x500", "Metal"],
-          ["Exclusive S 2 - 400 / Tri", "16220", "400", "544", "0-703", "2100x1600x500", "Metal"]
-        ]
-      },
-      {
-        baslik: "Smart Exclusive S 3 Teknik Veriler",
-        basliklar: ["Model", "COD", "Güç (kW)", "HP", "Akım Aralığı (A)", "Kutu Ölçüleri (HxLxW)", "Malzeme"],
-        satirlar: [
-          ["Exclusive S 3 - 7.5 / Tri", "16301", "7.5", "10", "0-15.8", "700x500x260", "Metal"],
-          ["Exclusive S 3 - 11 / Tri", "16302", "11", "15", "0-25", "700x500x260", "Metal"],
-          ["Exclusive S 3 - 15 / Tri", "16303", "15", "20", "0-31.9", "800x600x290", "Metal"],
-          ["Exclusive S 3 - 18.5 / Tri", "16304", "18.5", "25", "0-37.1", "1000x700x320", "Metal"],
-          ["Exclusive S 3 - 22 / Tri", "16305", "22", "30", "0-42.7", "1000x700x320", "Metal"],
-          ["Exclusive S 3 - 30 / Tri", "16306", "30", "40", "0-57.6", "1200x800x340", "Metal"],
-          ["Exclusive S 3 - 37 / Tri", "16307", "37", "50", "0-70.2", "1400x800x340", "Metal"],
-          ["Exclusive S 3 - 45 / Tri", "16308", "45", "60", "0-83.5", "1400x800x340", "Metal"],
-          ["Exclusive S 3 - 55 / Tri", "16309", "55", "75", "0-100.9", "1800x950x360", "Metal"],
-          ["Exclusive S 3 - 75 / Tri", "16310", "75", "100", "0-140.7", "1800x950x360", "Metal"],
-          ["Exclusive S 3 - 90 / Tri", "16311", "90", "125", "0-165.1", "2000x1200x420", "Metal"],
-          ["Exclusive S 3 - 110 / Tri", "16312", "110", "150", "0-201.9", "2000x1200x420", "Metal"],
-          ["Exclusive S 3 - 132 / Tri", "16313", "132", "180", "0-242.2", "2000x1200x420", "Metal"],
-          ["Exclusive S 3 - 160 / Tri", "16314", "160", "220", "0-290.6", "2000x1600x500", "Metal"],
-          ["Exclusive S 3 - 185 / Tri", "16315", "185", "250", "0-332.4", "2000x1600x500", "Metal"],
-          ["Exclusive S 3 - 200 / Tri", "16316", "200", "270", "0-355.4", "2000x1600x500", "Metal"],
-          ["Exclusive S 3 - 250 / Tri", "16317", "250", "340", "0-444.3", "2000x1600x500", "Metal"],
-          ["Exclusive S 3 - 315 / Tri", "16318", "315", "430", "0-553.6", "2200x1600x550", "Metal"],
-          ["Exclusive S 3 - 355 / Tri", "16319", "355", "485", "0-623.9", "2200x1600x550", "Metal"],
-          ["Exclusive S 3 - 400 / Tri", "16320", "400", "544", "0-703", "2200x1600x550", "Metal"]
-        ]
-      },
-      {
-        baslik: "Smart Exclusive S 4 Teknik Veriler",
-        basliklar: ["Model", "COD", "Güç (kW)", "HP", "Akım Aralığı (A)", "Kutu Ölçüleri (HxLxW)", "Malzeme"],
-        satirlar: [
-          ["Exclusive S 4 - 7.5 / Tri", "16401", "7.5", "10", "0-15.8", "800x600x290", "Metal"],
-          ["Exclusive S 4 - 11 / Tri", "16402", "11", "15", "0-25", "800x600x290", "Metal"],
-          ["Exclusive S 4 - 15 / Tri", "16403", "15", "20", "0-31.9", "800x600x290", "Metal"],
-          ["Exclusive S 4 - 18.5 / Tri", "16404", "18.5", "25", "0-37.1", "1000x700x320", "Metal"],
-          ["Exclusive S 4 - 22 / Tri", "16405", "22", "30", "0-42.7", "1000x700x320", "Metal"],
-          ["Exclusive S 4 - 30 / Tri", "16406", "30", "40", "0-57.6", "1200x800x340", "Metal"],
-          ["Exclusive S 4 - 37 / Tri", "16407", "37", "50", "0-70.2", "1400x800x340", "Metal"],
-          ["Exclusive S 4 - 45 / Tri", "16408", "45", "60", "0-83.5", "1400x800x340", "Metal"],
-          ["Exclusive S 4 - 55 / Tri", "16409", "55", "75", "0-100.9", "1800x950x360", "Metal"],
-          ["Exclusive S 4 - 75 / Tri", "16410", "75", "100", "0-140.7", "1800x950x360", "Metal"],
-          ["Exclusive S 4 - 90 / Tri", "16411", "90", "125", "0-165.1", "2000x1600x500", "Metal"],
-          ["Exclusive S 4 - 110 / Tri", "16412", "110", "150", "0-201.9", "2000x1600x500", "Metal"],
-          ["Exclusive S 4 - 132 / Tri", "16413", "132", "180", "0-242.2", "2000x1600x500", "Metal"],
-          ["Exclusive S 4 - 160 / Tri", "16414", "160", "220", "0-290.6", "2200x1600x550", "Metal"],
-          ["Exclusive S 4 - 185 / Tri", "16415", "185", "250", "0-332.4", "2200x1600x550", "Metal"],
-          ["Exclusive S 4 - 200 / Tri", "16416", "200", "270", "0-355.4", "2200x1600x550", "Metal"],
-          ["Exclusive S 4 - 250 / Tri", "16417", "250", "340", "0-444.3", "2200x1600x550", "Metal"],
-          ["Exclusive S 4 - 315 / Tri", "16418", "315", "430", "0-553.6", "2400x1800x600", "Metal"],
-          ["Exclusive S 4 - 355 / Tri", "16419", "355", "485", "0-623.9", "2400x1800x600", "Metal"],
-          ["Exclusive S 4 - 400 / Tri", "16420", "400", "544", "0-703", "2400x1800x600", "Metal"]
-        ]
-      }
-    ]
-  }
-};
-
 export default function YildizUcgenYolVerme() {
+  const { t } = useLanguage();
+
+  // Ürün verileri
+  const urunVerileri: Record<string, {
+    baslik: string;
+    aciklama: string;
+    ozellikler: string[];
+    resim: string;
+    belgeler: { isimKey: string; link: string }[];
+    teknikOzellikler?: string[];
+    uygulamaAlanlariResim?: string;
+    teknikVerilerCoklu?: {
+      baslik: string;
+      basliklar: string[];
+      satirlar: string[][];
+    }[];
+    teknikNot?: string;
+  }> = {
+    "smart-exclusive-s": {
+      baslik: "Smart Exclusive S",
+      aciklama: t("prod.yildizUcgen.smart-exclusive-s.desc"),
+      ozellikler: [
+        t("prod.yildizUcgen.smart-exclusive-s.feat1"),
+        t("prod.yildizUcgen.smart-exclusive-s.feat2"),
+        t("prod.yildizUcgen.smart-exclusive-s.feat3")
+      ],
+      resim: "/smart-exclusive-s.png",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/smart-exclusive-s-datasheet.pdf" },
+        { isimKey: "prod.userManual", link: "/smart-exclusive-s-kullanim.pdf" }
+      ],
+      teknikOzellikler: [
+        "Metal Kutu / IP 55",
+        "Kilitleme mekanizmasına sahip Ana kesici",
+        "Güç Beslemesi 1 Faz-50/60Hz 230V ±",
+        "Güç Beslemesi 3 Faz-50/60Hz 400V ±",
+        "128 x 64 LCD Grafik Ekran",
+        "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
+        "Başlatma bilgisi için komut girişi (Seviye Elektrodu veya Şamandıra)",
+        "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
+        "Oto-Manuel Durum bilgisi görüntüleme",
+        "Korumalar ve Hatalar",
+        "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
+        "Faz kaybı ve Faz sırası hatası",
+        "Min / Max Voltaj (Ayarlanabilir)",
+        "Motor başlama zamanı",
+        "Taşma uyarısı fonksiyonu",
+        "Kuru çalışma koruması",
+        "Motor koruma sigortaları",
+        "Pompa çalışma süre bilgisi",
+        "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
+        "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
+        "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
+        "Ayarlanabilir haftalık test",
+        "MODBus Bağlantısı",
+        "Selonoid valve çıkışı"
+      ],
+      uygulamaAlanlariResim: "/smart-exclusive-s-uygulama.png",
+      teknikVerilerCoklu: [
+        {
+          baslik: "Smart Exclusive S 1 Teknik Veriler",
+          basliklar: ["Model", "COD", "Güç (kW)", "HP", "Akım Aralığı (A)", "Kutu Ölçüleri (HxLxW)", "Malzeme"],
+          satirlar: [
+            ["Exclusive S 1 - 7.5 / Tri", "16001", "7.5", "10", "0-15.8", "400x300x175", "ABS"],
+            ["Exclusive S 1 - 11 / Tri", "16002", "11", "15", "0-25", "400x300x175", "ABS"],
+            ["Exclusive S 1 - 15 / Tri", "16003", "15", "20", "0-31.9", "600x400x200", "Metal"],
+            ["Exclusive S 1 - 18.5 / Tri", "16004", "18.5", "25", "0-37.1", "600x400x200", "Metal"],
+            ["Exclusive S 1 - 22 / Tri", "16005", "22", "30", "0-42.7", "600x400x200", "Metal"],
+            ["Exclusive S 1 - 30 / Tri", "16006", "30", "40", "0-57.6", "600x400x200", "Metal"],
+            ["Exclusive S 1 - 37 / Tri", "16007", "37", "50", "0-70.2", "600x400x200", "Metal"],
+            ["Exclusive S 1 - 45 / Tri", "16008", "45", "60", "0-83.5", "700x500x200", "Metal"],
+            ["Exclusive S 1 - 55 / Tri", "16009", "55", "75", "0-100.9", "700x500x200", "Metal"],
+            ["Exclusive S 1 - 75 / Tri", "16010", "75", "100", "0-140.7", "700x500x200", "Metal"],
+            ["Exclusive S 1 - 90 / Tri", "16011", "90", "125", "0-165.1", "800x600x290", "Metal"],
+            ["Exclusive S 1 - 110 / Tri", "16012", "110", "150", "0-201.9", "800x600x290", "Metal"],
+            ["Exclusive S 1 - 132 / Tri", "16013", "132", "180", "0-242.2", "1000x700x320", "Metal"],
+            ["Exclusive S 1 - 160 / Tri", "16014", "160", "220", "0-290.6", "1000x700x320", "Metal"],
+            ["Exclusive S 1 - 185 / Tri", "16015", "185", "250", "0-332.4", "1200x800x340", "Metal"],
+            ["Exclusive S 1 - 200 / Tri", "16016", "200", "270", "0-355.4", "1200x800x340", "Metal"],
+            ["Exclusive S 1 - 250 / Tri", "16017", "250", "340", "0-444.3", "1200x800x340", "Metal"],
+            ["Exclusive S 1 - 315 / Tri", "16018", "315", "430", "0-553.6", "1300x900x360", "Metal"],
+            ["Exclusive S 1 - 355 / Tri", "16019", "355", "485", "0-623.9", "1300x900x360", "Metal"],
+            ["Exclusive S 1 - 400 / Tri", "16020", "400", "544", "0-703", "1300x900x360", "Metal"]
+          ]
+        },
+        {
+          baslik: "Smart Exclusive S 2 Teknik Veriler",
+          basliklar: ["Model", "COD", "Güç (kW)", "HP", "Akım Aralığı (A)", "Kutu Ölçüleri (HxLxW)", "Malzeme"],
+          satirlar: [
+            ["Exclusive S 2 - 7.5 / Tri", "16201", "7.5", "10", "0-15.8", "600x400x200", "Metal"],
+            ["Exclusive S 2 - 11 / Tri", "16202", "11", "15", "0-25", "600x400x200", "Metal"],
+            ["Exclusive S 2 - 15 / Tri", "16203", "15", "20", "0-31.9", "600x400x200", "Metal"],
+            ["Exclusive S 2 - 18.5 / Tri", "16204", "18.5", "25", "0-37.1", "600x400x200", "Metal"],
+            ["Exclusive S 2 - 22 / Tri", "16205", "22", "30", "0-42.7", "700x500x260", "Metal"],
+            ["Exclusive S 2 - 30 / Tri", "16206", "30", "40", "0-57.6", "700x500x260", "Metal"],
+            ["Exclusive S 2 - 37 / Tri", "16207", "37", "50", "0-70.2", "800x600x290", "Metal"],
+            ["Exclusive S 2 - 45 / Tri", "16208", "45", "60", "0-83.5", "1000x700x320", "Metal"],
+            ["Exclusive S 2 - 55 / Tri", "16209", "55", "75", "0-100.9", "1000x700x320", "Metal"],
+            ["Exclusive S 2 - 75 / Tri", "16210", "75", "100", "0-140.7", "1200x800x340", "Metal"],
+            ["Exclusive S 2 - 90 / Tri", "16211", "90", "125", "0-165.1", "1400x800x340", "Metal"],
+            ["Exclusive S 2 - 110 / Tri", "16212", "110", "150", "0-201.9", "1400x800x340", "Metal"],
+            ["Exclusive S 2 - 132 / Tri", "16213", "132", "180", "0-242.2", "1800x950x360", "Metal"],
+            ["Exclusive S 2 - 160 / Tri", "16214", "160", "220", "0-290.6", "1800x950x360", "Metal"],
+            ["Exclusive S 2 - 185 / Tri", "16215", "185", "250", "0-332.4", "2000x1000x420", "Metal"],
+            ["Exclusive S 2 - 200 / Tri", "16216", "200", "270", "0-355.4", "2000x1000x420", "Metal"],
+            ["Exclusive S 2 - 250 / Tri", "16217", "250", "340", "0-444.3", "2000x1000x420", "Metal"],
+            ["Exclusive S 2 - 315 / Tri", "16218", "315", "430", "0-553.6", "2100x1600x500", "Metal"],
+            ["Exclusive S 2 - 355 / Tri", "16219", "355", "485", "0-623.9", "2100x1600x500", "Metal"],
+            ["Exclusive S 2 - 400 / Tri", "16220", "400", "544", "0-703", "2100x1600x500", "Metal"]
+          ]
+        },
+        {
+          baslik: "Smart Exclusive S 3 Teknik Veriler",
+          basliklar: ["Model", "COD", "Güç (kW)", "HP", "Akım Aralığı (A)", "Kutu Ölçüleri (HxLxW)", "Malzeme"],
+          satirlar: [
+            ["Exclusive S 3 - 7.5 / Tri", "16301", "7.5", "10", "0-15.8", "700x500x260", "Metal"],
+            ["Exclusive S 3 - 11 / Tri", "16302", "11", "15", "0-25", "700x500x260", "Metal"],
+            ["Exclusive S 3 - 15 / Tri", "16303", "15", "20", "0-31.9", "800x600x290", "Metal"],
+            ["Exclusive S 3 - 18.5 / Tri", "16304", "18.5", "25", "0-37.1", "1000x700x320", "Metal"],
+            ["Exclusive S 3 - 22 / Tri", "16305", "22", "30", "0-42.7", "1000x700x320", "Metal"],
+            ["Exclusive S 3 - 30 / Tri", "16306", "30", "40", "0-57.6", "1200x800x340", "Metal"],
+            ["Exclusive S 3 - 37 / Tri", "16307", "37", "50", "0-70.2", "1400x800x340", "Metal"],
+            ["Exclusive S 3 - 45 / Tri", "16308", "45", "60", "0-83.5", "1400x800x340", "Metal"],
+            ["Exclusive S 3 - 55 / Tri", "16309", "55", "75", "0-100.9", "1800x950x360", "Metal"],
+            ["Exclusive S 3 - 75 / Tri", "16310", "75", "100", "0-140.7", "1800x950x360", "Metal"],
+            ["Exclusive S 3 - 90 / Tri", "16311", "90", "125", "0-165.1", "2000x1200x420", "Metal"],
+            ["Exclusive S 3 - 110 / Tri", "16312", "110", "150", "0-201.9", "2000x1200x420", "Metal"],
+            ["Exclusive S 3 - 132 / Tri", "16313", "132", "180", "0-242.2", "2000x1200x420", "Metal"],
+            ["Exclusive S 3 - 160 / Tri", "16314", "160", "220", "0-290.6", "2000x1600x500", "Metal"],
+            ["Exclusive S 3 - 185 / Tri", "16315", "185", "250", "0-332.4", "2000x1600x500", "Metal"],
+            ["Exclusive S 3 - 200 / Tri", "16316", "200", "270", "0-355.4", "2000x1600x500", "Metal"],
+            ["Exclusive S 3 - 250 / Tri", "16317", "250", "340", "0-444.3", "2000x1600x500", "Metal"],
+            ["Exclusive S 3 - 315 / Tri", "16318", "315", "430", "0-553.6", "2200x1600x550", "Metal"],
+            ["Exclusive S 3 - 355 / Tri", "16319", "355", "485", "0-623.9", "2200x1600x550", "Metal"],
+            ["Exclusive S 3 - 400 / Tri", "16320", "400", "544", "0-703", "2200x1600x550", "Metal"]
+          ]
+        },
+        {
+          baslik: "Smart Exclusive S 4 Teknik Veriler",
+          basliklar: ["Model", "COD", "Güç (kW)", "HP", "Akım Aralığı (A)", "Kutu Ölçüleri (HxLxW)", "Malzeme"],
+          satirlar: [
+            ["Exclusive S 4 - 7.5 / Tri", "16401", "7.5", "10", "0-15.8", "800x600x290", "Metal"],
+            ["Exclusive S 4 - 11 / Tri", "16402", "11", "15", "0-25", "800x600x290", "Metal"],
+            ["Exclusive S 4 - 15 / Tri", "16403", "15", "20", "0-31.9", "800x600x290", "Metal"],
+            ["Exclusive S 4 - 18.5 / Tri", "16404", "18.5", "25", "0-37.1", "1000x700x320", "Metal"],
+            ["Exclusive S 4 - 22 / Tri", "16405", "22", "30", "0-42.7", "1000x700x320", "Metal"],
+            ["Exclusive S 4 - 30 / Tri", "16406", "30", "40", "0-57.6", "1200x800x340", "Metal"],
+            ["Exclusive S 4 - 37 / Tri", "16407", "37", "50", "0-70.2", "1400x800x340", "Metal"],
+            ["Exclusive S 4 - 45 / Tri", "16408", "45", "60", "0-83.5", "1400x800x340", "Metal"],
+            ["Exclusive S 4 - 55 / Tri", "16409", "55", "75", "0-100.9", "1800x950x360", "Metal"],
+            ["Exclusive S 4 - 75 / Tri", "16410", "75", "100", "0-140.7", "1800x950x360", "Metal"],
+            ["Exclusive S 4 - 90 / Tri", "16411", "90", "125", "0-165.1", "2000x1600x500", "Metal"],
+            ["Exclusive S 4 - 110 / Tri", "16412", "110", "150", "0-201.9", "2000x1600x500", "Metal"],
+            ["Exclusive S 4 - 132 / Tri", "16413", "132", "180", "0-242.2", "2000x1600x500", "Metal"],
+            ["Exclusive S 4 - 160 / Tri", "16414", "160", "220", "0-290.6", "2200x1600x550", "Metal"],
+            ["Exclusive S 4 - 185 / Tri", "16415", "185", "250", "0-332.4", "2200x1600x550", "Metal"],
+            ["Exclusive S 4 - 200 / Tri", "16416", "200", "270", "0-355.4", "2200x1600x550", "Metal"],
+            ["Exclusive S 4 - 250 / Tri", "16417", "250", "340", "0-444.3", "2200x1600x550", "Metal"],
+            ["Exclusive S 4 - 315 / Tri", "16418", "315", "430", "0-553.6", "2400x1800x600", "Metal"],
+            ["Exclusive S 4 - 355 / Tri", "16419", "355", "485", "0-623.9", "2400x1800x600", "Metal"],
+            ["Exclusive S 4 - 400 / Tri", "16420", "400", "544", "0-703", "2400x1800x600", "Metal"]
+          ]
+        }
+      ]
+    }
+  };
   const searchParams = useSearchParams();
   const urunParam = searchParams.get("urun");
   const [activeUrun, setActiveUrun] = useState(urunler[0].key);
@@ -205,14 +207,14 @@ export default function YildizUcgenYolVerme() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
-          <span className="text-lg font-medium">Kategoriler</span>
+          <span className="text-lg font-medium">{t("prod.back.categories")}</span>
         </Link>
       </div>
 
       {/* Başlık */}
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "60px", paddingBottom: "40px" }}>
         <h1 className="text-[#86868b] text-5xl font-medium text-center">
-          Yıldız / Üçgen Yol Verme Panoları
+          {t("prod.akilli.yildizUcgen.title")}
         </h1>
       </section>
 
@@ -289,7 +291,7 @@ export default function YildizUcgenYolVerme() {
                 {/* Özellikler */}
                 {aktifUrunVerisi.ozellikler.length > 0 && (
                   <div className="mb-14">
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Özellikler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.features")}</h3>
                     <div className="space-y-5">
                       {aktifUrunVerisi.ozellikler.map((ozellik, index) => (
                         <div key={index} className="flex items-start gap-4">
@@ -304,7 +306,7 @@ export default function YildizUcgenYolVerme() {
                 {/* Belgeler */}
                 {aktifUrunVerisi.belgeler.length > 0 && (
                   <div>
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Belgeler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.documents")}</h3>
                     <div className="flex flex-wrap gap-4">
                       {aktifUrunVerisi.belgeler.map((belge, index) => (
                         <a
@@ -322,7 +324,7 @@ export default function YildizUcgenYolVerme() {
                             <line x1="16" y1="17" x2="8" y2="17"/>
                             <polyline points="10 9 9 9 8 9"/>
                           </svg>
-                          {belge.isim}
+                          {t(belge.isimKey)}
                         </a>
                       ))}
                     </div>
@@ -364,7 +366,7 @@ export default function YildizUcgenYolVerme() {
                       }
                     }}
                   >
-                    Teknik Özellikler
+                    {t("prod.techSpecs")}
                   </button>
                 )}
                 {hasUygulamaAlanlari && (
@@ -391,7 +393,7 @@ export default function YildizUcgenYolVerme() {
                       }
                     }}
                   >
-                    Uygulama Alanları
+                    {t("prod.appAreas")}
                   </button>
                 )}
                 {hasTeknikVeriler && (
@@ -418,7 +420,7 @@ export default function YildizUcgenYolVerme() {
                       }
                     }}
                   >
-                    Teknik Veriler
+                    {t("prod.techData")}
                   </button>
                 )}
               </div>
@@ -505,7 +507,7 @@ export default function YildizUcgenYolVerme() {
               {aktifUrunVerisi.baslik}
             </h2>
             <p className="text-[#6e6e73] text-xl">
-              Bu ürünün detayları yakında eklenecektir.
+              {t("prod.comingSoon")}
             </p>
         </div>
         )}

@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import { useLanguage } from "@/context/LanguageContext";
 
 const urunler = [
   { id: 1, label: "ESS-86", key: "ess-86" },
@@ -16,201 +17,202 @@ const urunler = [
   { id: 7, label: "DE30", key: "de30" },
 ];
 
-// Ürün verileri
-const urunVerileri: Record<string, {
-  baslik: string;
-  aciklama: string;
-  ozellikler: string[];
-  resim: string;
-  belgeler: { isim: string; link: string }[];
-  teknikOzellikler?: string[];
-  uygulamaAlanlariResim?: string;
-}> = {
-  "ess-86": {
-    baslik: "ESS-86",
-    aciklama: "Kolay anlaşılır menüsü ile kullanıcının istediği sıcaklık ve zaman parametlerini set etmesini ve birden fazla parametrenin tek ekranda analiz edilmesine olanak sağlar. Yüksek hıza sahip işlemci frekansı ve yazılım algoritması sayesinde sensörlerden gelen bilgileri işler ve hızlı kontrol sağlar.",
-    ozellikler: [
-      "NTC Sıcaklık sensörü ile kullanım sıcak suyu hattındaki sıcaklığı kontrol eder",
-      "Oda termostatı bağlantısı ile ısıtma ihtiyacını kontrol eder ve pompanın çalışmasını sağlar",
-      "Akış sensörü ile ısı istasyonundan geçen debi miktarını kullanıcıya gösterir ve buna bilgilere göre işlem yapar",
-      "4 farklı noktadan sıcaklık sensör bilgisini toplar",
-      "4 farklı PWM çıkışı sayesinde vana ve pompa kontrolü sağlar",
-      "Kuru kontak çıkışı sayesinde On/Off olarak pompa ve vana kontrolü sağlar",
-      "Panel üzerinde bulunan Membran etiket sayesinde kullanıcıya basma hissiyatı verir",
-      "128*64 grafik ekranı ile sensörlerden aldığı bilgileri ekranda kullanıcıya sunar",
-      "IP65 Kutusu ve rakor bağlantıları sayesinde su geçirmezlik sağlar"
-    ],
-    resim: "/ess-86.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/ess-86-datasheet.pdf" }
-    ],
-    teknikOzellikler: [
-      "Çalışma Voltajı: 24VDC",
-      "32 Bit Mikroişlemci Tabanlı yüksek hızlı işlemci",
-      "Gerçek zaman özelliği (RTC)",
-      "512Kbit EEPROM Hafıza",
-      "Mikro USB Portu (Opsiyonel)",
-      "NTC Sensör Bağlantısı x4",
-      "PT1000 Sensör Bağlantısı x3",
-      "Haberleşmeye Uygun Genişleme Portu",
-      "128*64 Arka aydınlatmaya sahip Grafik LCD",
-      "Röle Çıkışları 2 x 230V 8A NC Kontak Çıkışı",
-      "Boyut(mm) 110 x 110 x 70",
-      "IP Koruması IP 65",
-      "Çalışma Sıcaklığı -20°C ~ 85°C"
-    ]
-  },
-  "chs18": {
-    baslik: "CHS18 Controller",
-    aciklama: "32 bit mikroişlemci sayesinde sensörlerden gelen bilgileri analiz ederek, kullanıcının ısıtma ve kullanım sıcak suyu ihtiyacını karşılar. Kontrol switchleri sayesinde sıcaklık ve zamanın kolayca set edilmesini sağlar.",
-    ozellikler: [
-      "Cam sigorta sayesinde pompanın sıkışması durumunda koruma sağlar",
-      "NTC Sıcaklık sensörü ile kullanım sıcak suyu hattındaki sıcaklığı kontrol eder",
-      "Oda termostatı bağlantısı ile ısıtma ihtiyacını kontrol eder ve pompanın çalışmasını sağlar",
-      "Akış anahtarı veya akış sensörü opsiyonu ile sistemlere uyum sağlar",
-      "Akış bilgisine göre ısıtma hattını kapatarak, sıcak suyun kullanım sıcak suyu hattına yönlenmesini sağlar",
-      "Resirkülasyon hattını sıcaklık ve zamana bağlı olarak kontrolünü sağlar",
-      "Donanım üzerinde bulunan DIP switchler sayesinde istenilen sıcaklık ve zaman değeri set edilir",
-      "Normal de açık ve Normalde Kapalı kontak çıkışları sayesinde sistemde bulunan vana ve pompaların kontrolü sağlanır",
-      "Panel üzerinde bulunan butonlar sayesinde ısıtma ve resirkülasyon hattının On/Off olarak kontrol edilmesine olanak tanır",
-      "IP65 Kutusu ve rakor bağlantıları sayesinde su geçirmezlik sağlar"
-    ],
-    resim: "/chs18.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/chs18-datasheet.pdf" }
-    ],
-    teknikOzellikler: [
-      "Çalışma Voltajı 230V 50Hz",
-      "Röle Çıkışları 2 x 230V 8A NC/NO Kontak Çıkışı",
-      "Sıcaklık Hassasiyeti ± 1°C",
-      "Akış Sensörü Hassasiyeti 1 lt/dk",
-      "Boyut(mm) 110 x 110 x 70",
-      "IP Koruması IP 65",
-      "Çalışma Sıcaklığı -20°C ~ 85°C"
-    ]
-  },
-  "de10": {
-    baslik: "DE10",
-    aciklama: "DE10 Bağlantı kutusu, kullanıcı kontrollü olarak ısı istasyonlarında bulunan ısıtma hattını kontrol eder.",
-    ozellikler: [
-      "230VAC Pompalara çıkış verebilir",
-      "İstasyonda bulunan pompanın uzaktan bölgesel olarak çalıştırılmasını sağlar",
-      "Cam sigorta sayesinde pompaların sıkışması durumunda koruma sağlar",
-      "Oda termostatı bağlantısı sayesinde bölgesel çalışmayı sağlar",
-      "IP65 Kutusu ve rakor bağlantıları sayesinde su geçirmezlik sağlar"
-    ],
-    resim: "/de10.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/de10-datasheet.pdf" }
-    ],
-    teknikOzellikler: [
-      "IP65 Contalı Muhafaza",
-      "Kullanıcı Kontrolü İçin Toggle Buton",
-      "Kolay Montaj Geçmeli Bağlantı Klemensi",
-      "3A Cam Sigorta",
-      "230V AC Besleme gerilimi",
-      "Ölçüler: 160x100x50mm"
-    ]
-  },
-  "de15": {
-    baslik: "DE15",
-    aciklama: "DE15 Bağlantı kutusu, ısı istasyonlarında bulunan ısıtma hattını, kullanıcı kontrolünde ve birbirinden bağımsız iki bölgenin ısıtmasını kontrol eder.",
-    ozellikler: [
-      "230VAC Pompalara çıkış verebilir",
-      "Cam sigorta sayesinde pompanın sıkışması durumunda koruma sağlar",
-      "İki farklı oda termostatı bağlantısı sayesinde ihtiyaç olan bölgenin ısınması için kollektör hattında bulunan aktuatörün çalışmasını sağlar",
-      "IP65 Kutusu ve rakor bağlantıları sayesinde su geçirmezlik sağlar"
-    ],
-    resim: "/de15.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/de15-datasheet.pdf" }
-    ],
-    teknikOzellikler: [
-      "IP65 Contalı Muhafaza",
-      "Kullanıcı Kontrolü İçin Toggle Buton",
-      "3A Cam Sigorta",
-      "230V AC Besleme gerilimi",
-      "2x 230VAC 8A Röle",
-      "Ölçüler: 115 x 65 x 55mm"
-    ]
-  },
-  "de20": {
-    baslik: "DE20",
-    aciklama: "DE20 Bağlantı kutusu, ısı istasyonlarında bulunan ısıtma hattını ve kullanım sıcak suyu hattını istasyon içerisinden geçen debi miktarına ve bölgesel ısıtma ihtiyacına bağlı olarak kontrol eder.",
-    ozellikler: [
-      "Cam sigorta sayesinde pompanın sıkışması durumunda koruma sağlar",
-      "Pano üzerinde bulunan görsel indikatörler sayesinde ısıtma veya kullanım sıcak suyu hattının çalıştığını gösterir",
-      "Sistemde ısıtma ve resirkülasyon hattını kontrol eden 230V AC NC/NO vanaların kontrolünü sağlar",
-      "Kullanıcı konforunu ön plana çıkarmak amacı ile sistemde bulunan akış anahtarı sayesinde ısıtma hattını durdurur",
-      "Panel içerisinde bulunan oda termostatı bağlantısı sayesinde ısıtma hattını kontrol eder",
-      "IP65 Kutusu ve rakor bağlantıları sayesinde su geçirmezlik sağlar"
-    ],
-    resim: "",
-    belgeler: [],
-    teknikOzellikler: [
-      "IP65 Contalı Muhafaza",
-      "3A Cam Sigorta",
-      "230VAC Pompa Bağlantısı",
-      "230VAC NC/NO Kontak Vana Bağlantısı",
-      "230VAC Akış Anahtarı Bağlantısı",
-      "230VAC Oda Termostatı Bağlantısı",
-      "230V AC Besleme gerilimi",
-      "2x 230VAC 8A Röle",
-      "Ölçüler: 115 x 90 x 55mm"
-    ]
-  },
-  "de25": {
-    baslik: "DE25",
-    aciklama: "DE25 Bağlantı kutusu, ısı istasyonlarında bulunan ısıtma hattını ve kullanım sıcak suyu hattını kullanıcı arayüzü ile NTC sıcaklık sensörü ve akış anahtarından aldığı bilgilere göre kontrol eder.",
-    ozellikler: [
-      "Cam sigorta sayesinde pompanın sıkışması durumunda koruma sağlar",
-      "Bağlantı kutusu üzerinde bulunan kontrolör sayesinde resirkülasyon hattında istenilen sıcaklığın set edilmesini sağlar",
-      "NTC Sıcaklık sensörü sayesinde bağlı olduğu hattın sıcaklık değerini ölçer",
-      "Panel üzerinden ayarlanabilen süre ile resirkülasyon hattına bağlı olan pompa çalıştırılır ve süre dolduğunda durdurulur",
-      "Kullanıcı konforunu ön plana çıkarmak amacı ile sistemde bulunan akış anahtarı sayesinde ısıtma hattını durdurur",
-      "Panel içerisinde bulunan oda termostatı bağlantısı sayesinde ısıtma hattını kontrol eder"
-    ],
-    resim: "/de25.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/de25-datasheet.pdf" }
-    ],
-    teknikOzellikler: [
-      "IP65 Contalı Muhafaza",
-      "3A Cam Sigorta",
-      "2x 230VAC Pompa Bağlantısı",
-      "230VAC Akış Anahtarı Bağlantısı",
-      "230VAC Oda Termostatı Bağlantısı",
-      "230V AC Besleme gerilimi",
-      "2x 230VAC 8A Röle",
-      "Sıcaklık Hassasiyeti ± 1°C",
-      "Ölçüler: 120 x 120 x 90mm"
-    ]
-  },
-  "de30": {
-    baslik: "DE30",
-    aciklama: "7 Bölgeyi bağımsız olarak 230V oda termostatlarından gelen kontak bilgisine göre kontrol eder ve basınç şalteri sayesinde ısıtma hattının susuz çalışmaya karşı korunmasını sağlar.",
-    ozellikler: [
-      "Cam sigorta sayesinde pompanın sıkışması durumunda koruma sağlar",
-      "Birbirinden bağımsız 7 bölge oda termostatı bağlantısı destekler",
-      "Basınç şalteri bağlantısı sayesinde düşük basınçlarda pompanın susuz çalışmaya karşı korur",
-      "7 bölgeden herhangi birinden gelen çalış komutuna göre pompanın çalışmasını sağlar",
-      "4 kablolu, kontak çıkışı bulunan aktuatör bağlantısı",
-      "IP65 Kutusu ve rakor bağlantıları sayesinde su geçirmezlik sağlar"
-    ],
-    resim: "/de30.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/de30-datasheet.pdf" }
-    ],
-    teknikOzellikler: [
-      "230V AC Çalışma Voltajı",
-      "IP65 Contalı Muhafaza",
-      "3A Cam Sigorta",
-      "Ölçüler: 146 x 222 x 54mm"
-    ]
-  }
-};
-
 export default function IsiIstasyonuKontrolorleri() {
+  const { t } = useLanguage();
+
+  // Ürün verileri
+  const urunVerileri: Record<string, {
+    baslik: string;
+    aciklama: string;
+    ozellikler: string[];
+    resim: string;
+    belgeler: { isimKey: string; link: string }[];
+    teknikOzellikler?: string[];
+    uygulamaAlanlariResim?: string;
+  }> = {
+    "ess-86": {
+      baslik: "ESS-86",
+      aciklama: t("prod.isiKontrol.ess-86.desc"),
+      ozellikler: [
+        t("prod.isiKontrol.ess-86.feat1"),
+        t("prod.isiKontrol.ess-86.feat2"),
+        t("prod.isiKontrol.ess-86.feat3"),
+        t("prod.isiKontrol.ess-86.feat4"),
+        t("prod.isiKontrol.ess-86.feat5"),
+        t("prod.isiKontrol.ess-86.feat6"),
+        t("prod.isiKontrol.ess-86.feat7"),
+        t("prod.isiKontrol.ess-86.feat8"),
+        t("prod.isiKontrol.ess-86.feat9")
+      ],
+      resim: "/ess-86.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/ess-86-datasheet.pdf" }
+      ],
+      teknikOzellikler: [
+        "Çalışma Voltajı: 24VDC",
+        "32 Bit Mikroişlemci Tabanlı yüksek hızlı işlemci",
+        "Gerçek zaman özelliği (RTC)",
+        "512Kbit EEPROM Hafıza",
+        "Mikro USB Portu (Opsiyonel)",
+        "NTC Sensör Bağlantısı x4",
+        "PT1000 Sensör Bağlantısı x3",
+        "Haberleşmeye Uygun Genişleme Portu",
+        "128*64 Arka aydınlatmaya sahip Grafik LCD",
+        "Röle Çıkışları 2 x 230V 8A NC Kontak Çıkışı",
+        "Boyut(mm) 110 x 110 x 70",
+        "IP Koruması IP 65",
+        "Çalışma Sıcaklığı -20°C ~ 85°C"
+      ]
+    },
+    "chs18": {
+      baslik: "CHS18 Controller",
+      aciklama: t("prod.isiKontrol.chs18.desc"),
+      ozellikler: [
+        t("prod.isiKontrol.chs18.feat1"),
+        t("prod.isiKontrol.chs18.feat2"),
+        t("prod.isiKontrol.chs18.feat3"),
+        t("prod.isiKontrol.chs18.feat4"),
+        t("prod.isiKontrol.chs18.feat5"),
+        t("prod.isiKontrol.chs18.feat6"),
+        t("prod.isiKontrol.chs18.feat7"),
+        t("prod.isiKontrol.chs18.feat8"),
+        t("prod.isiKontrol.chs18.feat9"),
+        t("prod.isiKontrol.chs18.feat10")
+      ],
+      resim: "/chs18.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/chs18-datasheet.pdf" }
+      ],
+      teknikOzellikler: [
+        "Çalışma Voltajı 230V 50Hz",
+        "Röle Çıkışları 2 x 230V 8A NC/NO Kontak Çıkışı",
+        "Sıcaklık Hassasiyeti ± 1°C",
+        "Akış Sensörü Hassasiyeti 1 lt/dk",
+        "Boyut(mm) 110 x 110 x 70",
+        "IP Koruması IP 65",
+        "Çalışma Sıcaklığı -20°C ~ 85°C"
+      ]
+    },
+    "de10": {
+      baslik: "DE10",
+      aciklama: t("prod.isiKontrol.de10.desc"),
+      ozellikler: [
+        t("prod.isiKontrol.de10.feat1"),
+        t("prod.isiKontrol.de10.feat2"),
+        t("prod.isiKontrol.de10.feat3"),
+        t("prod.isiKontrol.de10.feat4"),
+        t("prod.isiKontrol.de10.feat5")
+      ],
+      resim: "/de10.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/de10-datasheet.pdf" }
+      ],
+      teknikOzellikler: [
+        "IP65 Contalı Muhafaza",
+        "Kullanıcı Kontrolü İçin Toggle Buton",
+        "Kolay Montaj Geçmeli Bağlantı Klemensi",
+        "3A Cam Sigorta",
+        "230V AC Besleme gerilimi",
+        "Ölçüler: 160x100x50mm"
+      ]
+    },
+    "de15": {
+      baslik: "DE15",
+      aciklama: t("prod.isiKontrol.de15.desc"),
+      ozellikler: [
+        t("prod.isiKontrol.de15.feat1"),
+        t("prod.isiKontrol.de15.feat2"),
+        t("prod.isiKontrol.de15.feat3"),
+        t("prod.isiKontrol.de15.feat4")
+      ],
+      resim: "/de15.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/de15-datasheet.pdf" }
+      ],
+      teknikOzellikler: [
+        "IP65 Contalı Muhafaza",
+        "Kullanıcı Kontrolü İçin Toggle Buton",
+        "3A Cam Sigorta",
+        "230V AC Besleme gerilimi",
+        "2x 230VAC 8A Röle",
+        "Ölçüler: 115 x 65 x 55mm"
+      ]
+    },
+    "de20": {
+      baslik: "DE20",
+      aciklama: t("prod.isiKontrol.de20.desc"),
+      ozellikler: [
+        t("prod.isiKontrol.de20.feat1"),
+        t("prod.isiKontrol.de20.feat2"),
+        t("prod.isiKontrol.de20.feat3"),
+        t("prod.isiKontrol.de20.feat4"),
+        t("prod.isiKontrol.de20.feat5"),
+        t("prod.isiKontrol.de20.feat6")
+      ],
+      resim: "",
+      belgeler: [],
+      teknikOzellikler: [
+        "IP65 Contalı Muhafaza",
+        "3A Cam Sigorta",
+        "230VAC Pompa Bağlantısı",
+        "230VAC NC/NO Kontak Vana Bağlantısı",
+        "230VAC Akış Anahtarı Bağlantısı",
+        "230VAC Oda Termostatı Bağlantısı",
+        "230V AC Besleme gerilimi",
+        "2x 230VAC 8A Röle",
+        "Ölçüler: 115 x 90 x 55mm"
+      ]
+    },
+    "de25": {
+      baslik: "DE25",
+      aciklama: t("prod.isiKontrol.de25.desc"),
+      ozellikler: [
+        t("prod.isiKontrol.de25.feat1"),
+        t("prod.isiKontrol.de25.feat2"),
+        t("prod.isiKontrol.de25.feat3"),
+        t("prod.isiKontrol.de25.feat4"),
+        t("prod.isiKontrol.de25.feat5"),
+        t("prod.isiKontrol.de25.feat6")
+      ],
+      resim: "/de25.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/de25-datasheet.pdf" }
+      ],
+      teknikOzellikler: [
+        "IP65 Contalı Muhafaza",
+        "3A Cam Sigorta",
+        "2x 230VAC Pompa Bağlantısı",
+        "230VAC Akış Anahtarı Bağlantısı",
+        "230VAC Oda Termostatı Bağlantısı",
+        "230V AC Besleme gerilimi",
+        "2x 230VAC 8A Röle",
+        "Sıcaklık Hassasiyeti ± 1°C",
+        "Ölçüler: 120 x 120 x 90mm"
+      ]
+    },
+    "de30": {
+      baslik: "DE30",
+      aciklama: t("prod.isiKontrol.de30.desc"),
+      ozellikler: [
+        t("prod.isiKontrol.de30.feat1"),
+        t("prod.isiKontrol.de30.feat2"),
+        t("prod.isiKontrol.de30.feat3"),
+        t("prod.isiKontrol.de30.feat4"),
+        t("prod.isiKontrol.de30.feat5"),
+        t("prod.isiKontrol.de30.feat6")
+      ],
+      resim: "/de30.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/de30-datasheet.pdf" }
+      ],
+      teknikOzellikler: [
+        "230V AC Çalışma Voltajı",
+        "IP65 Contalı Muhafaza",
+        "3A Cam Sigorta",
+        "Ölçüler: 146 x 222 x 54mm"
+      ]
+    }
+  };
   const searchParams = useSearchParams();
   const urunParam = searchParams.get("urun");
   const [activeUrun, setActiveUrun] = useState(urunler[0].key);
@@ -239,14 +241,14 @@ export default function IsiIstasyonuKontrolorleri() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
-          <span className="text-lg font-medium">Kategoriler</span>
+          <span className="text-lg font-medium">{t("prod.back.categories")}</span>
         </Link>
       </div>
 
       {/* Başlık */}
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "60px", paddingBottom: "40px" }}>
         <h1 className="text-[#86868b] text-5xl font-medium text-center">
-          Isı İstasyonu Kontrolörleri
+          {t("prod.isi.kontrolorleri.title")}
         </h1>
       </section>
 
@@ -323,7 +325,7 @@ export default function IsiIstasyonuKontrolorleri() {
                 {/* Özellikler */}
                 {aktifUrunVerisi.ozellikler.length > 0 && (
                   <div className="mb-14">
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Özellikler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.features")}</h3>
                     <div className="space-y-5">
                       {aktifUrunVerisi.ozellikler.map((ozellik, index) => (
                         <div key={index} className="flex items-start gap-4">
@@ -338,7 +340,7 @@ export default function IsiIstasyonuKontrolorleri() {
                 {/* Belgeler */}
                 {aktifUrunVerisi.belgeler.length > 0 && (
                   <div>
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Belgeler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.documents")}</h3>
                     <div className="flex flex-wrap gap-4">
                       {aktifUrunVerisi.belgeler.map((belge, index) => (
                         <a
@@ -356,7 +358,7 @@ export default function IsiIstasyonuKontrolorleri() {
                             <line x1="16" y1="17" x2="8" y2="17"/>
                             <polyline points="10 9 9 9 8 9"/>
                           </svg>
-                          {belge.isim}
+                          {t(belge.isimKey)}
                         </a>
                       ))}
                     </div>
@@ -398,7 +400,7 @@ export default function IsiIstasyonuKontrolorleri() {
                       }
                     }}
                   >
-                    Teknik Özellikler
+                    {t("prod.techSpecs")}
                   </button>
                 )}
                 {hasUygulamaAlanlari && (
@@ -425,7 +427,7 @@ export default function IsiIstasyonuKontrolorleri() {
                       }
                     }}
                   >
-                    Uygulama Alanları
+                    {t("prod.appAreas")}
                   </button>
                 )}
               </div>
@@ -469,7 +471,7 @@ export default function IsiIstasyonuKontrolorleri() {
               {aktifUrunVerisi.baslik}
             </h2>
             <p className="text-[#6e6e73] text-xl">
-              Bu ürünün detayları yakında eklenecektir.
+              {t("prod.comingSoon")}
             </p>
           </div>
         )}

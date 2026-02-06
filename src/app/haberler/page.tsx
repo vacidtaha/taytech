@@ -3,88 +3,29 @@
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
+import { useLanguage } from "@/context/LanguageContext";
 
 const haberler = [
-  {
-    id: 1,
-    title: "Taytech, Mas Academy'nin Konuğu Oldu",
-    date: "16 Ekim 2023",
-    image: "/akıllıbina.jpg",
-    size: "large" // 2 satır
-  },
-  {
-    id: 2,
-    title: "IRONTRAP® Manyetik Filtre Serisi Genişliyor",
-    date: "12 Ekim 2023",
-    image: "/akıllısehir.jpg",
-    size: "normal"
-  },
-  {
-    id: 3,
-    title: "Yeni Nesil Smart Kontrol Panoları Tanıtıldı",
-    date: "8 Kasım 2023",
-    image: "/konferans.jpg",
-    size: "wide" // 2 sütun
-  },
-  {
-    id: 4,
-    title: "Isı İstasyonu Uygulamalarında Yenilik",
-    date: "5 Kasım 2023",
-    image: "/yenilik.jpg",
-    size: "normal"
-  },
-  {
-    id: 5,
-    title: "Gebze Tesislerinde Kapasite Artışı",
-    date: "1 Kasım 2023",
-    image: "/tesis.jpeg",
-    size: "normal"
-  },
-  {
-    id: 6,
-    title: "Taytech Cloud Platformu Yayında",
-    date: "25 Ekim 2023",
-    image: "/taytechcloudfoto.avif",
-    size: "normal"
-  },
-  {
-    id: 7,
-    title: "ISO 9001:2015 Sertifikası Yenilendi",
-    date: "20 Ekim 2023",
-    image: "/akıllıenerji.avif",
-    size: "large"
-  },
-  {
-    id: 8,
-    title: "Akıllı Bina Projelerinde Yeni İşbirlikleri",
-    date: "15 Ekim 2023",
-    image: "/akıllıtarım.jpg",
-    size: "wide"
-  },
+  { id: 1, titleKey: "news.1", date: "16 Ekim 2023", image: "/akıllıbina.jpg", size: "large" },
+  { id: 2, titleKey: "news.2", date: "12 Ekim 2023", image: "/akıllısehir.jpg", size: "normal" },
+  { id: 3, titleKey: "news.3", date: "8 Kasım 2023", image: "/konferans.jpg", size: "wide" },
+  { id: 4, titleKey: "news.4", date: "5 Kasım 2023", image: "/yenilik.jpg", size: "normal" },
+  { id: 5, titleKey: "news.5", date: "1 Kasım 2023", image: "/tesis.jpeg", size: "normal" },
+  { id: 6, titleKey: "news.6", date: "25 Ekim 2023", image: "/taytechcloudfoto.avif", size: "normal" },
+  { id: 7, titleKey: "news.7", date: "20 Ekim 2023", image: "/akıllıenerji.avif", size: "large" },
+  { id: 8, titleKey: "news.8", date: "15 Ekim 2023", image: "/akıllıtarım.jpg", size: "wide" },
 ];
 
 export default function HaberlerPage() {
+  const { t } = useLanguage();
   return (
     <div className="bg-[#f5f5f7] min-h-screen pt-12">
       {/* Hero Bölümü */}
       <div style={{ padding: '80px 100px 60px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
-          <h1 className="text-5xl font-bold text-[#1d1d1f]">Bizden Haberler</h1>
-          <span 
-            style={{ 
-              backgroundColor: '#1d1d1f', 
-              color: 'white', 
-              padding: '6px 12px', 
-              borderRadius: '6px', 
-              fontSize: '12px', 
-              fontWeight: 600,
-              letterSpacing: '0.5px'
-            }}
-          >
-            BETA - Hazırlanıyor
-          </span>
+          <h1 className="text-5xl font-bold text-[#1d1d1f]">{t("haberler.title")}</h1>
         </div>
-        <p className="text-[#86868b] text-xl">Taytech'ten son gelişmeler ve duyurular</p>
+        <p className="text-[#86868b] text-xl">{t("haberler.subtitle")}</p>
       </div>
 
       {/* Masonry Grid */}
@@ -135,7 +76,7 @@ export default function HaberlerPage() {
             {/* Image */}
             <Image
               src={haber.image}
-              alt={haber.title}
+              alt={t(haber.titleKey)}
               fill
               style={{ objectFit: 'cover' }}
             />
@@ -156,7 +97,7 @@ export default function HaberlerPage() {
                   haber.size === 'wide' ? 'text-xl' : 'text-base'
                 }`}
               >
-                {haber.title}
+                {t(haber.titleKey)}
               </h3>
               {(haber.size === 'large' || haber.size === 'wide') && (
                 <p className="text-white/60 text-sm mt-2">{haber.date}</p>

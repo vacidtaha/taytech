@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import { useLanguage } from "@/context/LanguageContext";
 
 const urunler = [
   { id: 1, label: "TC200+", key: "tc200" },
@@ -12,105 +13,106 @@ const urunler = [
   { id: 3, label: "TC220+", key: "tc220" },
 ];
 
-// Ürün verileri
-const urunVerileri: Record<string, {
-  baslik: string;
-  aciklama: string;
-  ozellikler: string[];
-  resim: string;
-  belgeler: { isim: string; link: string }[];
-  teknikOzellikler?: string[];
-  kullanimAvantajlari?: string[];
-}> = {
-  "tc200": {
-    baslik: "TC200+",
-    aciklama: "Halhazırda çalışan sistemlerde manyetit ve tortuyu temizlemekte kullanılır. Radyatör ve boru tesisatında gelişmiş güçlü temizleyici TC200+ su akışını sağlayarak ısı verimini arttırır.",
-    ozellikler: [
-      "Merkezi sistem verimliliğinin geri kazanılmasına yardımcı olur",
-      "Sistemden çamur, tortu ve birikintileri temizler",
-      "Sistem ömrünü uzatır",
-      "Bakım maliyetlerini azaltır"
-    ],
-    resim: "/tc200-plus.png",
-    belgeler: [],
-    teknikOzellikler: [
-      "Görünüm: Sıvı",
-      "Renk: Berrak Sarı",
-      "pH: 1,5",
-      "Çevre Bilgileri:",
-      "Tehlikesiz",
-      "Toksik değil",
-      "Biyolojik olarak parçalanır",
-      "Drain edilir"
-    ],
-    kullanimAvantajlari: [
-      "Güçlü temizleyici sıvı",
-      "Isıtma ve soğutma her iki sistem için de uygundur",
-      "Tüm IronTrap sıvılar ile uyumludur",
-      "Sıcak hatta çalışması etkilidir",
-      "Kirlenmeyi temizleyerek ısıl verimlilik artar"
-    ]
-  },
-  "tc210": {
-    baslik: "TC210+",
-    aciklama: "Yeni kurulmuş ve devreye alınacak sistemler için ideal bir sıvıdır. Güçlü formülü kalıntıları sistemden uzak tutmak için özel olarak geliştirilmiştir.",
-    ozellikler: [
-      "Kurulum artıklarını ve metal yüzeyde bulunan yağları temizler",
-      "Pas yapıcı kireç artıklarını sistemden uzaklaştırır",
-      "İnhibitörlerin sistemi korumasına hazırlar",
-      "Bakım maliyetlerini azaltır",
-      "Sistem ömrünü uzatır"
-    ],
-    resim: "/tc210-plus.png",
-    belgeler: [],
-    teknikOzellikler: [
-      "Görünüm: Sıvı",
-      "Renk: Bulanık Sarı",
-      "pH: 7",
-      "Çevre Bilgileri:",
-      "Tehlikesiz",
-      "Biyolojik olarak parçalanır",
-      "Drain edilir"
-    ],
-    kullanimAvantajlari: [
-      "Yüksek performanslı temizleyici sıvıdır",
-      "Isıtma ve soğutmada her iki sistem için de uygulanır",
-      "Tüm IronTrap sıvılar ile uyumludur",
-      "Tüm sıcaklıklarda düşük köpüklenme sağlar",
-      "Sıcaklık ile etki derecesi artar",
-      "Hızlı tepkime sağlar",
-      "Kirlenmeyi temizleyerek ısıl verim kaybını önler"
-    ]
-  },
-  "tc220": {
-    baslik: "TC220+",
-    aciklama: "TC220+ ısıtma sistemlerindeki kireç ve sertleşmiş kalıntıları gidermek için güçlü formülüyle özel olarak tasarlanmıştır. Temizleyici ve kireç sökücüdür.",
-    ozellikler: [
-      "Kireç ve birikim kalıntılarını temizler",
-      "Mevcut sistemlerin verimliliğini geri kazandırır",
-      "Tüm ısıtma sistemleri için uygundur",
-      "Tüm metallerde kullanılabilir",
-      "Sistem ömrünü uzatır"
-    ],
-    resim: "/tc220-plus.png",
-    belgeler: [],
-    teknikOzellikler: [
-      "Görünüm: Granül",
-      "Renk: Beyaz",
-      "Çözünürlük: Suda Çözünür",
-      "pH: 2,5",
-      "Çevre Bilgileri:",
-      "Tehlikesiz",
-      "Drain edilir"
-    ],
-    kullanimAvantajlari: [
-      "Kireç tortusunu hızla sistemden elimine eder",
-      "Isıtma verimliliğini geri kazandırır"
-    ]
-  }
-};
-
 export default function TemizleyiciSivilarDetay() {
+  const { t } = useLanguage();
+
+  // Ürün verileri
+  const urunVerileri: Record<string, {
+    baslik: string;
+    aciklama: string;
+    ozellikler: string[];
+    resim: string;
+    belgeler: { isimKey: string; link: string }[];
+    teknikOzellikler?: string[];
+    kullanimAvantajlari?: string[];
+  }> = {
+    "tc200": {
+      baslik: "TC200+",
+      aciklama: t("prod.temizleyici.tc200.desc"),
+      ozellikler: [
+        t("prod.temizleyici.tc200.feat1"),
+        t("prod.temizleyici.tc200.feat2"),
+        t("prod.temizleyici.tc200.feat3"),
+        t("prod.temizleyici.tc200.feat4")
+      ],
+      resim: "/tc200-plus.png",
+      belgeler: [],
+      teknikOzellikler: [
+        "Görünüm: Sıvı",
+        "Renk: Berrak Sarı",
+        "pH: 1,5",
+        "Çevre Bilgileri:",
+        "Tehlikesiz",
+        "Toksik değil",
+        "Biyolojik olarak parçalanır",
+        "Drain edilir"
+      ],
+      kullanimAvantajlari: [
+        "Güçlü temizleyici sıvı",
+        "Isıtma ve soğutma her iki sistem için de uygundur",
+        "Tüm IronTrap sıvılar ile uyumludur",
+        "Sıcak hatta çalışması etkilidir",
+        "Kirlenmeyi temizleyerek ısıl verimlilik artar"
+      ]
+    },
+    "tc210": {
+      baslik: "TC210+",
+      aciklama: t("prod.temizleyici.tc210.desc"),
+      ozellikler: [
+        t("prod.temizleyici.tc210.feat1"),
+        t("prod.temizleyici.tc210.feat2"),
+        t("prod.temizleyici.tc210.feat3"),
+        t("prod.temizleyici.tc210.feat4"),
+        t("prod.temizleyici.tc210.feat5")
+      ],
+      resim: "/tc210-plus.png",
+      belgeler: [],
+      teknikOzellikler: [
+        "Görünüm: Sıvı",
+        "Renk: Bulanık Sarı",
+        "pH: 7",
+        "Çevre Bilgileri:",
+        "Tehlikesiz",
+        "Biyolojik olarak parçalanır",
+        "Drain edilir"
+      ],
+      kullanimAvantajlari: [
+        "Yüksek performanslı temizleyici sıvıdır",
+        "Isıtma ve soğutmada her iki sistem için de uygulanır",
+        "Tüm IronTrap sıvılar ile uyumludur",
+        "Tüm sıcaklıklarda düşük köpüklenme sağlar",
+        "Sıcaklık ile etki derecesi artar",
+        "Hızlı tepkime sağlar",
+        "Kirlenmeyi temizleyerek ısıl verim kaybını önler"
+      ]
+    },
+    "tc220": {
+      baslik: "TC220+",
+      aciklama: t("prod.temizleyici.tc220.desc"),
+      ozellikler: [
+        t("prod.temizleyici.tc220.feat1"),
+        t("prod.temizleyici.tc220.feat2"),
+        t("prod.temizleyici.tc220.feat3"),
+        t("prod.temizleyici.tc220.feat4"),
+        t("prod.temizleyici.tc220.feat5")
+      ],
+      resim: "/tc220-plus.png",
+      belgeler: [],
+      teknikOzellikler: [
+        "Görünüm: Granül",
+        "Renk: Beyaz",
+        "Çözünürlük: Suda Çözünür",
+        "pH: 2,5",
+        "Çevre Bilgileri:",
+        "Tehlikesiz",
+        "Drain edilir"
+      ],
+      kullanimAvantajlari: [
+        "Kireç tortusunu hızla sistemden elimine eder",
+        "Isıtma verimliliğini geri kazandırır"
+      ]
+    }
+  };
   const searchParams = useSearchParams();
   const urunParam = searchParams.get("urun");
   const [activeUrun, setActiveUrun] = useState(urunler[0].key);
@@ -139,14 +141,14 @@ export default function TemizleyiciSivilarDetay() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
-          <span className="text-lg font-medium">Kategoriler</span>
+          <span className="text-lg font-medium">{t("prod.back.categories")}</span>
         </Link>
       </div>
 
       {/* Başlık */}
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "60px", paddingBottom: "40px" }}>
         <h1 className="text-[#86868b] text-5xl font-medium text-center">
-          Temizleyici Sıvılar
+          {t("mega.prod.temizleyici")}
         </h1>
       </section>
 
@@ -223,7 +225,7 @@ export default function TemizleyiciSivilarDetay() {
                 {/* Özellikler */}
                 {aktifUrunVerisi.ozellikler.length > 0 && (
                   <div className="mb-14">
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Özellikler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.features")}</h3>
                     <div className="space-y-5">
                       {aktifUrunVerisi.ozellikler.map((ozellik, index) => (
                         <div key={index} className="flex items-start gap-4">
@@ -238,7 +240,7 @@ export default function TemizleyiciSivilarDetay() {
                 {/* Belgeler */}
                 {aktifUrunVerisi.belgeler.length > 0 && (
                   <div>
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Belgeler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.documents")}</h3>
                     <div className="flex flex-wrap gap-4">
                       {aktifUrunVerisi.belgeler.map((belge, index) => (
                         <a
@@ -256,7 +258,7 @@ export default function TemizleyiciSivilarDetay() {
                             <line x1="16" y1="17" x2="8" y2="17"/>
                             <polyline points="10 9 9 9 8 9"/>
                           </svg>
-                          {belge.isim}
+                          {t(belge.isimKey)}
                         </a>
                       ))}
                     </div>
@@ -298,7 +300,7 @@ export default function TemizleyiciSivilarDetay() {
                       }
                     }}
                   >
-                    Teknik Özellikler
+                    {t("prod.techSpecs")}
                   </button>
                 )}
                 {hasKullanimAvantajlari && (
@@ -325,7 +327,7 @@ export default function TemizleyiciSivilarDetay() {
                       }
                     }}
                   >
-                    Kullanım Avantajları
+                    {t("prod.usageAdvantages")}
                   </button>
                 )}
               </div>
@@ -372,7 +374,7 @@ export default function TemizleyiciSivilarDetay() {
               {aktifUrunVerisi.baslik}
             </h2>
             <p className="text-[#6e6e73] text-xl">
-              Bu ürünün detayları yakında eklenecektir.
+              {t("prod.comingSoon")}
             </p>
           </div>
         )}

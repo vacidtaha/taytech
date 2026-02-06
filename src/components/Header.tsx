@@ -7,22 +7,33 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const navItems = [
-  { label: "Ürünler", href: "#", hasDropdown: true },
-  { label: "Çözümler", href: "/cozumler", hasDropdown: false },
-  { label: "Haberler", href: "/haberler", hasDropdown: false },
-  { label: "Kurumsal", href: "/kurumsal", hasDropdown: false },
-  { label: "İletişim", href: "/iletisim", hasDropdown: false },
+  { labelKey: "nav.urunler", href: "#", hasDropdown: true, dropdownType: "products" as const },
+  { labelKey: "nav.cozumler", href: "/cozumler", hasDropdown: false, dropdownType: null },
+  { labelKey: "nav.dokuman", href: "/dokuman-merkezi", hasDropdown: false, dropdownType: null },
+  { labelKey: "nav.haberler", href: "/haberler", hasDropdown: false, dropdownType: null },
+  { labelKey: "nav.bilgi", href: "#", hasDropdown: true, dropdownType: "bilgi-merkezi" as const },
+  { labelKey: "nav.kurumsal", href: "/kurumsal", hasDropdown: false, dropdownType: null },
+  { labelKey: "nav.iletisim", href: "/iletisim", hasDropdown: false, dropdownType: null },
+];
+
+const bilgiMerkeziItems = [
+  { labelKey: "mega.bilgi.video", href: "/bilgi-merkezi/video-arsivi" },
+  { labelKey: "mega.bilgi.dokuman", href: "/dokuman-merkezi" },
+  { labelKey: "mega.bilgi.sss", href: "/bilgi-merkezi/sikca-sorulan-sorular" },
+  { labelKey: "mega.bilgi.destek", href: "/iletisim" },
+  { labelKey: "mega.bilgi.akademi", href: "/bilgi-merkezi/taytech-akademi" },
 ];
 
 const products = [
-  { label: "Akıllı Kontrol Panoları", href: "/urunler/akilli-kontrol-panolari" },
-  { label: "Isı İstasyonu Uygulamaları", href: "/urunler/isi-istasyonu" },
-  { label: "Elektronik", href: "/urunler/elektronik" },
-  { label: "Taytech Cloud", href: "/urunler/taytech-cloud" },
-  { label: "IRONTRAP® Manyetik Filtre", href: "/urunler/manyetik-filtre" },
-  { label: "IRONTRAP® Koruyucu ve Temizleyici Sıvılar", href: "/urunler/temizleyici-sivilar" },
+  { labelKey: "mega.prod.akilli", matchKey: "akilli", href: "/urunler/akilli-kontrol-panolari" },
+  { labelKey: "mega.prod.isi", matchKey: "isi-istasyonu", href: "/urunler/isi-istasyonu" },
+  { labelKey: "mega.prod.elektronik", matchKey: "elektronik", href: "/urunler/elektronik" },
+  { labelKey: "mega.prod.cloud", matchKey: "cloud", href: "/urunler/taytech-cloud" },
+  { labelKey: "mega.prod.manyetik", matchKey: "manyetik-filtre", href: "/urunler/manyetik-filtre" },
+  { labelKey: "mega.prod.sivilar", matchKey: "sivilar", href: "/urunler/temizleyici-sivilar" },
 ];
 
 const languages = [
@@ -39,20 +50,14 @@ const cloudItems = [
 ];
 
 const sivilarCategories = [
-  { 
-    label: "Koruyucu Sıvılar", 
-    key: "koruyucu",
-    href: "/urunler/temizleyici-sivilar/koruyucu",
+  { labelKey: "mega.prod.koruyucu", key: "koruyucu", href: "/urunler/temizleyici-sivilar/koruyucu",
     items: [
       { id: "ks1", label: "TP100+", href: "/urunler/temizleyici-sivilar/koruyucu?urun=tp100" },
       { id: "ks2", label: "TP120+", href: "/urunler/temizleyici-sivilar/koruyucu?urun=tp120" },
       { id: "ks3", label: "TP130+", href: "/urunler/temizleyici-sivilar/koruyucu?urun=tp130" },
     ]
   },
-  { 
-    label: "Temizleyici Sıvılar", 
-    key: "temizleyici",
-    href: "/urunler/temizleyici-sivilar/temizleyici",
+  { labelKey: "mega.prod.temizleyici", key: "temizleyici", href: "/urunler/temizleyici-sivilar/temizleyici",
     items: [
       { id: "ts1", label: "TC200+", href: "/urunler/temizleyici-sivilar/temizleyici?urun=tc200" },
       { id: "ts2", label: "TC210+", href: "/urunler/temizleyici-sivilar/temizleyici?urun=tc210" },
@@ -62,70 +67,52 @@ const sivilarCategories = [
 ];
 
 const elektronikCategories = [
-  { 
-    label: "Smart Endüstriyel Kontrolörler", 
-    key: "smart-endustriyel",
-    href: "/urunler/elektronik/smart-endustriyel",
+  { labelKey: "mega.prod.smartEnd", key: "smart-endustriyel", href: "/urunler/elektronik/smart-endustriyel",
     items: [
-      { id: "se1", label: "Smart Grinder Kontrolörleri", href: "/urunler/elektronik/smart-endustriyel?urun=grinder" },
-      { id: "se2", label: "Smart Hidrofor Kontrolörleri", href: "/urunler/elektronik/smart-endustriyel?urun=hidrofor" },
-      { id: "se3", label: "Smart Atık Su Kontrolörleri", href: "/urunler/elektronik/smart-endustriyel?urun=atik-su" },
-      { id: "se4", label: "Smart Derin Kuyu Kontrolörleri", href: "/urunler/elektronik/smart-endustriyel?urun=derin-kuyu" },
+      { id: "se1", labelKey: "mega.prod.grinder", href: "/urunler/elektronik/smart-endustriyel?urun=grinder" },
+      { id: "se2", labelKey: "mega.prod.hidrofor", href: "/urunler/elektronik/smart-endustriyel?urun=hidrofor" },
+      { id: "se3", labelKey: "mega.prod.atikSu", href: "/urunler/elektronik/smart-endustriyel?urun=atik-su" },
+      { id: "se4", labelKey: "mega.prod.derinKuyu", href: "/urunler/elektronik/smart-endustriyel?urun=derin-kuyu" },
     ]
   },
-  { 
-    label: "Isı İstasyonu Elektronik Kontrolörleri", 
-    key: "isi-istasyonu-kontrolorleri",
-    href: "/urunler/elektronik/isi-istasyonu-kontrolorleri",
+  { labelKey: "mega.prod.isiKontrol", key: "isi-istasyonu-kontrolorleri", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri",
     items: [
-      { id: "isk1", label: "ESS-86", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=ess-86" },
-      { id: "isk2", label: "CHS18", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=chs18" },
-      { id: "isk3", label: "DE10", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=de10" },
-      { id: "isk4", label: "DE15", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=de15" },
-      { id: "isk5", label: "DE20", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=de20" },
-      { id: "isk6", label: "DE25", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=de25" },
-      { id: "isk7", label: "DE30", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=de30" },
+      { id: "isk1", labelKey: "ESS-86", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=ess-86" },
+      { id: "isk2", labelKey: "CHS18", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=chs18" },
+      { id: "isk3", labelKey: "DE10", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=de10" },
+      { id: "isk4", labelKey: "DE15", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=de15" },
+      { id: "isk5", labelKey: "DE20", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=de20" },
+      { id: "isk6", labelKey: "DE25", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=de25" },
+      { id: "isk7", labelKey: "DE30", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=de30" },
     ]
   },
-  { 
-    label: "Yerden Isıtma Kontrolörleri", 
-    key: "yerden-isitma",
-    href: "/urunler/elektronik/yerden-isitma",
+  { labelKey: "mega.prod.yerden", key: "yerden-isitma", href: "/urunler/elektronik/yerden-isitma",
     items: [
-      { id: "yi1", label: "T-Box Yerden Isıtma Kontrolörü", href: "/urunler/elektronik/yerden-isitma?urun=t-box" },
+      { id: "yi1", labelKey: "mega.prod.tboxYerden", href: "/urunler/elektronik/yerden-isitma?urun=t-box" },
     ]
   },
 ];
 
 const kontrolPanolariCategories = [
-  { 
-    label: "Elektronik Kontrol Panoları", 
-    key: "elektronik",
-    href: "/urunler/akilli-kontrol-panolari/elektronik",
+  { labelKey: "mega.prod.elektronikPano", key: "elektronik", href: "/urunler/akilli-kontrol-panolari/elektronik",
     items: [
       { id: "e1", label: "Direct Start", href: "/urunler/akilli-kontrol-panolari/elektronik/direct-start" },
-      { id: "e2", label: "İnvertör Yol Verme Panoları", href: "/urunler/akilli-kontrol-panolari/elektronik/invertor" },
-      { id: "e3", label: "Soft Starter Yol Verme Panoları", href: "/urunler/akilli-kontrol-panolari/elektronik/soft-starter" },
-      { id: "e4", label: "Yıldız / Üçgen Yol Verme Panoları", href: "/urunler/akilli-kontrol-panolari/elektronik/yildiz-ucgen" },
+      { id: "e2", labelKey: "mega.prod.invertor", href: "/urunler/akilli-kontrol-panolari/elektronik/invertor" },
+      { id: "e3", labelKey: "mega.prod.softStarter", href: "/urunler/akilli-kontrol-panolari/elektronik/soft-starter" },
+      { id: "e4", labelKey: "mega.prod.yildizUcgen", href: "/urunler/akilli-kontrol-panolari/elektronik/yildiz-ucgen" },
     ]
   },
-  { 
-    label: "Elektromekanik Kontrol Panoları", 
-    key: "elektromekanik",
-    href: "/urunler/akilli-kontrol-panolari/elektromekanik",
+  { labelKey: "mega.prod.elektromekanikPano", key: "elektromekanik", href: "/urunler/akilli-kontrol-panolari/elektromekanik",
     items: [
-      { id: "em1", label: "Doğrudan Yol Verme", href: "/urunler/akilli-kontrol-panolari/elektromekanik/dogrudan-yol-verme" },
-      { id: "em2", label: "Yıldız / Üçgen Yol Verme", href: "/urunler/akilli-kontrol-panolari/elektromekanik/yildiz-ucgen" },
+      { id: "em1", labelKey: "mega.prod.dogrudan", href: "/urunler/akilli-kontrol-panolari/elektromekanik/dogrudan-yol-verme" },
+      { id: "em2", labelKey: "mega.prod.yildizUcgenEM", href: "/urunler/akilli-kontrol-panolari/elektromekanik/yildiz-ucgen" },
     ]
   },
-  { 
-    label: "Yangın Sistemleri Kontrol Panoları", 
-    key: "yangin",
-    href: "/urunler/akilli-kontrol-panolari/yangin-sistemleri",
+  { labelKey: "mega.prod.yanginPano", key: "yangin", href: "/urunler/akilli-kontrol-panolari/yangin-sistemleri",
     items: [
-      { id: "y1", label: "Jokey Serisi", href: "/urunler/akilli-kontrol-panolari/yangin-sistemleri/jokey" },
-      { id: "y2", label: "Elektrikli", href: "/urunler/akilli-kontrol-panolari/yangin-sistemleri/elektrikli" },
-      { id: "y3", label: "Dizel", href: "/urunler/akilli-kontrol-panolari/yangin-sistemleri/dizel" },
+      { id: "y1", labelKey: "mega.prod.jokey", href: "/urunler/akilli-kontrol-panolari/yangin-sistemleri/jokey" },
+      { id: "y2", labelKey: "mega.prod.elektrikli", href: "/urunler/akilli-kontrol-panolari/yangin-sistemleri/elektrikli" },
+      { id: "y3", labelKey: "mega.prod.dizel", href: "/urunler/akilli-kontrol-panolari/yangin-sistemleri/dizel" },
     ]
   },
 ];
@@ -160,19 +147,26 @@ interface HeaderProps {
 
 export default function Header({ theme, isFixed = true, onMenuOpenChange }: HeaderProps) {
   const pathname = usePathname();
+  const { locale, setLocale, t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [currentLang, setCurrentLang] = useState("TR");
-  const [isLangOpen, setIsLangOpen] = useState(false);
+  const currentLang = locale;
+  const setCurrentLang = (code: string) => setLocale(code as "TR" | "EN");
   const [isProductsOpen, setIsProductsOpenInternal] = useState(false);
+  const [isBilgiMerkeziOpen, setIsBilgiMerkeziOpenInternal] = useState(false);
   
   // Wrapper function to call callback when menu state changes
   const setIsProductsOpen = (value: boolean) => {
     setIsProductsOpenInternal(value);
-    onMenuOpenChange?.(value);
+    onMenuOpenChange?.(value || isBilgiMerkeziOpen);
+  };
+  
+  const setIsBilgiMerkeziOpen = (value: boolean) => {
+    setIsBilgiMerkeziOpenInternal(value);
+    onMenuOpenChange?.(value || isProductsOpen);
   };
   
   // Otomatik theme belirleme - ana sayfa ve ürün sayfalarında light
-  const lightPages = ["/urunler/akilli-kontrol-panolari", "/urunler/isi-istasyonu", "/urunler/elektronik", "/urunler/taytech-cloud", "/urunler/manyetik-filtre", "/urunler/temizleyici-sivilar", "/iletisim", "/kurumsal", "/cozumler", "/haberler"];
+  const lightPages = ["/urunler/akilli-kontrol-panolari", "/urunler/isi-istasyonu", "/urunler/elektronik", "/urunler/taytech-cloud", "/urunler/manyetik-filtre", "/urunler/temizleyici-sivilar", "/iletisim", "/kurumsal", "/cozumler", "/haberler", "/bilgi-merkezi", "/dokuman-merkezi"];
   const isLightPage = pathname === "/" || lightPages.some(page => pathname?.startsWith(page));
   const autoTheme = isLightPage ? "light" : "dark";
   const isDark = (theme ?? autoTheme) === "dark";
@@ -187,10 +181,12 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
   const [hoveredElektronikItem, setHoveredElektronikItem] = useState<string | null>(null);
   const [hoveredPanoItem, setHoveredPanoItem] = useState<string | null>(null);
   const [hoveredIsiItem, setHoveredIsiItem] = useState<string | null>(null);
-
+  // Bilgi Merkezi hover state
+  const [hoveredBilgiMerkeziItem, setHoveredBilgiMerkeziItem] = useState<string | null>(null);
   // Menüyü kapat fonksiyonu
   const closeMenu = () => {
     setIsProductsOpen(false);
+    setIsBilgiMerkeziOpen(false);
     setHoveredProduct(null);
     setHoveredSubCategory(null);
     setHoveredPanoCategory(null);
@@ -201,6 +197,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
     setHoveredElektronikItem(null);
     setHoveredPanoItem(null);
     setHoveredIsiItem(null);
+    setHoveredBilgiMerkeziItem(null);
   };
 
   const currentLangLabel = languages.find(l => l.code === currentLang)?.label || "Türkçe";
@@ -209,7 +206,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
     <>
       {/* Blur Backdrop - Sayfa içeriğini blurlar */}
       <AnimatePresence>
-        {isProductsOpen && (
+        {(isProductsOpen || isBilgiMerkeziOpen) && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { duration: 0.3, ease: "easeInOut", delay: 0.35 } }}
@@ -225,8 +222,8 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
         <div className={cn(
           "h-12 transition-colors duration-200",
           isDark 
-            ? (isProductsOpen ? "bg-[#1a1a1a]" : "bg-[#1a1a1a]/70 backdrop-blur-md")
-            : (isProductsOpen ? "bg-white" : "bg-white/70 backdrop-blur-md")
+            ? ((isProductsOpen || isBilgiMerkeziOpen) ? "bg-[#1a1a1a]" : "bg-[#1a1a1a]/70 backdrop-blur-md")
+            : ((isProductsOpen || isBilgiMerkeziOpen) ? "bg-white" : "bg-white/70 backdrop-blur-md")
         )}>
           <div className="h-full px-8 flex items-center justify-between">
             {/* Left Spacer */}
@@ -247,26 +244,45 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
               </Link>
 
               {/* Desktop Navigation */}
-              <nav className="hidden md:flex items-center gap-20">
+              <nav className="hidden md:flex items-center gap-10">
                 {navItems.map((item) => (
                   <div
-                    key={item.label}
+                    key={item.labelKey}
                     className={cn(
                       "relative",
                       item.hasDropdown && "pb-4 -mb-4"
                     )}
-                    onMouseEnter={() => item.hasDropdown && setIsProductsOpen(true)}
+                    onMouseEnter={() => {
+                      if (item.dropdownType === "products") {
+                        setIsBilgiMerkeziOpen(false);
+                        setHoveredBilgiMerkeziItem(null);
+                        setIsProductsOpen(true);
+                      } else if (item.dropdownType === "bilgi-merkezi") {
+                        setIsProductsOpen(false);
+                        setHoveredProduct(null);
+                        setHoveredSubCategory(null);
+                        setHoveredPanoCategory(null);
+                        setHoveredElektronikCategory(null);
+                        setHoveredSivilarCategory(null);
+                        setHoveredCloudItem(null);
+                        setHoveredSivilarItem(null);
+                        setHoveredElektronikItem(null);
+                        setHoveredPanoItem(null);
+                        setHoveredIsiItem(null);
+                        setIsBilgiMerkeziOpen(true);
+                      }
+                    }}
                   >
                     {item.hasDropdown ? (
                       <span
                         className={cn(
                           "text-[15px] font-[450] transition-colors duration-75 cursor-pointer",
                           isDark 
-                            ? "text-[#cacacc] hover:text-white" 
-                            : "text-black hover:text-gray-600"
+                            ? "text-[#cacacc] hover:text-[#dc2626]" 
+                            : "text-black hover:text-[#dc2626]"
                         )}
                       >
-                        {item.label}
+                        {t(item.labelKey)}
                       </span>
                     ) : (
                       <Link
@@ -274,11 +290,11 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                         className={cn(
                           "text-[15px] font-[450] transition-colors duration-75",
                           isDark 
-                            ? "text-[#cacacc] hover:text-white" 
-                            : "text-black hover:text-gray-600"
+                            ? "text-[#cacacc] hover:text-[#dc2626]" 
+                            : "text-black hover:text-[#dc2626]"
                         )}
                       >
-                        {item.label}
+                        {t(item.labelKey)}
                       </Link>
                     )}
                   </div>
@@ -286,66 +302,26 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
               </nav>
             </div>
 
-            {/* Right Side - Language Dropdown */}
-            <div className="hidden md:flex items-center" style={{ marginRight: '100px' }}>
-              <div className="relative">
-                <button
-                  onClick={() => setIsLangOpen(!isLangOpen)}
-                  className={cn(
-                    "flex items-center gap-1.5 text-[13px] font-[400] py-1 px-2 rounded transition-colors",
-                    isDark 
-                      ? "text-[#cacacc] hover:text-white" 
-                      : "text-gray-500 hover:text-black"
-                  )}
-                >
-                  <span>{currentLang.toUpperCase()}</span>
-                  <svg 
-                    width="10" 
-                    height="10" 
-                    viewBox="0 0 24 24" 
-                    fill="currentColor" 
-                    className={cn("opacity-60 transition-transform", isLangOpen && "rotate-180")}
+            {/* Right Side - Language Toggle */}
+            <div className="hidden md:flex items-center gap-1" style={{ marginRight: '100px' }}>
+              {languages.map((lang, i) => (
+                <span key={lang.code} className="flex items-center">
+                  <button
+                    onClick={() => setCurrentLang(lang.code)}
+                    className={cn(
+                      "text-[13px] font-[450] py-1 px-1.5 transition-colors",
+                      currentLang === lang.code
+                        ? (isDark ? "text-white" : "text-[#1d1d1f]")
+                        : (isDark ? "text-[#cacacc]/40 hover:text-white" : "text-gray-400 hover:text-[#1d1d1f]")
+                    )}
                   >
-                    <path d="M7 10l5 5 5-5z"/>
-                  </svg>
-                </button>
-                
-                {isLangOpen && (
-                  <>
-                    <div 
-                      className="fixed inset-0 z-40" 
-                      onClick={() => setIsLangOpen(false)}
-                    />
-                    <div
-                      className={cn(
-                        "absolute top-8 right-0 rounded-md py-1 min-w-[80px] z-50",
-                        isDark 
-                          ? "bg-[#333] shadow-lg" 
-                          : "bg-white shadow-md border border-gray-100"
-                      )}
-                    >
-                      {languages.map((lang) => (
-                        <button
-                          key={lang.code}
-                          onClick={() => { setCurrentLang(lang.code); setIsLangOpen(false); }}
-                          className={cn(
-                            "block w-full px-3 py-1.5 text-[13px] text-left transition-colors",
-                            isDark
-                              ? (currentLang === lang.code 
-                                  ? "text-white" 
-                                  : "text-gray-400 hover:text-white hover:bg-white/10")
-                              : (currentLang === lang.code 
-                                  ? "text-black" 
-                                  : "text-gray-500 hover:text-black hover:bg-gray-50")
-                          )}
-                        >
-                          {lang.code.toUpperCase()}
-                        </button>
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
+                    {lang.code}
+                  </button>
+                  {i < languages.length - 1 && (
+                    <span className={cn("text-[11px] mx-0.5", isDark ? "text-[#cacacc]/30" : "text-gray-300")}>|</span>
+                  )}
+                </span>
+              ))}
             </div>
 
             {/* Mobile Menu Button */}
@@ -413,7 +389,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                     transition={{ duration: 1.2, delay: 0.1, ease: "easeOut" }}
                     className={cn("text-[12px] font-medium mb-20 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}
                   >
-                    Ürünlerimiz
+                    {t("mega.urunlerimiz")}
                   </motion.h3>
                   <div className="flex flex-col gap-4">
                     {products.map((product, index) => (
@@ -435,17 +411,17 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                           setHoveredPanoItem(null);
                           setHoveredIsiItem(null);
                           
-                          if (product.label === "Isı İstasyonu Uygulamaları") {
+                          if (product.matchKey === "isi-istasyonu") {
                             setHoveredProduct("isi-istasyonu");
-                          } else if (product.label === "Akıllı Kontrol Panoları") {
+                          } else if (product.matchKey === "akilli") {
                             setHoveredProduct("kontrol-panolari");
-                          } else if (product.label === "Elektronik") {
+                          } else if (product.matchKey === "elektronik") {
                             setHoveredProduct("elektronik");
-                          } else if (product.label === "Taytech Cloud") {
+                          } else if (product.matchKey === "cloud") {
                             setHoveredProduct("cloud");
-                          } else if (product.label === "IRONTRAP® Koruyucu ve Temizleyici Sıvılar") {
+                          } else if (product.matchKey === "sivilar") {
                             setHoveredProduct("sivilar");
-                          } else if (product.label === "IRONTRAP® Manyetik Filtre") {
+                          } else if (product.matchKey === "manyetik-filtre") {
                             setHoveredProduct("manyetik-filtre");
                           } else {
                             setHoveredProduct(null);
@@ -457,19 +433,29 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                           onClick={closeMenu}
                           className={cn(
                             "text-xl font-medium transition-all duration-200 flex items-center gap-2",
-                            isDark ? "text-white/90 hover:text-white" : "text-gray-700 hover:text-black",
+                            isDark ? "text-white/90 hover:text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]",
+                            // Seçili olan kırmızı
                             hoveredProduct && (
-                              (product.label === "Isı İstasyonu Uygulamaları" && hoveredProduct !== "isi-istasyonu") ||
-                              (product.label === "Akıllı Kontrol Panoları" && hoveredProduct !== "kontrol-panolari") ||
-                              (product.label === "Elektronik" && hoveredProduct !== "elektronik") ||
-                              (product.label === "Taytech Cloud" && hoveredProduct !== "cloud") ||
-                              (product.label === "IRONTRAP® Koruyucu ve Temizleyici Sıvılar" && hoveredProduct !== "sivilar") ||
-                              (product.label === "IRONTRAP® Manyetik Filtre" && hoveredProduct !== "manyetik-filtre")
+                              (product.matchKey === "isi-istasyonu" && hoveredProduct === "isi-istasyonu") ||
+                              (product.matchKey === "akilli" && hoveredProduct === "kontrol-panolari") ||
+                              (product.matchKey === "elektronik" && hoveredProduct === "elektronik") ||
+                              (product.matchKey === "cloud" && hoveredProduct === "cloud") ||
+                              (product.matchKey === "sivilar" && hoveredProduct === "sivilar") ||
+                              (product.matchKey === "manyetik-filtre" && hoveredProduct === "manyetik-filtre")
+                            ) && "!text-[#dc2626]",
+                            // Seçili olmayan soluk
+                            hoveredProduct && (
+                              (product.matchKey === "isi-istasyonu" && hoveredProduct !== "isi-istasyonu") ||
+                              (product.matchKey === "akilli" && hoveredProduct !== "kontrol-panolari") ||
+                              (product.matchKey === "elektronik" && hoveredProduct !== "elektronik") ||
+                              (product.matchKey === "cloud" && hoveredProduct !== "cloud") ||
+                              (product.matchKey === "sivilar" && hoveredProduct !== "sivilar") ||
+                              (product.matchKey === "manyetik-filtre" && hoveredProduct !== "manyetik-filtre")
                             ) && "opacity-40"
                           )}
                         >
-                          {product.label}
-                          {(product.label === "Isı İstasyonu Uygulamaları" || product.label === "Akıllı Kontrol Panoları" || product.label === "Elektronik" || product.label === "Taytech Cloud" || product.label === "IRONTRAP® Koruyucu ve Temizleyici Sıvılar") && (
+                          {t(product.labelKey)}
+                          {(product.matchKey === "isi-istasyonu" || product.matchKey === "akilli" || product.matchKey === "elektronik" || product.matchKey === "cloud" || product.matchKey === "sivilar") && (
                             <ChevronRight size={16} className={cn(isDark ? "text-white/50" : "text-gray-400", "transition-opacity duration-200")} />
                           )}
                         </Link>
@@ -488,7 +474,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                     className="flex flex-col min-w-[200px]"
                   >
                     <h3 className={cn("text-[13px] font-medium mb-16 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}>
-                      Kategori
+                      {t("mega.kategori")}
                     </h3>
                     <div className="flex flex-col gap-3">
                       {sivilarCategories.map((category) => (
@@ -502,11 +488,11 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                           <span className={cn(
                             "text-lg font-medium transition-all duration-200",
                             isDark 
-                              ? (hoveredSivilarCategory === category.key ? "text-white" : "text-white/90 hover:text-white")
-                              : (hoveredSivilarCategory === category.key ? "text-black" : "text-gray-700 hover:text-black"),
+                              ? (hoveredSivilarCategory === category.key ? "text-[#dc2626]" : "text-white/90 hover:text-[#dc2626]")
+                              : (hoveredSivilarCategory === category.key ? "text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]"),
                             hoveredSivilarCategory && hoveredSivilarCategory !== category.key && "opacity-40"
                           )}>
-                            {category.label}
+                            {t(category.labelKey)}
                           </span>
                           {category.items.length > 0 && (
                             <ChevronRight size={12} className={cn(isDark ? "text-white/50" : "text-gray-400", hoveredSivilarCategory && hoveredSivilarCategory !== category.key && "opacity-40")} />
@@ -527,7 +513,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                     className="flex flex-col min-w-[150px]"
                   >
                     <h3 className={cn("text-[13px] font-medium mb-16 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}>
-                      Ürünler
+                      {t("mega.urunler")}
                     </h3>
                     <div className="flex flex-col gap-3">
                       {sivilarCategories.find(c => c.key === hoveredSivilarCategory)?.items.map((item) => (
@@ -538,11 +524,12 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                           onMouseEnter={() => setHoveredSivilarItem(item.id)}
                           className={cn(
                             "text-lg font-medium transition-all duration-200",
-                            isDark ? "text-white/90 hover:text-white" : "text-gray-700 hover:text-black",
+                            isDark ? "text-white/90 hover:text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]",
+                            hoveredSivilarItem && hoveredSivilarItem === item.id && "!text-[#dc2626]",
                             hoveredSivilarItem && hoveredSivilarItem !== item.id && "opacity-40"
                           )}
                         >
-                          {item.label}
+                          {t("labelKey" in item ? (item as { labelKey: string }).labelKey : ("label" in item ? (item as { label: string }).label : ""))}
                         </Link>
                       ))}
                     </div>
@@ -559,7 +546,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                     className="flex flex-col min-w-[200px]"
                   >
                     <h3 className={cn("text-[13px] font-medium mb-16 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}>
-                      Ürünler
+                      {t("mega.urunler")}
                     </h3>
                     <div className="flex flex-col gap-3">
                       {cloudItems.map((item) => (
@@ -570,11 +557,12 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                           onMouseEnter={() => setHoveredCloudItem(item.id)}
                           className={cn(
                             "text-lg font-medium transition-all duration-200",
-                            isDark ? "text-white/90 hover:text-white" : "text-gray-700 hover:text-black",
+                            isDark ? "text-white/90 hover:text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]",
+                            hoveredCloudItem && hoveredCloudItem === item.id && "!text-[#dc2626]",
                             hoveredCloudItem && hoveredCloudItem !== item.id && "opacity-40"
                           )}
                         >
-                          {item.label}
+                          {t("labelKey" in item ? (item as { labelKey: string }).labelKey : ("label" in item ? (item as { label: string }).label : ""))}
                         </Link>
                       ))}
                     </div>
@@ -591,7 +579,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                     className="flex flex-col min-w-[280px]"
                   >
                     <h3 className={cn("text-[13px] font-medium mb-16 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}>
-                      Kategori
+                      {t("mega.kategori")}
                     </h3>
                     <div className="flex flex-col gap-3">
                       {elektronikCategories.map((category) => (
@@ -605,11 +593,11 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                           <span className={cn(
                             "text-lg font-medium transition-all duration-200",
                             isDark 
-                              ? (hoveredElektronikCategory === category.key ? "text-white" : "text-white/90 hover:text-white")
-                              : (hoveredElektronikCategory === category.key ? "text-black" : "text-gray-700 hover:text-black"),
+                              ? (hoveredElektronikCategory === category.key ? "text-[#dc2626]" : "text-white/90 hover:text-[#dc2626]")
+                              : (hoveredElektronikCategory === category.key ? "text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]"),
                             hoveredElektronikCategory && hoveredElektronikCategory !== category.key && "opacity-40"
                           )}>
-                            {category.label}
+                            {t(category.labelKey)}
                           </span>
                           {category.items.length > 0 && (
                             <ChevronRight size={12} className={cn(isDark ? "text-white/50" : "text-gray-400", hoveredElektronikCategory && hoveredElektronikCategory !== category.key && "opacity-40")} />
@@ -630,7 +618,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                     className="flex flex-col min-w-[280px]"
                   >
                     <h3 className={cn("text-[13px] font-medium mb-16 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}>
-                      Ürünler
+                      {t("mega.urunler")}
                     </h3>
                     <div className="flex flex-col gap-3">
                       {elektronikCategories.find(c => c.key === hoveredElektronikCategory)?.items.map((item) => (
@@ -641,11 +629,12 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                           onMouseEnter={() => setHoveredElektronikItem(item.id)}
                           className={cn(
                             "text-lg font-medium transition-all duration-200",
-                            isDark ? "text-white/90 hover:text-white" : "text-gray-700 hover:text-black",
+                            isDark ? "text-white/90 hover:text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]",
+                            hoveredElektronikItem && hoveredElektronikItem === item.id && "!text-[#dc2626]",
                             hoveredElektronikItem && hoveredElektronikItem !== item.id && "opacity-40"
                           )}
                         >
-                          {item.label}
+                          {t("labelKey" in item ? (item as { labelKey: string }).labelKey : ("label" in item ? (item as { label: string }).label : ""))}
                         </Link>
                       ))}
                     </div>
@@ -662,7 +651,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                     className="flex flex-col min-w-[280px]"
                   >
                     <h3 className={cn("text-[13px] font-medium mb-16 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}>
-                      Kategori
+                      {t("mega.kategori")}
                     </h3>
                     <div className="flex flex-col gap-3">
                       {kontrolPanolariCategories.map((category) => (
@@ -676,11 +665,11 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                           <span className={cn(
                             "text-lg font-medium transition-all duration-200",
                             isDark 
-                              ? (hoveredPanoCategory === category.key ? "text-white" : "text-white/90 hover:text-white")
-                              : (hoveredPanoCategory === category.key ? "text-black" : "text-gray-700 hover:text-black"),
+                              ? (hoveredPanoCategory === category.key ? "text-[#dc2626]" : "text-white/90 hover:text-[#dc2626]")
+                              : (hoveredPanoCategory === category.key ? "text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]"),
                             hoveredPanoCategory && hoveredPanoCategory !== category.key && "opacity-40"
                           )}>
-                            {category.label}
+                            {t(category.labelKey)}
                           </span>
                           {category.items.length > 0 && (
                             <ChevronRight size={12} className={cn(isDark ? "text-white/50" : "text-gray-400", hoveredPanoCategory && hoveredPanoCategory !== category.key && "opacity-40")} />
@@ -701,7 +690,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                     className="flex flex-col min-w-[280px]"
                   >
                     <h3 className={cn("text-[13px] font-medium mb-16 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}>
-                      Ürünler
+                      {t("mega.urunler")}
                     </h3>
                     <div className="flex flex-col gap-3">
                       {kontrolPanolariCategories.find(c => c.key === hoveredPanoCategory)?.items.map((item) => (
@@ -712,11 +701,12 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                           onMouseEnter={() => setHoveredPanoItem(item.id)}
                           className={cn(
                             "text-lg font-medium transition-all duration-200",
-                            isDark ? "text-white/90 hover:text-white" : "text-gray-700 hover:text-black",
+                            isDark ? "text-white/90 hover:text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]",
+                            hoveredPanoItem && hoveredPanoItem === item.id && "!text-[#dc2626]",
                             hoveredPanoItem && hoveredPanoItem !== item.id && "opacity-40"
                           )}
                         >
-                          {item.label}
+                          {t("labelKey" in item ? (item as { labelKey: string }).labelKey : ("label" in item ? (item as { label: string }).label : ""))}
                         </Link>
                       ))}
                     </div>
@@ -733,7 +723,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                     className="flex flex-col min-w-[120px]"
                   >
                     <h3 className={cn("text-[13px] font-medium mb-16 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}>
-                      Kategori
+                      {t("mega.kategori")}
                     </h3>
                     <div className="flex flex-col gap-3">
                       <Link
@@ -745,8 +735,8 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                         <span className={cn(
                           "text-lg font-medium transition-all duration-200",
                           isDark 
-                            ? (hoveredSubCategory === "direct" ? "text-white" : "text-white/90 hover:text-white")
-                            : (hoveredSubCategory === "direct" ? "text-black" : "text-gray-700 hover:text-black"),
+                            ? (hoveredSubCategory === "direct" ? "text-[#dc2626]" : "text-white/90 hover:text-[#dc2626]")
+                            : (hoveredSubCategory === "direct" ? "text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]"),
                           hoveredSubCategory && hoveredSubCategory !== "direct" && "opacity-40"
                         )}>
                           Direct
@@ -762,8 +752,8 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                         <span className={cn(
                           "text-lg font-medium transition-all duration-200",
                           isDark 
-                            ? (hoveredSubCategory === "indirect" ? "text-white" : "text-white/90 hover:text-white")
-                            : (hoveredSubCategory === "indirect" ? "text-black" : "text-gray-700 hover:text-black"),
+                            ? (hoveredSubCategory === "indirect" ? "text-[#dc2626]" : "text-white/90 hover:text-[#dc2626]")
+                            : (hoveredSubCategory === "indirect" ? "text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]"),
                           hoveredSubCategory && hoveredSubCategory !== "indirect" && "opacity-40"
                         )}>
                           Indirect
@@ -784,7 +774,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                     className="flex flex-col min-w-[180px]"
                   >
                     <h3 className={cn("text-[13px] font-medium mb-16 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}>
-                      Ürünler
+                      {t("mega.urunler")}
                     </h3>
                     <div className="flex flex-col gap-3">
                       {(hoveredSubCategory === "direct" 
@@ -798,16 +788,107 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                           onMouseEnter={() => setHoveredIsiItem(item.id)}
                           className={cn(
                             "text-lg font-medium transition-all duration-200",
-                            isDark ? "text-white/90 hover:text-white" : "text-gray-700 hover:text-black",
+                            isDark ? "text-white/90 hover:text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]",
+                            hoveredIsiItem && hoveredIsiItem === item.id && "!text-[#dc2626]",
                             hoveredIsiItem && hoveredIsiItem !== item.id && "opacity-40"
                           )}
                         >
-                          {item.label}
+                          {t("labelKey" in item ? (item as { labelKey: string }).labelKey : ("label" in item ? (item as { label: string }).label : ""))}
                         </Link>
                       ))}
                     </div>
                   </motion.div>
                 )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Bilgi Merkezi Mega Menu */}
+        <AnimatePresence>
+          {isBilgiMerkeziOpen && (
+            <motion.div
+              initial={{ opacity: 0, scaleY: 0 }}
+              animate={{ opacity: 1, scaleY: 1 }}
+              exit={{ opacity: 0, scaleY: 0, transition: { duration: 0 } }}
+              transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+              className={cn("hidden md:block w-full overflow-hidden origin-top", isDark ? "bg-[#1a1a1a]" : "bg-white")}
+              style={{ height: "42vh", willChange: "transform, opacity" }}
+              onMouseLeave={() => {
+                setIsBilgiMerkeziOpen(false);
+                setHoveredBilgiMerkeziItem(null);
+              }}
+            >
+              <div 
+                className="h-full flex gap-24 items-center" 
+                style={{ paddingLeft: 'calc(50% - 408px)' }}
+              >
+                {/* Sol Kolon - Başlık ve Açıklama */}
+                <div className="flex flex-col min-w-[320px] max-w-[360px]">
+                  <motion.h3 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0, transition: { duration: 0 } }}
+                    transition={{ duration: 1.2, delay: 0.1, ease: "easeOut" }}
+                    className={cn("text-[12px] font-medium mb-20 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}
+                  >
+                    {t("mega.bilgiMerkezi")}
+                  </motion.h3>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0, transition: { duration: 0 } }}
+                    transition={{ duration: 1.2, delay: 0.15, ease: "easeOut" }}
+                  >
+                    <h2 className="text-4xl font-bold mb-5 text-[#dc2626]">
+                      {t("mega.bilgiMerkezi")}
+                    </h2>
+                    <p className={cn(
+                      "text-lg leading-relaxed",
+                      isDark ? "text-white/60" : "text-[#86868b]"
+                    )}>
+                      {t("mega.bilgiDesc")}
+                    </p>
+                  </motion.div>
+                </div>
+
+                {/* Sağ Kolon - Bağlantılar */}
+                <div className="flex flex-col min-w-[280px]">
+                  <motion.h3 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0, transition: { duration: 0 } }}
+                    transition={{ duration: 1.2, delay: 0.1, ease: "easeOut" }}
+                    className={cn("text-[12px] font-medium mb-20 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}
+                  >
+                    {t("mega.kesfet")}
+                  </motion.h3>
+                  <div className="flex flex-col gap-4">
+                    {bilgiMerkeziItems.map((item, index) => (
+                      <motion.div
+                        key={item.href}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, transition: { duration: 0 } }}
+                        transition={{ duration: 1.2, delay: 0.15 + index * 0.08, ease: "easeOut" }}
+                        onMouseEnter={() => setHoveredBilgiMerkeziItem(item.href)}
+                      >
+                        <Link
+                          href={item.href}
+                          onClick={closeMenu}
+                          className={cn(
+                            "text-xl font-medium transition-all duration-200 flex items-center gap-2",
+                            isDark ? "text-white/90 hover:text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]",
+                            hoveredBilgiMerkeziItem && hoveredBilgiMerkeziItem === item.href && "!text-[#dc2626]",
+                            hoveredBilgiMerkeziItem && hoveredBilgiMerkeziItem !== item.href && "opacity-40"
+                          )}
+                        >
+                          {t(item.labelKey)}
+                        </Link>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </motion.div>
           )}
@@ -826,17 +907,23 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
               <nav className="flex flex-col py-4">
                 {navItems.map((item, index) => (
                   <motion.div
-                    key={item.label}
+                    key={item.labelKey}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
                   >
                     {item.hasDropdown ? (
                       <span
-                        onClick={() => setIsProductsOpen(true)}
+                        onClick={() => {
+                          if (item.dropdownType === "products") {
+                            setIsProductsOpen(true);
+                          } else if (item.dropdownType === "bilgi-merkezi") {
+                            setIsBilgiMerkeziOpen(true);
+                          }
+                        }}
                         className="block px-4 py-3 text-[15px] font-light text-white/90 hover:text-white hover:bg-white/5 transition-colors duration-75 cursor-pointer"
                       >
-                        {item.label}
+                        {t(item.labelKey)}
                       </span>
                     ) : (
                       <Link
@@ -844,7 +931,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                         onClick={() => setIsMobileMenuOpen(false)}
                         className="block px-4 py-3 text-[15px] font-light text-white/90 hover:text-white hover:bg-white/5 transition-colors duration-75"
                       >
-                        {item.label}
+                        {t(item.labelKey)}
                       </Link>
                     )}
                   </motion.div>

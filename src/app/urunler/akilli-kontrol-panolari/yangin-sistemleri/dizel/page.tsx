@@ -5,86 +5,88 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import { useLanguage } from "@/context/LanguageContext";
 
 const urunler = [
   { id: 1, label: "Dizel EN Serisi", key: "dizel-en" },
 ];
 
-// Ürün verileri
-const urunVerileri: Record<string, {
-  baslik: string;
-  aciklama: string;
-  ozellikler: string[];
-  resim: string;
-  belgeler: { isim: string; link: string }[];
-  teknikOzellikler?: string[];
-  uygulamaAlanlariResim?: string;
-  teknikVerilerCoklu?: {
-    baslik: string;
-    basliklar: string[];
-    satirlar: string[][];
-  }[];
-  teknikNot?: string;
-}> = {
-  "dizel-en": {
-    baslik: "Dizel EN Serisi",
-    aciklama: "Dizel Motor Kontrol Paneli, Smart ara yüzü ile EN 12845 standartına uygun olarak kontrol sağlar.",
-    ozellikler: [
-      "Kolay ve hızlı bir şekilde yönlendirme butonlarını kullanarak, net şekilde okunabilir LCD ekran üzerinden ayarların yapılması",
-      "Fabrika montajlı olarak, motor koruması için devre kesici ve kapı kilitleme mekanizma özelliği olan yük kesici",
-      "Şamandıradan, basınç sensöründe ve anahtarından, seviye elektrodundan gelen bilgiler ile, sistemi açar, çalıştırır ve durdurur"
-    ],
-    resim: "/dizel-en.png",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/dizel-en-datasheet.pdf" },
-      { isim: "Kullanım Kılavuzu", link: "/dizel-en-kullanim.pdf" }
-    ],
-    teknikOzellikler: [
-      "Metal / IP 55",
-      "Kilitleme mekanizmasına sahip ana kesici",
-      "Otomatik / Manuel / Off seçmek için anahtar",
-      "Güç Beslemesi 1-50/60Hz 230V ±",
-      "12V veya 24V DC beslemesi",
-      "Elle acil başlatma için basma tuşu (Kırılabilir cam arkasında)",
-      "Alarmlar ve Sinyaller",
-      "Oto Mod Devre dışı",
-      "Genel Arıza",
-      "Motor Çalışıyor",
-      "Haftalık test devrede",
-      "DC Gerilim gösterme",
-      "Yakıt seviyesi gösterme",
-      "Oda sıcaklık göstergesi",
-      "AC Akım ve voltaj göstergesi",
-      "Motor yağ basıncı göstergesi",
-      "Motor soğutma suyu sıcaklığı",
-      "Otomatik / Manuel mod göstergesi",
-      "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
-      "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
-      "Haftalık otomatik test",
-      "MODBus bağlantısı",
-      "Bakım zamanı gösterimi ve mesajlar",
-      "NFC ile Parametre ayarları",
-      "Alarm çıkışları (NC-5A/250V)"
-    ],
-    teknikVerilerCoklu: [
-      {
-        baslik: "Dizel EN Serisi Teknik Veriler",
-        basliklar: ["Model", "COD", "Voltaj (V~)", "Batarya (Adet)", "Batarya (V)", "Akım (A)", "HxLxW (mm)", "Malzeme"],
-        satirlar: [
-          ["DIESEL-EN", "24001", "1-230", "1", "12 VDC", "200", "700x400x200", "Metal"],
-          ["DIESEL-EN", "24010", "1-230", "2", "12 VDC", "-", "600x400x200", "Metal"],
-          ["DIESEL-EN", "24101", "1-230", "2", "24 VDC", "-", "600x400x200", "Metal"],
-          ["DIESEL-EN PLUS 500", "24020", "1-230", "2", "12 VDC", "500", "700x400x200", "Metal"],
-          ["DIESEL-EN PLUS 800", "24030", "1-230", "2", "12 VDC", "800", "700x400x200", "Metal"],
-          ["DIESEL-EN PLUS 500", "24201", "1-230", "2", "24 VDC", "500", "700x400x200", "Metal"],
-          ["DIESEL-EN PLUS 800", "24301", "1-230", "2", "24 VDC", "800", "700x400x200", "Metal"]
-        ]
-      }
-    ]
-  }
-};
-
 export default function Dizel() {
+  const { t } = useLanguage();
+
+  // Ürün verileri
+  const urunVerileri: Record<string, {
+    baslik: string;
+    aciklama: string;
+    ozellikler: string[];
+    resim: string;
+    belgeler: { isimKey: string; link: string }[];
+    teknikOzellikler?: string[];
+    uygulamaAlanlariResim?: string;
+    teknikVerilerCoklu?: {
+      baslik: string;
+      basliklar: string[];
+      satirlar: string[][];
+    }[];
+    teknikNot?: string;
+  }> = {
+    "dizel-en": {
+      baslik: "Dizel EN Serisi",
+      aciklama: t("prod.dizel.dizel-en.desc"),
+      ozellikler: [
+        t("prod.dizel.dizel-en.feat1"),
+        t("prod.dizel.dizel-en.feat2"),
+        t("prod.dizel.dizel-en.feat3")
+      ],
+      resim: "/dizel-en.png",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/dizel-en-datasheet.pdf" },
+        { isimKey: "prod.userManual", link: "/dizel-en-kullanim.pdf" }
+      ],
+      teknikOzellikler: [
+        "Metal / IP 55",
+        "Kilitleme mekanizmasına sahip ana kesici",
+        "Otomatik / Manuel / Off seçmek için anahtar",
+        "Güç Beslemesi 1-50/60Hz 230V ±",
+        "12V veya 24V DC beslemesi",
+        "Elle acil başlatma için basma tuşu (Kırılabilir cam arkasında)",
+        "Alarmlar ve Sinyaller",
+        "Oto Mod Devre dışı",
+        "Genel Arıza",
+        "Motor Çalışıyor",
+        "Haftalık test devrede",
+        "DC Gerilim gösterme",
+        "Yakıt seviyesi gösterme",
+        "Oda sıcaklık göstergesi",
+        "AC Akım ve voltaj göstergesi",
+        "Motor yağ basıncı göstergesi",
+        "Motor soğutma suyu sıcaklığı",
+        "Otomatik / Manuel mod göstergesi",
+        "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
+        "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
+        "Haftalık otomatik test",
+        "MODBus bağlantısı",
+        "Bakım zamanı gösterimi ve mesajlar",
+        "NFC ile Parametre ayarları",
+        "Alarm çıkışları (NC-5A/250V)"
+      ],
+      teknikVerilerCoklu: [
+        {
+          baslik: "Dizel EN Serisi Teknik Veriler",
+          basliklar: ["Model", "COD", "Voltaj (V~)", "Batarya (Adet)", "Batarya (V)", "Akım (A)", "HxLxW (mm)", "Malzeme"],
+          satirlar: [
+            ["DIESEL-EN", "24001", "1-230", "1", "12 VDC", "200", "700x400x200", "Metal"],
+            ["DIESEL-EN", "24010", "1-230", "2", "12 VDC", "-", "600x400x200", "Metal"],
+            ["DIESEL-EN", "24101", "1-230", "2", "24 VDC", "-", "600x400x200", "Metal"],
+            ["DIESEL-EN PLUS 500", "24020", "1-230", "2", "12 VDC", "500", "700x400x200", "Metal"],
+            ["DIESEL-EN PLUS 800", "24030", "1-230", "2", "12 VDC", "800", "700x400x200", "Metal"],
+            ["DIESEL-EN PLUS 500", "24201", "1-230", "2", "24 VDC", "500", "700x400x200", "Metal"],
+            ["DIESEL-EN PLUS 800", "24301", "1-230", "2", "24 VDC", "800", "700x400x200", "Metal"]
+          ]
+        }
+      ]
+    }
+  };
   const searchParams = useSearchParams();
   const urunParam = searchParams.get("urun");
   const [activeUrun, setActiveUrun] = useState(urunler[0].key);
@@ -114,14 +116,14 @@ export default function Dizel() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
-          <span className="text-lg font-medium">Kategoriler</span>
+          <span className="text-lg font-medium">{t("prod.back.categories")}</span>
         </Link>
       </div>
 
       {/* Başlık */}
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "60px", paddingBottom: "40px" }}>
         <h1 className="text-[#86868b] text-5xl font-medium text-center">
-          Dizel
+          {t("prod.akilli.dizel.title")}
         </h1>
       </section>
 
@@ -198,7 +200,7 @@ export default function Dizel() {
                 {/* Özellikler */}
                 {aktifUrunVerisi.ozellikler.length > 0 && (
                   <div className="mb-14">
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Özellikler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.features")}</h3>
                     <div className="space-y-5">
                       {aktifUrunVerisi.ozellikler.map((ozellik, index) => (
                         <div key={index} className="flex items-start gap-4">
@@ -213,7 +215,7 @@ export default function Dizel() {
                 {/* Belgeler */}
                 {aktifUrunVerisi.belgeler.length > 0 && (
                   <div>
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Belgeler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.documents")}</h3>
                     <div className="flex flex-wrap gap-4">
                       {aktifUrunVerisi.belgeler.map((belge, index) => (
                         <a
@@ -231,7 +233,7 @@ export default function Dizel() {
                             <line x1="16" y1="17" x2="8" y2="17"/>
                             <polyline points="10 9 9 9 8 9"/>
                           </svg>
-                          {belge.isim}
+                          {t(belge.isimKey)}
                         </a>
                       ))}
                     </div>
@@ -273,7 +275,7 @@ export default function Dizel() {
                       }
                     }}
                   >
-                    Teknik Özellikler
+                    {t("prod.techSpecs")}
                   </button>
                 )}
                 {hasUygulamaAlanlari && (
@@ -300,7 +302,7 @@ export default function Dizel() {
                       }
                     }}
                   >
-                    Uygulama Alanları
+                    {t("prod.appAreas")}
                   </button>
                 )}
                 {hasTeknikVeriler && (
@@ -327,7 +329,7 @@ export default function Dizel() {
                       }
                     }}
                   >
-                    Teknik Veriler
+                    {t("prod.techData")}
                   </button>
                 )}
               </div>
@@ -414,7 +416,7 @@ export default function Dizel() {
               {aktifUrunVerisi.baslik}
             </h2>
             <p className="text-[#6e6e73] text-xl">
-              Bu ürünün detayları yakında eklenecektir.
+              {t("prod.comingSoon")}
             </p>
         </div>
         )}

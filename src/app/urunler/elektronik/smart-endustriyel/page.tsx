@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import { useLanguage } from "@/context/LanguageContext";
 
 const urunler = [
   { id: 1, label: "Smart Grinder Kontrolörleri", key: "grinder" },
@@ -13,157 +14,158 @@ const urunler = [
   { id: 4, label: "Smart Derin Kuyu Kontrolörleri", key: "derin-kuyu" },
 ];
 
-// Ürün verileri
-const urunVerileri: Record<string, {
-  baslik: string;
-  aciklama: string;
-  ozellikler: string[];
-  resim: string;
-  belgeler: { isim: string; link: string }[];
-  teknikOzellikler?: string[];
-  uygulamaAlanlariResim?: string;
-}> = {
-  "grinder": {
-    baslik: "Smart Grinder Kontrolörleri",
-    aciklama: "Mikroişlemcili smart kontrolörler, tek faz veya trifaz olarak 2 pompaya kadar sistemi kontrol eder. Smart Grinder kontrolör, sisteminizi yönetmeyi, parametreleri değiştirmeyi, olayları ve mesajları kayıt altına alma vb. gibi bir çok işlemi pratik bir şekilde yapmanızı sağlar.",
-    ozellikler: [
-      "Smart Grinder Panelleri suya dayanıklı IP 55 ABS malzemeden üretilmiş özel dizayn kutuya monte edilir",
-      "3G / WI-FI modül sayesinde, uzak bir noktadan sistemi işletme, verileri görüntüleme ve sistemi kontrol etme sağlanır",
-      "Kolay ve hızlı bir şekilde yönlendirme butonlarını kullanarak, net şekilde okunabilir LCD ekran üzerinden ayarların yapılması",
-      "Şamandıra veya seviye elektrotlarından gelen bilgi ile, sistemi açar, çalıştırır ve durdurur"
-    ],
-    resim: "/smart-grinder-kontrolor.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/smart-grinder-kontrolor-datasheet.pdf" }
-    ],
-    teknikOzellikler: [
-      "Güç Beslemesi 24VDC",
-      "3 Faz kontrolü için bağlantı girişi",
-      "128x64 LCD Grafik Ekran",
-      "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
-      "Başlatma bilgisi için komut girişi (Seviye Elektrodu veya Şamandıra)",
-      "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
-      "Oto-Manuel Durum bilgisi görüntüleme",
-      "Korumalar ve Hatalar",
-      "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
-      "Faz kaybı ve Faz sırası hatası",
-      "Min / Max Voltaj (Ayarlanabilir)",
-      "Motor başlama zamanı",
-      "Taşma uyarısı fonksiyonu",
-      "Kuru çalışma koruması",
-      "Pompa çalışma süre bilgisi",
-      "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
-      "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
-      "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
-      "MODBus Bağlantısı",
-      "Ayarlanabilir motor geri yönlendirme özelliği"
-    ]
-  },
-  "hidrofor": {
-    baslik: "Smart Hidrofor Kontrolörleri",
-    aciklama: "Mikroişlemcili smart kontrolörler, tek faz veya trifaz olarak 2 pompaya kadar sistemi kontrol eder. Smart Booster Kontrolör, sisteminizi yönetmeyi, parametreleri değiştirmeyi, olayları ve mesajları kayıt altına alma vb. gibi bir çok işlemi pratik bir şekilde yapmanızı sağlar. (Temiz su uygulamalarında ki basınçlandırma süreçlerini gerçekleştirir)",
-    ozellikler: [
-      "3G / WI-FI modül sayesinde, uzak bir noktadan sistemi işletme, verileri görüntüleme ve sistemi kontrol etme sağlanır",
-      "Kolay ve hızlı bir şekilde yönlendirme butonlarını kullanarak, net şekilde okunabilir LCD ekran üzerinden ayarların yapılması",
-      "Farklı tipteki bağlantılar ile motoru başlatma veya durdurma; basınç anahtarı, akış anahtarı vb. gibi"
-    ],
-    resim: "/smart-hidrofor-kontrolor.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/smart-hidrofor-kontrolor-datasheet.pdf" }
-    ],
-    teknikOzellikler: [
-      "Güç Beslemesi 24VDC",
-      "3 Faz kontrolü için bağlantı girişi",
-      "128x64 LCD Grafik Ekran",
-      "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
-      "Başlatma bilgisi için komut girişi (Basınç anahtarı veya sensör)",
-      "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
-      "Oto-Manuel Durum bilgisi görüntüleme",
-      "Korumalar ve Hatalar",
-      "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
-      "Faz kaybı ve Faz sırası hatası",
-      "Min / Max Voltaj (Ayarlanabilir)",
-      "Motor başlama zamanı",
-      "Kuru çalışma koruması",
-      "Pompa çalışma süre bilgisi",
-      "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
-      "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
-      "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
-      "MODBus Bağlantısı"
-    ]
-  },
-  "atik-su": {
-    baslik: "Smart Atık Su Kontrolörleri",
-    aciklama: "Mikroişlemcili smart kontrolörler, tek faz veya trifaz olarak 2 pompaya kadar sistemi kontrol eder. Smart Wastewater kontrolör, sisteminizi yönetmeyi, parametreleri değiştirmeyi, olayları ve mesajları kayıt altına alma vb. gibi bir çok işlemi pratik bir şekilde yapmanızı sağlar. (Pis su uygulamalarında ki doldurma ve boşaltma süreçlerini gerçekleştirir)",
-    ozellikler: [
-      "3G / WI-FI modül sayesinde, uzak bir noktadan sistemi işletme, verileri görüntüleme ve sistemi kontrol etme sağlanır",
-      "Kolay ve hızlı bir şekilde yönlendirme butonlarını kullanarak, net şekilde okunabilir LCD ekran üzerinden ayarların yapılması",
-      "Şamandıra veya seviye elektrotlarından gelen bilgi ile, sistemi açar, çalıştırır ve durdurur"
-    ],
-    resim: "/smart-atik-su-kontrolor.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/smart-atik-su-kontrolor-datasheet.pdf" }
-    ],
-    teknikOzellikler: [
-      "Güç Beslemesi 24VDC",
-      "3 Faz kontrolü için bağlantı girişi",
-      "128x64 LCD Grafik Ekran",
-      "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
-      "Başlatma bilgisi için komut girişi (Seviye Elektrodu veya Şamandıra)",
-      "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
-      "Oto-Manuel Durum bilgisi görüntüleme",
-      "Korumalar ve Hatalar",
-      "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
-      "Faz kaybı ve Faz sırası hatası",
-      "Min / Max Voltaj (Ayarlanabilir)",
-      "Motor başlama zamanı",
-      "Taşma uyarısı fonksiyonu",
-      "Kuru çalışma koruması",
-      "Pompa gövdesi su kaçağı uyarısı",
-      "Pompa çalışma süre bilgisi",
-      "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
-      "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
-      "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
-      "MODBus Bağlantısı"
-    ]
-  },
-  "derin-kuyu": {
-    baslik: "Smart Derin Kuyu Kontrolörleri",
-    aciklama: "Mikroişlemcili smart kontrolör, tek faz veya trifaz olarak 2 pompaya kadar sistemi kontrol eder. Smart Bore Hole kontrolör, sisteminizi yönetmeyi, parametreleri değiştirmeyi, olayları ve mesajları kayıt altına alma vb. gibi bir çok işlemi pratik bir şekilde yapmanızı sağlar. (Pis su ve temiz su uygulamalarında ki doldurma ve boşaltma süreçlerini gerçekleştirir)",
-    ozellikler: [
-      "3G / WI-FI modül sayesinde, uzak bir noktadan sistemi işletme, verileri görüntüleme ve sistemi kontrol etme sağlanır",
-      "Kolay ve hızlı bir şekilde yönlendirme butonlarını kullanarak, net şekilde okunabilir LCD ekran üzerinden ayarların yapılması",
-      "Şamandıra veya seviye elektrotlarından gelen bilgi ile, sistemi açar, çalıştırır ve durdurur"
-    ],
-    resim: "/smart-derin-kuyu-kontrolor.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/smart-derin-kuyu-kontrolor-datasheet.pdf" }
-    ],
-    teknikOzellikler: [
-      "Güç Beslemesi 24VDC",
-      "3 Faz kontrolü için bağlantı girişi",
-      "128x64 LCD Grafik Ekran",
-      "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
-      "Başlatma bilgisi için komut girişi (Seviye Elektrodu)",
-      "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
-      "Oto-Manuel Durum bilgisi görüntüleme",
-      "Korumalar ve Hatalar",
-      "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
-      "Faz kaybı ve Faz sırası hatası",
-      "Min / Max Voltaj (Ayarlanabilir)",
-      "Motor başlama zamanı",
-      "Taşma uyarısı fonksiyonu",
-      "Kuru çalışma koruması (Elektrot ile)",
-      "Pompa çalışma süre bilgisi",
-      "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
-      "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
-      "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
-      "MODBus Bağlantısı"
-    ]
-  }
-};
-
 export default function SmartEndustriyel() {
+  const { t } = useLanguage();
+
+  // Ürün verileri
+  const urunVerileri: Record<string, {
+    baslik: string;
+    aciklama: string;
+    ozellikler: string[];
+    resim: string;
+    belgeler: { isimKey: string; link: string }[];
+    teknikOzellikler?: string[];
+    uygulamaAlanlariResim?: string;
+  }> = {
+    "grinder": {
+      baslik: "Smart Grinder Kontrolörleri",
+      aciklama: t("prod.smartEnd.grinder.desc"),
+      ozellikler: [
+        t("prod.smartEnd.grinder.feat1"),
+        t("prod.smartEnd.grinder.feat2"),
+        t("prod.smartEnd.grinder.feat3"),
+        t("prod.smartEnd.grinder.feat4")
+      ],
+      resim: "/smart-grinder-kontrolor.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/smart-grinder-kontrolor-datasheet.pdf" }
+      ],
+      teknikOzellikler: [
+        "Güç Beslemesi 24VDC",
+        "3 Faz kontrolü için bağlantı girişi",
+        "128x64 LCD Grafik Ekran",
+        "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
+        "Başlatma bilgisi için komut girişi (Seviye Elektrodu veya Şamandıra)",
+        "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
+        "Oto-Manuel Durum bilgisi görüntüleme",
+        "Korumalar ve Hatalar",
+        "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
+        "Faz kaybı ve Faz sırası hatası",
+        "Min / Max Voltaj (Ayarlanabilir)",
+        "Motor başlama zamanı",
+        "Taşma uyarısı fonksiyonu",
+        "Kuru çalışma koruması",
+        "Pompa çalışma süre bilgisi",
+        "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
+        "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
+        "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
+        "MODBus Bağlantısı",
+        "Ayarlanabilir motor geri yönlendirme özelliği"
+      ]
+    },
+    "hidrofor": {
+      baslik: "Smart Hidrofor Kontrolörleri",
+      aciklama: t("prod.smartEnd.hidrofor.desc"),
+      ozellikler: [
+        t("prod.smartEnd.hidrofor.feat1"),
+        t("prod.smartEnd.hidrofor.feat2"),
+        t("prod.smartEnd.hidrofor.feat3")
+      ],
+      resim: "/smart-hidrofor-kontrolor.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/smart-hidrofor-kontrolor-datasheet.pdf" }
+      ],
+      teknikOzellikler: [
+        "Güç Beslemesi 24VDC",
+        "3 Faz kontrolü için bağlantı girişi",
+        "128x64 LCD Grafik Ekran",
+        "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
+        "Başlatma bilgisi için komut girişi (Basınç anahtarı veya sensör)",
+        "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
+        "Oto-Manuel Durum bilgisi görüntüleme",
+        "Korumalar ve Hatalar",
+        "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
+        "Faz kaybı ve Faz sırası hatası",
+        "Min / Max Voltaj (Ayarlanabilir)",
+        "Motor başlama zamanı",
+        "Kuru çalışma koruması",
+        "Pompa çalışma süre bilgisi",
+        "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
+        "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
+        "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
+        "MODBus Bağlantısı"
+      ]
+    },
+    "atik-su": {
+      baslik: "Smart Atık Su Kontrolörleri",
+      aciklama: t("prod.smartEnd.atik-su.desc"),
+      ozellikler: [
+        t("prod.smartEnd.atik-su.feat1"),
+        t("prod.smartEnd.atik-su.feat2"),
+        t("prod.smartEnd.atik-su.feat3")
+      ],
+      resim: "/smart-atik-su-kontrolor.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/smart-atik-su-kontrolor-datasheet.pdf" }
+      ],
+      teknikOzellikler: [
+        "Güç Beslemesi 24VDC",
+        "3 Faz kontrolü için bağlantı girişi",
+        "128x64 LCD Grafik Ekran",
+        "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
+        "Başlatma bilgisi için komut girişi (Seviye Elektrodu veya Şamandıra)",
+        "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
+        "Oto-Manuel Durum bilgisi görüntüleme",
+        "Korumalar ve Hatalar",
+        "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
+        "Faz kaybı ve Faz sırası hatası",
+        "Min / Max Voltaj (Ayarlanabilir)",
+        "Motor başlama zamanı",
+        "Taşma uyarısı fonksiyonu",
+        "Kuru çalışma koruması",
+        "Pompa gövdesi su kaçağı uyarısı",
+        "Pompa çalışma süre bilgisi",
+        "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
+        "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
+        "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
+        "MODBus Bağlantısı"
+      ]
+    },
+    "derin-kuyu": {
+      baslik: "Smart Derin Kuyu Kontrolörleri",
+      aciklama: t("prod.smartEnd.derin-kuyu.desc"),
+      ozellikler: [
+        t("prod.smartEnd.derin-kuyu.feat1"),
+        t("prod.smartEnd.derin-kuyu.feat2"),
+        t("prod.smartEnd.derin-kuyu.feat3")
+      ],
+      resim: "/smart-derin-kuyu-kontrolor.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/smart-derin-kuyu-kontrolor-datasheet.pdf" }
+      ],
+      teknikOzellikler: [
+        "Güç Beslemesi 24VDC",
+        "3 Faz kontrolü için bağlantı girişi",
+        "128x64 LCD Grafik Ekran",
+        "Motor Çalışıyor sinyali için yeşil renkli LED / Hatalar için kırmızı renkli LED",
+        "Başlatma bilgisi için komut girişi (Seviye Elektrodu)",
+        "Ana Sayfada Voltaj, Amper, Alarmlar, Basınç, Olaylar ve Tarih & Zaman bilgileri",
+        "Oto-Manuel Durum bilgisi görüntüleme",
+        "Korumalar ve Hatalar",
+        "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
+        "Faz kaybı ve Faz sırası hatası",
+        "Min / Max Voltaj (Ayarlanabilir)",
+        "Motor başlama zamanı",
+        "Taşma uyarısı fonksiyonu",
+        "Kuru çalışma koruması (Elektrot ile)",
+        "Pompa çalışma süre bilgisi",
+        "Bakım zamanı ayarlanabilme ve görüntülenebilme özelliği",
+        "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
+        "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
+        "MODBus Bağlantısı"
+      ]
+    }
+  };
   const searchParams = useSearchParams();
   const urunParam = searchParams.get("urun");
   const [activeUrun, setActiveUrun] = useState(urunler[0].key);
@@ -192,15 +194,13 @@ export default function SmartEndustriyel() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
-          <span className="text-lg font-medium">Kategoriler</span>
+          <span className="text-lg font-medium">{t("prod.back.categories")}</span>
         </Link>
       </div>
 
       {/* Başlık */}
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "60px", paddingBottom: "40px" }}>
-        <h1 className="text-[#86868b] text-5xl font-medium text-center">
-          Smart Endüstriyel Kontrolörler
-        </h1>
+        <h1 className="text-[#86868b] text-5xl font-medium text-center">{t("mega.prod.smartEnd")}</h1>
       </section>
 
       {/* Ürün Menüsü */}
@@ -276,7 +276,7 @@ export default function SmartEndustriyel() {
                 {/* Özellikler */}
                 {aktifUrunVerisi.ozellikler.length > 0 && (
                   <div className="mb-14">
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Özellikler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.features")}</h3>
                     <div className="space-y-5">
                       {aktifUrunVerisi.ozellikler.map((ozellik, index) => (
                         <div key={index} className="flex items-start gap-4">
@@ -291,7 +291,7 @@ export default function SmartEndustriyel() {
                 {/* Belgeler */}
                 {aktifUrunVerisi.belgeler.length > 0 && (
                   <div>
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Belgeler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.documents")}</h3>
                     <div className="flex flex-wrap gap-4">
                       {aktifUrunVerisi.belgeler.map((belge, index) => (
                         <a
@@ -309,7 +309,7 @@ export default function SmartEndustriyel() {
                             <line x1="16" y1="17" x2="8" y2="17"/>
                             <polyline points="10 9 9 9 8 9"/>
                           </svg>
-                          {belge.isim}
+                          {t(belge.isimKey)}
                         </a>
                       ))}
                     </div>
@@ -351,7 +351,7 @@ export default function SmartEndustriyel() {
                       }
                     }}
                   >
-                    Teknik Özellikler
+                    {t("prod.techSpecs")}
                   </button>
                 )}
                 {hasUygulamaAlanlari && (
@@ -378,7 +378,7 @@ export default function SmartEndustriyel() {
                       }
                     }}
                   >
-                    Uygulama Alanları
+                    {t("prod.appAreas")}
                   </button>
                 )}
               </div>
@@ -422,7 +422,7 @@ export default function SmartEndustriyel() {
               {aktifUrunVerisi.baslik}
             </h2>
             <p className="text-[#6e6e73] text-xl">
-              Bu ürünün detayları yakında eklenecektir.
+              {t("prod.comingSoon")}
             </p>
           </div>
         )}

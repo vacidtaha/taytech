@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface FooterProps {
   theme?: "dark" | "light" | "white";
 }
 
 export default function Footer({ theme = "dark" }: FooterProps) {
+  const { t } = useLanguage();
   const currentYear = new Date().getFullYear();
   const isLight = theme === "light" || theme === "white";
   const isWhite = theme === "white";
@@ -15,64 +17,72 @@ export default function Footer({ theme = "dark" }: FooterProps) {
   const footerLinks = {
     urunler: [
       { 
-        name: "Akıllı Kontrol Panoları", 
+        nameKey: "footer.urun.akilli", 
         categories: [
-          { name: "Elektronik Kontrol Panoları", href: "/urunler/akilli-kontrol-panolari/elektronik" },
-          { name: "Elektromekanik Kontrol Panoları", href: "/urunler/akilli-kontrol-panolari/elektromekanik" },
-          { name: "Yangın Sistemleri", href: "/urunler/akilli-kontrol-panolari/yangin-sistemleri" },
+          { nameKey: "footer.urun.elektronikPano", href: "/urunler/akilli-kontrol-panolari/elektronik" },
+          { nameKey: "footer.urun.elektromekanikPano", href: "/urunler/akilli-kontrol-panolari/elektromekanik" },
+          { nameKey: "footer.urun.yangin", href: "/urunler/akilli-kontrol-panolari/yangin-sistemleri" },
         ]
       },
       { 
-        name: "Isı İstasyonu Uygulamaları", 
+        nameKey: "footer.urun.isi", 
         categories: [
-          { name: "Direct", href: "/urunler/isi-istasyonu/direct" },
-          { name: "Indirect", href: "/urunler/isi-istasyonu/indirect" },
+          { nameKey: "footer.urun.direct", href: "/urunler/isi-istasyonu/direct" },
+          { nameKey: "footer.urun.indirect", href: "/urunler/isi-istasyonu/indirect" },
         ]
       },
       { 
-        name: "Elektronik", 
+        nameKey: "footer.urun.elektronik", 
         categories: [
-          { name: "Smart Endüstriyel Kontrolörler", href: "/urunler/elektronik/smart-endustriyel" },
-          { name: "Isı İstasyonu Kontrolörleri", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri" },
-          { name: "Yerden Isıtma Kontrolörleri", href: "/urunler/elektronik/yerden-isitma" },
+          { nameKey: "footer.urun.smartEnd", href: "/urunler/elektronik/smart-endustriyel" },
+          { nameKey: "footer.urun.isiKontrol", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri" },
+          { nameKey: "footer.urun.yerden", href: "/urunler/elektronik/yerden-isitma" },
         ]
       },
       { 
-        name: "Taytech Cloud", 
+        nameKey: "footer.urun.cloud", 
         categories: [
-          { name: "Dataloger", href: "/urunler/taytech-cloud?urun=dataloger" },
-          { name: "GSM Modem", href: "/urunler/taytech-cloud?urun=gsm-modem" },
-          { name: "M-Bus Converter", href: "/urunler/taytech-cloud?urun=m-bus-converter" },
+          { nameKey: "footer.urun.dataloger", href: "/urunler/taytech-cloud?urun=dataloger" },
+          { nameKey: "footer.urun.gsm", href: "/urunler/taytech-cloud?urun=gsm-modem" },
+          { nameKey: "footer.urun.mbus", href: "/urunler/taytech-cloud?urun=m-bus-converter" },
         ]
       },
       { 
-        name: "IRONTRAP® Manyetik Filtre", 
+        nameKey: "footer.urun.manyetik", 
         categories: [
-          { name: "IRONTRAP® Manyetik Filtre", href: "/urunler/manyetik-filtre" },
+          { nameKey: "footer.urun.manyetik", href: "/urunler/manyetik-filtre" },
         ]
       },
       { 
-        name: "IRONTRAP® Sıvılar", 
+        nameKey: "footer.urun.sivilar", 
         categories: [
-          { name: "Koruyucu Sıvılar", href: "/urunler/temizleyici-sivilar/koruyucu" },
-          { name: "Temizleyici Sıvılar", href: "/urunler/temizleyici-sivilar/temizleyici" },
+          { nameKey: "footer.urun.koruyucu", href: "/urunler/temizleyici-sivilar/koruyucu" },
+          { nameKey: "footer.urun.temizleyici", href: "/urunler/temizleyici-sivilar/temizleyici" },
         ]
       },
     ],
     cozumler: [
-      { name: "Akıllı Bina", href: "/cozumler/akilli-bina" },
-      { name: "Akıllı Şehir", href: "/cozumler/akilli-sehir" },
-      { name: "Akıllı Tarım", href: "/cozumler/akilli-tarim" },
-      { name: "Akıllı Enerji", href: "/cozumler/akilli-enerji" },
-      { name: "Akıllı Mağaza", href: "/cozumler/akilli-magaza" },
-      { name: "Akıllı Taşıma", href: "/cozumler/akilli-tasima" },
-      { name: "Akıllı Güvenlik", href: "/cozumler/akilli-guvenlik" },
-      { name: "Akıllı İşletme", href: "/cozumler/akilli-isletme" },
+      { nameKey: "cozumler.ticari", href: "/cozumler/ticari-tesisler" },
+      { nameKey: "cozumler.toplu", href: "/cozumler/toplu-konutlar" },
+      { nameKey: "cozumler.bakim", href: "/cozumler/bakim-huzur-evleri" },
+      { nameKey: "cozumler.yeni", href: "/cozumler/yeni-projeler" },
+      { nameKey: "cozumler.hastane", href: "/cozumler/hastaneler" },
+      { nameKey: "cozumler.kazan", href: "/cozumler/endustriyel-kazan-dairesi" },
+      { nameKey: "cozumler.spor", href: "/cozumler/spor-eglence-tesisleri" },
+      { nameKey: "cozumler.saha", href: "/cozumler/saha-disi-uretim" },
+      { nameKey: "cozumler.egitim", href: "/cozumler/egitim-yapilari" },
+    ],
+    bilgiMerkezi: [
+      { nameKey: "mega.bilgi.video", href: "/bilgi-merkezi/video-arsivi" },
+      { nameKey: "mega.bilgi.dokuman", href: "/dokuman-merkezi" },
+      { nameKey: "mega.bilgi.sss", href: "/bilgi-merkezi/sikca-sorulan-sorular" },
+      { nameKey: "mega.bilgi.destek", href: "/iletisim" },
+      { nameKey: "mega.bilgi.akademi", href: "/bilgi-merkezi/taytech-akademi" },
     ],
     kurumsal: [
-      { name: "Hakkımızda", href: "/kurumsal" },
-      { name: "Haberler", href: "/haberler" },
-      { name: "İletişim", href: "/iletisim" },
+      { nameKey: "footer.hakkimizda", href: "/kurumsal" },
+      { nameKey: "footer.haberler", href: "/haberler" },
+      { nameKey: "footer.iletisim", href: "/iletisim" },
     ],
   };
 
@@ -111,18 +121,18 @@ export default function Footer({ theme = "dark" }: FooterProps) {
                 gap: '24px 60px'
               }}>
                 {footerLinks.urunler.map((urun) => (
-                  <div key={urun.name}>
+                  <div key={urun.nameKey}>
                     <h5 style={{ 
                       fontSize: '14px', 
                       fontWeight: 400, 
                       color: colors.heading,
                       marginBottom: '10px'
                     }}>
-                      {urun.name}
+                      {t(urun.nameKey)}
                     </h5>
                     <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                       {urun.categories.map((cat) => (
-                        <li key={cat.name} style={{ marginBottom: '6px' }}>
+                        <li key={cat.nameKey} style={{ marginBottom: '6px' }}>
                           <Link 
                             href={cat.href}
                             style={{ 
@@ -132,7 +142,7 @@ export default function Footer({ theme = "dark" }: FooterProps) {
                               textDecoration: 'none'
                             }}
                           >
-                            {cat.name}
+                            {t(cat.nameKey)}
                           </Link>
                         </li>
                       ))}
@@ -152,7 +162,7 @@ export default function Footer({ theme = "dark" }: FooterProps) {
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px'
               }}>
-                Çözümler
+                {t("footer.cozumler")}
               </h4>
               <div style={{ 
                 display: 'grid', 
@@ -161,7 +171,7 @@ export default function Footer({ theme = "dark" }: FooterProps) {
               }}>
                 {footerLinks.cozumler.map((link) => (
                   <Link 
-                    key={link.name}
+                    key={link.nameKey}
                     href={link.href}
                     style={{ 
                       fontSize: '14px', 
@@ -173,10 +183,75 @@ export default function Footer({ theme = "dark" }: FooterProps) {
                     onMouseOver={(e) => e.currentTarget.style.color = colors.linkHover}
                     onMouseOut={(e) => e.currentTarget.style.color = colors.link}
                   >
-                    {link.name}
+                    {t(link.nameKey)}
                   </Link>
                 ))}
               </div>
+            </div>
+
+            {/* Bilgi Merkezi */}
+            <div style={{ marginBottom: '40px' }}>
+              <h4 style={{ 
+                fontSize: '14px', 
+                fontWeight: 400, 
+                color: colors.heading,
+                marginBottom: '20px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}>
+                {t("footer.bilgiMerkezi")}
+              </h4>
+              <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: '1fr 1fr', 
+                gap: '12px 40px'
+              }}>
+                {footerLinks.bilgiMerkezi.map((link) => (
+                  <Link 
+                    key={link.nameKey}
+                    href={link.href}
+                    style={{ 
+                      fontSize: '14px', 
+                      fontWeight: 400, 
+                      color: colors.link,
+                      textDecoration: 'none',
+                      transition: 'color 0.2s'
+                    }}
+                    onMouseOver={(e) => e.currentTarget.style.color = colors.linkHover}
+                    onMouseOut={(e) => e.currentTarget.style.color = colors.link}
+                  >
+                    {t(link.nameKey)}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Doküman Merkezi */}
+            <div style={{ marginBottom: '40px' }}>
+              <h4 style={{ 
+                fontSize: '14px', 
+                fontWeight: 400, 
+                color: colors.heading,
+                marginBottom: '20px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}>
+                {t("footer.dokumanMerkezi")}
+              </h4>
+              <Link 
+                href="/dokuman-merkezi"
+                style={{ 
+                  fontSize: '14px', 
+                  fontWeight: 400, 
+                  color: colors.link,
+                  textDecoration: 'none',
+                  transition: 'color 0.2s'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.color = colors.linkHover}
+                onMouseOut={(e) => e.currentTarget.style.color = colors.link}
+              >
+                {t("footer.tumDokumanlar")}
+              </Link>
             </div>
 
             {/* Kurumsal */}
@@ -189,11 +264,11 @@ export default function Footer({ theme = "dark" }: FooterProps) {
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px'
               }}>
-                Kurumsal
+                {t("footer.kurumsal")}
               </h4>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                 {footerLinks.kurumsal.map((link) => (
-                  <li key={link.name} style={{ marginBottom: '12px' }}>
+                  <li key={link.nameKey} style={{ marginBottom: '12px' }}>
                     <Link 
                       href={link.href}
                       style={{ 
@@ -206,7 +281,7 @@ export default function Footer({ theme = "dark" }: FooterProps) {
                       onMouseOver={(e) => e.currentTarget.style.color = colors.linkHover}
                       onMouseOut={(e) => e.currentTarget.style.color = colors.link}
                     >
-                      {link.name}
+                      {t(link.nameKey)}
                     </Link>
                   </li>
                 ))}
@@ -256,11 +331,11 @@ export default function Footer({ theme = "dark" }: FooterProps) {
               fontWeight: 400, 
               color: colors.heading
             }}>
-              © {currentYear} Taytech Otomasyon ve Bilişim A.Ş. Tüm hakları saklıdır.
+              © {currentYear} {t("footer.copyright")}
             </span>
             <span style={{ color: colors.separator, fontSize: '15px' }}>|</span>
             <Link 
-              href="#"
+              href="/gizlilik-politikasi"
               style={{ 
                 fontSize: '15px', 
                 fontWeight: 400, 
@@ -271,11 +346,11 @@ export default function Footer({ theme = "dark" }: FooterProps) {
               onMouseOver={(e) => e.currentTarget.style.color = colors.link}
               onMouseOut={(e) => e.currentTarget.style.color = colors.heading}
             >
-              Gizlilik Politikası
+              {t("footer.privacy")}
             </Link>
             <span style={{ color: colors.separator, fontSize: '15px' }}>|</span>
             <Link 
-              href="#"
+              href="/kullanim-kosullari"
               style={{ 
                 fontSize: '15px', 
                 fontWeight: 400, 
@@ -286,11 +361,11 @@ export default function Footer({ theme = "dark" }: FooterProps) {
               onMouseOver={(e) => e.currentTarget.style.color = colors.link}
               onMouseOut={(e) => e.currentTarget.style.color = colors.heading}
             >
-              Kullanım Koşulları
+              {t("footer.terms")}
             </Link>
             <span style={{ color: colors.separator, fontSize: '15px' }}>|</span>
             <Link 
-              href="#"
+              href="/site-haritasi"
               style={{ 
                 fontSize: '15px', 
                 fontWeight: 400, 
@@ -301,7 +376,7 @@ export default function Footer({ theme = "dark" }: FooterProps) {
               onMouseOver={(e) => e.currentTarget.style.color = colors.link}
               onMouseOut={(e) => e.currentTarget.style.color = colors.heading}
             >
-              Site Haritası
+              {t("footer.sitemap")}
             </Link>
           </div>
           

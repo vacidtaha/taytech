@@ -5,128 +5,130 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import { useLanguage } from "@/context/LanguageContext";
 
 const urunler = [
   { id: 1, label: "Smart Jockey EN Serisi", key: "smart-jockey-en" },
   { id: 2, label: "Jockey EN Serisi", key: "jockey-en" },
 ];
 
-// Ürün verileri
-const urunVerileri: Record<string, {
-  baslik: string;
-  aciklama: string;
-  ozellikler: string[];
-  resim: string;
-  belgeler: { isim: string; link: string }[];
-  teknikOzellikler?: string[];
-  uygulamaAlanlariResim?: string;
-  teknikVerilerCoklu?: {
-    baslik: string;
-    basliklar: string[];
-    satirlar: string[][];
-  }[];
-  teknikNot?: string;
-}> = {
-  "smart-jockey-en": {
-    baslik: "Smart Jockey EN Serisi",
-    aciklama: "Elektrik Motor Kontrol Paneli, Smart ara yüzü ile EN 12845 standartına uygun olarak kontrol sağlar.",
-    ozellikler: [
-      "Kolay ve hızlı bir şekilde yönlendirme butonlarını kullanarak, net şekilde okunabilir LCD ekran üzerinden ayarların yapılması",
-      "Fabrika montajlı olarak, motor koruması için devre kesici ve kapı kilitleme mekanizma özelliği olan yük kesici",
-      "Şamandıradan, basınç sensöründe ve anahtarından, seviye elektrodundan gelen bilgiler ile, sistemi açar, çalıştırır ve durdurur"
-    ],
-    resim: "/smart-jockey-en.png",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/smart-jockey-en-datasheet.pdf" },
-      { isim: "Kullanım Kılavuzu", link: "/smart-jockey-en-kullanim.pdf" }
-    ],
-    teknikOzellikler: [
-      "Metal / IP 55",
-      "Kilitleme mekanizmasına sahip ana kesici",
-      "128 x 64 LCD Grafik Ekran",
-      "Motor çalışıyor bilgisi için yeşil LED / Hatalar için Kırmızı LED",
-      "Güç Beslemesi 3-50/60Hz 400V ±",
-      "Başlatma komutu için giriş",
-      "Alarmlar ve sinyaller",
-      "Motor Aşırıakım (Ayarlanabilir)",
-      "Motor düşük akım (Ayarlanabilir)",
-      "Faz kaybı hatası (Ayarlanabilir)",
-      "Faz sırası hatası (Ayarlanabilir)",
-      "Min / Max Voltaj (Ayarlanabilir)",
-      "Motor başlatma zamanı",
-      "MODBus (RS485)",
-      "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
-      "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
-      "Haftalık otomatik test",
-      "Bakım zamanı ve mesajların gösterimi",
-      "Alarm çıkışları (NC-5A/250V)"
-    ],
-    teknikVerilerCoklu: [
-      {
-        baslik: "Smart Jockey EN Serisi Teknik Veriler",
-        basliklar: ["Model", "COD", "Voltaj (V~)", "kW", "HP", "Akım Aralığı (A)", "Max (A)", "HxLxW (mm)", "Malzeme"],
-        satirlar: [
-          ["Smart Jockey/EN-4", "25301", "3-400", "4", "5.5", "7.6-9", "9", "400x300x175", "Metal"],
-          ["Smart Jockey/EN-5.5", "25302", "3-400", "5.5", "7.5", "10-12", "12", "400x300x175", "Metal"],
-          ["Smart Jockey/EN-7.5", "25303", "3-400", "7.5", "10", "2.6-16", "16", "400x300x175", "Metal"],
-          ["Smart Jockey/EN-11", "25304", "3-400", "11", "15", "16-25", "25", "400x300x175", "Metal"],
-          ["Smart Jockey/EN-15", "25305", "3-400", "15", "20", "16-32", "32", "400x300x175", "Metal"]
-        ]
-      }
-    ]
-  },
-  "jockey-en": {
-    baslik: "Jockey EN Serisi",
-    aciklama: "Jokey Pompa Mekanik Kontrol Paneli, EN 12845 standartına uygun olarak kontrol sağlar.",
-    ozellikler: [
-      "Fabrika montajlı olarak, motor koruması için devre kesici ve kapı kilitleme mekanizma özelliği olan yük kesici",
-      "Şamandıradan, basınç anahtarından, seviye elektrodundan gelen bilgiler ile, sistemi açar, çalıştırır ve durdurur"
-    ],
-    resim: "/jockey-en.png",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/jockey-en-datasheet.pdf" },
-      { isim: "Kullanım Kılavuzu", link: "/jockey-en-kullanim.pdf" }
-    ],
-    teknikOzellikler: [
-      "Metal / IP 55",
-      "Kilitleme mekanizmasına sahip ana kesici",
-      "Motor çalışıyor bilgisi için yeşil LED / Hatalar için Kırmızı LED",
-      "Güç Beslemesi 3-50/60Hz 400V ±",
-      "Başlatma komutu için giriş",
-      "Alarmlar ve Sinyaller",
-      "Motor Aşırıakım (Ayarlanabilir)",
-      "Motor düşük akım (Ayarlanabilir)",
-      "Faz kaybı hatası (Ayarlanabilir)",
-      "Faz sırası hatası (Ayarlanabilir)",
-      "Min / Max Voltaj (Ayarlanabilir)",
-      "Motor başlatma zamanı",
-      "Haftalık otomatik test",
-      "Alarm çıkışları (NC-5A/250V)"
-    ],
-    teknikVerilerCoklu: [
-      {
-        baslik: "Jockey EN Serisi Teknik Veriler",
-        basliklar: ["Model", "COD", "Voltaj (V~)", "kW", "HP", "Akım Aralığı (A)", "Max (A)", "Ölçüler (HxLxW)", "Malzeme"],
-        satirlar: [
-          ["Jockey/EN - 0.55", "25401", "3-400", "0.55", "0.75", "1.7-2.3", "2.3", "400x300x175", "Metal"],
-          ["Jockey/EN - 0.75", "25402", "3-400", "0.75", "1", "3.1-4.2", "4.2", "400x300x175", "Metal"],
-          ["Jockey/EN - 1.1", "25403", "3-400", "1.1", "1.5", "3.1-4.2", "4.2", "400x300x175", "Metal"],
-          ["Jockey/EN - 1.5", "25404", "3-400", "1.5", "2", "5.7-7.6", "7.6", "400x300x175", "Metal"],
-          ["Jockey/EN - 2.2", "25405", "3-400", "2.2", "3", "7.6-9", "9", "400x300x175", "Metal"],
-          ["Jockey/EN - 3", "25406", "3-400", "3", "4", "10-12", "12", "400x300x175", "Metal"],
-          ["Jockey/EN - 4", "25407", "3-400", "4", "5.5", "10-12", "12", "400x300x175", "Metal"],
-          ["Jockey/EN - 5.5", "25408", "3-400", "5.5", "7.5", "13-16", "16", "400x300x175", "Metal"],
-          ["Jockey/EN - 7.5", "25409", "3-400", "7.5", "10", "16-20", "20", "400x300x175", "Metal"],
-          ["Jockey/EN - 9.2", "25410", "3-400", "9.2", "12.5", "20-24", "24", "400x300x175", "Metal"],
-          ["Jockey/EN - 11", "25411", "3-400", "11", "15", "29-32", "32", "400x300x175", "Metal"],
-          ["Jockey/EN - 15", "25412", "3-400", "15", "20", "35-38", "38", "400x300x175", "Metal"]
-        ]
-      }
-    ]
-  }
-};
-
 export default function JokeySerisi() {
+  const { t } = useLanguage();
+
+  // Ürün verileri
+  const urunVerileri: Record<string, {
+    baslik: string;
+    aciklama: string;
+    ozellikler: string[];
+    resim: string;
+    belgeler: { isimKey: string; link: string }[];
+    teknikOzellikler?: string[];
+    uygulamaAlanlariResim?: string;
+    teknikVerilerCoklu?: {
+      baslik: string;
+      basliklar: string[];
+      satirlar: string[][];
+    }[];
+    teknikNot?: string;
+  }> = {
+    "smart-jockey-en": {
+      baslik: "Smart Jockey EN Serisi",
+      aciklama: t("prod.jokey.smart-jockey-en.desc"),
+      ozellikler: [
+        t("prod.jokey.smart-jockey-en.feat1"),
+        t("prod.jokey.smart-jockey-en.feat2"),
+        t("prod.jokey.smart-jockey-en.feat3")
+      ],
+      resim: "/smart-jockey-en.png",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/smart-jockey-en-datasheet.pdf" },
+        { isimKey: "prod.userManual", link: "/smart-jockey-en-kullanim.pdf" }
+      ],
+      teknikOzellikler: [
+        "Metal / IP 55",
+        "Kilitleme mekanizmasına sahip ana kesici",
+        "128 x 64 LCD Grafik Ekran",
+        "Motor çalışıyor bilgisi için yeşil LED / Hatalar için Kırmızı LED",
+        "Güç Beslemesi 3-50/60Hz 400V ±",
+        "Başlatma komutu için giriş",
+        "Alarmlar ve sinyaller",
+        "Motor Aşırıakım (Ayarlanabilir)",
+        "Motor düşük akım (Ayarlanabilir)",
+        "Faz kaybı hatası (Ayarlanabilir)",
+        "Faz sırası hatası (Ayarlanabilir)",
+        "Min / Max Voltaj (Ayarlanabilir)",
+        "Motor başlatma zamanı",
+        "MODBus (RS485)",
+        "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
+        "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
+        "Haftalık otomatik test",
+        "Bakım zamanı ve mesajların gösterimi",
+        "Alarm çıkışları (NC-5A/250V)"
+      ],
+      teknikVerilerCoklu: [
+        {
+          baslik: "Smart Jockey EN Serisi Teknik Veriler",
+          basliklar: ["Model", "COD", "Voltaj (V~)", "kW", "HP", "Akım Aralığı (A)", "Max (A)", "HxLxW (mm)", "Malzeme"],
+          satirlar: [
+            ["Smart Jockey/EN-4", "25301", "3-400", "4", "5.5", "7.6-9", "9", "400x300x175", "Metal"],
+            ["Smart Jockey/EN-5.5", "25302", "3-400", "5.5", "7.5", "10-12", "12", "400x300x175", "Metal"],
+            ["Smart Jockey/EN-7.5", "25303", "3-400", "7.5", "10", "2.6-16", "16", "400x300x175", "Metal"],
+            ["Smart Jockey/EN-11", "25304", "3-400", "11", "15", "16-25", "25", "400x300x175", "Metal"],
+            ["Smart Jockey/EN-15", "25305", "3-400", "15", "20", "16-32", "32", "400x300x175", "Metal"]
+          ]
+        }
+      ]
+    },
+    "jockey-en": {
+      baslik: "Jockey EN Serisi",
+      aciklama: t("prod.jokey.jockey-en.desc"),
+      ozellikler: [
+        t("prod.jokey.jockey-en.feat1"),
+        t("prod.jokey.jockey-en.feat2")
+      ],
+      resim: "/jockey-en.png",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/jockey-en-datasheet.pdf" },
+        { isimKey: "prod.userManual", link: "/jockey-en-kullanim.pdf" }
+      ],
+      teknikOzellikler: [
+        "Metal / IP 55",
+        "Kilitleme mekanizmasına sahip ana kesici",
+        "Motor çalışıyor bilgisi için yeşil LED / Hatalar için Kırmızı LED",
+        "Güç Beslemesi 3-50/60Hz 400V ±",
+        "Başlatma komutu için giriş",
+        "Alarmlar ve Sinyaller",
+        "Motor Aşırıakım (Ayarlanabilir)",
+        "Motor düşük akım (Ayarlanabilir)",
+        "Faz kaybı hatası (Ayarlanabilir)",
+        "Faz sırası hatası (Ayarlanabilir)",
+        "Min / Max Voltaj (Ayarlanabilir)",
+        "Motor başlatma zamanı",
+        "Haftalık otomatik test",
+        "Alarm çıkışları (NC-5A/250V)"
+      ],
+      teknikVerilerCoklu: [
+        {
+          baslik: "Jockey EN Serisi Teknik Veriler",
+          basliklar: ["Model", "COD", "Voltaj (V~)", "kW", "HP", "Akım Aralığı (A)", "Max (A)", "Ölçüler (HxLxW)", "Malzeme"],
+          satirlar: [
+            ["Jockey/EN - 0.55", "25401", "3-400", "0.55", "0.75", "1.7-2.3", "2.3", "400x300x175", "Metal"],
+            ["Jockey/EN - 0.75", "25402", "3-400", "0.75", "1", "3.1-4.2", "4.2", "400x300x175", "Metal"],
+            ["Jockey/EN - 1.1", "25403", "3-400", "1.1", "1.5", "3.1-4.2", "4.2", "400x300x175", "Metal"],
+            ["Jockey/EN - 1.5", "25404", "3-400", "1.5", "2", "5.7-7.6", "7.6", "400x300x175", "Metal"],
+            ["Jockey/EN - 2.2", "25405", "3-400", "2.2", "3", "7.6-9", "9", "400x300x175", "Metal"],
+            ["Jockey/EN - 3", "25406", "3-400", "3", "4", "10-12", "12", "400x300x175", "Metal"],
+            ["Jockey/EN - 4", "25407", "3-400", "4", "5.5", "10-12", "12", "400x300x175", "Metal"],
+            ["Jockey/EN - 5.5", "25408", "3-400", "5.5", "7.5", "13-16", "16", "400x300x175", "Metal"],
+            ["Jockey/EN - 7.5", "25409", "3-400", "7.5", "10", "16-20", "20", "400x300x175", "Metal"],
+            ["Jockey/EN - 9.2", "25410", "3-400", "9.2", "12.5", "20-24", "24", "400x300x175", "Metal"],
+            ["Jockey/EN - 11", "25411", "3-400", "11", "15", "29-32", "32", "400x300x175", "Metal"],
+            ["Jockey/EN - 15", "25412", "3-400", "15", "20", "35-38", "38", "400x300x175", "Metal"]
+          ]
+        }
+      ]
+    }
+  };
   const searchParams = useSearchParams();
   const urunParam = searchParams.get("urun");
   const [activeUrun, setActiveUrun] = useState(urunler[0].key);
@@ -156,14 +158,14 @@ export default function JokeySerisi() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
-          <span className="text-lg font-medium">Kategoriler</span>
+          <span className="text-lg font-medium">{t("prod.back.categories")}</span>
         </Link>
       </div>
 
       {/* Başlık */}
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "60px", paddingBottom: "40px" }}>
         <h1 className="text-[#86868b] text-5xl font-medium text-center">
-          Jokey Serisi
+          {t("prod.akilli.jokey.title")}
         </h1>
       </section>
 
@@ -240,7 +242,7 @@ export default function JokeySerisi() {
                 {/* Özellikler */}
                 {aktifUrunVerisi.ozellikler.length > 0 && (
                   <div className="mb-14">
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Özellikler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.features")}</h3>
                     <div className="space-y-5">
                       {aktifUrunVerisi.ozellikler.map((ozellik, index) => (
                         <div key={index} className="flex items-start gap-4">
@@ -255,7 +257,7 @@ export default function JokeySerisi() {
                 {/* Belgeler */}
                 {aktifUrunVerisi.belgeler.length > 0 && (
                   <div>
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Belgeler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.documents")}</h3>
                     <div className="flex flex-wrap gap-4">
                       {aktifUrunVerisi.belgeler.map((belge, index) => (
                         <a
@@ -273,7 +275,7 @@ export default function JokeySerisi() {
                             <line x1="16" y1="17" x2="8" y2="17"/>
                             <polyline points="10 9 9 9 8 9"/>
                           </svg>
-                          {belge.isim}
+                          {t(belge.isimKey)}
                         </a>
                       ))}
                     </div>
@@ -315,7 +317,7 @@ export default function JokeySerisi() {
                       }
                     }}
                   >
-                    Teknik Özellikler
+                    {t("prod.techSpecs")}
                   </button>
                 )}
                 {hasUygulamaAlanlari && (
@@ -342,7 +344,7 @@ export default function JokeySerisi() {
                       }
                     }}
                   >
-                    Uygulama Alanları
+                    {t("prod.appAreas")}
                   </button>
                 )}
                 {hasTeknikVeriler && (
@@ -369,7 +371,7 @@ export default function JokeySerisi() {
                       }
                     }}
                   >
-                    Teknik Veriler
+                    {t("prod.techData")}
                   </button>
                 )}
               </div>
@@ -456,7 +458,7 @@ export default function JokeySerisi() {
               {aktifUrunVerisi.baslik}
             </h2>
             <p className="text-[#6e6e73] text-xl">
-              Bu ürünün detayları yakında eklenecektir.
+              {t("prod.comingSoon")}
             </p>
           </div>
         )}

@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import { useLanguage } from "@/context/LanguageContext";
 
 const urunler = [
   { id: 1, label: "FxA Serisi", key: "fxa-serisi" },
@@ -12,337 +13,338 @@ const urunler = [
   { id: 3, label: "FxS Serisi", key: "fxs-serisi" },
 ];
 
-// Ürün verileri
-const urunVerileri: Record<string, {
-  baslik: string;
-  aciklama: string;
-  ozellikler: string[];
-  uygulamaAlanlari?: string[];
-  resim: string;
-  belgeler: { isim: string; link: string }[];
-  teknikOzellikler?: string[];
-  uygulamaAlanlariResim?: string;
-  teknikVerilerCoklu?: {
-    baslik: string;
-    basliklar: string[];
-    satirlar: string[][];
-  }[];
-  teknikNot?: string;
-}> = {
-  "fxa-serisi": {
-    baslik: "FxA Serisi",
-    aciklama: "3 fazlı 4 motora kadar olan sistemlerde, elektronik olarak değişken frekanslı yol verme yöntemi sayesinde, gelişmiş motor kontrolü sağlanır.",
-    ozellikler: [
-      "3G / WI-FI modül sayesinde, uzak bir noktadan sistemi işletme, verileri görüntüleme ve sistemi kontrol etme sağlanır",
-      "Kolay ve hızlı bir şekilde yönlendirme butonlarını kullanarak, net şekilde okunabilir LCD ekran üzerinden ayarların yapılması",
-      "Fabrika montajlı olarak, motor koruması için devre kesici ve kapı kilitleme mekanizma özelliği olan yük kesici",
-      "Şamandıradan, basınç sensöründen ve anahtarından, seviye elektrodundan veya sıcaklık sensörlerinden gelen bilgiler ile, sistemi açar, çalıştırır ve durdurur"
-    ],
-    uygulamaAlanlari: [
-      "Hidrofor Pompaları",
-      "Endüstriyel Pompalar",
-      "HVAC Sistemleri",
-      "Atık Su Pompalar",
-      "Sulama Pompaları"
-    ],
-    resim: "/fxa.png",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/fxa-datasheet.pdf" },
-      { isim: "Kullanım Kılavuzu", link: "/fxa-kullanim.pdf" }
-    ],
-    teknikOzellikler: [
-      "Metal Kutu / IP 55",
-      "Kilitleme mekanizmasına sahip yük kesici",
-      "Otomatik / Manuel Anahtar",
-      "Güç Beslemesi 3 Faz-50/60Hz 400V ±",
-      "Korumalar ve Hatalar",
-      "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
-      "Faz kaybı ve Faz sırası hatası",
-      "Min / Max Voltaj (Ayarlanabilir)",
-      "Motor başlama zamanı",
-      "Taşma uyarısı fonksiyonu",
-      "Kuru çalışma koruması",
-      "Termal ve Manyetik Koruma",
-      "BMS Sistemi için kuru kontak",
-      "MODBus (RS485)",
-      "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
-      "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
-      "Haftalık olarak ayarlanabilen test",
-      "P.I.D Regulasyonu",
-      "Kabin içi Havalandırma"
-    ],
-    uygulamaAlanlariResim: "/fxa-uygulama.png",
-    teknikVerilerCoklu: [
-      {
-        baslik: "FxA 1 & FxA 2 Teknik Veriler",
-        basliklar: ["Model", "COD", "Voltaj (In/Out)", "Güç (kW/HP)", "Max Akım (A)", "Kutu Ölçüleri (mm)"],
-        satirlar: [
-          ["FxA 1 - 0.75", "17001", "3−400V", "0.75 / 1", "2.5", "600×400×260"],
-          ["FxA 1 - 1.1", "17002", "3−400V", "1.1 / 1.5", "3.6", "600×400×260"],
-          ["FxA 1 - 4", "17006", "3−400V", "4 / 5.5", "9.7", "600×400×260"],
-          ["FxA 1 - 11", "17009", "3−400V", "11 / 15", "25.4", "700×500×260"],
-          ["FxA 1 - 22", "17012", "3−400V", "22 / 30", "48.4", "700×500×260"],
-          ["FxA 2 - 0.75", "17201", "3−400V", "0.75 / 1", "2.5", "700×500×260"],
-          ["FxA 2 - 11", "17209", "3−400V", "11 / 15", "25.4", "700×500×260"],
-          ["FxA 2 - 22", "17212", "3−400V", "22 / 30", "48.4", "800×600×260"]
-        ]
-      },
-      {
-        baslik: "FxA 3 & FxA 4 Teknik Veriler",
-        basliklar: ["Model", "COD", "Voltaj (In/Out)", "Güç (kW/HP)", "Max Akım (A)", "Kutu Ölçüleri (mm)"],
-        satirlar: [
-          ["FxA 3 - 0.75", "17301", "3−400V", "0.75 / 1", "2.5", "800×600×260"],
-          ["FxA 3 - 5.5", "17307", "3−400V", "5.5 / 7.5", "13.8", "1000×700×320"],
-          ["FxA 3 - 22", "17312", "3−400V", "22 / 30", "48.4", "1300×900×340"],
-          ["FxA 4 - 0.75", "17401", "3−400V", "0.75 / 1", "2.5", "800×600×260"],
-          ["FxA 4 - 5.5", "17407", "3−400V", "5.5 / 7.5", "13.8", "1000×700×320"],
-          ["FxA 4 - 22", "17412", "3−400V", "22 / 30", "48.4", "1300×900×340"]
-        ]
-      }
-    ],
-    teknikNot: "22 kW (30 HP) üzeri motorlar için Taytech, projenize özel tasarım ve üretim çözümleri sunmaya devam etmektedir."
-  },
-  "mini-speed": {
-    baslik: "Mini Speed",
-    aciklama: "1 veya 3 fazlı motor olan sistemlerde, elektronik olarak değişken frekanslı yol verme yöntemi sayesinde, gelişmiş motor kontrolü sağlanır.",
-    ozellikler: [
-      "3G / WI-FI modül sayesinde, uzak bir noktadan sistemi işletme, verileri görüntüleme ve sistemi kontrol etme",
-      "Fabrika montajlı olarak, motor koruması için devre kesici ve kapı kilitleme mekanizma özelliği olan yük kesici",
-      "Şamandıradan, basınç sensöründen ve anahtarından, seviye elektrodundan veya sıcaklık sensörlerinden gelen bilgiler ile, sistemi açar, çalıştırır ve durdurur"
-    ],
-    uygulamaAlanlari: [
-      "Endüstriyel Pompalar",
-      "Atık Su Pompalar",
-      "Hidrofor Pompaları",
-      "HVAC Sistemleri",
-      "Sulama Pompaları"
-    ],
-    resim: "/mini-speed.png",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/mini-speed-datasheet.pdf" },
-      { isim: "Kullanım Kılavuzu", link: "/mini-speed-kullanim.pdf" }
-    ],
-    teknikOzellikler: [
-      "ABS Termoplastik Kutu / IP 55",
-      "Kilitleme mekanizmasına sahip yük kesici",
-      "Otomatik / Manuel Anahtar",
-      "Güç Beslemesi 3 Faz-50/60Hz 400V ±",
-      "Korumalar ve Hatalar",
-      "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
-      "Faz kaybı ve Faz sırası hatası",
-      "Min / Max Voltaj (Ayarlanabilir)",
-      "Motor başlama zamanı",
-      "Taşma uyarısı fonksiyonu",
-      "Kuru çalışma koruması",
-      "Termal ve Manyetik Koruma",
-      "BMS Sistemi için kuru kontak",
-      "MODBus (RS485)",
-      "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
-      "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
-      "Haftalık olarak ayarlanabilen test",
-      "P.I.D Regulasyonu"
-    ],
-    uygulamaAlanlariResim: "/mini-speed-uygulama.png",
-    teknikVerilerCoklu: [
-      {
-        baslik: "Mini Speed Mono",
-        basliklar: ["Model", "COD", "Voltaj (In/Out)", "Güç (kW/HP)", "Max Akım (A)"],
-        satirlar: [
-          ["Mini Speed 1 - 0.37 / Mono", "19001", "1-230 / 3-230", "0.37 / 0.5", "2.4"],
-          ["Mini Speed 1 - 0.55 / Mono", "19002", "1-230 / 3-230", "0.55 / 0.75", "3.6"],
-          ["Mini Speed 1 - 0.75 / Mono", "19003", "1-230 / 3-230", "0.75 / 1", "4.7"],
-          ["Mini Speed 1 - 1.1 / Mono", "19004", "1-230 / 3-230", "1.1 / 1.5", "6.7"],
-          ["Mini Speed 1 - 1.5 / Mono", "19005", "1-230 / 3-230", "1.5 / 2", "7.5"],
-          ["Mini Speed 1 - 2.2 / Mono", "19006", "1-230 / 3-230", "2.2 / 3", "9.8"]
-        ]
-      },
-      {
-        baslik: "Mini Speed Tri-M",
-        basliklar: ["Model", "COD", "Voltaj (In/Out)", "Güç (kW/HP)", "Max Akım (A)"],
-        satirlar: [
-          ["Mini Speed 1 - 0.37 / Tri-M", "19201", "3-230 / 3-230", "0.37 / 0.5", "2.6"],
-          ["Mini Speed 1 - 0.55 / Tri-M", "19202", "3-230 / 3-230", "0.55 / 0.75", "3.9"],
-          ["Mini Speed 1 - 0.75 / Tri-M", "19203", "3-230 / 3-230", "0.75 / 1", "5.2"],
-          ["Mini Speed 1 - 1.1 / Tri-M", "19204", "3-230 / 3-230", "1.1 / 1.5", "7.4"],
-          ["Mini Speed 1 - 1.5 / Tri-M", "19205", "3-230 / 3-230", "1.5 / 2", "8.3"],
-          ["Mini Speed 1 - 2.2 / Tri-M", "19206", "3-230 / 3-230", "2.2 / 3", "10.8"],
-          ["Mini Speed 1 - 3 / Tri-M", "19207", "3-230 / 3-230", "3 / 4", "14.6"],
-          ["Mini Speed 1 - 4 / Tri-M", "19208", "3-230 / 3-230", "4 / 5.5", "19.4"]
-        ]
-      },
-      {
-        baslik: "Mini Speed Tri",
-        basliklar: ["Model", "COD", "Voltaj (In/Out)", "Güç (kW/HP)", "Max Akım (A)"],
-        satirlar: [
-          ["Mini Speed 1 - 0.75 / Tri", "19301", "3-400 / 3-400", "0.75 / 1", "2.6"],
-          ["Mini Speed 1 - 1.1 / Tri", "19302", "3-400 / 3-400", "1.1 / 1.5", "3.6"],
-          ["Mini Speed 1 - 1.5 / Tri", "19303", "3-400 / 3-400", "1.5 / 2", "4.5"],
-          ["Mini Speed 1 - 2.2 / Tri", "19304", "3-400 / 3-400", "2.2 / 3", "6.2"],
-          ["Mini Speed 1 - 3 / Tri", "19305", "3-400 / 3-400", "3 / 4", "8"],
-          ["Mini Speed 1 - 4 / Tri", "19306", "3-400 / 3-400", "4 / 5.5", "9.7"]
-        ]
-      }
-    ]
-  },
-  "fxs-serisi": {
-    baslik: "FxS Serisi",
-    aciklama: "3 fazlı 4 motora kadar olan sistemlerde, elektronik olarak değişken frekanslı yol verme yöntemi sayesinde, gelişmiş motor kontrolü sağlanır.",
-    ozellikler: [
-      "3G / WI-FI modül sayesinde, uzak bir noktadan sistemi işletme, verileri görüntüleme ve sistemi kontrol etme sağlanır",
-      "Kolay ve hızlı bir şekilde yönlendirme butonlarını kullanarak, net şekilde okunabilir 7\" TFT Dokunmatik ekran üzerinden ayarların yapılması",
-      "Fabrika montajlı olarak, motor koruması için devre kesici ve kapı kilitleme mekanizma özelliği olan yük kesici",
-      "Şamandıradan, basınç sensöründen ve anahtarından, seviye elektrodundan veya sıcaklık sensörlerinden gelen bilgiler ile, sistemi açar, çalıştırır ve durdurur"
-    ],
-    uygulamaAlanlari: [
-      "Endüstriyel Pompalar",
-      "Atık Su Pompalar",
-      "Hidrofor Pompaları",
-      "HVAC Sistemleri",
-      "Sulama Pompaları"
-    ],
-    resim: "/fxs.png",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/fxs-datasheet.pdf" },
-      { isim: "Kullanım Kılavuzu", link: "/fxs-kullanim.pdf" }
-    ],
-    teknikOzellikler: [
-      "Metal Kutu / IP 55",
-      "Kilitleme mekanizmasına sahip yük kesici",
-      "Otomatik / Manuel Anahtar",
-      "Güç Beslemesi 3 Faz-50/60Hz 400V ±",
-      "Korumalar ve Hatalar",
-      "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
-      "Faz kaybı ve Faz sırası hatası",
-      "Min / Max Voltaj (Ayarlanabilir)",
-      "Motor başlama zamanı",
-      "Taşma uyarısı fonksiyonu",
-      "Kuru çalışma koruması",
-      "Termal ve Manyetik Koruma",
-      "BMS Sistemi için kuru kontak",
-      "MODBus (RS485)",
-      "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
-      "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
-      "Haftalık olarak ayarlanabilen test",
-      "Standart MODBus bağlantısı. BACnet, LonWorks optional",
-      "Uzaktan erişim için Webgate Uygulaması (İsteğe Bağlı)",
-      "P.I.D Regülasyonu",
-      "Kabin içi havalandırma"
-    ],
-    uygulamaAlanlariResim: "/fxs-uygulama.png",
-    teknikVerilerCoklu: [
-      {
-        baslik: "FxS 1 Teknik Veriler",
-        basliklar: ["Model", "COD", "V-IN", "V-OUT", "kW", "HP", "Max (A)", "H", "L", "W", "Malzeme"],
-        satirlar: [
-          ["FxS 1 - 0.75 / Tri", "18001", "3-400", "3-400", "0.75", "1", "2.1", "600", "400", "260", "Metal"],
-          ["FxS 1 - 1.1 / Tri", "18002", "3-400", "3-400", "1.1", "1.5", "3.3", "600", "400", "260", "Metal"],
-          ["FxS 1 - 1.5 / Tri", "18003", "3-400", "3-400", "1.5", "2", "4.1", "600", "400", "260", "Metal"],
-          ["FxS 1 - 2.2 / Tri", "18004", "3-400", "3-400", "2.2", "3", "5.4", "600", "400", "260", "Metal"],
-          ["FxS 1 - 3 / Tri", "18005", "3-400", "3-400", "3", "4", "6.9", "600", "400", "260", "Metal"],
-          ["FxS 1 - 4 / Tri", "18006", "3-400", "3-400", "4", "5.5", "8.8", "600", "400", "260", "Metal"],
-          ["FxS 1 - 5.5 / Tri", "18007", "3-400", "3-400", "5.5", "7.5", "11.9", "700", "500", "260", "Metal"],
-          ["FxS 1 - 7.5 / Tri", "18008", "3-400", "3-400", "7.5", "10", "15.4", "700", "500", "260", "Metal"],
-          ["FxS 1 - 11 / Tri", "18009", "3-400", "3-400", "11", "15", "23", "700", "500", "260", "Metal"],
-          ["FxS 1 - 15 / Tri", "18010", "3-400", "3-400", "15", "20", "31", "700", "500", "260", "Metal"],
-          ["FxS 1 - 18.5 / Tri", "18011", "3-400", "3-400", "18.5", "25", "38", "700", "500", "260", "Metal"],
-          ["FxS 1 - 22 / Tri", "18012", "3-400", "3-400", "22", "30", "45", "700", "500", "260", "Metal"],
-          ["FxS 1 - 30 / Tri", "18013", "3-400", "3-400", "30", "40", "59", "1000", "700", "320", "Metal"],
-          ["FxS 1 - 37 / Tri", "18014", "3-400", "3-400", "37", "50", "72", "1000", "700", "320", "Metal"],
-          ["FxS 1 - 45 / Tri", "18015", "3-400", "3-400", "45", "60", "87", "1200", "800", "340", "Metal"],
-          ["FxS 1 - 55 / Tri", "18016", "3-400", "3-400", "55", "75", "125", "1200", "800", "340", "Metal"],
-          ["FxS 1 - 75 / Tri", "18017", "3-400", "3-400", "75", "100", "157", "1600", "800", "550", "Metal"],
-          ["FxS 1 - 90 / Tri", "18018", "3-400", "3-400", "90", "125", "180", "1600", "800", "550", "Metal"],
-          ["FxS 1 - 110 / Tri", "18019", "3-400", "3-400", "110", "150", "205", "1600", "800", "550", "Metal"],
-          ["FxS 1 - 132 / Tri", "18020", "3-400", "3-400", "132", "180", "246", "1800", "1300", "550", "Metal"],
-          ["FxS 1 - 160 / Tri", "18021", "3-400", "3-400", "160", "220", "289", "1800", "1300", "550", "Metal"]
-        ]
-      },
-      {
-        baslik: "FxS 2 Teknik Veriler",
-        basliklar: ["Model", "COD", "V-IN", "V-OUT", "kW", "HP", "Max (A)", "H", "L", "W", "Malzeme"],
-        satirlar: [
-          ["FxS 2 - 0.75 / Tri", "18201", "3-400", "3-400", "0.75", "1", "2.1", "700", "500", "260", "Metal"],
-          ["FxS 2 - 1.1 / Tri", "18202", "3-400", "3-400", "1.1", "1.5", "3.3", "700", "500", "260", "Metal"],
-          ["FxS 2 - 1.5 / Tri", "18203", "3-400", "3-400", "1.5", "2", "4.1", "700", "500", "260", "Metal"],
-          ["FxS 2 - 2.2 / Tri", "18204", "3-400", "3-400", "2.2", "3", "5.4", "700", "500", "260", "Metal"],
-          ["FxS 2 - 3 / Tri", "18205", "3-400", "3-400", "3", "4", "6.9", "700", "500", "260", "Metal"],
-          ["FxS 2 - 4 / Tri", "18206", "3-400", "3-400", "4", "5.5", "8.8", "700", "500", "260", "Metal"],
-          ["FxS 2 - 5.5 / Tri", "18207", "3-400", "3-400", "5.5", "7.5", "11.9", "700", "500", "260", "Metal"],
-          ["FxS 2 - 7.5 / Tri", "18208", "3-400", "3-400", "7.5", "10", "15.4", "700", "500", "260", "Metal"],
-          ["FxS 2 - 11 / Tri", "18209", "3-400", "3-400", "11", "15", "23", "700", "500", "260", "Metal"],
-          ["FxS 2 - 15 / Tri", "18210", "3-400", "3-400", "15", "20", "31", "800", "600", "260", "Metal"],
-          ["FxS 2 - 18.5 / Tri", "18211", "3-400", "3-400", "18.5", "25", "38", "800", "600", "260", "Metal"],
-          ["FxS 2 - 22 / Tri", "18212", "3-400", "3-400", "22", "30", "45", "800", "600", "260", "Metal"],
-          ["FxS 2 - 30 / Tri", "18213", "3-400", "3-400", "30", "40", "59", "1000", "700", "320", "Metal"],
-          ["FxS 2 - 37 / Tri", "18214", "3-400", "3-400", "37", "50", "72", "1000", "700", "320", "Metal"],
-          ["FxS 2 - 45 / Tri", "18215", "3-400", "3-400", "45", "60", "87", "1200", "800", "340", "Metal"],
-          ["FxS 2 - 55 / Tri", "18216", "3-400", "3-400", "55", "75", "125", "1200", "800", "340", "Metal"],
-          ["FxS 2 - 75 / Tri", "18217", "3-400", "3-400", "75", "100", "157", "1600", "800", "550", "Metal"],
-          ["FxS 2 - 90 / Tri", "18218", "3-400", "3-400", "90", "125", "180", "1600", "800", "550", "Metal"],
-          ["FxS 2 - 110 / Tri", "18219", "3-400", "3-400", "110", "150", "205", "1600", "800", "550", "Metal"],
-          ["FxS 2 - 132 / Tri", "18220", "3-400", "3-400", "132", "180", "246", "1800", "1300", "550", "Metal"],
-          ["FxS 2 - 160 / Tri", "18221", "3-400", "3-400", "160", "220", "289", "1800", "1300", "550", "Metal"]
-        ]
-      },
-      {
-        baslik: "FxS 3 Teknik Veriler",
-        basliklar: ["Model", "COD", "V-IN", "V-OUT", "kW", "HP", "Max (A)", "H", "L", "W", "Malzeme"],
-        satirlar: [
-          ["FxS 3 - 0.75 / Tri", "18301", "3-400", "3-400", "0.75", "1", "2.1", "800", "600", "260", "Metal"],
-          ["FxS 3 - 1.1 / Tri", "18302", "3-400", "3-400", "1.1", "1.5", "3.3", "800", "600", "260", "Metal"],
-          ["FxS 3 - 1.5 / Tri", "18303", "3-400", "3-400", "1.5", "2", "4.1", "800", "600", "260", "Metal"],
-          ["FxS 3 - 2.2 / Tri", "18304", "3-400", "3-400", "2.2", "3", "5.4", "800", "600", "260", "Metal"],
-          ["FxS 3 - 3 / Tri", "18305", "3-400", "3-400", "3", "4", "6.9", "800", "600", "260", "Metal"],
-          ["FxS 3 - 4 / Tri", "18306", "3-400", "3-400", "4", "5.5", "8.8", "800", "600", "260", "Metal"],
-          ["FxS 3 - 5.5 / Tri", "18307", "3-400", "3-400", "5.5", "7.5", "11.9", "1000", "700", "320", "Metal"],
-          ["FxS 3 - 7.5 / Tri", "18308", "3-400", "3-400", "7.5", "10", "15.4", "1000", "700", "320", "Metal"],
-          ["FxS 3 - 11 / Tri", "18309", "3-400", "3-400", "11", "15", "23", "1000", "700", "320", "Metal"],
-          ["FxS 3 - 15 / Tri", "18310", "3-400", "3-400", "15", "20", "31", "1200", "800", "340", "Metal"],
-          ["FxS 3 - 18.5 / Tri", "18311", "3-400", "3-400", "18.5", "25", "38", "1200", "800", "340", "Metal"],
-          ["FxS 3 - 22 / Tri", "18312", "3-400", "3-400", "22", "30", "45", "1200", "800", "340", "Metal"],
-          ["FxS 3 - 30 / Tri", "18313", "3-400", "3-400", "30", "40", "59", "1300", "900", "340", "Metal"],
-          ["FxS 3 - 37 / Tri", "18314", "3-400", "3-400", "37", "50", "72", "1300", "900", "340", "Metal"],
-          ["FxS 3 - 45 / Tri", "18315", "3-400", "3-400", "45", "60", "87", "1300", "900", "340", "Metal"],
-          ["FxS 3 - 55 / Tri", "18316", "3-400", "3-400", "55", "75", "125", "1300", "900", "340", "Metal"],
-          ["FxS 3 - 75 / Tri", "18317", "3-400", "3-400", "75", "100", "157", "1600", "800", "550", "Metal"],
-          ["FxS 3 - 90 / Tri", "18318", "3-400", "3-400", "90", "125", "180", "1600", "800", "550", "Metal"],
-          ["FxS 3 - 110 / Tri", "18319", "3-400", "3-400", "110", "150", "205", "1600", "800", "550", "Metal"],
-          ["FxS 3 - 132 / Tri", "18320", "3-400", "3-400", "132", "180", "246", "1800", "1300", "550", "Metal"],
-          ["FxS 3 - 160 / Tri", "18321", "3-400", "3-400", "160", "220", "289", "1800", "1300", "550", "Metal"]
-        ]
-      },
-      {
-        baslik: "FxS 4 Teknik Veriler",
-        basliklar: ["Model", "COD", "V-IN", "V-OUT", "kW", "HP", "Max (A)", "H", "L", "W", "Malzeme"],
-        satirlar: [
-          ["FxS 4 - 0.75 / Tri", "18401", "3-400", "3-400", "0.75", "1", "2.1", "800", "600", "260", "Metal"],
-          ["FxS 4 - 1.1 / Tri", "18402", "3-400", "3-400", "1.1", "1.5", "3.3", "800", "600", "260", "Metal"],
-          ["FxS 4 - 1.5 / Tri", "18403", "3-400", "3-400", "1.5", "2", "4.1", "800", "600", "260", "Metal"],
-          ["FxS 4 - 2.2 / Tri", "18404", "3-400", "3-400", "2.2", "3", "5.4", "800", "600", "260", "Metal"],
-          ["FxS 4 - 3 / Tri", "18405", "3-400", "3-400", "3", "4", "6.9", "800", "600", "260", "Metal"],
-          ["FxS 4 - 4 / Tri", "18406", "3-400", "3-400", "4", "5.5", "8.8", "800", "600", "260", "Metal"],
-          ["FxS 4 - 5.5 / Tri", "18407", "3-400", "3-400", "5.5", "7.5", "11.9", "1000", "700", "320", "Metal"],
-          ["FxS 4 - 7.5 / Tri", "18408", "3-400", "3-400", "7.5", "10", "15.4", "1000", "700", "320", "Metal"],
-          ["FxS 4 - 11 / Tri", "18409", "3-400", "3-400", "11", "15", "23", "1000", "700", "320", "Metal"],
-          ["FxS 4 - 15 / Tri", "18410", "3-400", "3-400", "15", "20", "31", "1300", "900", "340", "Metal"],
-          ["FxS 4 - 18.5 / Tri", "18411", "3-400", "3-400", "18.5", "25", "38", "1300", "900", "340", "Metal"],
-          ["FxS 4 - 22 / Tri", "18412", "3-400", "3-400", "22", "30", "45", "1300", "900", "340", "Metal"],
-          ["FxS 4 - 30 / Tri", "18413", "3-400", "3-400", "30", "40", "59", "1600", "800", "550", "Metal"],
-          ["FxS 4 - 37 / Tri", "18414", "3-400", "3-400", "37", "50", "72", "1600", "800", "550", "Metal"],
-          ["FxS 4 - 45 / Tri", "18415", "3-400", "3-400", "45", "60", "87", "1600", "800", "550", "Metal"],
-          ["FxS 4 - 55 / Tri", "18416", "3-400", "3-400", "55", "75", "125", "1600", "800", "550", "Metal"],
-          ["FxS 4 - 75 / Tri", "18417", "3-400", "3-400", "75", "100", "157", "1800", "1300", "550", "Metal"],
-          ["FxS 4 - 90 / Tri", "18418", "3-400", "3-400", "90", "125", "180", "1800", "1300", "550", "Metal"],
-          ["FxS 4 - 110 / Tri", "18419", "3-400", "3-400", "110", "150", "205", "1800", "1300", "550", "Metal"],
-          ["FxS 4 - 132 / Tri", "18420", "3-400", "3-400", "132", "180", "246", "2000", "1600", "600", "Metal"],
-          ["FxS 4 - 160 / Tri", "18421", "3-400", "3-400", "160", "220", "289", "2000", "1600", "600", "Metal"]
-        ]
-      }
-    ]
-  }
-};
-
 export default function InvertorYolVerme() {
+  const { t } = useLanguage();
+
+  // Ürün verileri
+  const urunVerileri: Record<string, {
+    baslik: string;
+    aciklama: string;
+    ozellikler: string[];
+    uygulamaAlanlari?: string[];
+    resim: string;
+    belgeler: { isimKey: string; link: string }[];
+    teknikOzellikler?: string[];
+    uygulamaAlanlariResim?: string;
+    teknikVerilerCoklu?: {
+      baslik: string;
+      basliklar: string[];
+      satirlar: string[][];
+    }[];
+    teknikNot?: string;
+  }> = {
+    "fxa-serisi": {
+      baslik: "FxA Serisi",
+      aciklama: t("prod.invertor.fxa-serisi.desc"),
+      ozellikler: [
+        t("prod.invertor.fxa-serisi.feat1"),
+        t("prod.invertor.fxa-serisi.feat2"),
+        t("prod.invertor.fxa-serisi.feat3"),
+        t("prod.invertor.fxa-serisi.feat4")
+      ],
+      uygulamaAlanlari: [
+        "Hidrofor Pompaları",
+        "Endüstriyel Pompalar",
+        "HVAC Sistemleri",
+        "Atık Su Pompalar",
+        "Sulama Pompaları"
+      ],
+      resim: "/fxa.png",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/fxa-datasheet.pdf" },
+        { isimKey: "prod.userManual", link: "/fxa-kullanim.pdf" }
+      ],
+      teknikOzellikler: [
+        "Metal Kutu / IP 55",
+        "Kilitleme mekanizmasına sahip yük kesici",
+        "Otomatik / Manuel Anahtar",
+        "Güç Beslemesi 3 Faz-50/60Hz 400V ±",
+        "Korumalar ve Hatalar",
+        "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
+        "Faz kaybı ve Faz sırası hatası",
+        "Min / Max Voltaj (Ayarlanabilir)",
+        "Motor başlama zamanı",
+        "Taşma uyarısı fonksiyonu",
+        "Kuru çalışma koruması",
+        "Termal ve Manyetik Koruma",
+        "BMS Sistemi için kuru kontak",
+        "MODBus (RS485)",
+        "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
+        "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
+        "Haftalık olarak ayarlanabilen test",
+        "P.I.D Regulasyonu",
+        "Kabin içi Havalandırma"
+      ],
+      uygulamaAlanlariResim: "/fxa-uygulama.png",
+      teknikVerilerCoklu: [
+        {
+          baslik: "FxA 1 & FxA 2 Teknik Veriler",
+          basliklar: ["Model", "COD", "Voltaj (In/Out)", "Güç (kW/HP)", "Max Akım (A)", "Kutu Ölçüleri (mm)"],
+          satirlar: [
+            ["FxA 1 - 0.75", "17001", "3−400V", "0.75 / 1", "2.5", "600×400×260"],
+            ["FxA 1 - 1.1", "17002", "3−400V", "1.1 / 1.5", "3.6", "600×400×260"],
+            ["FxA 1 - 4", "17006", "3−400V", "4 / 5.5", "9.7", "600×400×260"],
+            ["FxA 1 - 11", "17009", "3−400V", "11 / 15", "25.4", "700×500×260"],
+            ["FxA 1 - 22", "17012", "3−400V", "22 / 30", "48.4", "700×500×260"],
+            ["FxA 2 - 0.75", "17201", "3−400V", "0.75 / 1", "2.5", "700×500×260"],
+            ["FxA 2 - 11", "17209", "3−400V", "11 / 15", "25.4", "700×500×260"],
+            ["FxA 2 - 22", "17212", "3−400V", "22 / 30", "48.4", "800×600×260"]
+          ]
+        },
+        {
+          baslik: "FxA 3 & FxA 4 Teknik Veriler",
+          basliklar: ["Model", "COD", "Voltaj (In/Out)", "Güç (kW/HP)", "Max Akım (A)", "Kutu Ölçüleri (mm)"],
+          satirlar: [
+            ["FxA 3 - 0.75", "17301", "3−400V", "0.75 / 1", "2.5", "800×600×260"],
+            ["FxA 3 - 5.5", "17307", "3−400V", "5.5 / 7.5", "13.8", "1000×700×320"],
+            ["FxA 3 - 22", "17312", "3−400V", "22 / 30", "48.4", "1300×900×340"],
+            ["FxA 4 - 0.75", "17401", "3−400V", "0.75 / 1", "2.5", "800×600×260"],
+            ["FxA 4 - 5.5", "17407", "3−400V", "5.5 / 7.5", "13.8", "1000×700×320"],
+            ["FxA 4 - 22", "17412", "3−400V", "22 / 30", "48.4", "1300×900×340"]
+          ]
+        }
+      ],
+      teknikNot: "22 kW (30 HP) üzeri motorlar için Taytech, projenize özel tasarım ve üretim çözümleri sunmaya devam etmektedir."
+    },
+    "mini-speed": {
+      baslik: "Mini Speed",
+      aciklama: t("prod.invertor.mini-speed.desc"),
+      ozellikler: [
+        t("prod.invertor.mini-speed.feat1"),
+        t("prod.invertor.mini-speed.feat2"),
+        t("prod.invertor.mini-speed.feat3")
+      ],
+      uygulamaAlanlari: [
+        "Endüstriyel Pompalar",
+        "Atık Su Pompalar",
+        "Hidrofor Pompaları",
+        "HVAC Sistemleri",
+        "Sulama Pompaları"
+      ],
+      resim: "/mini-speed.png",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/mini-speed-datasheet.pdf" },
+        { isimKey: "prod.userManual", link: "/mini-speed-kullanim.pdf" }
+      ],
+      teknikOzellikler: [
+        "ABS Termoplastik Kutu / IP 55",
+        "Kilitleme mekanizmasına sahip yük kesici",
+        "Otomatik / Manuel Anahtar",
+        "Güç Beslemesi 3 Faz-50/60Hz 400V ±",
+        "Korumalar ve Hatalar",
+        "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
+        "Faz kaybı ve Faz sırası hatası",
+        "Min / Max Voltaj (Ayarlanabilir)",
+        "Motor başlama zamanı",
+        "Taşma uyarısı fonksiyonu",
+        "Kuru çalışma koruması",
+        "Termal ve Manyetik Koruma",
+        "BMS Sistemi için kuru kontak",
+        "MODBus (RS485)",
+        "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
+        "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
+        "Haftalık olarak ayarlanabilen test",
+        "P.I.D Regulasyonu"
+      ],
+      uygulamaAlanlariResim: "/mini-speed-uygulama.png",
+      teknikVerilerCoklu: [
+        {
+          baslik: "Mini Speed Mono",
+          basliklar: ["Model", "COD", "Voltaj (In/Out)", "Güç (kW/HP)", "Max Akım (A)"],
+          satirlar: [
+            ["Mini Speed 1 - 0.37 / Mono", "19001", "1-230 / 3-230", "0.37 / 0.5", "2.4"],
+            ["Mini Speed 1 - 0.55 / Mono", "19002", "1-230 / 3-230", "0.55 / 0.75", "3.6"],
+            ["Mini Speed 1 - 0.75 / Mono", "19003", "1-230 / 3-230", "0.75 / 1", "4.7"],
+            ["Mini Speed 1 - 1.1 / Mono", "19004", "1-230 / 3-230", "1.1 / 1.5", "6.7"],
+            ["Mini Speed 1 - 1.5 / Mono", "19005", "1-230 / 3-230", "1.5 / 2", "7.5"],
+            ["Mini Speed 1 - 2.2 / Mono", "19006", "1-230 / 3-230", "2.2 / 3", "9.8"]
+          ]
+        },
+        {
+          baslik: "Mini Speed Tri-M",
+          basliklar: ["Model", "COD", "Voltaj (In/Out)", "Güç (kW/HP)", "Max Akım (A)"],
+          satirlar: [
+            ["Mini Speed 1 - 0.37 / Tri-M", "19201", "3-230 / 3-230", "0.37 / 0.5", "2.6"],
+            ["Mini Speed 1 - 0.55 / Tri-M", "19202", "3-230 / 3-230", "0.55 / 0.75", "3.9"],
+            ["Mini Speed 1 - 0.75 / Tri-M", "19203", "3-230 / 3-230", "0.75 / 1", "5.2"],
+            ["Mini Speed 1 - 1.1 / Tri-M", "19204", "3-230 / 3-230", "1.1 / 1.5", "7.4"],
+            ["Mini Speed 1 - 1.5 / Tri-M", "19205", "3-230 / 3-230", "1.5 / 2", "8.3"],
+            ["Mini Speed 1 - 2.2 / Tri-M", "19206", "3-230 / 3-230", "2.2 / 3", "10.8"],
+            ["Mini Speed 1 - 3 / Tri-M", "19207", "3-230 / 3-230", "3 / 4", "14.6"],
+            ["Mini Speed 1 - 4 / Tri-M", "19208", "3-230 / 3-230", "4 / 5.5", "19.4"]
+          ]
+        },
+        {
+          baslik: "Mini Speed Tri",
+          basliklar: ["Model", "COD", "Voltaj (In/Out)", "Güç (kW/HP)", "Max Akım (A)"],
+          satirlar: [
+            ["Mini Speed 1 - 0.75 / Tri", "19301", "3-400 / 3-400", "0.75 / 1", "2.6"],
+            ["Mini Speed 1 - 1.1 / Tri", "19302", "3-400 / 3-400", "1.1 / 1.5", "3.6"],
+            ["Mini Speed 1 - 1.5 / Tri", "19303", "3-400 / 3-400", "1.5 / 2", "4.5"],
+            ["Mini Speed 1 - 2.2 / Tri", "19304", "3-400 / 3-400", "2.2 / 3", "6.2"],
+            ["Mini Speed 1 - 3 / Tri", "19305", "3-400 / 3-400", "3 / 4", "8"],
+            ["Mini Speed 1 - 4 / Tri", "19306", "3-400 / 3-400", "4 / 5.5", "9.7"]
+          ]
+        }
+      ]
+    },
+    "fxs-serisi": {
+      baslik: "FxS Serisi",
+      aciklama: t("prod.invertor.fxs-serisi.desc"),
+      ozellikler: [
+        t("prod.invertor.fxs-serisi.feat1"),
+        t("prod.invertor.fxs-serisi.feat2"),
+        t("prod.invertor.fxs-serisi.feat3"),
+        t("prod.invertor.fxs-serisi.feat4")
+      ],
+      uygulamaAlanlari: [
+        "Endüstriyel Pompalar",
+        "Atık Su Pompalar",
+        "Hidrofor Pompaları",
+        "HVAC Sistemleri",
+        "Sulama Pompaları"
+      ],
+      resim: "/fxs.png",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/fxs-datasheet.pdf" },
+        { isimKey: "prod.userManual", link: "/fxs-kullanim.pdf" }
+      ],
+      teknikOzellikler: [
+        "Metal Kutu / IP 55",
+        "Kilitleme mekanizmasına sahip yük kesici",
+        "Otomatik / Manuel Anahtar",
+        "Güç Beslemesi 3 Faz-50/60Hz 400V ±",
+        "Korumalar ve Hatalar",
+        "Motor Aşırı Akım / Düşük Akım (Ayarlanabilir)",
+        "Faz kaybı ve Faz sırası hatası",
+        "Min / Max Voltaj (Ayarlanabilir)",
+        "Motor başlama zamanı",
+        "Taşma uyarısı fonksiyonu",
+        "Kuru çalışma koruması",
+        "Termal ve Manyetik Koruma",
+        "BMS Sistemi için kuru kontak",
+        "MODBus (RS485)",
+        "Yetkilendirilmemiş Kişilerin Ulaşmasını Engellemek için Şifre Korumalı Ekran",
+        "Hataların, mesajların, olayların ve alarmların tarih ve zaman bilgileri ile birlikte dışarıya aktarılabilmesi için USB girişi. (Son 500 Durum)",
+        "Haftalık olarak ayarlanabilen test",
+        "Standart MODBus bağlantısı. BACnet, LonWorks optional",
+        "Uzaktan erişim için Webgate Uygulaması (İsteğe Bağlı)",
+        "P.I.D Regülasyonu",
+        "Kabin içi havalandırma"
+      ],
+      uygulamaAlanlariResim: "/fxs-uygulama.png",
+      teknikVerilerCoklu: [
+        {
+          baslik: "FxS 1 Teknik Veriler",
+          basliklar: ["Model", "COD", "V-IN", "V-OUT", "kW", "HP", "Max (A)", "H", "L", "W", "Malzeme"],
+          satirlar: [
+            ["FxS 1 - 0.75 / Tri", "18001", "3-400", "3-400", "0.75", "1", "2.1", "600", "400", "260", "Metal"],
+            ["FxS 1 - 1.1 / Tri", "18002", "3-400", "3-400", "1.1", "1.5", "3.3", "600", "400", "260", "Metal"],
+            ["FxS 1 - 1.5 / Tri", "18003", "3-400", "3-400", "1.5", "2", "4.1", "600", "400", "260", "Metal"],
+            ["FxS 1 - 2.2 / Tri", "18004", "3-400", "3-400", "2.2", "3", "5.4", "600", "400", "260", "Metal"],
+            ["FxS 1 - 3 / Tri", "18005", "3-400", "3-400", "3", "4", "6.9", "600", "400", "260", "Metal"],
+            ["FxS 1 - 4 / Tri", "18006", "3-400", "3-400", "4", "5.5", "8.8", "600", "400", "260", "Metal"],
+            ["FxS 1 - 5.5 / Tri", "18007", "3-400", "3-400", "5.5", "7.5", "11.9", "700", "500", "260", "Metal"],
+            ["FxS 1 - 7.5 / Tri", "18008", "3-400", "3-400", "7.5", "10", "15.4", "700", "500", "260", "Metal"],
+            ["FxS 1 - 11 / Tri", "18009", "3-400", "3-400", "11", "15", "23", "700", "500", "260", "Metal"],
+            ["FxS 1 - 15 / Tri", "18010", "3-400", "3-400", "15", "20", "31", "700", "500", "260", "Metal"],
+            ["FxS 1 - 18.5 / Tri", "18011", "3-400", "3-400", "18.5", "25", "38", "700", "500", "260", "Metal"],
+            ["FxS 1 - 22 / Tri", "18012", "3-400", "3-400", "22", "30", "45", "700", "500", "260", "Metal"],
+            ["FxS 1 - 30 / Tri", "18013", "3-400", "3-400", "30", "40", "59", "1000", "700", "320", "Metal"],
+            ["FxS 1 - 37 / Tri", "18014", "3-400", "3-400", "37", "50", "72", "1000", "700", "320", "Metal"],
+            ["FxS 1 - 45 / Tri", "18015", "3-400", "3-400", "45", "60", "87", "1200", "800", "340", "Metal"],
+            ["FxS 1 - 55 / Tri", "18016", "3-400", "3-400", "55", "75", "125", "1200", "800", "340", "Metal"],
+            ["FxS 1 - 75 / Tri", "18017", "3-400", "3-400", "75", "100", "157", "1600", "800", "550", "Metal"],
+            ["FxS 1 - 90 / Tri", "18018", "3-400", "3-400", "90", "125", "180", "1600", "800", "550", "Metal"],
+            ["FxS 1 - 110 / Tri", "18019", "3-400", "3-400", "110", "150", "205", "1600", "800", "550", "Metal"],
+            ["FxS 1 - 132 / Tri", "18020", "3-400", "3-400", "132", "180", "246", "1800", "1300", "550", "Metal"],
+            ["FxS 1 - 160 / Tri", "18021", "3-400", "3-400", "160", "220", "289", "1800", "1300", "550", "Metal"]
+          ]
+        },
+        {
+          baslik: "FxS 2 Teknik Veriler",
+          basliklar: ["Model", "COD", "V-IN", "V-OUT", "kW", "HP", "Max (A)", "H", "L", "W", "Malzeme"],
+          satirlar: [
+            ["FxS 2 - 0.75 / Tri", "18201", "3-400", "3-400", "0.75", "1", "2.1", "700", "500", "260", "Metal"],
+            ["FxS 2 - 1.1 / Tri", "18202", "3-400", "3-400", "1.1", "1.5", "3.3", "700", "500", "260", "Metal"],
+            ["FxS 2 - 1.5 / Tri", "18203", "3-400", "3-400", "1.5", "2", "4.1", "700", "500", "260", "Metal"],
+            ["FxS 2 - 2.2 / Tri", "18204", "3-400", "3-400", "2.2", "3", "5.4", "700", "500", "260", "Metal"],
+            ["FxS 2 - 3 / Tri", "18205", "3-400", "3-400", "3", "4", "6.9", "700", "500", "260", "Metal"],
+            ["FxS 2 - 4 / Tri", "18206", "3-400", "3-400", "4", "5.5", "8.8", "700", "500", "260", "Metal"],
+            ["FxS 2 - 5.5 / Tri", "18207", "3-400", "3-400", "5.5", "7.5", "11.9", "700", "500", "260", "Metal"],
+            ["FxS 2 - 7.5 / Tri", "18208", "3-400", "3-400", "7.5", "10", "15.4", "700", "500", "260", "Metal"],
+            ["FxS 2 - 11 / Tri", "18209", "3-400", "3-400", "11", "15", "23", "700", "500", "260", "Metal"],
+            ["FxS 2 - 15 / Tri", "18210", "3-400", "3-400", "15", "20", "31", "800", "600", "260", "Metal"],
+            ["FxS 2 - 18.5 / Tri", "18211", "3-400", "3-400", "18.5", "25", "38", "800", "600", "260", "Metal"],
+            ["FxS 2 - 22 / Tri", "18212", "3-400", "3-400", "22", "30", "45", "800", "600", "260", "Metal"],
+            ["FxS 2 - 30 / Tri", "18213", "3-400", "3-400", "30", "40", "59", "1000", "700", "320", "Metal"],
+            ["FxS 2 - 37 / Tri", "18214", "3-400", "3-400", "37", "50", "72", "1000", "700", "320", "Metal"],
+            ["FxS 2 - 45 / Tri", "18215", "3-400", "3-400", "45", "60", "87", "1200", "800", "340", "Metal"],
+            ["FxS 2 - 55 / Tri", "18216", "3-400", "3-400", "55", "75", "125", "1200", "800", "340", "Metal"],
+            ["FxS 2 - 75 / Tri", "18217", "3-400", "3-400", "75", "100", "157", "1600", "800", "550", "Metal"],
+            ["FxS 2 - 90 / Tri", "18218", "3-400", "3-400", "90", "125", "180", "1600", "800", "550", "Metal"],
+            ["FxS 2 - 110 / Tri", "18219", "3-400", "3-400", "110", "150", "205", "1600", "800", "550", "Metal"],
+            ["FxS 2 - 132 / Tri", "18220", "3-400", "3-400", "132", "180", "246", "1800", "1300", "550", "Metal"],
+            ["FxS 2 - 160 / Tri", "18221", "3-400", "3-400", "160", "220", "289", "1800", "1300", "550", "Metal"]
+          ]
+        },
+        {
+          baslik: "FxS 3 Teknik Veriler",
+          basliklar: ["Model", "COD", "V-IN", "V-OUT", "kW", "HP", "Max (A)", "H", "L", "W", "Malzeme"],
+          satirlar: [
+            ["FxS 3 - 0.75 / Tri", "18301", "3-400", "3-400", "0.75", "1", "2.1", "800", "600", "260", "Metal"],
+            ["FxS 3 - 1.1 / Tri", "18302", "3-400", "3-400", "1.1", "1.5", "3.3", "800", "600", "260", "Metal"],
+            ["FxS 3 - 1.5 / Tri", "18303", "3-400", "3-400", "1.5", "2", "4.1", "800", "600", "260", "Metal"],
+            ["FxS 3 - 2.2 / Tri", "18304", "3-400", "3-400", "2.2", "3", "5.4", "800", "600", "260", "Metal"],
+            ["FxS 3 - 3 / Tri", "18305", "3-400", "3-400", "3", "4", "6.9", "800", "600", "260", "Metal"],
+            ["FxS 3 - 4 / Tri", "18306", "3-400", "3-400", "4", "5.5", "8.8", "800", "600", "260", "Metal"],
+            ["FxS 3 - 5.5 / Tri", "18307", "3-400", "3-400", "5.5", "7.5", "11.9", "1000", "700", "320", "Metal"],
+            ["FxS 3 - 7.5 / Tri", "18308", "3-400", "3-400", "7.5", "10", "15.4", "1000", "700", "320", "Metal"],
+            ["FxS 3 - 11 / Tri", "18309", "3-400", "3-400", "11", "15", "23", "1000", "700", "320", "Metal"],
+            ["FxS 3 - 15 / Tri", "18310", "3-400", "3-400", "15", "20", "31", "1200", "800", "340", "Metal"],
+            ["FxS 3 - 18.5 / Tri", "18311", "3-400", "3-400", "18.5", "25", "38", "1200", "800", "340", "Metal"],
+            ["FxS 3 - 22 / Tri", "18312", "3-400", "3-400", "22", "30", "45", "1200", "800", "340", "Metal"],
+            ["FxS 3 - 30 / Tri", "18313", "3-400", "3-400", "30", "40", "59", "1300", "900", "340", "Metal"],
+            ["FxS 3 - 37 / Tri", "18314", "3-400", "3-400", "37", "50", "72", "1300", "900", "340", "Metal"],
+            ["FxS 3 - 45 / Tri", "18315", "3-400", "3-400", "45", "60", "87", "1300", "900", "340", "Metal"],
+            ["FxS 3 - 55 / Tri", "18316", "3-400", "3-400", "55", "75", "125", "1300", "900", "340", "Metal"],
+            ["FxS 3 - 75 / Tri", "18317", "3-400", "3-400", "75", "100", "157", "1600", "800", "550", "Metal"],
+            ["FxS 3 - 90 / Tri", "18318", "3-400", "3-400", "90", "125", "180", "1600", "800", "550", "Metal"],
+            ["FxS 3 - 110 / Tri", "18319", "3-400", "3-400", "110", "150", "205", "1600", "800", "550", "Metal"],
+            ["FxS 3 - 132 / Tri", "18320", "3-400", "3-400", "132", "180", "246", "1800", "1300", "550", "Metal"],
+            ["FxS 3 - 160 / Tri", "18321", "3-400", "3-400", "160", "220", "289", "1800", "1300", "550", "Metal"]
+          ]
+        },
+        {
+          baslik: "FxS 4 Teknik Veriler",
+          basliklar: ["Model", "COD", "V-IN", "V-OUT", "kW", "HP", "Max (A)", "H", "L", "W", "Malzeme"],
+          satirlar: [
+            ["FxS 4 - 0.75 / Tri", "18401", "3-400", "3-400", "0.75", "1", "2.1", "800", "600", "260", "Metal"],
+            ["FxS 4 - 1.1 / Tri", "18402", "3-400", "3-400", "1.1", "1.5", "3.3", "800", "600", "260", "Metal"],
+            ["FxS 4 - 1.5 / Tri", "18403", "3-400", "3-400", "1.5", "2", "4.1", "800", "600", "260", "Metal"],
+            ["FxS 4 - 2.2 / Tri", "18404", "3-400", "3-400", "2.2", "3", "5.4", "800", "600", "260", "Metal"],
+            ["FxS 4 - 3 / Tri", "18405", "3-400", "3-400", "3", "4", "6.9", "800", "600", "260", "Metal"],
+            ["FxS 4 - 4 / Tri", "18406", "3-400", "3-400", "4", "5.5", "8.8", "800", "600", "260", "Metal"],
+            ["FxS 4 - 5.5 / Tri", "18407", "3-400", "3-400", "5.5", "7.5", "11.9", "1000", "700", "320", "Metal"],
+            ["FxS 4 - 7.5 / Tri", "18408", "3-400", "3-400", "7.5", "10", "15.4", "1000", "700", "320", "Metal"],
+            ["FxS 4 - 11 / Tri", "18409", "3-400", "3-400", "11", "15", "23", "1000", "700", "320", "Metal"],
+            ["FxS 4 - 15 / Tri", "18410", "3-400", "3-400", "15", "20", "31", "1300", "900", "340", "Metal"],
+            ["FxS 4 - 18.5 / Tri", "18411", "3-400", "3-400", "18.5", "25", "38", "1300", "900", "340", "Metal"],
+            ["FxS 4 - 22 / Tri", "18412", "3-400", "3-400", "22", "30", "45", "1300", "900", "340", "Metal"],
+            ["FxS 4 - 30 / Tri", "18413", "3-400", "3-400", "30", "40", "59", "1600", "800", "550", "Metal"],
+            ["FxS 4 - 37 / Tri", "18414", "3-400", "3-400", "37", "50", "72", "1600", "800", "550", "Metal"],
+            ["FxS 4 - 45 / Tri", "18415", "3-400", "3-400", "45", "60", "87", "1600", "800", "550", "Metal"],
+            ["FxS 4 - 55 / Tri", "18416", "3-400", "3-400", "55", "75", "125", "1600", "800", "550", "Metal"],
+            ["FxS 4 - 75 / Tri", "18417", "3-400", "3-400", "75", "100", "157", "1800", "1300", "550", "Metal"],
+            ["FxS 4 - 90 / Tri", "18418", "3-400", "3-400", "90", "125", "180", "1800", "1300", "550", "Metal"],
+            ["FxS 4 - 110 / Tri", "18419", "3-400", "3-400", "110", "150", "205", "1800", "1300", "550", "Metal"],
+            ["FxS 4 - 132 / Tri", "18420", "3-400", "3-400", "132", "180", "246", "2000", "1600", "600", "Metal"],
+            ["FxS 4 - 160 / Tri", "18421", "3-400", "3-400", "160", "220", "289", "2000", "1600", "600", "Metal"]
+          ]
+        }
+      ]
+    }
+  };
   const searchParams = useSearchParams();
   const urunParam = searchParams.get("urun");
   const [activeUrun, setActiveUrun] = useState(urunler[0].key);
@@ -372,14 +374,14 @@ export default function InvertorYolVerme() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
-          <span className="text-lg font-medium">Kategoriler</span>
+          <span className="text-lg font-medium">{t("prod.back.categories")}</span>
         </Link>
       </div>
 
       {/* Başlık */}
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "60px", paddingBottom: "40px" }}>
         <h1 className="text-[#86868b] text-5xl font-medium text-center">
-          İnvertör Yol Verme Panoları
+          {t("prod.akilli.invertor.title")}
         </h1>
       </section>
 
@@ -456,7 +458,7 @@ export default function InvertorYolVerme() {
                 {/* Özellikler */}
                 {aktifUrunVerisi.ozellikler.length > 0 && (
                   <div className="mb-14">
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Özellikler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.features")}</h3>
                     <div className="space-y-5">
                       {aktifUrunVerisi.ozellikler.map((ozellik, index) => (
                         <div key={index} className="flex items-start gap-4">
@@ -471,7 +473,7 @@ export default function InvertorYolVerme() {
                 {/* Uygulama Alanları Listesi */}
                 {aktifUrunVerisi.uygulamaAlanlari && aktifUrunVerisi.uygulamaAlanlari.length > 0 && (
                   <div className="mb-14">
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Uygulamalar için akıllı çözümler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.smartSolutions")}</h3>
                     <div className="space-y-5">
                       {aktifUrunVerisi.uygulamaAlanlari.map((alan, index) => (
                         <div key={index} className="flex items-start gap-4">
@@ -486,7 +488,7 @@ export default function InvertorYolVerme() {
                 {/* Belgeler */}
                 {aktifUrunVerisi.belgeler.length > 0 && (
                   <div>
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Belgeler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.documents")}</h3>
                     <div className="flex flex-wrap gap-4">
                       {aktifUrunVerisi.belgeler.map((belge, index) => (
                         <a
@@ -504,7 +506,7 @@ export default function InvertorYolVerme() {
                             <line x1="16" y1="17" x2="8" y2="17"/>
                             <polyline points="10 9 9 9 8 9"/>
                           </svg>
-                          {belge.isim}
+                          {t(belge.isimKey)}
                         </a>
                       ))}
                     </div>
@@ -546,7 +548,7 @@ export default function InvertorYolVerme() {
                       }
                     }}
                   >
-                    Teknik Özellikler
+                    {t("prod.techSpecs")}
                   </button>
                 )}
                 {hasUygulamaAlanlari && (
@@ -573,7 +575,7 @@ export default function InvertorYolVerme() {
                       }
                     }}
                   >
-                    Uygulama Alanları
+                    {t("prod.appAreas")}
                   </button>
                 )}
                 {hasTeknikVeriler && (
@@ -600,7 +602,7 @@ export default function InvertorYolVerme() {
                       }
                     }}
                   >
-                    Teknik Veriler
+                    {t("prod.techData")}
                   </button>
                 )}
               </div>
@@ -687,7 +689,7 @@ export default function InvertorYolVerme() {
               {aktifUrunVerisi.baslik}
             </h2>
             <p className="text-[#6e6e73] text-xl">
-              Bu ürünün detayları yakında eklenecektir.
+              {t("prod.comingSoon")}
             </p>
         </div>
         )}

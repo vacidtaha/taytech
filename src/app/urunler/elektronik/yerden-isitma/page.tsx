@@ -5,52 +5,54 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/Footer";
+import { useLanguage } from "@/context/LanguageContext";
 
 const urunler = [
   { id: 1, label: "T-Box Yerden Isıtma Kontrolörü", key: "t-box" },
 ];
 
-// Ürün verileri
-const urunVerileri: Record<string, {
-  baslik: string;
-  aciklama: string;
-  ozellikler: string[];
-  resim: string;
-  belgeler: { isim: string; link: string }[];
-  teknikOzellikler?: string[];
-  uygulamaAlanlariResim?: string;
-}> = {
-  "t-box": {
-    baslik: "T-Box Yerden Isıtma Kontrolörü",
-    aciklama: "T-Box 6 bağımsız bölgeyi zamanlayıcı oda termostatları ve her bölge için 2 aktuatör bağlantı imkanı sunar. Dijital oda termostatı bağlantısı sayesinde zaman ayarlı kontrol imkanı sunar.",
-    ozellikler: [
-      "Cam sigorta sayesinde pompanın sıkışması durumunda koruma sağlar",
-      "230V AC / 24V DC sistemlerle çalışmaya uygunluğu ile kolayca sisteme eklenebilir",
-      "Birbirinden bağımsız 6 bölgeyi kontrol eder",
-      "Her bölge için iki farklı vana bağlantı imkanı sunar. Böylece 12 Vana bağlantısı yapılabilir",
-      "Kontrolör üzerinde bulunan röle çıkışı sayesinde 6 farklı bölgeden birtanesinin ihtiyacı olması durumunda pompanın otomatik olarak devreye girmesini sağlar",
-      "Pompa çalışma anında sıcaklığın ihtiyaç olduğu bölgeye yönlendirilmesini sağlar",
-      "Yay baskılı klemensler sayesinde kolay montaj imkanı sunar",
-      "Zaman ayarlı oda termostatlarının bağlantısı sayesinde ayarlanan iki farklı programa göre çalışabilme özelliği sunar"
-    ],
-    resim: "/t-box.jpg",
-    belgeler: [
-      { isim: "Teknik Veri Sayfası", link: "/t-box-datasheet.pdf" }
-    ],
-    teknikOzellikler: [
-      "Çalışma Voltajı 230VAC / 24V",
-      "Maksimum Güç 50 W",
-      "Röle Çıkışları 1 x 230V 16A",
-      "Oda Termostat Bağlantısı 6 Adet",
-      "Aktuatör Bağlantısı 12 Adet",
-      "Çalışma Sıcaklığı 0 / +60 C",
-      "Boyut(mm) 74 x 40 x 300",
-      "IP Koruması IP 20"
-    ]
-  }
-};
-
 export default function YerdenIsitma() {
+  const { t } = useLanguage();
+
+  // Ürün verileri
+  const urunVerileri: Record<string, {
+    baslik: string;
+    aciklama: string;
+    ozellikler: string[];
+    resim: string;
+    belgeler: { isimKey: string; link: string }[];
+    teknikOzellikler?: string[];
+    uygulamaAlanlariResim?: string;
+  }> = {
+    "t-box": {
+      baslik: "T-Box Yerden Isıtma Kontrolörü",
+      aciklama: t("prod.yerden.t-box.desc"),
+      ozellikler: [
+        t("prod.yerden.t-box.feat1"),
+        t("prod.yerden.t-box.feat2"),
+        t("prod.yerden.t-box.feat3"),
+        t("prod.yerden.t-box.feat4"),
+        t("prod.yerden.t-box.feat5"),
+        t("prod.yerden.t-box.feat6"),
+        t("prod.yerden.t-box.feat7"),
+        t("prod.yerden.t-box.feat8")
+      ],
+      resim: "/t-box.jpg",
+      belgeler: [
+        { isimKey: "prod.datasheet", link: "/t-box-datasheet.pdf" }
+      ],
+      teknikOzellikler: [
+        "Çalışma Voltajı 230VAC / 24V",
+        "Maksimum Güç 50 W",
+        "Röle Çıkışları 1 x 230V 16A",
+        "Oda Termostat Bağlantısı 6 Adet",
+        "Aktuatör Bağlantısı 12 Adet",
+        "Çalışma Sıcaklığı 0 / +60 C",
+        "Boyut(mm) 74 x 40 x 300",
+        "IP Koruması IP 20"
+      ]
+    }
+  };
   const searchParams = useSearchParams();
   const urunParam = searchParams.get("urun");
   const [activeUrun, setActiveUrun] = useState(urunler[0].key);
@@ -79,15 +81,13 @@ export default function YerdenIsitma() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
-          <span className="text-lg font-medium">Kategoriler</span>
+          <span className="text-lg font-medium">{t("prod.back.categories")}</span>
         </Link>
       </div>
 
       {/* Başlık */}
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "60px", paddingBottom: "40px" }}>
-        <h1 className="text-[#86868b] text-5xl font-medium text-center">
-          Yerden Isıtma Kontrolörleri
-        </h1>
+        <h1 className="text-[#86868b] text-5xl font-medium text-center">{t("mega.prod.yerden")}</h1>
       </section>
 
       {/* Ürün Menüsü */}
@@ -163,7 +163,7 @@ export default function YerdenIsitma() {
                 {/* Özellikler */}
                 {aktifUrunVerisi.ozellikler.length > 0 && (
                   <div className="mb-14">
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Özellikler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.features")}</h3>
                     <div className="space-y-5">
                       {aktifUrunVerisi.ozellikler.map((ozellik, index) => (
                         <div key={index} className="flex items-start gap-4">
@@ -178,7 +178,7 @@ export default function YerdenIsitma() {
                 {/* Belgeler */}
                 {aktifUrunVerisi.belgeler.length > 0 && (
                   <div>
-                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">Belgeler</h3>
+                    <h3 className="text-xl font-semibold text-[#86868b] mb-6">{t("prod.documents")}</h3>
                     <div className="flex flex-wrap gap-4">
                       {aktifUrunVerisi.belgeler.map((belge, index) => (
                         <a
@@ -196,7 +196,7 @@ export default function YerdenIsitma() {
                             <line x1="16" y1="17" x2="8" y2="17"/>
                             <polyline points="10 9 9 9 8 9"/>
                           </svg>
-                          {belge.isim}
+                          {t(belge.isimKey)}
                         </a>
                       ))}
                     </div>
@@ -238,7 +238,7 @@ export default function YerdenIsitma() {
                       }
                     }}
                   >
-                    Teknik Özellikler
+                    {t("prod.techSpecs")}
                   </button>
                 )}
                 {hasUygulamaAlanlari && (
@@ -265,7 +265,7 @@ export default function YerdenIsitma() {
                       }
                     }}
                   >
-                    Uygulama Alanları
+                    {t("prod.appAreas")}
                   </button>
                 )}
               </div>
@@ -309,7 +309,7 @@ export default function YerdenIsitma() {
               {aktifUrunVerisi.baslik}
             </h2>
             <p className="text-[#6e6e73] text-xl">
-              Bu ürünün detayları yakında eklenecektir.
+              {t("prod.comingSoon")}
             </p>
           </div>
         )}

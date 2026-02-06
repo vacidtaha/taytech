@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { neueHaasDisplay } from "@/fonts";
 import { Header, QuickContact, MobileChecker } from "@/components";
+import { LanguageProvider } from "@/context/LanguageContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,11 +17,13 @@ export default function RootLayout({
   return (
     <html lang="tr">
       <body className={`${neueHaasDisplay.variable} antialiased`}>
-        <MobileChecker>
-          <Header />
-          <main>{children}</main>
-          <QuickContact />
-        </MobileChecker>
+        <LanguageProvider>
+          <MobileChecker>
+            <Header />
+            <main>{children}</main>
+            <QuickContact />
+          </MobileChecker>
+        </LanguageProvider>
       </body>
     </html>
   );
