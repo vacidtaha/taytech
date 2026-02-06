@@ -149,6 +149,9 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
   const pathname = usePathname();
   const { locale, setLocale, t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  // Drill-down mobil menü: "main" | "products" | "bilgi" | "akilli" | "isi" | "elektronik" | "cloud" | "sivilar" | sub detaylar
+  const [mobileScreen, setMobileScreen] = useState<string>("main");
+  const [mobileSubScreen, setMobileSubScreen] = useState<string | null>(null);
   const currentLang = locale;
   const setCurrentLang = (code: string) => setLocale(code as "TR" | "EN");
   const [isProductsOpen, setIsProductsOpenInternal] = useState(false);
@@ -223,14 +226,16 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
           "h-12 transition-colors duration-200",
           isDark 
             ? ((isProductsOpen || isBilgiMerkeziOpen) ? "bg-[#1a1a1a]" : "bg-[#1a1a1a]/70 backdrop-blur-md")
-            : ((isProductsOpen || isBilgiMerkeziOpen) ? "bg-white" : "bg-white/70 backdrop-blur-md")
+            : "bg-white"
         )}>
-          <div className="h-full px-8 flex items-center justify-between">
-            {/* Left Spacer */}
+          <div className="h-full px-5 md:px-8 flex items-center justify-between relative">
+            {/* Mobile: Left spacer for centering logo */}
+            <div className="w-10 md:hidden"></div>
+            {/* Desktop: Left Spacer */}
             <div className="hidden md:block w-[120px]"></div>
 
             {/* Center - Logo + Navigation */}
-            <div className="flex items-center gap-20">
+            <div className="flex items-center gap-20 md:relative absolute md:static left-1/2 -translate-x-1/2 md:translate-x-0">
               {/* Logo */}
               <Link href="/" className="flex-shrink-0">
                 <Image
@@ -326,28 +331,28 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
 
             {/* Mobile Menu Button */}
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden flex flex-col gap-1 p-2"
+              onClick={() => {
+                setIsMobileMenuOpen(!isMobileMenuOpen);
+                if (isMobileMenuOpen) { setMobileScreen("main"); setMobileSubScreen(null); }
+              }}
+              className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-[5px]"
               aria-label="Menüyü Aç"
             >
-              <span
-                className={cn(
-                  "w-5 h-0.5 bg-white",
-                  isMobileMenuOpen && "rotate-45 translate-y-1.5"
-                )}
-              />
-              <span
-                className={cn(
-                  "w-5 h-0.5 bg-white",
-                  isMobileMenuOpen && "opacity-0"
-                )}
-              />
-              <span
-                className={cn(
-                  "w-5 h-0.5 bg-white",
-                  isMobileMenuOpen && "-rotate-45 -translate-y-1.5"
-                )}
-              />
+              <span className={cn(
+                "block w-[18px] h-[1.5px] rounded-full transition-all duration-300 origin-center",
+                isDark ? "bg-white" : "bg-[#1d1d1f]",
+                isMobileMenuOpen && "rotate-45 translate-y-[6.5px]"
+              )} />
+              <span className={cn(
+                "block w-[18px] h-[1.5px] rounded-full transition-all duration-300",
+                isDark ? "bg-white" : "bg-[#1d1d1f]",
+                isMobileMenuOpen && "opacity-0 scale-0"
+              )} />
+              <span className={cn(
+                "block w-[18px] h-[1.5px] rounded-full transition-all duration-300 origin-center",
+                isDark ? "bg-white" : "bg-[#1d1d1f]",
+                isMobileMenuOpen && "-rotate-45 -translate-y-[6.5px]"
+              )} />
             </button>
           </div>
         </div>
@@ -894,49 +899,250 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
           )}
         </AnimatePresence>
 
-        {/* Mobile Menu */}
+        {/* ========== MOBILE DRILL-DOWN MENU ========== */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="md:hidden bg-[#1a1a1a] border-t border-white/10 overflow-hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="md:hidden fixed inset-0 top-12 z-50 bg-white overflow-hidden"
             >
-              <nav className="flex flex-col py-4">
-                {navItems.map((item, index) => (
-                  <motion.div
-                    key={item.labelKey}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                  >
-                    {item.hasDropdown ? (
-                      <span
-                        onClick={() => {
-                          if (item.dropdownType === "products") {
-                            setIsProductsOpen(true);
-                          } else if (item.dropdownType === "bilgi-merkezi") {
-                            setIsBilgiMerkeziOpen(true);
-                          }
-                        }}
-                        className="block px-4 py-3 text-[15px] font-light text-white/90 hover:text-white hover:bg-white/5 transition-colors duration-75 cursor-pointer"
-                      >
-                        {t(item.labelKey)}
-                      </span>
-                    ) : (
-                      <Link
-                        href={item.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="block px-4 py-3 text-[15px] font-light text-white/90 hover:text-white hover:bg-white/5 transition-colors duration-75"
-                      >
-                        {t(item.labelKey)}
-                      </Link>
-                    )}
-                  </motion.div>
-                ))}
-              </nav>
+              <div className="h-full overflow-y-auto" style={{ WebkitOverflowScrolling: "touch" }}>
+
+                  {/* ====== SCREEN: MAIN ====== */}
+                  {mobileScreen === "main" && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
+                      className="flex flex-col items-center justify-center min-h-full py-16 px-8"
+                    >
+                      {navItems.map((item) => (
+                        item.hasDropdown ? (
+                          <button
+                            key={item.labelKey}
+                            onClick={() => setMobileScreen(item.dropdownType === "products" ? "products" : "bilgi")}
+                            className="py-[18px]"
+                          >
+                            <span className="text-[26px] font-medium text-[#1d1d1f]">{t(item.labelKey)}</span>
+                          </button>
+                        ) : (
+                          <Link
+                            key={item.labelKey}
+                            href={item.href}
+                            onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
+                            className="py-[18px]"
+                          >
+                            <span className="text-[26px] font-medium text-[#1d1d1f]">{t(item.labelKey)}</span>
+                          </Link>
+                        )
+                      ))}
+
+                      {/* Dil Seçimi — İletişim'in altında */}
+                      <div className="flex items-center gap-3 mt-10">
+                        {languages.map((lang) => (
+                          <button
+                            key={lang.code}
+                            onClick={() => setCurrentLang(lang.code)}
+                            className={cn(
+                              "text-[15px] font-semibold w-11 h-11 rounded-full flex items-center justify-center transition-all",
+                              currentLang === lang.code
+                                ? "bg-[#1d1d1f] text-white"
+                                : "bg-[#f5f5f7] text-[#86868b]"
+                            )}
+                          >
+                            {lang.code}
+                          </button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* ====== SCREEN: PRODUCTS ====== */}
+                  {mobileScreen === "products" && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
+                      className="flex flex-col items-center justify-center min-h-full py-16 px-8"
+                    >
+                      <button onClick={() => { setMobileScreen("main"); setMobileSubScreen(null); }} className="flex items-center gap-1.5 mb-10">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                          <path d="M9 2.5L4.5 7L9 11.5" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        <span className="text-[14px] font-medium text-[#dc2626]">{t("nav.urunler")}</span>
+                      </button>
+
+                      {products.map((product) => {
+                        const hasChildren = ["akilli", "isi-istasyonu", "elektronik", "cloud", "sivilar"].includes(product.matchKey);
+                        return hasChildren ? (
+                          <button
+                            key={product.href}
+                            onClick={() => { setMobileScreen("sub-" + product.matchKey); setMobileSubScreen(null); }}
+                            className="py-[14px]"
+                          >
+                            <span className="text-[24px] font-medium text-[#1d1d1f]">{t(product.labelKey)}</span>
+                          </button>
+                        ) : (
+                          <Link
+                            key={product.href}
+                            href={product.href}
+                            onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
+                            className="py-[14px]"
+                          >
+                            <span className="text-[24px] font-medium text-[#1d1d1f]">{t(product.labelKey)}</span>
+                          </Link>
+                        );
+                      })}
+                    </motion.div>
+                  )}
+
+                  {/* ====== SCREEN: BILGI MERKEZI ====== */}
+                  {mobileScreen === "bilgi" && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
+                      className="flex flex-col items-center justify-center min-h-full py-16 px-8"
+                    >
+                      <button onClick={() => setMobileScreen("main")} className="flex items-center gap-1.5 mb-10">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                          <path d="M9 2.5L4.5 7L9 11.5" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        <span className="text-[14px] font-medium text-[#dc2626]">{t("nav.bilgi")}</span>
+                      </button>
+                      {bilgiMerkeziItems.map((bItem) => (
+                        <Link key={bItem.href} href={bItem.href}
+                          onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
+                          className="py-[14px]"
+                        >
+                          <span className="text-[24px] font-medium text-[#1d1d1f]">{t(bItem.labelKey)}</span>
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+
+                  {/* ====== SCREEN: AKILLI KONTROL PANOLARI ====== */}
+                  {mobileScreen === "sub-akilli" && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
+                      className="flex flex-col items-center justify-center min-h-full py-16 px-8"
+                    >
+                      <button onClick={() => setMobileScreen("products")} className="flex items-center gap-1.5 mb-10">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2.5L4.5 7L9 11.5" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                        <span className="text-[14px] font-medium text-[#dc2626]">{t("mega.prod.akilli")}</span>
+                      </button>
+                      <div className="space-y-10 text-center">
+                        {kontrolPanolariCategories.map((cat) => (
+                          <div key={cat.key}>
+                            <Link href={cat.href} onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
+                              className="block text-[15px] font-semibold text-[#1d1d1f] uppercase tracking-wider mb-4">{t(cat.labelKey)}</Link>
+                            <div className="space-y-3.5">
+                              {cat.items.map((sub) => (
+                                <Link key={sub.id} href={sub.href} onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
+                                  className="block text-[20px] font-medium text-[#86868b]">
+                                  {"labelKey" in sub ? t((sub as {labelKey:string}).labelKey) : ("label" in sub ? (sub as {label:string}).label : "")}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* ====== SCREEN: ISI ISTASYONU ====== */}
+                  {mobileScreen === "sub-isi-istasyonu" && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
+                      className="flex flex-col items-center justify-center min-h-full py-16 px-8"
+                    >
+                      <button onClick={() => setMobileScreen("products")} className="flex items-center gap-1.5 mb-10">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2.5L4.5 7L9 11.5" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                        <span className="text-[14px] font-medium text-[#dc2626]">{t("mega.prod.isi")}</span>
+                      </button>
+                      <div className="space-y-10 text-center">
+                        {Object.entries(isiIstasyonuSubCategories).map(([key, cat]) => (
+                          <div key={key}>
+                            <Link href={cat.href} onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
+                              className="block text-[15px] font-semibold text-[#1d1d1f] uppercase tracking-wider mb-4">{cat.label}</Link>
+                            <div className="space-y-3.5">
+                              {cat.items.map((sub) => (
+                                <Link key={sub.id} href={sub.href} onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
+                                  className="block text-[20px] font-medium text-[#86868b]">{sub.label}</Link>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* ====== SCREEN: ELEKTRONIK ====== */}
+                  {mobileScreen === "sub-elektronik" && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
+                      className="flex flex-col items-center justify-center min-h-full py-16 px-8"
+                    >
+                      <button onClick={() => setMobileScreen("products")} className="flex items-center gap-1.5 mb-10">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2.5L4.5 7L9 11.5" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                        <span className="text-[14px] font-medium text-[#dc2626]">{t("mega.prod.elektronik")}</span>
+                      </button>
+                      <div className="space-y-10 text-center">
+                        {elektronikCategories.map((cat) => (
+                          <div key={cat.key}>
+                            <Link href={cat.href} onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
+                              className="block text-[15px] font-semibold text-[#1d1d1f] uppercase tracking-wider mb-4">{t(cat.labelKey)}</Link>
+                            <div className="space-y-3.5">
+                              {cat.items.map((sub) => (
+                                <Link key={sub.id} href={sub.href} onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
+                                  className="block text-[20px] font-medium text-[#86868b]">
+                                  {"labelKey" in sub ? t((sub as {labelKey:string}).labelKey) : ("label" in sub ? (sub as {label:string}).label : "")}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* ====== SCREEN: CLOUD ====== */}
+                  {mobileScreen === "sub-cloud" && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
+                      className="flex flex-col items-center justify-center min-h-full py-16 px-8"
+                    >
+                      <button onClick={() => setMobileScreen("products")} className="flex items-center gap-1.5 mb-10">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2.5L4.5 7L9 11.5" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                        <span className="text-[14px] font-medium text-[#dc2626]">{t("mega.prod.cloud")}</span>
+                      </button>
+                      {cloudItems.map((sub) => (
+                        <Link key={sub.id} href={sub.href} onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
+                          className="py-[14px]"
+                        >
+                          <span className="text-[24px] font-medium text-[#1d1d1f]">{sub.label}</span>
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+
+                  {/* ====== SCREEN: SIVILAR ====== */}
+                  {mobileScreen === "sub-sivilar" && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
+                      className="flex flex-col items-center justify-center min-h-full py-16 px-8"
+                    >
+                      <button onClick={() => setMobileScreen("products")} className="flex items-center gap-1.5 mb-10">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2.5L4.5 7L9 11.5" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                        <span className="text-[14px] font-medium text-[#dc2626]">{t("mega.prod.sivilar")}</span>
+                      </button>
+                      <div className="space-y-10 text-center">
+                        {sivilarCategories.map((cat) => (
+                          <div key={cat.key}>
+                            <Link href={cat.href} onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
+                              className="block text-[15px] font-semibold text-[#1d1d1f] uppercase tracking-wider mb-4">{t(cat.labelKey)}</Link>
+                            <div className="space-y-3.5">
+                              {cat.items.map((sub) => (
+                                <Link key={sub.id} href={sub.href} onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
+                                  className="block text-[20px] font-medium text-[#86868b]">{sub.label}</Link>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+
+                </div>
             </motion.div>
           )}
         </AnimatePresence>

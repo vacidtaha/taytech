@@ -99,27 +99,14 @@ export default function Footer({ theme = "dark" }: FooterProps) {
   return (
     <footer style={{ backgroundColor: colors.bg }}>
       {/* Main Footer Content */}
-      <div style={{ 
-        paddingLeft: '300px', 
-        paddingRight: '300px', 
-        paddingTop: '80px',
-        paddingBottom: '80px'
-      }}>
+      <div style={{ padding: '48px 28px' }} className="lg:!px-[300px] lg:!py-[80px]">
         {/* Links and Logo Row */}
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}>
+        <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-10">
           {/* Links Column */}
           <div>
             {/* Ürünler */}
             <div style={{ marginBottom: '40px' }}>
-              <div style={{ 
-                display: 'grid', 
-                gridTemplateColumns: '1fr 1fr', 
-                gap: '24px 60px'
-              }}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-x-[60px] lg:gap-y-6">
                 {footerLinks.urunler.map((urun) => (
                   <div key={urun.nameKey}>
                     <h5 style={{ 
@@ -164,11 +151,7 @@ export default function Footer({ theme = "dark" }: FooterProps) {
               }}>
                 {t("footer.cozumler")}
               </h4>
-              <div style={{ 
-                display: 'grid', 
-                gridTemplateColumns: '1fr 1fr', 
-                gap: '12px 40px'
-              }}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-x-10 lg:gap-y-3">
                 {footerLinks.cozumler.map((link) => (
                   <Link 
                     key={link.nameKey}
@@ -201,11 +184,7 @@ export default function Footer({ theme = "dark" }: FooterProps) {
               }}>
                 {t("footer.bilgiMerkezi")}
               </h4>
-              <div style={{ 
-                display: 'grid', 
-                gridTemplateColumns: '1fr 1fr', 
-                gap: '12px 40px'
-              }}>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-x-10 lg:gap-y-3">
                 {footerLinks.bilgiMerkezi.map((link) => (
                   <Link 
                     key={link.nameKey}
@@ -309,28 +288,10 @@ export default function Footer({ theme = "dark" }: FooterProps) {
       </div>
 
       {/* Bottom Bar */}
-      <div style={{ 
-        borderTop: `1px solid ${colors.border}`,
-        paddingLeft: '300px',
-        paddingRight: '300px',
-        paddingTop: '24px',
-        paddingBottom: '24px'
-      }}>
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center',
-          justifyContent: 'space-between'
-        }}>
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center',
-            gap: '12px'
-          }}>
-            <span style={{ 
-              fontSize: '15px', 
-              fontWeight: 400, 
-              color: colors.heading
-            }}>
+      <div style={{ borderTop: `1px solid ${colors.border}`, padding: '24px 28px' }} className="lg:!px-[300px]">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-2 lg:gap-3">
+            <span className="text-[12px] lg:text-[15px]" style={{ fontWeight: 400, color: colors.heading }}>
               © {currentYear} {t("footer.copyright")}
             </span>
             <span style={{ color: colors.separator, fontSize: '15px' }}>|</span>
