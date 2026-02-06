@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/components/Footer";
@@ -13,6 +14,48 @@ const kategoriler = [
 
 export default function YanginSistemleriKontrolPanolari() {
   const { t } = useLanguage();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  if (isMobile) {
+    return (
+      <div className="min-h-screen bg-[#f5f5f7] pt-12">
+        <div style={{ paddingTop: "32px", paddingLeft: "20px" }}>
+          <Link href="/urunler/akilli-kontrol-panolari" className="inline-flex items-center gap-2 text-[#86868b] hover:text-[#1d1d1f] transition-colors duration-300">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <span className="text-base font-medium">{t("urunler.kategoriler")}</span>
+          </Link>
+        </div>
+        <section className="bg-[#f5f5f7]" style={{ paddingTop: "32px", paddingBottom: "24px" }}>
+          <h1 style={{ fontSize: "28px", fontWeight: 500, color: "#86868b", textAlign: "center" }}>{t("mega.prod.yanginPano")}</h1>
+        </section>
+        <section className="bg-[#f5f5f7]" style={{ padding: "0 20px" }}>
+          <p style={{ fontSize: "18px", fontWeight: 600, color: "#86868b", marginBottom: "20px" }}>{t("urunler.kategoriler")}</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            {kategoriler.map((kategori) => (
+              <Link key={kategori.id} href={kategori.link} className="bg-white rounded-2xl overflow-hidden flex flex-col shadow-lg" style={{ height: "280px" }}>
+                <div style={{ height: "70%", display: "flex", alignItems: "center", justifyContent: "center", padding: "16px" }}>
+                  <Image src={kategori.resim} alt={t(kategori.baslikKey)} width={180} height={180} className="object-contain max-h-full" />
+                </div>
+                <div style={{ height: "30%", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 16px" }}>
+                  <h3 style={{ fontSize: "16px", fontWeight: 500, color: "#1d1d1f", textAlign: "center" }}>{t(kategori.baslikKey)}</h3>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+        <div style={{ height: "60px" }} />
+        <Footer theme="white" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#f5f5f7] pt-12">
       <div style={{ paddingTop: "80px", marginLeft: "150px" }}>

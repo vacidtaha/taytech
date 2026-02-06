@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/components/Footer";
@@ -12,6 +13,42 @@ const kategoriler = [
 
 export default function IsiIstasyonu() {
   const { t } = useLanguage();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  if (isMobile) {
+    return (
+      <div className="min-h-screen bg-[#f5f5f7] pt-12">
+        <section className="bg-[#f5f5f7]" style={{ paddingTop: "80px", paddingBottom: "32px" }}>
+          <h1 style={{ fontSize: "28px", fontWeight: 500, color: "#86868b", textAlign: "center" }}>{t("urunler.isi.title")}</h1>
+        </section>
+        <section className="bg-[#f5f5f7]" style={{ padding: "0 20px" }}>
+          <p style={{ fontSize: "18px", fontWeight: 600, color: "#86868b", marginBottom: "20px" }}>{t("urunler.kategoriler")}</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+            {kategoriler.map((kategori) => (
+              <Link key={kategori.id} href={kategori.link} className="bg-white rounded-2xl overflow-hidden flex flex-col shadow-lg" style={{ height: "240px" }}>
+                <div style={{ height: "70%", display: "flex", alignItems: "center", justifyContent: "center", padding: "12px" }}>
+                  <Image src={kategori.resim} alt={t(kategori.baslikKey)} width={140} height={140} className="object-contain max-h-full" />
+                </div>
+                <div style={{ height: "30%", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 8px" }}>
+                  <h3 style={{ fontSize: "13px", fontWeight: 500, color: "#1d1d1f", textAlign: "center" }}>{t(kategori.baslikKey)}</h3>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+        <div style={{ height: "60px" }} />
+        <Footer theme="white" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#f5f5f7] pt-12">
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "180px", paddingBottom: "60px" }}>

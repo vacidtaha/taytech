@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/Footer";
@@ -16,6 +16,14 @@ export default function ManyetikFiltre() {
   const { t } = useLanguage();
   const [activeImage, setActiveImage] = useState(0);
   const [activeTab, setActiveTab] = useState("teknik-ozellikler");
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const ozellikler = [
     t("prod.manyetik.feat1"),
@@ -61,7 +69,7 @@ export default function ManyetikFiltre() {
   return (
     <div className="min-h-screen bg-[#f5f5f7] pt-12">
       {/* Geri Butonu */}
-      <div style={{ paddingTop: "80px", marginLeft: "150px" }}>
+      <div style={{ paddingTop: isMobile ? "32px" : "80px", marginLeft: isMobile ? "20px" : "150px" }}>
         <Link 
           href="/"
           className="inline-flex items-center gap-2 text-[#86868b] hover:text-[#1d1d1f] transition-colors duration-300"
@@ -75,17 +83,17 @@ export default function ManyetikFiltre() {
 
       {/* Başlık */}
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "60px", paddingBottom: "80px" }}>
-        <h1 className="text-[#86868b] text-5xl font-medium text-center">
+        <h1 className={`text-[#86868b] ${isMobile ? "text-2xl" : "text-5xl"} font-medium text-center`}>
           {t("prod.manyetik.title")}
         </h1>
       </section>
 
       {/* Ürün İçeriği */}
       <section className="bg-white">
-        <div className="grid grid-cols-2" style={{ padding: "80px 0" }}>
+        <div className={`grid ${isMobile ? "grid-cols-1" : "grid-cols-2"}`} style={{ padding: isMobile ? "32px 20px" : "80px 0" }}>
           {/* Sol Grid - Ürün Görseli Slider */}
           <div className="flex flex-col items-center justify-center">
-            <div className="relative" style={{ width: "450px", height: "450px" }}>
+            <div className="relative" style={{ width: isMobile ? "280px" : "450px", height: isMobile ? "280px" : "450px" }}>
               <Image
                 src={resimler[activeImage]}
                 alt={`IRONTRAP ${t("prod.manyetik.title")} ${activeImage + 1}`}
@@ -130,9 +138,9 @@ export default function ManyetikFiltre() {
 
           {/* Sağ Grid - Yazılar */}
           <div className="flex items-center justify-center">
-            <div className="max-w-lg">
+            <div className={isMobile ? "w-full px-5" : "max-w-lg"}>
               {/* Ürün Başlığı */}
-              <h2 className="text-4xl font-semibold text-[#1d1d1f] mb-10">
+              <h2 className={`${isMobile ? "text-2xl" : "text-4xl"} font-semibold text-[#1d1d1f] mb-10`}>
                 {t("prod.manyetik.title")}
               </h2>
               
@@ -184,7 +192,7 @@ export default function ManyetikFiltre() {
         <div className="flex flex-col items-center" style={{ paddingTop: "60px", paddingBottom: "80px" }}>
           {/* Tab Butonları */}
           <div 
-            className="inline-flex bg-[#e8e8ed] p-1 gap-1"
+            className={`${isMobile ? "flex overflow-x-auto" : "inline-flex"} bg-[#e8e8ed] p-1 gap-1`}
             style={{ borderRadius: '12px' }}
           >
             <button

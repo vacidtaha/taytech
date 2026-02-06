@@ -349,6 +349,14 @@ function InvertorYolVermeInner() {
   const urunParam = searchParams.get("urun");
   const [activeUrun, setActiveUrun] = useState(urunler[0].key);
   const [activeTab, setActiveTab] = useState("teknik-ozellikler");
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     if (urunParam && urunler.some(u => u.key === urunParam)) {
@@ -366,7 +374,7 @@ function InvertorYolVermeInner() {
   return (
     <div className="min-h-screen bg-[#f5f5f7] pt-12">
       {/* Geri Butonu */}
-      <div style={{ paddingTop: "80px", marginLeft: "150px" }}>
+      <div style={{ paddingTop: isMobile ? "32px" : "80px", marginLeft: isMobile ? "20px" : "150px" }}>
         <Link 
           href="/urunler/akilli-kontrol-panolari/elektronik"
           className="inline-flex items-center gap-2 text-[#86868b] hover:text-[#1d1d1f] transition-colors duration-300"
@@ -380,7 +388,7 @@ function InvertorYolVermeInner() {
 
       {/* Başlık */}
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "60px", paddingBottom: "40px" }}>
-        <h1 className="text-[#86868b] text-5xl font-medium text-center">
+        <h1 className={`text-[#86868b] ${isMobile ? "text-2xl" : "text-5xl"} font-medium text-center`}>
           {t("prod.akilli.invertor.title")}
         </h1>
       </section>
@@ -389,7 +397,7 @@ function InvertorYolVermeInner() {
       <section className="bg-[#f5f5f7]" style={{ paddingBottom: "80px" }}>
         <div className="flex justify-center">
           <div 
-            className="inline-flex bg-[#e8e8ed] p-1 gap-1"
+            className={`${isMobile ? "flex overflow-x-auto" : "inline-flex"} bg-[#e8e8ed] p-1 gap-1`}
             style={{ borderRadius: '12px' }}
           >
             {urunler.map((urun) => (
@@ -428,15 +436,15 @@ function InvertorYolVermeInner() {
       <section className="bg-white">
         {aktifUrunVerisi.aciklama ? (
           <>
-          <div className="grid grid-cols-2" style={{ padding: "80px 0" }}>
+          <div className={`grid ${isMobile ? "grid-cols-1" : "grid-cols-2"}`} style={{ padding: isMobile ? "32px 20px" : "80px 0" }}>
             {/* Sol Grid - Ürün Görseli */}
             <div className="flex items-center justify-center">
               {aktifUrunVerisi.resim && (
                 <Image
                   src={aktifUrunVerisi.resim}
                   alt={aktifUrunVerisi.baslik}
-                  width={450}
-                  height={450}
+                  width={isMobile ? 280 : 450}
+                  height={isMobile ? 280 : 450}
                   className="object-contain"
                 />
               )}
@@ -444,9 +452,9 @@ function InvertorYolVermeInner() {
 
             {/* Sağ Grid - Yazılar */}
             <div className="flex items-center justify-center">
-              <div className="max-w-lg">
+              <div className={isMobile ? "w-full px-5" : "max-w-lg"}>
                 {/* Ürün Başlığı */}
-                <h2 className="text-4xl font-semibold text-[#1d1d1f] mb-10">
+                <h2 className={`${isMobile ? "text-2xl" : "text-4xl"} font-semibold text-[#1d1d1f] mb-10`}>
                   {aktifUrunVerisi.baslik}
                 </h2>
                 
@@ -521,7 +529,7 @@ function InvertorYolVermeInner() {
             <div className="flex flex-col items-center" style={{ paddingTop: "60px", paddingBottom: "80px" }}>
               {/* Tab Butonları */}
               <div 
-                className="inline-flex bg-[#e8e8ed] p-1 gap-1"
+                className={`${isMobile ? "flex overflow-x-auto" : "inline-flex"} bg-[#e8e8ed] p-1 gap-1`}
                 style={{ borderRadius: '12px' }}
               >
                 {hasTeknikOzellikler && (

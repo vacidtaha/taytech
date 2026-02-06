@@ -2,7 +2,7 @@
 
 import Footer from "@/components/Footer";
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import emailjs from "@emailjs/browser";
 
@@ -33,6 +33,14 @@ export default function IletisimPage() {
   });
   const [isSubjectOpen, setIsSubjectOpen] = useState(false);
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
   
   const subjectOptions = [
     { value: "urun", label: t("contact.subject.urun") },
@@ -77,6 +85,355 @@ export default function IletisimPage() {
     }
   };
 
+  // ===== MOBİL: Responsive iletişim sayfası =====
+  if (isMobile) {
+    return (
+      <div className="min-h-screen bg-white">
+        
+        {/* Hero Image with Text - Mobile */}
+        <div className="w-full pt-12 relative">
+          <Image
+            src="/gradyan1.png"
+            alt="Gradient"
+            width={768}
+            height={300}
+            className="w-full h-auto"
+            style={{ filter: 'hue-rotate(140deg) saturate(1.2)' }}
+            priority
+          />
+          
+          {/* Hero Title */}
+          <div className="absolute inset-0 flex items-center justify-center" style={{ paddingBottom: '40px' }}>
+            <h1 style={{ fontSize: '28px', fontWeight: 600, color: '#000' }}>
+              {t("contact.hero")}
+            </h1>
+          </div>
+        </div>
+
+        {/* İletişim Formu - Mobile */}
+        <div style={{ padding: '0 20px', marginTop: '-30px', marginBottom: '32px' }}>
+          {/* Form Üstü Açıklama */}
+          <p style={{ 
+            fontSize: '15px', 
+            fontWeight: 450, 
+            color: 'rgb(29, 29, 31)', 
+            lineHeight: '1.5',
+            marginBottom: '20px',
+            textAlign: 'left'
+          }}>
+            {t("contact.intro")}<br />
+            {t("contact.intro2")}
+          </p>
+
+          <div 
+            className="bg-[rgb(245,245,247)] rounded-xl border border-[rgb(210,210,215)]"
+            style={{ padding: '24px 20px' }}
+          >
+            <h2 style={{ 
+              fontSize: '20px', fontWeight: 500, textAlign: 'center',
+              color: 'rgb(29, 29, 31)', marginBottom: '24px' 
+            }}>
+              {t("contact.formTitle")}
+            </h2>
+
+            {/* Başarı Mesajı */}
+            {status === "success" && (
+              <div style={{
+                padding: "12px 16px",
+                backgroundColor: "#dcfce7",
+                border: "1px solid #86efac",
+                borderRadius: "12px",
+                marginBottom: "20px",
+                textAlign: "center"
+              }}>
+                <p style={{ color: "#166534", fontSize: "14px", fontWeight: 500 }}>
+                  ✓ {t("contact.success")}
+                </p>
+              </div>
+            )}
+
+            {/* Hata Mesajı */}
+            {status === "error" && (
+              <div style={{
+                padding: "12px 16px",
+                backgroundColor: "#fef2f2",
+                border: "1px solid #fca5a5",
+                borderRadius: "12px",
+                marginBottom: "20px",
+                textAlign: "center"
+              }}>
+                <p style={{ color: "#991b1b", fontSize: "14px", fontWeight: 500 }}>
+                  ✕ {t("contact.error")}
+                </p>
+              </div>
+            )}
+            
+            <form ref={formRef} onSubmit={handleSubmit}>
+              {/* Ad Soyad - Mobile (tek sütun) */}
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'rgb(29, 29, 31)', marginBottom: '6px' }}>
+                  {t("contact.name")} *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  style={{
+                    width: '100%', padding: '12px 14px', fontSize: '16px', fontWeight: 400,
+                    color: 'rgb(29, 29, 31)', backgroundColor: 'white',
+                    border: '1px solid rgb(210, 210, 215)', borderRadius: '10px',
+                    outline: 'none', transition: 'border-color 0.2s ease',
+                    boxSizing: 'border-box'
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = 'rgb(29, 29, 31)'}
+                  onBlur={(e) => e.target.style.borderColor = 'rgb(210, 210, 215)'}
+                />
+              </div>
+              
+              {/* E-posta - Mobile */}
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'rgb(29, 29, 31)', marginBottom: '6px' }}>
+                  {t("contact.email")} *
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  style={{
+                    width: '100%', padding: '12px 14px', fontSize: '16px', fontWeight: 400,
+                    color: 'rgb(29, 29, 31)', backgroundColor: 'white',
+                    border: '1px solid rgb(210, 210, 215)', borderRadius: '10px',
+                    outline: 'none', transition: 'border-color 0.2s ease',
+                    boxSizing: 'border-box'
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = 'rgb(29, 29, 31)'}
+                  onBlur={(e) => e.target.style.borderColor = 'rgb(210, 210, 215)'}
+                />
+              </div>
+
+              {/* Telefon - Mobile */}
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'rgb(29, 29, 31)', marginBottom: '6px' }}>
+                  {t("contact.phone")}
+                </label>
+                <input
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  style={{
+                    width: '100%', padding: '12px 14px', fontSize: '16px', fontWeight: 400,
+                    color: 'rgb(29, 29, 31)', backgroundColor: 'white',
+                    border: '1px solid rgb(210, 210, 215)', borderRadius: '10px',
+                    outline: 'none', transition: 'border-color 0.2s ease',
+                    boxSizing: 'border-box'
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = 'rgb(29, 29, 31)'}
+                  onBlur={(e) => e.target.style.borderColor = 'rgb(210, 210, 215)'}
+                />
+              </div>
+              
+              {/* Şirket - Mobile */}
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'rgb(29, 29, 31)', marginBottom: '6px' }}>
+                  {t("contact.company")}
+                </label>
+                <input
+                  type="text"
+                  value={formData.company}
+                  onChange={(e) => setFormData({...formData, company: e.target.value})}
+                  style={{
+                    width: '100%', padding: '12px 14px', fontSize: '16px', fontWeight: 400,
+                    color: 'rgb(29, 29, 31)', backgroundColor: 'white',
+                    border: '1px solid rgb(210, 210, 215)', borderRadius: '10px',
+                    outline: 'none', transition: 'border-color 0.2s ease',
+                    boxSizing: 'border-box'
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = 'rgb(29, 29, 31)'}
+                  onBlur={(e) => e.target.style.borderColor = 'rgb(210, 210, 215)'}
+                />
+              </div>
+
+              {/* Konu - Mobile */}
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'rgb(29, 29, 31)', marginBottom: '6px' }}>
+                  {t("contact.subject")}
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <div
+                    onClick={() => setIsSubjectOpen(!isSubjectOpen)}
+                    style={{
+                      width: '100%', padding: '12px 14px', fontSize: '16px', fontWeight: 400,
+                      color: formData.subject ? 'rgb(29, 29, 31)' : 'rgb(142, 142, 147)',
+                      backgroundColor: 'white',
+                      border: `1px solid ${isSubjectOpen ? 'rgb(29, 29, 31)' : 'rgb(210, 210, 215)'}`,
+                      borderRadius: isSubjectOpen ? '10px 10px 0 0' : '10px',
+                      cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                      transition: 'border-color 0.2s ease',
+                      boxSizing: 'border-box'
+                    }}
+                  >
+                    <span>{formData.subject ? subjectOptions.find(o => o.value === formData.subject)?.label : t("contact.subjectPlaceholder")}</span>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+                      style={{ transform: isSubjectOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }}
+                    >
+                      <path d="M2.5 4.5L6 8L9.5 4.5" stroke="rgb(142, 142, 147)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  {isSubjectOpen && (
+                    <div style={{
+                      position: 'absolute', top: '100%', left: 0, right: 0,
+                      backgroundColor: 'white', border: '1px solid rgb(29, 29, 31)',
+                      borderTop: 'none', borderRadius: '0 0 10px 10px', overflow: 'hidden', zIndex: 10
+                    }}>
+                      {subjectOptions.map((option) => (
+                        <div
+                          key={option.value}
+                          onClick={() => { setFormData({...formData, subject: option.value}); setIsSubjectOpen(false); }}
+                          style={{
+                            padding: '12px 14px', fontSize: '16px', fontWeight: 400, color: 'rgb(29, 29, 31)',
+                            cursor: 'pointer',
+                            backgroundColor: formData.subject === option.value ? 'rgb(245, 245, 247)' : 'white',
+                            transition: 'background-color 0.15s ease'
+                          }}
+                        >
+                          {option.label}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Mesaj - Mobile */}
+              <div style={{ marginBottom: '20px' }}>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, color: 'rgb(29, 29, 31)', marginBottom: '6px' }}>
+                  {t("contact.message")} *
+                </label>
+                <textarea
+                  required
+                  value={formData.message}
+                  onChange={(e) => setFormData({...formData, message: e.target.value})}
+                  rows={5}
+                  style={{
+                    width: '100%', padding: '12px 14px', fontSize: '16px', fontWeight: 400,
+                    color: 'rgb(29, 29, 31)', backgroundColor: 'white',
+                    border: '1px solid rgb(210, 210, 215)', borderRadius: '10px',
+                    outline: 'none', resize: 'vertical', transition: 'border-color 0.2s ease', 
+                    fontFamily: 'inherit', boxSizing: 'border-box'
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = 'rgb(29, 29, 31)'}
+                  onBlur={(e) => e.target.style.borderColor = 'rgb(210, 210, 215)'}
+                />
+              </div>
+
+              {/* Gönder - Mobile */}
+              <div style={{ textAlign: 'center' }}>
+                <button
+                  type="submit"
+                  disabled={status === "sending"}
+                  style={{
+                    backgroundColor: status === "sending" ? 'rgb(142, 142, 147)' : 'rgb(29, 29, 31)',
+                    color: 'white', fontSize: '16px', fontWeight: 450,
+                    padding: '12px 40px', borderRadius: '980px', border: 'none',
+                    cursor: status === "sending" ? 'not-allowed' : 'pointer',
+                    transition: 'background-color 0.2s ease',
+                    width: '100%', maxWidth: '280px'
+                  }}
+                >
+                  {status === "sending" ? t("contact.sending") : t("contact.send")}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        {/* CTA - Mobile */}
+        <div style={{ padding: '0 20px', marginBottom: '16px' }}>
+          <p style={{ fontSize: '20px', fontWeight: 550, color: 'rgb(29, 29, 31)', lineHeight: '1.4' }}>
+            {t("contact.cta")}
+          </p>
+        </div>
+
+        {/* Kurumsal Bilgiler - Mobile */}
+        <div style={{ padding: '0 20px', paddingBottom: '32px' }}>
+          <div 
+            className="bg-[rgb(245,245,247)] rounded-xl border border-[rgb(210,210,215)]"
+            style={{ padding: '32px 20px' }}
+          >
+            <h2 style={{ 
+              fontSize: '22px', fontWeight: 500, textAlign: 'center',
+              color: 'rgb(29, 29, 31)', marginTop: '16px' 
+            }}>
+              {t("contact.corporate")}
+            </h2>
+            
+            <div className="text-center" style={{ color: 'rgb(29, 29, 31)', marginTop: '28px' }}>
+              <div style={{ marginBottom: '24px' }}>
+                <p style={{ fontSize: '16px', fontWeight: 500 }}>{t("contact.companyName")}</p>
+              </div>
+              
+              <div style={{ marginBottom: '24px' }}>
+                <h3 style={{ fontSize: '16px', fontWeight: 500, marginBottom: '6px' }}>{t("contact.hq")}</h3>
+                <p style={{ fontSize: '15px', fontWeight: 450 }}>{t("contact.hqAddr1")}</p>
+                <p style={{ fontSize: '15px', fontWeight: 450 }}>{t("contact.hqAddr2")}</p>
+              </div>
+              
+              <div style={{ marginBottom: '24px' }}>
+                <h3 style={{ fontSize: '16px', fontWeight: 500, marginBottom: '6px' }}>{t("contact.phoneLabel")}</h3>
+                <p style={{ fontSize: '15px', fontWeight: 450 }}>{t("contact.phone1")}</p>
+                <p style={{ fontSize: '15px', fontWeight: 450 }}>{t("contact.phone2")}</p>
+              </div>
+              
+              <div style={{ marginBottom: '24px' }}>
+                <h3 style={{ fontSize: '16px', fontWeight: 500, marginBottom: '6px' }}>{t("contact.fax")}</h3>
+                <p style={{ fontSize: '15px', fontWeight: 450 }}>{t("contact.faxNum")}</p>
+              </div>
+              
+              <div style={{ marginBottom: '24px' }}>
+                <h3 style={{ fontSize: '16px', fontWeight: 500, marginBottom: '6px' }}>{t("contact.emailLabel")}</h3>
+                <p style={{ fontSize: '15px', fontWeight: 450 }}>{t("contact.emailAddr")}</p>
+              </div>
+              
+              <div style={{ marginBottom: '16px' }}>
+                <h3 style={{ fontSize: '16px', fontWeight: 500, marginBottom: '6px' }}>{t("contact.factory")}</h3>
+                <p style={{ fontSize: '15px', fontWeight: 450 }}>{t("contact.factoryAddr1")}</p>
+                <p style={{ fontSize: '15px', fontWeight: 450 }}>{t("contact.factoryAddr2")}</p>
+                <p style={{ fontSize: '15px', fontWeight: 450 }}>{t("contact.factoryAddr3")}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bizi Ziyaret Edin - Mobile */}
+        <div style={{ padding: '0 20px', marginTop: '24px', marginBottom: '16px' }}>
+          <p style={{ fontSize: '20px', fontWeight: 550, color: 'rgb(29, 29, 31)', textAlign: 'left' }}>
+            {t("contact.visit")}
+          </p>
+        </div>
+
+        {/* Harita - Mobile */}
+        <div style={{ padding: '0 20px', paddingBottom: '40px' }}>
+          <div className="bg-[rgb(245,245,247)] rounded-xl border border-[rgb(210,210,215)] overflow-hidden">
+            <iframe
+              src="https://www.google.com/maps?q=İnönü+Mahallesi+Atatürk+Bulvarı+No:7+D:2+Gebze+Kocaeli+Taytech&output=embed"
+              width="100%"
+              height="300"
+              style={{ border: 0, display: 'block' }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
+        </div>
+
+        <Footer theme="light" />
+      </div>
+    );
+  }
+
+  // ===== MASAÜSTÜ: Orijinal iletişim sayfası (hiç değişmedi) =====
   return (
     <div className="min-h-[200vh] bg-white">
       

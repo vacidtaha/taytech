@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Footer from "@/components/Footer";
 import { Search, X, ChevronDown } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
@@ -163,6 +163,15 @@ export default function DokumanMerkeziPage() {
   const [selSubs, setSelSubs] = useState<string[]>([]);
   const [selProducts, setSelProducts] = useState<string[]>([]);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({ category: true, type: true });
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const toggleArr = (arr: string[], val: string): string[] =>
     arr.includes(val) ? arr.filter(v => v !== val) : [...arr, val];
@@ -208,6 +217,215 @@ export default function DokumanMerkeziPage() {
   const clearAll = () => { setSearch(""); setSelCategories([]); setSelTypes([]); setSelSubs([]); setSelProducts([]); };
   const activeCount = selCategories.length + selTypes.length + selSubs.length + selProducts.length;
 
+  // ===== MOBİL: Responsive döküman merkezi =====
+  if (isMobile) {
+    return (
+      <div style={{ minHeight: "100vh", background: "#ffffff", paddingTop: "48px" }}>
+        {/* Hero - Mobile */}
+        <div style={{ background: "#dc2626", padding: "60px 0 40px" }}>
+          <div style={{ padding: "0 20px" }}>
+            <p style={{ fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "12px" }}>
+              {t("dokuman.taytech")}
+            </p>
+            <h1 style={{ fontSize: "28px", fontWeight: 700, color: "white", lineHeight: 1.15, marginBottom: "10px" }}>
+              {t("dokuman.title")}
+            </h1>
+            <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.7)", fontWeight: 450 }}>
+              {t("dokuman.desc")}
+            </p>
+          </div>
+        </div>
+
+        {/* Arama - Mobile */}
+        <div style={{ borderBottom: "1px solid #e5e5e5" }}>
+          <div style={{ padding: "0 20px" }}>
+            <div style={{ position: "relative", padding: "16px 0" }}>
+              <Search size={16} style={{ position: "absolute", left: "0", top: "50%", transform: "translateY(-50%)", color: "#86868b" }} />
+              <input
+                type="text"
+                placeholder={t("dokuman.search")}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                style={{ width: "100%", padding: "6px 28px 6px 28px", background: "transparent", border: "none", color: "#1d1d1f", fontSize: "16px", outline: "none", fontFamily: "inherit" }}
+              />
+              {search && (
+                <button onClick={() => setSearch("")} style={{ position: "absolute", right: "0", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "#86868b" }}>
+                  <X size={16} />
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Filtre Butonu + Sonuç Sayısı - Mobile */}
+        <div style={{ padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #f0f0f0" }}>
+          <p style={{ fontSize: "13px", color: "#86868b" }}>{filtered.length} {t("dokuman.showing")}</p>
+          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+            {activeCount > 0 && (
+              <button onClick={clearAll} style={{ fontSize: "12px", fontWeight: 600, color: "#dc2626", background: "none", border: "none", cursor: "pointer" }}>
+                {t("dokuman.clearFilters")}
+              </button>
+            )}
+            <button
+              onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
+              style={{
+                display: "flex", alignItems: "center", gap: "6px",
+                padding: "8px 14px", fontSize: "13px", fontWeight: 600,
+                color: mobileFiltersOpen ? "white" : "#1d1d1f",
+                background: mobileFiltersOpen ? "#dc2626" : "#f5f5f7",
+                border: "none", borderRadius: "980px", cursor: "pointer"
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+              {t("dokuman.filter.kategori")}
+              {activeCount > 0 && (
+                <span style={{
+                  background: mobileFiltersOpen ? "white" : "#dc2626",
+                  color: mobileFiltersOpen ? "#dc2626" : "white",
+                  fontSize: "11px", fontWeight: 700,
+                  width: "18px", height: "18px", borderRadius: "50%",
+                  display: "flex", alignItems: "center", justifyContent: "center"
+                }}>
+                  {activeCount}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Filtre Paneli - Mobile (açılır/kapanır) */}
+        {mobileFiltersOpen && (
+          <div style={{ padding: "16px 20px", borderBottom: "1px solid #e5e5e5", background: "#fafafa" }}>
+            {/* Kategori */}
+            <FilterSection title={t("dokuman.filter.kategori")} isOpen={openSections.category !== false} onToggle={() => toggleSection("category")}>
+              {categories.map(cat => (
+                <FilterCheckbox
+                  key={cat}
+                  label={t(catLabelKeys[cat] || cat)}
+                  count={allDocuments.filter(d => d.category === cat).length}
+                  checked={selCategories.includes(cat)}
+                  onChange={() => {
+                    const next = toggleArr(selCategories, cat);
+                    setSelCategories(next);
+                    if (!next.includes(cat)) {
+                      const removedSubs = subsByCategory[cat] || [];
+                      setSelSubs(prev => prev.filter(s => !removedSubs.includes(s)));
+                      const removedProds = productsByCategory[cat] || [];
+                      setSelProducts(prev => prev.filter(p => !removedProds.includes(p)));
+                    }
+                  }}
+                />
+              ))}
+            </FilterSection>
+
+            {/* Alt Kategori */}
+            {selCategories.length > 0 && availableSubs.length > 1 && (
+              <FilterSection title={t("dokuman.filter.altKategori")} isOpen={openSections.sub !== false} onToggle={() => toggleSection("sub")}>
+                {availableSubs.map(sub => (
+                  <FilterCheckbox
+                    key={sub}
+                    label={t(subLabelKeys[sub] || sub)}
+                    count={allDocuments.filter(d => selCategories.includes(d.category) && d.sub === sub).length}
+                    checked={selSubs.includes(sub)}
+                    onChange={() => {
+                      const next = toggleArr(selSubs, sub);
+                      setSelSubs(next);
+                      setSelProducts([]);
+                    }}
+                  />
+                ))}
+              </FilterSection>
+            )}
+
+            {/* Ürün */}
+            {selCategories.length > 0 && availableProducts.length > 0 && (
+              <FilterSection title={t("dokuman.filter.urun")} isOpen={openSections.product !== false} onToggle={() => toggleSection("product")}>
+                {availableProducts.map(prod => (
+                  <FilterCheckbox
+                    key={prod}
+                    label={prod}
+                    count={allDocuments.filter(d => d.name === prod && selCategories.includes(d.category) && (selSubs.length === 0 || selSubs.includes(d.sub))).length}
+                    checked={selProducts.includes(prod)}
+                    onChange={() => setSelProducts(toggleArr(selProducts, prod))}
+                  />
+                ))}
+              </FilterSection>
+            )}
+
+            {/* Doküman Tipi */}
+            <FilterSection title={t("dokuman.filter.tip")} isOpen={openSections.type !== false} onToggle={() => toggleSection("type")}>
+              {typeKeys.map(typeKey => (
+                <FilterCheckbox
+                  key={typeKey}
+                  label={t(typeLabelKeys[typeKey])}
+                  count={allDocuments.filter(d => d.type === typeKey).length}
+                  checked={selTypes.includes(typeKey)}
+                  onChange={() => setSelTypes(toggleArr(selTypes, typeKey))}
+                />
+              ))}
+            </FilterSection>
+
+            <button
+              onClick={() => setMobileFiltersOpen(false)}
+              style={{
+                width: "100%", padding: "12px", marginTop: "8px",
+                fontSize: "14px", fontWeight: 600, color: "white",
+                background: "#dc2626", border: "none", borderRadius: "10px",
+                cursor: "pointer"
+              }}
+            >
+              {filtered.length} {t("dokuman.showing")} — {t("dokuman.filter.kategori")}
+            </button>
+          </div>
+        )}
+
+        {/* Doküman Grid - Mobile (tek sütun) */}
+        <div style={{ padding: "20px 20px 60px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+            {filtered.map((doc, i) => (
+              <a key={`${doc.link}-${i}`} href={doc.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "block" }}>
+                <div style={{ background: "#f5f5f7", border: "1px solid #e5e5e5", height: "100%", display: "flex", flexDirection: "column" }}>
+                  <div style={{ height: "80px", display: "flex", alignItems: "center", justifyContent: "center", borderBottom: "1px solid #e5e5e5" }}>
+                    <div style={{ transform: "scale(0.7)" }}>
+                      <DocIcon type={doc.type} />
+                    </div>
+                  </div>
+                  <div style={{ padding: "12px 14px 14px", flex: 1, display: "flex", flexDirection: "column" }}>
+                    <p style={{ fontSize: "10px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "#dc2626", marginBottom: "6px" }}>
+                      {t(typeLabelKeys[doc.type])}
+                    </p>
+                    <h3 style={{ fontSize: "13px", fontWeight: 600, color: "#1d1d1f", lineHeight: 1.3, marginBottom: "4px" }}>
+                      {doc.name}
+                    </h3>
+                    <p style={{ fontSize: "11px", color: "#86868b", marginBottom: "auto" }}>
+                      {t(subLabelKeys[doc.sub] || doc.sub)}
+                    </p>
+                    <div style={{ marginTop: "10px", paddingTop: "8px", borderTop: "1px solid #e5e5e5", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <span style={{ fontSize: "10px", fontWeight: 500, color: "#86868b" }}>{t(catLabelKeys[doc.category] || doc.category)}</span>
+                      <span style={{ fontSize: "10px", fontWeight: 700, color: "#dc2626", textTransform: "uppercase" }}>{t("dokuman.download")}</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          {filtered.length === 0 && (
+            <div style={{ border: "1px solid #e5e5e5", padding: "60px 20px", textAlign: "center" }}>
+              <p style={{ fontSize: "28px", marginBottom: "10px" }}>—</p>
+              <h3 style={{ fontSize: "16px", fontWeight: 600, color: "#1d1d1f", marginBottom: "6px" }}>{t("dokuman.noResult")}</h3>
+              <p style={{ color: "#86868b", fontSize: "13px", marginBottom: "14px" }}>{t("dokuman.noResultDesc")}</p>
+              <button onClick={clearAll} style={{ fontSize: "13px", fontWeight: 600, color: "#dc2626", background: "none", border: "none", cursor: "pointer" }}>{t("dokuman.clearFilters")}</button>
+            </div>
+          )}
+        </div>
+
+        <Footer theme="white" />
+      </div>
+    );
+  }
+
+  // ===== MASAÜSTÜ: Orijinal döküman merkezi sayfası (hiç değişmedi) =====
   return (
     <div style={{ minHeight: "100vh", background: "#ffffff", paddingTop: "48px" }}>
       {/* Hero */}

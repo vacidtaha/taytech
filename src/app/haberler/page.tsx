@@ -3,6 +3,7 @@
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 
 const haberler = [
@@ -18,6 +19,132 @@ const haberler = [
 
 export default function HaberlerPage() {
   const { t } = useLanguage();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // ===== MOBİL: Responsive haberler sayfası =====
+  if (isMobile) {
+    return (
+      <div className="bg-[#f5f5f7] min-h-screen pt-12">
+        {/* Hero Bölümü - Mobile */}
+        <div style={{ padding: '40px 20px 28px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+            <h1 style={{ fontSize: '28px', fontWeight: 700, color: '#1d1d1f' }}>{t("haberler.title")}</h1>
+          </div>
+          <p style={{ color: '#86868b', fontSize: '16px' }}>{t("haberler.subtitle")}</p>
+        </div>
+
+        {/* Haber Kartları - Mobile (tek sütun) */}
+        <div style={{ padding: '0 20px 40px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {haberler.map((haber) => (
+            <div
+              key={haber.id}
+              style={{
+                borderRadius: '16px',
+                overflow: 'hidden',
+                position: 'relative',
+                cursor: 'pointer',
+                height: haber.size === 'large' ? '320px' : '220px',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+              }}
+              className="group"
+            >
+              {/* Gradient Overlay */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.85) 100%)',
+                  zIndex: 1
+                }}
+              />
+              {/* Image */}
+              <Image
+                src={haber.image}
+                alt={t(haber.titleKey)}
+                fill
+                style={{ objectFit: 'cover' }}
+              />
+              {/* Content */}
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: '20px',
+                  left: '20px',
+                  right: '20px',
+                  zIndex: 3
+                }}
+              >
+                <h3 style={{
+                  fontSize: haber.size === 'large' ? '20px' : '16px',
+                  fontWeight: 700,
+                  color: 'white',
+                  lineHeight: 1.3
+                }}>
+                  {t(haber.titleKey)}
+                </h3>
+                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px', marginTop: '8px' }}>{haber.date}</p>
+              </div>
+            </div>
+          ))}
+
+          {/* Placeholder Kartlar - Mobile */}
+          {[1, 2].map((i) => (
+            <div
+              key={`placeholder-${i}`}
+              style={{
+                borderRadius: '16px',
+                border: '2px dashed rgba(0,0,0,0.1)',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'white',
+                height: '160px'
+              }}
+            >
+              <div
+                style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '8px',
+                  backgroundColor: 'rgba(0,0,0,0.05)',
+                  marginBottom: '12px'
+                }}
+              />
+              <div
+                style={{
+                  width: '80%',
+                  height: '12px',
+                  borderRadius: '4px',
+                  backgroundColor: 'rgba(0,0,0,0.05)',
+                  marginBottom: '8px'
+                }}
+              />
+              <div
+                style={{
+                  width: '50%',
+                  height: '8px',
+                  borderRadius: '4px',
+                  backgroundColor: 'rgba(0,0,0,0.03)'
+                }}
+              />
+            </div>
+          ))}
+        </div>
+
+        <Footer theme="white" />
+      </div>
+    );
+  }
+
+  // ===== MASAÜSTÜ: Orijinal haberler sayfası (hiç değişmedi) =====
   return (
     <div className="bg-[#f5f5f7] min-h-screen pt-12">
       {/* Hero Bölümü */}

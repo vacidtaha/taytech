@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { useLanguage } from "@/context/LanguageContext";
@@ -17,6 +17,14 @@ export default function SikcaSorulanSorular() {
   const { t } = useLanguage();
   const [openIndex, setOpenIndex] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const toggle = (id: string) => setOpenIndex(openIndex === id ? null : id);
 
@@ -30,6 +38,167 @@ export default function SikcaSorulanSorular() {
     ? faqs.filter(f => f.catKey === activeCategory)
     : faqs;
 
+  // ===== MOBİL: Responsive SSS sayfası =====
+  if (isMobile) {
+    return (
+      <div className="min-h-screen bg-white pt-12">
+        {/* Geri - Mobile */}
+        <div style={{ paddingTop: "32px", paddingLeft: "20px" }}>
+          <Link href="/" className="inline-flex items-center gap-2 text-[#86868b] hover:text-[#dc2626] transition-colors">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <span className="text-base font-medium">Ana Sayfa</span>
+          </Link>
+        </div>
+
+        {/* Başlık - Mobile */}
+        <div style={{ padding: "32px 20px 0" }}>
+          <p style={{ fontSize: "12px", fontWeight: 600, color: "#dc2626", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "14px" }}>{t("sss.bilgiMerkezi")}</p>
+          <h1 style={{ fontSize: "32px", fontWeight: 700, color: "#1d1d1f", lineHeight: 1.15, marginBottom: "12px" }}>{t("sss.title")}</h1>
+          <p style={{ fontSize: "16px", color: "#86868b", fontWeight: 450, lineHeight: 1.6 }}>
+            {t("sss.desc")}
+          </p>
+        </div>
+
+        {/* Ayraç - Mobile */}
+        <div style={{ margin: "28px 20px", height: "1px", background: "#e5e5e5" }} />
+
+        {/* Kategori Filtre - Mobile (yatay scroll) */}
+        <div style={{ padding: "0 20px", marginBottom: "24px" }}>
+          <p style={{ fontSize: "11px", fontWeight: 700, color: "#1d1d1f", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "12px" }}>
+            {t("sss.kategoriler")}
+          </p>
+          <div style={{ display: "flex", gap: "8px", overflowX: "auto", paddingBottom: "8px", WebkitOverflowScrolling: "touch" }}>
+            <button
+              onClick={() => setActiveCategory(null)}
+              style={{
+                padding: "8px 16px",
+                fontSize: "13px",
+                fontWeight: !activeCategory ? 600 : 400,
+                color: !activeCategory ? "white" : "#424245",
+                background: !activeCategory ? "#dc2626" : "#f5f5f7",
+                border: "none",
+                borderRadius: "980px",
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+                transition: "all 0.15s",
+              }}
+            >
+              {t("sss.tumu")}
+            </button>
+            {faqs.map((section) => (
+              <button
+                key={section.catKey}
+                onClick={() => setActiveCategory(activeCategory === section.catKey ? null : section.catKey)}
+                style={{
+                  padding: "8px 16px",
+                  fontSize: "13px",
+                  fontWeight: activeCategory === section.catKey ? 600 : 400,
+                  color: activeCategory === section.catKey ? "white" : "#424245",
+                  background: activeCategory === section.catKey ? "#dc2626" : "#f5f5f7",
+                  border: "none",
+                  borderRadius: "980px",
+                  cursor: "pointer",
+                  whiteSpace: "nowrap",
+                  transition: "all 0.15s",
+                }}
+              >
+                {section.category} ({section.questions.length})
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Sorular - Mobile */}
+        <div style={{ padding: "0 20px 32px" }}>
+          {filteredFaqs.map((section) => (
+            <div key={section.category} style={{ marginBottom: "32px" }}>
+              <h2 style={{ fontSize: "12px", fontWeight: 700, color: "#dc2626", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "16px", paddingBottom: "10px", borderBottom: "2px solid #dc2626" }}>
+                {section.category}
+              </h2>
+              <div>
+                {section.questions.map((item, qi) => {
+                  const id = `${section.category}-${qi}`;
+                  const isOpen = openIndex === id;
+                  return (
+                    <div key={id} style={{ borderBottom: "1px solid #f0f0f0" }}>
+                      <button
+                        onClick={() => toggle(id)}
+                        style={{
+                          width: "100%",
+                          textAlign: "left",
+                          padding: "16px 0",
+                          background: "none",
+                          border: "none",
+                          cursor: "pointer",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          gap: "16px",
+                        }}
+                      >
+                        <span style={{ fontSize: "15px", fontWeight: 500, color: isOpen ? "#dc2626" : "#1d1d1f", transition: "color 0.2s", lineHeight: 1.4 }}>
+                          {item.q}
+                        </span>
+                        <span style={{
+                          width: "24px",
+                          height: "24px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                          transition: "transform 0.3s",
+                          transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
+                        }}>
+                          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                            <line x1="8" y1="2" x2="8" y2="14" stroke={isOpen ? "#dc2626" : "#86868b"} strokeWidth="1.5" />
+                            <line x1="2" y1="8" x2="14" y2="8" stroke={isOpen ? "#dc2626" : "#86868b"} strokeWidth="1.5" />
+                          </svg>
+                        </span>
+                      </button>
+                      <div style={{
+                        maxHeight: isOpen ? "500px" : "0",
+                        overflow: "hidden",
+                        transition: "max-height 0.4s ease, opacity 0.3s ease",
+                        opacity: isOpen ? 1 : 0,
+                      }}>
+                        <p style={{ fontSize: "14px", color: "#424245", lineHeight: 1.8, paddingBottom: "20px", paddingRight: "20px" }}>
+                          {item.a}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* İletişim CTA - Mobile */}
+        <div style={{ padding: "0 20px 40px" }}>
+          <div style={{ padding: "24px", background: "#f5f5f7", borderRadius: "12px" }}>
+            <p style={{ fontSize: "15px", fontWeight: 600, color: "#1d1d1f", marginBottom: "8px" }}>{t("sss.sorunuz")}</p>
+            <p style={{ fontSize: "13px", color: "#86868b", lineHeight: 1.5, marginBottom: "16px" }}>{t("sss.sorunuzDesc")}</p>
+            <Link
+              href="/iletisim"
+              style={{
+                display: "inline-block",
+                fontSize: "13px",
+                fontWeight: 600,
+                color: "#dc2626",
+                textDecoration: "none",
+              }}
+            >
+              {t("sss.iletisim")}
+            </Link>
+          </div>
+        </div>
+
+        <Footer theme="light" />
+      </div>
+    );
+  }
+
+  // ===== MASAÜSTÜ: Orijinal SSS sayfası (hiç değişmedi) =====
   return (
     <div className="min-h-screen bg-white pt-12">
       {/* Geri */}
