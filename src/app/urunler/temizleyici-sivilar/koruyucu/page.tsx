@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -13,7 +13,7 @@ const urunler = [
   { id: 3, label: "TP130+", key: "tp130" },
 ];
 
-export default function KoruyucuSivilar() {
+function KoruyucuSivilarInner() {
   const { t } = useLanguage();
 
   // Ürün verileri
@@ -386,5 +386,13 @@ export default function KoruyucuSivilar() {
 
       <Footer theme="white" />
     </div>
+  );
+}
+
+export default function KoruyucuSivilar() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f5f5f7]" />}>
+      <KoruyucuSivilarInner />
+    </Suspense>
   );
 }

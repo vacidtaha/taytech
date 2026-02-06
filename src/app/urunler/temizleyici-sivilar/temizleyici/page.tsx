@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -13,7 +13,7 @@ const urunler = [
   { id: 3, label: "TC220+", key: "tc220" },
 ];
 
-export default function TemizleyiciSivilarDetay() {
+function TemizleyiciSivilarDetayInner() {
   const { t } = useLanguage();
 
   // Ürün verileri
@@ -385,5 +385,13 @@ export default function TemizleyiciSivilarDetay() {
 
       <Footer theme="white" />
     </div>
+  );
+}
+
+export default function TemizleyiciSivilarDetay() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f5f5f7]" />}>
+      <TemizleyiciSivilarDetayInner />
+    </Suspense>
   );
 }

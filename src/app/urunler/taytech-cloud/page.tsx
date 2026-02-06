@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,7 +14,7 @@ const urunler = [
   { id: 4, label: "M-Bus Converter", key: "m-bus-converter" },
 ];
 
-export default function TaytechCloud() {
+function TaytechCloudInner() {
   const { t } = useLanguage();
 
   // Ürün verileri
@@ -418,5 +418,13 @@ export default function TaytechCloud() {
 
       <Footer theme="white" />
     </div>
+  );
+}
+
+export default function TaytechCloud() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f5f5f7]" />}>
+      <TaytechCloudInner />
+    </Suspense>
   );
 }

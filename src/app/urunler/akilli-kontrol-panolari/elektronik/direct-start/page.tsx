@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -16,7 +16,7 @@ const urunler = [
   { id: 6, label: "Smart Exclusive D", key: "smart-exclusive-d" },
 ];
 
-export default function DirectStart() {
+function DirectStartInner() {
   const { t } = useLanguage();
 
   // Ürün verileri
@@ -765,4 +765,10 @@ export default function DirectStart() {
   );
 }
 
-
+export default function DirectStart() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f5f5f7]" />}>
+      <DirectStartInner />
+    </Suspense>
+  );
+}

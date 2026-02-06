@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -13,7 +13,7 @@ const urunler = [
   { id: 3, label: "Smart Hexa", key: "smart-hexa" },
 ];
 
-export default function IndirectIsiIstasyonu() {
+function IndirectIsiIstasyonuInner() {
   const { t } = useLanguage();
 
   // Ürün verileri
@@ -370,5 +370,13 @@ export default function IndirectIsiIstasyonu() {
 
       <Footer theme="white" />
     </div>
+  );
+}
+
+export default function IndirectIsiIstasyonu() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f5f5f7]" />}>
+      <IndirectIsiIstasyonuInner />
+    </Suspense>
   );
 }
