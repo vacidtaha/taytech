@@ -204,7 +204,7 @@ export default function Home() {
       {/* Standartların Ötesinde */}
       <div className="w-full bg-white grid grid-cols-1 lg:grid-cols-2" style={{ marginTop: '13px' }}>
         {/* Sol: Simge kutusu */}
-        <div className="flex items-center justify-center pt-20 pb-4 lg:py-0 lg:h-[650px]">
+        <div className="flex items-center justify-center lg:h-[650px]" style={{ paddingTop: '80px', paddingBottom: '40px' }}>
           <div className="w-44 h-44 lg:w-80 lg:h-80 rounded-2xl flex items-center justify-center relative overflow-hidden" style={{ background: 'radial-gradient(circle at center, #ff6b6b 0%, #dc2626 50%, #991b1b 100%)' }}>
             <div className="grid grid-cols-2 gap-1">
               <Image src="/simge.png" alt="Simge" width={95} height={95} className="w-10 h-10 lg:w-[95px] lg:h-[95px]" style={{ filter: 'brightness(0) invert(1)' }} />

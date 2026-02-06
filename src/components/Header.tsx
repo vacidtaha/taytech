@@ -169,7 +169,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
   };
   
   // Otomatik theme belirleme - ana sayfa ve ürün sayfalarında light
-  const lightPages = ["/urunler/akilli-kontrol-panolari", "/urunler/isi-istasyonu", "/urunler/elektronik", "/urunler/taytech-cloud", "/urunler/manyetik-filtre", "/urunler/temizleyici-sivilar", "/iletisim", "/kurumsal", "/cozumler", "/haberler", "/bilgi-merkezi", "/dokuman-merkezi"];
+  const lightPages = ["/urunler/akilli-kontrol-panolari", "/urunler/isi-istasyonu", "/urunler/elektronik", "/urunler/taytech-cloud", "/urunler/manyetik-filtre", "/urunler/temizleyici-sivilar", "/iletisim", "/kurumsal", "/cozumler", "/haberler", "/bilgi-merkezi", "/dokuman-merkezi", "/gizlilik-politikasi", "/kullanim-kosullari", "/site-haritasi"];
   const isLightPage = pathname === "/" || lightPages.some(page => pathname?.startsWith(page));
   const autoTheme = isLightPage ? "light" : "dark";
   const isDark = (theme ?? autoTheme) === "dark";

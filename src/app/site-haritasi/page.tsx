@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { useLanguage } from "@/context/LanguageContext";
@@ -56,18 +57,8 @@ const sitemap = [
       { nameKey: "cozumler.egitim", href: "/cozumler/egitim-yapilari" },
     ]
   },
-  {
-    titleKey: "nav.dokuman",
-    links: [
-      { nameKey: "dokuman.title", href: "/dokuman-merkezi" },
-    ]
-  },
-  {
-    titleKey: "nav.haberler",
-    links: [
-      { nameKey: "haberler.title", href: "/haberler" },
-    ]
-  },
+  { titleKey: "nav.dokuman", links: [{ nameKey: "dokuman.title", href: "/dokuman-merkezi" }] },
+  { titleKey: "nav.haberler", links: [{ nameKey: "haberler.title", href: "/haberler" }] },
   {
     titleKey: "nav.bilgi",
     links: [
@@ -76,35 +67,33 @@ const sitemap = [
       { nameKey: "mega.bilgi.akademi", href: "/bilgi-merkezi/taytech-akademi" },
     ]
   },
-  {
-    titleKey: "nav.kurumsal",
-    links: [
-      { nameKey: "footer.hakkimizda", href: "/kurumsal" },
-    ]
-  },
-  {
-    titleKey: "nav.iletisim",
-    links: [
-      { nameKey: "footer.iletisim", href: "/iletisim" },
-    ]
-  },
+  { titleKey: "nav.kurumsal", links: [{ nameKey: "footer.hakkimizda", href: "/kurumsal" }] },
+  { titleKey: "nav.iletisim", links: [{ nameKey: "footer.iletisim", href: "/iletisim" }] },
 ];
 
 type SitemapItem = { name?: string; nameKey?: string; href: string; children?: SitemapItem[] };
 
 export default function SiteHaritasi() {
   const { t } = useLanguage();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const label = (item: SitemapItem) => item.nameKey ? t(item.nameKey) : item.name || "";
 
   const renderItems = (items: SitemapItem[], depth: number = 0) => (
     <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
       {items.map((item, i) => (
-        <li key={i} style={{ marginBottom: depth === 0 ? "16px" : "8px", marginLeft: depth > 0 ? `${depth * 24}px` : "0" }}>
+        <li key={i} style={{ marginBottom: depth === 0 ? (isMobile ? "12px" : "16px") : (isMobile ? "6px" : "8px"), marginLeft: depth > 0 ? `${depth * (isMobile ? 16 : 24)}px` : "0" }}>
           <Link
             href={item.href}
             style={{
-              fontSize: depth === 0 ? "16px" : "14px",
+              fontSize: depth === 0 ? (isMobile ? "14px" : "16px") : (isMobile ? "13px" : "14px"),
               fontWeight: depth === 0 ? 500 : 400,
               color: "#424245",
               textDecoration: "none",
@@ -121,6 +110,36 @@ export default function SiteHaritasi() {
     </ul>
   );
 
+  // ===== MOBİL =====
+  if (isMobile) {
+    return (
+      <div className="min-h-screen bg-white pt-12">
+        <div style={{ padding: "60px 24px 0" }}>
+          <p style={{ fontSize: "12px", fontWeight: 600, color: "#dc2626", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "14px" }}>Taytech</p>
+          <h1 style={{ fontSize: "28px", fontWeight: 700, color: "#1d1d1f", lineHeight: 1.15, marginBottom: "12px" }}>{t("footer.sitemap")}</h1>
+        </div>
+
+        <div style={{ margin: "32px 24px", height: "1px", background: "#e5e5e5" }} />
+
+        <div style={{ padding: "0 24px 60px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0px" }}>
+            {sitemap.map((section, i) => (
+              <div key={i} style={{ marginBottom: "36px" }}>
+                <h2 style={{ fontSize: "12px", fontWeight: 700, color: "#dc2626", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "16px", paddingBottom: "10px", borderBottom: "2px solid #dc2626" }}>
+                  {t(section.titleKey)}
+                </h2>
+                {renderItems(section.links)}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <Footer theme="light" />
+      </div>
+    );
+  }
+
+  // ===== MASAÜSTÜ (hiç değişmedi) =====
   return (
     <div className="min-h-screen bg-white pt-12">
       <div style={{ padding: "140px 200px 0" }}>
@@ -150,5 +169,3 @@ export default function SiteHaritasi() {
     </div>
   );
 }
-
-

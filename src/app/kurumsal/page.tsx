@@ -10,6 +10,14 @@ export default function KurumsalPage() {
   const { t } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("muhendislik");
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -29,6 +37,223 @@ export default function KurumsalPage() {
   
   const maddeler = Array.from({ length: 13 }, (_, i) => t(`corp.standartlar.madde${i + 1}`));
 
+  // ===== MOBİL: Responsive kurumsal sayfa =====
+  if (isMobile) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Header theme="light" isFixed={false} onMenuOpenChange={setIsMenuOpen} />
+        
+        {/* İkinci Header - Mobile */}
+        {!isMenuOpen && (
+          <div className="sticky top-0 z-50 bg-white border-b border-gray-200">
+            <div className="h-12 px-4 flex items-center">
+              <span className="text-[16px] font-normal text-[#dc2626]">{t("corp.nav.taytech")}</span>
+              <span className="ml-3 text-[16px] font-semibold text-[#dc2626]">{t("corp.nav.kurumsal")}</span>
+            </div>
+          </div>
+        )}
+
+        {/* Hero - Mobile */}
+        <div id="muhendislik" className="w-full">
+          <div className="w-full bg-[#f5f5f7] flex items-center justify-center" style={{ padding: '80px 28px' }}>
+            <div className="text-center">
+              <h2 className="text-2xl font-semibold mb-10" style={{ background: 'linear-gradient(to bottom right, #dc2626, #991b1b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                {t("corp.hero.title")}
+              </h2>
+              <p className="text-base text-[#424245] leading-relaxed">{t("corp.hero.desc")}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div style={{ height: '100px' }}></div>
+        
+        <div className="flex items-center justify-center" style={{ padding: '0 28px', paddingBottom: '40px' }}>
+          <Image src="/taytechdiscekim.png" alt="Taytech" width={800} height={500} className="w-full h-auto object-contain rounded-2xl" />
+        </div>
+        
+        <div style={{ height: '100px' }}></div>
+        
+        {/* Rakamlar - Mobile */}
+        <div id="rakamlar" style={{ padding: '0 28px' }}>
+          <div style={{ marginBottom: '40px' }}>
+            <h2 className="text-2xl font-semibold text-[#dc2626]" style={{ marginBottom: '16px' }}>{t("corp.rakamlar.title")}</h2>
+            <p className="text-base font-medium text-[#424245] leading-relaxed">{t("corp.rakamlar.desc")}</p>
+          </div>
+          <div className="flex flex-col" style={{ gap: '16px', marginBottom: '48px' }}>
+            {[
+              { val: "5.600 m²", label: "corp.rakamlar.alan", desc: "corp.rakamlar.alanDesc", bg: "#f7f7f9" },
+              { val: "4.750 m²", label: "corp.rakamlar.uretim", desc: "corp.rakamlar.uretimDesc", bg: "#f3f3f5" },
+              { val: "860 m²", label: "corp.rakamlar.arge", desc: "corp.rakamlar.argeDesc", bg: "#f0f0f2" },
+            ].map((card, i) => (
+              <div key={i} className="rounded-2xl" style={{ padding: '32px 28px', backgroundColor: card.bg }}>
+                <span className="text-4xl font-semibold text-[#dc2626] leading-none block">{card.val}</span>
+                <p className="text-xl text-[#dc2626] font-semibold" style={{ marginTop: '12px' }}>{t(card.label)}</p>
+                <p className="text-sm text-[#86868b] leading-relaxed font-medium" style={{ marginTop: '12px' }}>{t(card.desc)}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginBottom: '36px' }}>
+            <h3 className="text-2xl font-semibold text-[#dc2626]" style={{ marginBottom: '16px' }}>{t("corp.rakamlar.entegrasyon")}</h3>
+            <p className="text-base font-medium text-[#424245] leading-relaxed">{t("corp.rakamlar.entegrasyonDesc")}</p>
+          </div>
+          <div style={{ marginBottom: '36px' }}>
+            <h3 className="text-2xl font-semibold text-[#dc2626]" style={{ marginBottom: '16px' }}>{t("corp.rakamlar.makine")}</h3>
+            <p className="text-base font-medium text-[#424245] leading-relaxed">{t("corp.rakamlar.makineDesc")}</p>
+          </div>
+        </div>
+        
+        <div style={{ height: '100px' }}></div>
+        
+        {/* Standartlar - Mobile */}
+        <div id="standartlar" style={{ padding: '0 28px' }}>
+          <div style={{ marginBottom: '32px' }}>
+            <h2 className="text-2xl font-semibold text-[#dc2626]" style={{ marginBottom: '16px' }}>{t("corp.standartlar.title")}</h2>
+            <p className="text-base font-medium text-[#424245] leading-relaxed">{t("corp.standartlar.desc")}</p>
+          </div>
+          <div className="flex flex-col" style={{ gap: '14px', marginBottom: '36px' }}>
+            <div className="flex items-center" style={{ gap: '12px' }}>
+              <span className="text-sm font-semibold text-[#dc2626]">ISO 9001:2015</span>
+              <span className="text-sm text-[#86868b]">{t("corp.standartlar.iso1")}</span>
+            </div>
+            <div className="flex items-center" style={{ gap: '12px' }}>
+              <span className="text-sm font-semibold text-[#dc2626]">ISO 14001:2015</span>
+              <span className="text-sm text-[#86868b]">{t("corp.standartlar.iso2")}</span>
+            </div>
+            <div className="flex items-center" style={{ gap: '12px' }}>
+              <span className="text-sm font-semibold text-[#dc2626]">ISO 45001:2018</span>
+              <span className="text-sm text-[#86868b]">{t("corp.standartlar.iso3")}</span>
+            </div>
+          </div>
+          <div style={{ marginBottom: '36px' }}>
+            <h3 className="text-2xl font-semibold text-[#dc2626]" style={{ marginBottom: '16px' }}>{t("corp.standartlar.mevzuat")}</h3>
+            <p className="text-base font-medium text-[#424245] leading-relaxed">{t("corp.standartlar.mevzuatDesc")}</p>
+          </div>
+          <div style={{ marginBottom: '36px' }}>
+            <h3 className="text-2xl font-semibold text-[#dc2626]" style={{ marginBottom: '16px' }}>{t("corp.standartlar.denetim")}</h3>
+            <p className="text-base font-medium text-[#424245] leading-relaxed">{t("corp.standartlar.denetimDesc")}</p>
+          </div>
+          {/* Politika Belgesi - Mobile */}
+          <div className="bg-white shadow-2xl relative" style={{ padding: '40px 28px', borderRadius: '4px', marginBottom: '20px' }}>
+            <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-red-600 rounded-tl"></div>
+            <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-red-600 rounded-tr"></div>
+            <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-red-600 rounded-bl"></div>
+            <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-red-600 rounded-br"></div>
+            <div className="flex justify-center" style={{ marginBottom: '24px' }}>
+              <Image src="/logo.png" alt="Taytech Logo" width={120} height={40} className="h-auto" />
+            </div>
+            <h3 className="text-center font-bold text-[#dc2626]" style={{ fontSize: '16px', lineHeight: '1.4', marginBottom: '24px' }}>
+              {t("corp.standartlar.politikaBaslik")}
+            </h3>
+            <div className="text-[#424245] leading-relaxed" style={{ fontSize: '12px' }}>
+              <p style={{ marginBottom: '16px' }}>{t("corp.standartlar.politika1")}</p>
+              <p style={{ marginBottom: '16px' }}>{t("corp.standartlar.politika2")}</p>
+              <ul className="list-disc" style={{ paddingLeft: '20px', marginBottom: '16px' }}>
+                {maddeler.map((madde, i) => (<li key={i} style={{ marginBottom: '8px' }}>{madde}</li>))}
+              </ul>
+              <p className="font-semibold" style={{ fontSize: '13px', marginBottom: '24px' }}>{t("corp.standartlar.taahhut")}</p>
+              <div className="text-right" style={{ marginTop: '32px' }}>
+                <p className="text-[#86868b] text-sm" style={{ marginBottom: '4px' }}>{t("corp.standartlar.imza")}</p>
+                <p className="font-bold text-[#1d1d1f] text-base">{t("corp.standartlar.imzaAd")}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div style={{ height: '120px' }}></div>
+        
+        {/* Sürdürülebilirlik - Mobile (aynı kart tasarımı, 2 sütun grid) */}
+        <div id="surdurulebilirlik" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
+          <div className="flex flex-col items-center">
+            <div className="text-center" style={{ marginBottom: '24px', padding: '0 28px' }}>
+              <h2 className="text-2xl font-semibold text-[#1d1d1f]" style={{ marginBottom: '12px' }}>{t("corp.surdurulebilirlik.title")}</h2>
+              <p className="text-base text-[#86868b] font-medium">{t("corp.surdurulebilirlik.subtitle")}</p>
+            </div>
+            <div className="text-center" style={{ marginBottom: '40px', padding: '0 28px' }}>
+              <p className="text-sm text-[#424245] leading-relaxed">{t("corp.surdurulebilirlik.desc")}</p>
+            </div>
+            <div className="grid grid-cols-2" style={{ gap: '12px', padding: '0 20px' }}>
+              <div className="aspect-[4/3] bg-[#f5f5f7] rounded-2xl flex flex-col" style={{ padding: '16px 18px' }}>
+                <svg className="w-6 h-6 mb-auto" viewBox="0 0 24 24" fill="none" stroke="rgb(98,214,105)" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <div><h3 className="text-sm font-semibold text-[#1d1d1f]" style={{ marginBottom: '4px' }}>{t("corp.surdurulebilirlik.ekonomi")}</h3><p style={{ fontSize: '11px' }} className="text-[#424245] leading-relaxed">{t("corp.surdurulebilirlik.ekonomiDesc")}</p></div>
+              </div>
+              <div className="aspect-[4/3] rounded-2xl overflow-hidden"><Image src="/cevre1.jpeg" alt="Çevre" width={400} height={300} className="w-full h-full object-cover" /></div>
+              <div className="aspect-[4/3] bg-[#f5f5f7] rounded-2xl flex flex-col" style={{ padding: '16px 18px' }}>
+                <svg className="w-6 h-6 mb-auto" viewBox="0 0 24 24" fill="none" stroke="rgb(98,214,105)" strokeWidth="1.5"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+                <div><h3 className="text-sm font-semibold text-[#1d1d1f]" style={{ marginBottom: '4px' }}>{t("corp.surdurulebilirlik.yalin")}</h3><p style={{ fontSize: '11px' }} className="text-[#424245] leading-relaxed">{t("corp.surdurulebilirlik.yalinDesc")}</p></div>
+              </div>
+              <div className="aspect-[4/3] rounded-2xl overflow-hidden"><Image src="/cevre2.jpg" alt="Çevre" width={400} height={300} className="w-full h-full object-cover" /></div>
+              <div className="aspect-[4/3] rounded-2xl overflow-hidden"><Image src="/cevre3.avif" alt="Çevre" width={400} height={300} className="w-full h-full object-cover" /></div>
+              <div className="aspect-[4/3] bg-[#f5f5f7] rounded-2xl flex flex-col" style={{ padding: '16px 18px' }}>
+                <svg className="w-6 h-6 mb-auto" viewBox="0 0 24 24" fill="none" stroke="rgb(98,214,105)" strokeWidth="1.5"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                <div><h3 className="text-sm font-semibold text-[#1d1d1f]" style={{ marginBottom: '4px' }}>{t("corp.surdurulebilirlik.kaynak")}</h3><p style={{ fontSize: '11px' }} className="text-[#424245] leading-relaxed">{t("corp.surdurulebilirlik.kaynakDesc")}</p></div>
+              </div>
+              <div className="aspect-[4/3] rounded-2xl overflow-hidden"><Image src="/cevre4.jpg" alt="Çevre" width={400} height={300} className="w-full h-full object-cover" /></div>
+              <div className="aspect-[4/3] bg-[#f5f5f7] rounded-2xl flex flex-col" style={{ padding: '16px 18px' }}>
+                <svg className="w-6 h-6 mb-auto" viewBox="0 0 24 24" fill="none" stroke="rgb(98,214,105)" strokeWidth="1.5"><path d="M12 22v-7"/><path d="M9 22h6"/><path d="M12 15a5 5 0 0 0 5-5c0-2-1-3-2-4l1-3-3 1-1-2-1 2-3-1 1 3c-1 1-2 2-2 4a5 5 0 0 0 5 5z"/></svg>
+                <div><h3 className="text-sm font-semibold text-[#1d1d1f]" style={{ marginBottom: '4px' }}>{t("corp.surdurulebilirlik.gelecek")}</h3><p style={{ fontSize: '11px' }} className="text-[#424245] leading-relaxed">{t("corp.surdurulebilirlik.gelecekDesc")}</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div style={{ height: '120px' }}></div>
+        
+        {/* Tam Destek - Mobile (aynı kart tasarımı, dikey düzen) */}
+        <div id="destek" className="overflow-hidden" style={{ paddingTop: '40px', paddingBottom: '60px' }}>
+          <div className="flex flex-col items-center" style={{ padding: '0 28px' }}>
+            <div className="flex flex-col items-center justify-center text-center" style={{ marginBottom: '36px' }}>
+              <div className="w-16 h-16 bg-[#0066cc] rounded-2xl flex items-center justify-center" style={{ marginBottom: '24px' }}>
+                <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+              </div>
+              <h2 className="text-4xl font-bold text-[#0066cc]" style={{ marginBottom: '12px' }}>{t("corp.destek.title")}</h2>
+              <p className="text-lg text-[#0066cc]/70 font-semibold">{t("corp.destek.subtitle")}</p>
+            </div>
+            <div className="text-center" style={{ marginBottom: '40px' }}>
+              <p className="text-base text-[#1d1d1f] leading-relaxed font-medium">{t("corp.destek.desc")}</p>
+            </div>
+            <div className="w-full flex flex-col" style={{ gap: '14px' }}>
+              <div className="bg-[#0077b6] rounded-2xl flex flex-col justify-center" style={{ padding: '36px 28px' }}>
+                <svg className="w-10 h-10" style={{ marginBottom: '16px' }} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                <h3 className="text-xl font-bold text-white" style={{ marginBottom: '12px' }}>{t("corp.destek.danismanlik")}</h3>
+                <p className="text-sm text-white/90 leading-relaxed font-medium">{t("corp.destek.danismanlikDesc")}</p>
+              </div>
+              <div className="grid grid-cols-2" style={{ gap: '14px' }}>
+                <div className="bg-[#0096c7] rounded-2xl flex flex-col justify-center" style={{ padding: '28px 20px' }}>
+                  <svg className="w-8 h-8" style={{ marginBottom: '12px' }} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                  <h3 className="text-base font-bold text-white" style={{ marginBottom: '8px' }}>{t("corp.destek.hizli")}</h3>
+                  <p style={{ fontSize: '11px' }} className="text-white/90 font-medium">{t("corp.destek.hizliDesc")}</p>
+                </div>
+                <div className="bg-[#00b4d8] rounded-2xl flex flex-col justify-center" style={{ padding: '28px 20px' }}>
+                  <svg className="w-8 h-8" style={{ marginBottom: '12px' }} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  <h3 className="text-base font-bold text-white" style={{ marginBottom: '8px' }}>{t("corp.destek.satisSonrasi")}</h3>
+                  <p style={{ fontSize: '11px' }} className="text-white/90 font-medium">{t("corp.destek.satisSonrasiDesc")}</p>
+                </div>
+              </div>
+              <div className="bg-[#48cae4] rounded-2xl flex items-center" style={{ gap: '16px', padding: '28px 24px' }}>
+                <svg className="w-10 h-10 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <div>
+                  <h3 className="text-lg font-bold text-white" style={{ marginBottom: '6px' }}>{t("corp.destek.kadro")}</h3>
+                  <p className="text-sm text-white/90 font-medium">{t("corp.destek.kadroDesc")}</p>
+                </div>
+              </div>
+              <div className="bg-[#90e0ef] rounded-2xl flex items-center" style={{ gap: '16px', padding: '28px 24px' }}>
+                <svg className="w-10 h-10 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <div>
+                  <h3 className="text-lg font-bold text-white" style={{ marginBottom: '6px' }}>{t("corp.destek.rekabet")}</h3>
+                  <p className="text-sm text-white/90 font-medium">{t("corp.destek.rekabetDesc")}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div style={{ height: '80px' }}></div>
+        <Footer theme="light" />
+      </div>
+    );
+  }
+
+  // ===== MASAÜSTÜ: Orijinal kurumsal sayfası (hiç değişmedi) =====
   return (
     <div className="min-h-screen bg-white">
       <Header theme="light" isFixed={false} onMenuOpenChange={setIsMenuOpen} />
