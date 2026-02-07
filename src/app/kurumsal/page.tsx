@@ -329,7 +329,7 @@ export default function KurumsalPage() {
               { val: "4.750 m²", label: "corp.rakamlar.uretim", desc: "corp.rakamlar.uretimDesc", bg: "#f3f3f5", z: 20 },
               { val: "860 m²", label: "corp.rakamlar.arge", desc: "corp.rakamlar.argeDesc", bg: "#f0f0f2", z: 30 },
             ].map((card, i) => (
-              <div key={i} className={`sticky top-[calc(50vh-266px)] z-${card.z} ${i < 2 ? 'mb-[-350px]' : ''}`}>
+              <div key={i} className={`sticky top-[calc(50vh-266px)] ${i < 2 ? 'mb-[-350px]' : ''}`} style={{ zIndex: card.z }}>
                 <div className="rounded-3xl shadow-lg" style={{ width: '400px', height: '533px', padding: '48px 40px 40px 40px', backgroundColor: card.bg }}>
                   <span className="text-7xl font-semibold text-[#dc2626] leading-none block">{card.val}</span>
                   <p className="text-3xl text-[#dc2626] mt-6 font-semibold">{t(card.label)}</p>

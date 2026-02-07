@@ -20,11 +20,11 @@ const navItems = [
 ];
 
 const bilgiMerkeziItems = [
-  { labelKey: "mega.bilgi.video", href: "/bilgi-merkezi/video-arsivi" },
-  { labelKey: "mega.bilgi.dokuman", href: "/dokuman-merkezi" },
   { labelKey: "mega.bilgi.sss", href: "/bilgi-merkezi/sikca-sorulan-sorular" },
+  { labelKey: "mega.bilgi.dokuman", href: "/dokuman-merkezi" },
   { labelKey: "mega.bilgi.destek", href: "/iletisim" },
   { labelKey: "mega.bilgi.akademi", href: "/bilgi-merkezi/taytech-akademi" },
+  { labelKey: "mega.bilgi.video", href: "/bilgi-merkezi/video-arsivi" },
 ];
 
 const products = [

@@ -30,10 +30,9 @@ export default function TaytechAkademi() {
       {/* İçerik */}
       <section className="flex justify-center" style={{ paddingBottom: "120px" }}>
         <div className="bg-white rounded-2xl shadow-sm text-center" style={{ padding: "80px 60px", maxWidth: "600px" }}>
-          <div className="text-6xl mb-6">🎓</div>
-          <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-3">Yakında</h2>
-          <p className="text-[#86868b] text-lg">
-            Taytech Akademi platformu hazırlanıyor.
+          <h2 className="text-2xl font-semibold text-[#1d1d1f] mb-3">Hazırlanıyor</h2>
+          <p className="text-[#86868b] text-lg leading-relaxed">
+            Taytech Akademi platformu yakında hizmete girecektir.
           </p>
         </div>
       </section>
