@@ -46,11 +46,6 @@ export default function Hero() {
       className="relative w-full bg-[#f5f5f7] overflow-hidden"
       style={{ height: 'calc(100vh - 48px)' }}
     >
-      {/* Kırmızı ışık efektleri - köşelerden */}
-      <div className="absolute" style={{ top: '-10%', left: '-5%', width: '40%', height: '40%', background: 'radial-gradient(circle, rgba(220,38,38,0.4) 0%, transparent 70%)', filter: 'blur(60px)', zIndex: 1 }} />
-      <div className="absolute" style={{ top: '-10%', right: '-5%', width: '40%', height: '40%', background: 'radial-gradient(circle, rgba(220,38,38,0.35) 0%, transparent 70%)', filter: 'blur(60px)', zIndex: 1 }} />
-      <div className="absolute" style={{ bottom: '-10%', left: '-5%', width: '40%', height: '40%', background: 'radial-gradient(circle, rgba(220,38,38,0.35) 0%, transparent 70%)', filter: 'blur(60px)', zIndex: 1 }} />
-      <div className="absolute" style={{ bottom: '-10%', right: '-5%', width: '40%', height: '40%', background: 'radial-gradient(circle, rgba(220,38,38,0.4) 0%, transparent 70%)', filter: 'blur(60px)', zIndex: 1 }} />
 
       <div 
         className="absolute inset-0 overflow-hidden"
