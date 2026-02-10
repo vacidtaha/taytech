@@ -274,7 +274,7 @@ export default function Footer({ theme = "dark" }: FooterProps) {
             alignItems: 'center'
           }}>
             <Image
-              src="/logo.png"
+              src="/sonlogo.png"
               alt="TayTech Logo"
               width={450}
               height={140}

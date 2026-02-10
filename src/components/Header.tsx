@@ -239,7 +239,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
               {/* Logo */}
               <Link href="/" className="flex-shrink-0">
                 <Image
-                  src="/logo.png"
+                  src="/sonlogo.png"
                   alt="TayTech Logo"
                   width={120}
                   height={28}
