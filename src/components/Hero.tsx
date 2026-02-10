@@ -22,19 +22,19 @@ const slides = [
   },
   {
     id: 3,
-    image: "/sonhero.png",
-    titleKey: "hero.slide5.title",
-    subtitleKey: "hero.slide5.subtitle",
-    btnKey: "hero.slide5.btn",
-    btnHref: "/urunler/isi-istasyonu",
-  },
-  {
-    id: 4,
     image: "/3.hero.png",
     titleKey: "hero.slide3.title",
     subtitleKey: "hero.slide3.subtitle",
     btnKey: "hero.slide3.btn",
     btnHref: "/urunler/elektronik",
+  },
+  {
+    id: 4,
+    image: "/sonhero.png",
+    titleKey: "hero.slide5.title",
+    subtitleKey: "hero.slide5.subtitle",
+    btnKey: "hero.slide5.btn",
+    btnHref: "/urunler/isi-istasyonu",
   },
   {
     id: 5,
