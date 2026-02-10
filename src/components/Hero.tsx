@@ -24,7 +24,7 @@ export default function Hero() {
             src="/taytechdiscekim.png"
             alt="Hero Background"
             fill
-            className="object-cover object-center"
+            className="object-cover object-center brightness-[0.65]"
             priority
           />
         </div>
@@ -55,7 +55,7 @@ export default function Hero() {
           src="/taytechdiscekim.png"
           alt="Hero Background"
           fill
-          className="object-cover"
+          className="object-cover brightness-[0.65]"
           priority
         />
       </div>

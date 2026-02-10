@@ -223,7 +223,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
       <header className={cn(isFixed ? "fixed top-0 left-0 right-0" : "relative", "z-50")}>
         {/* Main Header Bar */}
         <div className={cn(
-          "h-12 transition-colors duration-200",
+          "h-14 transition-colors duration-200 border-b border-[#dc2626]/40",
           isDark 
             ? ((isProductsOpen || isBilgiMerkeziOpen) ? "bg-[#1a1a1a]" : "bg-[#1a1a1a]/70 backdrop-blur-md")
             : "bg-white"
@@ -281,7 +281,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                     {item.hasDropdown ? (
                       <span
                         className={cn(
-                          "text-[15px] font-[450] transition-colors duration-75 cursor-pointer",
+                          "text-[16px] font-[450] transition-colors duration-75 cursor-pointer",
                           isDark 
                             ? "text-[#cacacc] hover:text-[#dc2626]" 
                             : "text-black hover:text-[#dc2626]"
@@ -293,7 +293,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                       <Link
                         href={item.href}
                         className={cn(
-                          "text-[15px] font-[450] transition-colors duration-75",
+                          "text-[16px] font-[450] transition-colors duration-75",
                           isDark 
                             ? "text-[#cacacc] hover:text-[#dc2626]" 
                             : "text-black hover:text-[#dc2626]"
