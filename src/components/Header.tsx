@@ -289,6 +289,27 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                       >
                         {t(item.labelKey)}
                       </span>
+                    ) : item.labelKey === "nav.iletisim" ? (
+                      <Link
+                        href={item.href}
+                        style={{
+                          backgroundColor: '#dc2626',
+                          color: '#ffffff',
+                          fontSize: '16px',
+                          fontWeight: 500,
+                          padding: '7px 18px',
+                          borderRadius: '6px',
+                          display: 'inline-block',
+                          lineHeight: '1',
+                          textDecoration: 'none',
+                          whiteSpace: 'nowrap',
+                          transition: 'background-color 0.2s',
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#b91c1c')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#dc2626')}
+                      >
+                        {t(item.labelKey)}
+                      </Link>
                     ) : (
                       <Link
                         href={item.href}

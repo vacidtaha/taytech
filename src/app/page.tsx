@@ -20,7 +20,7 @@ import {
 export default function Home() {
   const { t } = useLanguage();
   return (
-    <div className="min-h-screen bg-[#f5f5f7] pt-12 overflow-x-hidden">
+    <div className="min-h-screen bg-[#f5f5f7] pt-14 overflow-x-hidden">
       <Hero />
       
       {/* Content Area */}
@@ -185,15 +185,15 @@ export default function Home() {
                 </div>
               </div>
             </Link>
-            <Link href="/cozumler/egitim-yapilari" className="group" style={{ textDecoration: "none" }}>
+            <Link href="/cozumler/hastaneler" className="group" style={{ textDecoration: "none" }}>
               <div>
                 <div className="relative h-[200px] lg:h-[480px] overflow-hidden">
-                  <Image src="/okul.jpg" alt={t("home.cozumler.egitim")} fill style={{ objectFit: "cover" }} />
+                  <Image src="/hastane.jpg" alt={t("home.cozumler.hastane")} fill style={{ objectFit: "cover" }} />
                 </div>
                 <div className="group-hover:!bg-[#dc2626]" style={{ padding: "20px 24px 24px", background: "white", transition: "background-color 0.3s" }}>
                   <p className="group-hover:!text-white/60" style={{ fontSize: "11px", fontWeight: 600, color: "#dc2626", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "8px", transition: "color 0.3s" }}>{t("home.cozumler.label")}</p>
-                  <h3 className="group-hover:!text-white text-[20px] lg:text-[26px]" style={{ fontWeight: 700, color: "#1d1d1f", lineHeight: 1.2, marginBottom: "8px", transition: "color 0.3s" }}>{t("home.cozumler.egitim")}</h3>
-                  <p className="group-hover:!text-white/70 text-[13px] lg:text-[15px]" style={{ color: "#86868b", lineHeight: 1.6, transition: "color 0.3s" }}>{t("home.cozumler.egitimDesc")}</p>
+                  <h3 className="group-hover:!text-white text-[20px] lg:text-[26px]" style={{ fontWeight: 700, color: "#1d1d1f", lineHeight: 1.2, marginBottom: "8px", transition: "color 0.3s" }}>{t("home.cozumler.hastane")}</h3>
+                  <p className="group-hover:!text-white/70 text-[13px] lg:text-[15px]" style={{ color: "#86868b", lineHeight: 1.6, transition: "color 0.3s" }}>{t("home.cozumler.hastaneDesc")}</p>
                 </div>
               </div>
             </Link>

@@ -1,12 +1,61 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useLanguage } from "@/context/LanguageContext";
+
+const slides = [
+  {
+    id: 1,
+    image: "/taytechdiscekim.png",
+    titleKey: "hero.title",
+    subtitleKey: "hero.subtitle",
+  },
+  {
+    id: 2,
+    image: "/2.hero.png",
+    titleKey: "hero.slide2.title",
+    subtitleKey: "hero.slide2.subtitle",
+    btnKey: "hero.slide2.btn",
+    btnHref: "/urunler/akilli-kontrol-panolari",
+  },
+  {
+    id: 3,
+    image: "/sonhero.png",
+    titleKey: "hero.slide5.title",
+    subtitleKey: "hero.slide5.subtitle",
+    btnKey: "hero.slide5.btn",
+    btnHref: "/urunler/isi-istasyonu",
+  },
+  {
+    id: 4,
+    image: "/3.hero.png",
+    titleKey: "hero.slide3.title",
+    subtitleKey: "hero.slide3.subtitle",
+    btnKey: "hero.slide3.btn",
+    btnHref: "/urunler/elektronik",
+  },
+  {
+    id: 5,
+    image: "/hero2.png",
+    titleKey: "hero.slide4.title",
+    subtitleKey: "hero.slide4.subtitle",
+    btnKey: "hero.slide4.btn",
+    btnHref: "/kurumsal",
+  },
+];
 
 export default function Hero() {
   const { t } = useLanguage();
   const [isMobile, setIsMobile] = useState(false);
+  const [pos, setPos] = useState(slides.length); // orta gruptan başla
+  const [isTransitioning, setIsTransitioning] = useState(true);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const total = slides.length;
+  // 3 kopya: [0,1,2, 0,1,2, 0,1,2] — ortadaki grup aktif
+  const extSlides = [...slides, ...slides, ...slides];
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -15,64 +64,203 @@ export default function Hero() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // ===== MOBİL: Statik hero =====
+  // Sonsuz döngü: sınıra gelince transition kapat, ortaya zıpla
+  useEffect(() => {
+    if (!isTransitioning) return;
+    const handler = () => {
+      if (pos >= total * 2) {
+        setIsTransitioning(false);
+        setPos(total + (pos % total));
+      } else if (pos < total) {
+        setIsTransitioning(false);
+        setPos(total + (pos % total));
+      }
+    };
+    const el = trackRef.current;
+    el?.addEventListener("transitionend", handler);
+    return () => el?.removeEventListener("transitionend", handler);
+  }, [pos, isTransitioning, total]);
+
+  // Transition kapatıldıktan sonra tekrar aç
+  useEffect(() => {
+    if (!isTransitioning) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setIsTransitioning(true);
+        });
+      });
+    }
+  }, [isTransitioning]);
+
+  const nextSlide = useCallback(() => {
+    setPos((prev) => prev + 1);
+  }, []);
+
+  const prevSlide = useCallback(() => {
+    setPos((prev) => prev - 1);
+  }, []);
+
+  const goToSlide = useCallback((index: number) => {
+    const currentReal = pos % total;
+    const diff = index - currentReal;
+    setPos((prev) => prev + diff);
+  }, [pos, total]);
+
+  useEffect(() => {
+    const interval = setInterval(nextSlide, 15000);
+    return () => clearInterval(interval);
+  }, [nextSlide]);
+
+  const currentReal = ((pos % total) + total) % total;
+
+  // ===== MOBİL =====
   if (isMobile) {
+    const cardW = 92;
+    const gapW = 3;
+    const unit = cardW + gapW;
+    const centerOffset = (100 - cardW) / 2;
+
     return (
-      <section className="relative w-full bg-[#f5f5f7] overflow-hidden" style={{ height: '45vh' }}>
-        <div className="absolute inset-2 overflow-hidden rounded-2xl">
-          <Image
-            src="/taytechdiscekim.png"
-            alt="Hero Background"
-            fill
-            className="object-cover object-center brightness-[0.65]"
-            priority
-          />
+      <section className="relative w-full bg-[#f5f5f7] overflow-hidden" style={{ paddingTop: '72px', paddingBottom: '20px' }}>
+        <div className="relative flex items-center overflow-hidden" style={{ height: '35vh' }}>
+          <div
+            ref={trackRef}
+            className="flex items-center h-full"
+            style={{
+              transition: isTransitioning ? 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)' : 'none',
+              transform: `translateX(calc(${centerOffset}vw - ${pos * unit}vw))`,
+              gap: `${gapW}vw`,
+            }}
+          >
+            {extSlides.map((slide, i) => (
+              <div
+                key={i}
+                className="relative flex-shrink-0 overflow-hidden rounded-2xl h-full"
+                style={{ width: `${cardW}vw` }}
+              >
+                <Image src={slide.image} alt="Hero" fill className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={i === pos} />
+                {slide.btnKey && slide.btnHref ? (
+                  <Link href={slide.btnHref} className="absolute inset-0 z-10 flex items-center justify-center px-6">
+                    <div className="text-center" style={{ maxWidth: '85%' }}>
+                      <h1 className="text-2xl font-bold tracking-tight text-white" style={{ lineHeight: 1.2 }}>{t(slide.titleKey)}</h1>
+                      {t(slide.subtitleKey) && (
+                        <p className="text-xs text-white/70 font-medium" style={{ marginTop: '6px', lineHeight: 1.4 }}>{t(slide.subtitleKey)}</p>
+                      )}
+                    </div>
+                  </Link>
+                ) : (
+                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4">
+                    <h1 className="text-4xl font-bold tracking-tight text-white">{t(slide.titleKey)}</h1>
+                    {t(slide.subtitleKey) && <h2 className="text-sm font-bold tracking-tight text-white mt-1">{t(slide.subtitleKey)}</h2>}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="relative z-10 h-full flex flex-col items-center justify-center px-4">
-          <h1 className="text-5xl font-bold tracking-tight text-white">
-            {t("hero.title")}
-          </h1>
-          <h2 className="text-lg font-bold tracking-tight text-white mt-2">
-            {t("hero.subtitle")}
-          </h2>
-        </div>
+
       </section>
     );
   }
 
-  // ===== MASAÜSTÜ: Statik hero (scroll kaldırıldı) =====
-  return (
-    <section 
-      className="relative w-full bg-[#f5f5f7] overflow-hidden"
-      style={{ height: 'calc(100vh - 48px)' }}
-    >
+  // ===== MASAÜSTÜ =====
+  const cardW = 80;
+  const gapW = 1.5;
+  const unit = cardW + gapW;
+  const centerOffset = (100 - cardW) / 2;
 
-      <div 
-        className="absolute inset-0 overflow-hidden"
-        style={{ transform: 'scale(0.9)', borderRadius: '48px', zIndex: 2 }}
-      >
-        <Image
-          src="/taytechdiscekim.png"
-          alt="Hero Background"
-          fill
-          className="object-cover brightness-[0.65]"
-          priority
-        />
+  return (
+    <section
+      className="relative w-full bg-[#f5f5f7] overflow-hidden"
+      style={{ height: 'calc(100vh - 160px)', marginTop: '48px' }}
+    >
+      <div className="relative flex items-center overflow-hidden" style={{ height: 'calc(100% - 70px)' }}>
+        <div
+          ref={trackRef}
+          className="flex items-center h-[92%]"
+          style={{
+            transition: isTransitioning ? 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)' : 'none',
+            transform: `translateX(calc(${centerOffset}vw - ${pos * unit}vw))`,
+            gap: `${gapW}vw`,
+          }}
+        >
+          {extSlides.map((slide, i) => (
+            <div
+              key={i}
+              className="relative flex-shrink-0 overflow-hidden h-full cursor-pointer"
+              style={{ width: `${cardW}vw`, borderRadius: '48px' }}
+              onClick={() => {
+                const clickedReal = i % total;
+                goToSlide(clickedReal);
+              }}
+            >
+              <Image src={slide.image} alt="Hero" fill className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={i === pos} />
+              <div className="absolute inset-0 z-10 flex items-center justify-center px-6">
+                {slide.btnKey ? (
+                  <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between" style={{ padding: '0 80px 70px' }}>
+                    <div style={{ maxWidth: '55%' }}>
+                      <h1 className="text-5xl font-bold tracking-tight text-white" style={{ lineHeight: 1.2 }}>{t(slide.titleKey)}</h1>
+                      {t(slide.subtitleKey) && (
+                        <p className="text-lg text-white/70 font-medium" style={{ marginTop: '12px', lineHeight: 1.5 }}>{t(slide.subtitleKey)}</p>
+                      )}
+                    </div>
+                    <Link
+                      href={slide.btnHref || '#'}
+                      style={{
+                        backgroundColor: '#dc2626',
+                        color: '#fff',
+                        fontSize: '16px',
+                        fontWeight: 600,
+                        padding: '12px 32px',
+                        borderRadius: '8px',
+                        textDecoration: 'none',
+                        display: 'inline-block',
+                        whiteSpace: 'nowrap',
+                        transition: 'background-color 0.2s',
+                        marginBottom: '4px',
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#b91c1c')}
+                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#dc2626')}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {t(slide.btnKey)}
+                    </Link>
+                  </div>
+                ) : (
+                  <>
+                    <h1 className="text-9xl font-bold tracking-tight text-white">{t(slide.titleKey)}</h1>
+                    {t(slide.subtitleKey) && <h2 className="text-5xl font-bold tracking-tight text-white absolute" style={{ marginTop: '180px' }}>{t(slide.subtitleKey)}</h2>}
+                  </>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
-      <div className="relative h-full flex flex-col items-center justify-center px-6" style={{ zIndex: 3 }}>
-        <h1 
-          className="text-9xl font-bold tracking-tight"
-          style={{ color: 'white' }}
-        >
-          {t("hero.title")}
-        </h1>
-        <h2 
-          className="text-5xl font-bold tracking-tight"
-          style={{ color: 'white', marginTop: '16px' }}
-        >
-          {t("hero.subtitle")}
-        </h2>
+      {/* Dot noktaları - tam orta */}
+      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-3">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goToSlide(i)}
+            className="transition-all duration-300 rounded-full"
+            style={{
+              width: currentReal === i ? '32px' : '10px',
+              height: '10px',
+              backgroundColor: currentReal === i ? '#dc2626' : 'rgba(0,0,0,0.15)',
+            }}
+          />
+        ))}
+      </div>
+      {/* Ok butonları - sağ taraf */}
+      <div className="absolute bottom-4 right-[11%] flex gap-3">
+        <button onClick={prevSlide} className="w-11 h-11 rounded-full bg-black/10 flex items-center justify-center hover:bg-black/20 transition-colors">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1d1d1f" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button onClick={nextSlide} className="w-11 h-11 rounded-full bg-black/10 flex items-center justify-center hover:bg-black/20 transition-colors">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1d1d1f" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
       </div>
     </section>
   );
