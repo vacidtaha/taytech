@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     description: "Akıllı kontrol panoları, ısı istasyonları, elektronik kontrolörler ve endüstriyel otomasyon çözümleri. ISO 9001, ISO 14001, ISO 45001 sertifikalı Türk üretici.",
     images: [
       {
-        url: "/taytechdiscekim.png",
+        url: "/sonlogo.png",
         width: 1200,
         height: 630,
         alt: "Taytech - Akıllı Kontrol Panoları & Isı Sistemleri",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Taytech | Akıllı Kontrol Panoları & Isı Sistemleri",
     description: "Akıllı kontrol panoları, ısı istasyonları, elektronik kontrolörler ve endüstriyel otomasyon çözümleri.",
-    images: ["/taytechdiscekim.png"],
+    images: ["/sonlogo.png"],
   },
   robots: {
     index: true,
