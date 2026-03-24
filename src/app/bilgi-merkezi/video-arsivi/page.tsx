@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Footer from "@/components/Footer";
-
 const videos = [
   {
     title: "Taytech Akıllı Kontrol Panoları Tanıtım",
@@ -100,7 +98,6 @@ export default function VideoArsivi() {
           </div>
         </div>
 
-        <Footer theme="light" />
       </div>
     );
   }
@@ -182,7 +179,6 @@ export default function VideoArsivi() {
         </div>
       </div>
 
-      <Footer theme="light" />
     </div>
   );
 }

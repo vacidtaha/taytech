@@ -1,6 +1,5 @@
 "use client";
 
-import Footer from "@/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -139,7 +138,6 @@ export default function HaberlerPage() {
           ))}
         </div>
 
-        <Footer theme="white" />
       </div>
     );
   }
@@ -279,7 +277,6 @@ export default function HaberlerPage() {
         ))}
       </div>
 
-      <Footer theme="white" />
     </div>
   );
 }

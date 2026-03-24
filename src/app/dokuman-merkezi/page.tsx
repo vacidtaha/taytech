@@ -1,103 +1,45 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import Footer from "@/components/Footer";
 import { Search, X, ChevronDown } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
-const allDocuments = [
-  { name: "Smart Box", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/smart-box-datasheet.pdf" },
-  { name: "Smart Box", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/smart-box-kullanim.pdf" },
-  { name: "Smart Booster", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/smart-booster-datasheet.pdf" },
-  { name: "Smart Booster", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/smart-booster-kullanim.pdf" },
-  { name: "Smart Wastewater", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/smart-wastewater-datasheet.pdf" },
-  { name: "Smart Wastewater", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/smart-wastewater-kullanim.pdf" },
-  { name: "Smart Bore Hole", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/smart-bore-hole-datasheet.pdf" },
-  { name: "Smart Bore Hole", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/smart-bore-hole-kullanim.pdf" },
-  { name: "Smart Grinder", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/smart-grinder-datasheet.pdf" },
-  { name: "Smart Grinder", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/smart-grinder-kullanim.pdf" },
-  { name: "Smart Exclusive D", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/smart-exclusive-d-datasheet.pdf" },
-  { name: "Smart Exclusive D", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/smart-exclusive-d-kullanim.pdf" },
-  { name: "Smart Exclusive S", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/smart-exclusive-s-datasheet.pdf" },
-  { name: "Smart Exclusive S", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/smart-exclusive-s-kullanim.pdf" },
-  { name: "FXA", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/fxa-datasheet.pdf" },
-  { name: "FXA", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/fxa-kullanim.pdf" },
-  { name: "Mini Speed", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/mini-speed-datasheet.pdf" },
-  { name: "Mini Speed", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/mini-speed-kullanim.pdf" },
-  { name: "FXS", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/fxs-datasheet.pdf" },
-  { name: "FXS", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/fxs-kullanim.pdf" },
-  { name: "PSTX", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/pstx-datasheet.pdf" },
-  { name: "PSTX", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/pstx-kullanim.pdf" },
-  { name: "PSE", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/pse-datasheet.pdf" },
-  { name: "PSE", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Elektronik", link: "/pse-kullanim.pdf" },
-  { name: "Start One", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Elektromekanik", link: "/start-one-datasheet.pdf" },
-  { name: "Start One", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Elektromekanik", link: "/start-one-kullanim.pdf" },
-  { name: "Direct Start EM", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Elektromekanik", link: "/direct-start-em-datasheet.pdf" },
-  { name: "Direct Start EM", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Elektromekanik", link: "/direct-start-em-kullanim.pdf" },
-  { name: "Star Delta Start", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Elektromekanik", link: "/star-delta-start-datasheet.pdf" },
-  { name: "Star Delta Start", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Elektromekanik", link: "/star-delta-start-kullanim.pdf" },
-  { name: "Smart Jockey EN", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Yangın Sistemleri", link: "/smart-jockey-en-datasheet.pdf" },
-  { name: "Smart Jockey EN", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Yangın Sistemleri", link: "/smart-jockey-en-kullanim.pdf" },
-  { name: "Jockey EN", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Yangın Sistemleri", link: "/jockey-en-datasheet.pdf" },
-  { name: "Jockey EN", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Yangın Sistemleri", link: "/jockey-en-kullanim.pdf" },
-  { name: "Direct EN", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Yangın Sistemleri", link: "/direct-en-datasheet.pdf" },
-  { name: "Direct EN", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Yangın Sistemleri", link: "/direct-en-kullanim.pdf" },
-  { name: "Star Delta EN", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Yangın Sistemleri", link: "/star-delta-en-datasheet.pdf" },
-  { name: "Star Delta EN", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Yangın Sistemleri", link: "/star-delta-en-kullanim.pdf" },
-  { name: "Dizel EN", type: "datasheet", category: "Akıllı Kontrol Panoları", sub: "Yangın Sistemleri", link: "/dizel-en-datasheet.pdf" },
-  { name: "Dizel EN", type: "kilavuz", category: "Akıllı Kontrol Panoları", sub: "Yangın Sistemleri", link: "/dizel-en-kullanim.pdf" },
-  { name: "ThermoHexa", type: "datasheet", category: "Isı İstasyonu", sub: "Direct", link: "/thermohexa-datasheet.pdf" },
-  { name: "ThermoHexa UVH", type: "datasheet", category: "Isı İstasyonu", sub: "Direct", link: "/thermohexa-ufh-datasheet.pdf" },
-  { name: "HydroHexa", type: "datasheet", category: "Isı İstasyonu", sub: "Direct", link: "/hydrohexa-datasheet.pdf" },
-  { name: "HydroHexa UVH", type: "datasheet", category: "Isı İstasyonu", sub: "Direct", link: "/hydrohexa-ufh-datasheet.pdf" },
-  { name: "Indirect HydroHexa", type: "datasheet", category: "Isı İstasyonu", sub: "Indirect", link: "/indirect-hydrohexa-datasheet.pdf" },
-  { name: "Indirect ThermoHexa", type: "datasheet", category: "Isı İstasyonu", sub: "Indirect", link: "/indirect-thermohexa-datasheet.pdf" },
-  { name: "Smart Hexa", type: "datasheet", category: "Isı İstasyonu", sub: "Indirect", link: "/smart-hexa-datasheet.pdf" },
-  { name: "Smart Grinder Kontrolör", type: "datasheet", category: "Elektronik", sub: "Smart Endüstriyel", link: "/smart-grinder-kontrolor-datasheet.pdf" },
-  { name: "Smart Hidrofor Kontrolör", type: "datasheet", category: "Elektronik", sub: "Smart Endüstriyel", link: "/smart-hidrofor-kontrolor-datasheet.pdf" },
-  { name: "Smart Atık Su Kontrolör", type: "datasheet", category: "Elektronik", sub: "Smart Endüstriyel", link: "/smart-atik-su-kontrolor-datasheet.pdf" },
-  { name: "Smart Derin Kuyu Kontrolör", type: "datasheet", category: "Elektronik", sub: "Smart Endüstriyel", link: "/smart-derin-kuyu-kontrolor-datasheet.pdf" },
-  { name: "ESS-86", type: "datasheet", category: "Elektronik", sub: "Isı İstasyonu Kontrolörleri", link: "/ess-86-datasheet.pdf" },
-  { name: "CHS18", type: "datasheet", category: "Elektronik", sub: "Isı İstasyonu Kontrolörleri", link: "/chs18-datasheet.pdf" },
-  { name: "DE10", type: "datasheet", category: "Elektronik", sub: "Isı İstasyonu Kontrolörleri", link: "/de10-datasheet.pdf" },
-  { name: "DE15", type: "datasheet", category: "Elektronik", sub: "Isı İstasyonu Kontrolörleri", link: "/de15-datasheet.pdf" },
-  { name: "DE25", type: "datasheet", category: "Elektronik", sub: "Isı İstasyonu Kontrolörleri", link: "/de25-datasheet.pdf" },
-  { name: "DE30", type: "datasheet", category: "Elektronik", sub: "Isı İstasyonu Kontrolörleri", link: "/de30-datasheet.pdf" },
-  { name: "T-Box", type: "datasheet", category: "Elektronik", sub: "Yerden Isıtma", link: "/t-box-datasheet.pdf" },
-  { name: "Dataloger", type: "datasheet", category: "Taytech Cloud", sub: "Cloud", link: "/dataloger-datasheet.pdf" },
-  { name: "Dataloger Gateway", type: "datasheet", category: "Taytech Cloud", sub: "Cloud", link: "/dataloger-gateway-datasheet.pdf" },
-  { name: "GSM Modem", type: "datasheet", category: "Taytech Cloud", sub: "Cloud", link: "/gsm-modem-datasheet.pdf" },
-  { name: "M-Bus Converter", type: "datasheet", category: "Taytech Cloud", sub: "Cloud", link: "/m-bus-converter-datasheet.pdf" },
-  { name: "IRONTRAP® Manyetik Filtre", type: "datasheet", category: "Manyetik Filtre", sub: "Manyetik Filtre", link: "/manyetik-filtre-datasheet.pdf" },
-  { name: "Taytech Genel Katalog", type: "katalog", category: "Genel", sub: "Genel", link: "/katalog.pdf" },
-];
+interface DocItem {
+  id: number;
+  nameTr: string;
+  nameEn: string;
+  url: string;
+  type: string;
+  productNameTr: string;
+  productNameEn: string;
+  productSlug: string;
+  categoryNameTr: string;
+  categoryNameEn: string;
+  topCategoryNameTr: string;
+  topCategoryNameEn: string;
+}
 
-const typeLabelKeys: Record<string, string> = { datasheet: "dokuman.type.datasheet", kilavuz: "dokuman.type.kilavuz", katalog: "dokuman.type.katalog" };
-
-const catLabelKeys: Record<string, string> = {
-  "Akıllı Kontrol Panoları": "dokuman.cat.akilli",
-  "Isı İstasyonu": "dokuman.cat.isi",
-  "Elektronik": "dokuman.cat.elektronik",
-  "Taytech Cloud": "dokuman.cat.cloud",
-  "Manyetik Filtre": "dokuman.cat.manyetik",
-  "Genel": "dokuman.cat.genel",
-};
-
-const subLabelKeys: Record<string, string> = {
-  "Elektronik": "dokuman.sub.elektronik",
-  "Elektromekanik": "dokuman.sub.elektromekanik",
-  "Yangın Sistemleri": "dokuman.sub.yangin",
-  "Direct": "dokuman.sub.direct",
-  "Indirect": "dokuman.sub.indirect",
-  "Smart Endüstriyel": "dokuman.sub.smart",
-  "Isı İstasyonu Kontrolörleri": "dokuman.sub.isiKontrol",
-  "Yerden Isıtma": "dokuman.sub.yerden",
-  "Cloud": "dokuman.sub.cloud",
-  "Manyetik Filtre": "dokuman.sub.manyetik",
-  "Genel": "dokuman.sub.genel",
+const typeLabels: Record<string, { tr: string; en: string }> = {
+  teknik: { tr: "Katalog", en: "Catalog" },
+  kilavuz: { tr: "Kullanım Kılavuzu", en: "User Manual" },
+  sertifika: { tr: "Sertifika", en: "Certificate" },
+  cad: { tr: "CAD Çizimi", en: "CAD Drawing" },
+  genel: { tr: "Genel Katalog", en: "General Catalog" },
 };
 
 function DocIcon({ type }: { type: string }) {
+  if (type === "genel") {
+    return (
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+        <rect x="8" y="4" width="24" height="36" rx="2" stroke="#dc2626" strokeWidth="2" />
+        <rect x="12" y="8" width="24" height="36" rx="2" stroke="#dc2626" strokeWidth="2" fill="white" />
+        <rect x="16" y="12" width="24" height="36" rx="2" stroke="#dc2626" strokeWidth="2" fill="white" />
+        <line x1="22" y1="22" x2="34" y2="22" stroke="#dc2626" strokeWidth="1.5" />
+        <line x1="22" y1="28" x2="32" y2="28" stroke="#dc2626" strokeWidth="1" opacity="0.5" />
+        <line x1="22" y1="34" x2="30" y2="34" stroke="#dc2626" strokeWidth="1" opacity="0.5" />
+      </svg>
+    );
+  }
   if (type === "datasheet") {
     return (
       <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
@@ -138,33 +80,44 @@ function DocIcon({ type }: { type: string }) {
   );
 }
 
-const categories = [...new Set(allDocuments.map(d => d.category))];
-const typeKeys = [...new Set(allDocuments.map(d => d.type))];
-
-// Kategori → alt kategoriler haritası
-const subsByCategory: Record<string, string[]> = {};
-allDocuments.forEach(d => {
-  if (!subsByCategory[d.category]) subsByCategory[d.category] = [];
-  if (!subsByCategory[d.category].includes(d.sub)) subsByCategory[d.category].push(d.sub);
-});
-
-// Kategori → ürün isimleri haritası
-const productsByCategory: Record<string, string[]> = {};
-allDocuments.forEach(d => {
-  if (!productsByCategory[d.category]) productsByCategory[d.category] = [];
-  if (!productsByCategory[d.category].includes(d.name)) productsByCategory[d.category].push(d.name);
-});
-
 export default function DokumanMerkeziPage() {
-  const { t } = useLanguage();
+  const { locale } = useLanguage();
+  const isEn = locale === "EN";
+  const [docs, setDocs] = useState<DocItem[]>([]);
+  const [allCats, setAllCats] = useState<{ nameTr: string; nameEn: string }[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [selCategories, setSelCategories] = useState<string[]>([]);
   const [selTypes, setSelTypes] = useState<string[]>([]);
-  const [selSubs, setSelSubs] = useState<string[]>([]);
   const [selProducts, setSelProducts] = useState<string[]>([]);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({ category: true, type: true });
   const [isMobile, setIsMobile] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/documents")
+      .then((r) => r.json())
+      .then((data: { documents: DocItem[]; allCategories: { nameTr: string; nameEn: string }[] }) => {
+        const genelKatalog: DocItem = {
+          id: -1,
+          nameTr: "Taytech Genel Katalog",
+          nameEn: "Taytech General Catalog",
+          url: "/katalog.pdf",
+          type: "genel",
+          productNameTr: "Taytech",
+          productNameEn: "Taytech",
+          productSlug: "",
+          categoryNameTr: "Genel",
+          categoryNameEn: "General",
+          topCategoryNameTr: "Genel",
+          topCategoryNameEn: "General",
+        };
+        setDocs([genelKatalog, ...data.documents]);
+        setAllCats([{ nameTr: "Genel", nameEn: "General" }, ...data.allCategories]);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -179,75 +132,72 @@ export default function DokumanMerkeziPage() {
   const toggleSection = (key: string) =>
     setOpenSections(prev => ({ ...prev, [key]: !prev[key] }));
 
-  // Seçili kategorilere göre alt kategori ve ürün listeleri
-  const availableSubs = useMemo(() => {
-    if (selCategories.length === 0) return [];
-    const subs = new Set<string>();
-    selCategories.forEach(cat => {
-      (subsByCategory[cat] || []).forEach(s => subs.add(s));
-    });
-    return [...subs];
-  }, [selCategories]);
+  const categories = useMemo(() => {
+    return allCats.map(c => isEn ? c.nameEn : c.nameTr);
+  }, [allCats, isEn]);
+
+  const typeKeys = ["teknik", "kilavuz", "sertifika", "cad", "genel"];
 
   const availableProducts = useMemo(() => {
     if (selCategories.length === 0) return [];
     const prods = new Set<string>();
-    allDocuments.forEach(d => {
-      if (selCategories.includes(d.category)) {
-        if (selSubs.length === 0 || selSubs.includes(d.sub)) {
-          prods.add(d.name);
-        }
+    docs.forEach(d => {
+      const cat = isEn ? d.topCategoryNameEn : d.topCategoryNameTr;
+      if (selCategories.includes(cat)) {
+        prods.add(isEn ? d.productNameEn : d.productNameTr);
       }
     });
     return [...prods].sort();
-  }, [selCategories, selSubs]);
+  }, [docs, selCategories, isEn]);
 
   const filtered = useMemo(() => {
-    return allDocuments.filter(d => {
+    return docs.filter(d => {
       const q = search.toLowerCase();
-      const matchSearch = !q || d.name.toLowerCase().includes(q) || d.category.toLowerCase().includes(q) || d.sub.toLowerCase().includes(q);
-      const matchCat = selCategories.length === 0 || selCategories.includes(d.category);
+      const name = isEn ? d.nameEn : d.nameTr;
+      const prodName = isEn ? d.productNameEn : d.productNameTr;
+      const catName = isEn ? d.topCategoryNameEn : d.topCategoryNameTr;
+      const matchSearch = !q || name.toLowerCase().includes(q) || prodName.toLowerCase().includes(q) || catName.toLowerCase().includes(q);
+      const matchCat = selCategories.length === 0 || selCategories.includes(catName);
       const matchType = selTypes.length === 0 || selTypes.includes(d.type);
-      const matchSub = selSubs.length === 0 || selSubs.includes(d.sub);
-      const matchProduct = selProducts.length === 0 || selProducts.includes(d.name);
-      return matchSearch && matchCat && matchType && matchSub && matchProduct;
+      const matchProduct = selProducts.length === 0 || selProducts.includes(prodName);
+      return matchSearch && matchCat && matchType && matchProduct;
     });
-  }, [search, selCategories, selTypes, selSubs, selProducts]);
+  }, [docs, search, selCategories, selTypes, selProducts, isEn]);
 
-  const clearAll = () => { setSearch(""); setSelCategories([]); setSelTypes([]); setSelSubs([]); setSelProducts([]); };
-  const activeCount = selCategories.length + selTypes.length + selSubs.length + selProducts.length;
+  const clearAll = () => { setSearch(""); setSelCategories([]); setSelTypes([]); setSelProducts([]); };
+  const activeCount = selCategories.length + selTypes.length + selProducts.length;
 
-  // ===== MOBİL: Responsive döküman merkezi =====
+  const tl = (type: string) => typeLabels[type]?.[isEn ? "en" : "tr"] ?? type;
+
+  if (loading) {
+    return (
+      <div style={{ minHeight: "100vh", background: "#ffffff", paddingTop: "48px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ width: 24, height: 24, border: "2px solid #e5e5e5", borderTopColor: "#dc2626", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
+      </div>
+    );
+  }
+
   if (isMobile) {
     return (
       <div style={{ minHeight: "100vh", background: "#ffffff", paddingTop: "48px" }}>
-        {/* Hero - Mobile */}
         <div style={{ background: "#dc2626", padding: "60px 0 40px" }}>
           <div style={{ padding: "0 20px" }}>
-            <p style={{ fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "12px" }}>
-              {t("dokuman.taytech")}
-            </p>
+            <p style={{ fontSize: "11px", fontWeight: 600, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "12px" }}>Taytech</p>
             <h1 style={{ fontSize: "28px", fontWeight: 700, color: "white", lineHeight: 1.15, marginBottom: "10px" }}>
-              {t("dokuman.title")}
+              {isEn ? "Document Center" : "Doküman Merkezi"}
             </h1>
             <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.7)", fontWeight: 450 }}>
-              {t("dokuman.desc")}
+              {isEn ? "Access datasheets, user manuals and technical documents." : "Teknik veri sayfaları, kullanım kılavuzları ve teknik dokümanlara ulaşın."}
             </p>
           </div>
         </div>
 
-        {/* Arama - Mobile */}
         <div style={{ borderBottom: "1px solid #e5e5e5" }}>
           <div style={{ padding: "0 20px" }}>
             <div style={{ position: "relative", padding: "16px 0" }}>
               <Search size={16} style={{ position: "absolute", left: "0", top: "50%", transform: "translateY(-50%)", color: "#86868b" }} />
-              <input
-                type="text"
-                placeholder={t("dokuman.search")}
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                style={{ width: "100%", padding: "6px 28px 6px 28px", background: "transparent", border: "none", color: "#1d1d1f", fontSize: "16px", outline: "none", fontFamily: "inherit" }}
-              />
+              <input type="text" placeholder={isEn ? "Search documents..." : "Doküman ara..."} value={search} onChange={(e) => setSearch(e.target.value)}
+                style={{ width: "100%", padding: "6px 28px 6px 28px", background: "transparent", border: "none", color: "#1d1d1f", fontSize: "16px", outline: "none", fontFamily: "inherit" }} />
               {search && (
                 <button onClick={() => setSearch("")} style={{ position: "absolute", right: "0", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "#86868b" }}>
                   <X size={16} />
@@ -257,188 +207,105 @@ export default function DokumanMerkeziPage() {
           </div>
         </div>
 
-        {/* Filtre Butonu + Sonuç Sayısı - Mobile */}
         <div style={{ padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #f0f0f0" }}>
-          <p style={{ fontSize: "13px", color: "#86868b" }}>{filtered.length} {t("dokuman.showing")}</p>
+          <p style={{ fontSize: "13px", color: "#86868b" }}>{filtered.length} {isEn ? "document(s)" : "doküman"}</p>
           <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
             {activeCount > 0 && (
               <button onClick={clearAll} style={{ fontSize: "12px", fontWeight: 600, color: "#dc2626", background: "none", border: "none", cursor: "pointer" }}>
-                {t("dokuman.clearFilters")}
+                {isEn ? "Clear" : "Temizle"}
               </button>
             )}
-            <button
-              onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
-              style={{
-                display: "flex", alignItems: "center", gap: "6px",
-                padding: "8px 14px", fontSize: "13px", fontWeight: 600,
-                color: mobileFiltersOpen ? "white" : "#1d1d1f",
-                background: mobileFiltersOpen ? "#dc2626" : "#f5f5f7",
-                border: "none", borderRadius: "980px", cursor: "pointer"
-              }}
-            >
+            <button onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
+              style={{ display: "flex", alignItems: "center", gap: "6px", padding: "8px 14px", fontSize: "13px", fontWeight: 600,
+                color: mobileFiltersOpen ? "white" : "#1d1d1f", background: mobileFiltersOpen ? "#dc2626" : "#f5f5f7",
+                border: "none", borderRadius: "980px", cursor: "pointer" }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
-              {t("dokuman.filter.kategori")}
+              {isEn ? "Filter" : "Filtre"}
               {activeCount > 0 && (
-                <span style={{
-                  background: mobileFiltersOpen ? "white" : "#dc2626",
-                  color: mobileFiltersOpen ? "#dc2626" : "white",
-                  fontSize: "11px", fontWeight: 700,
-                  width: "18px", height: "18px", borderRadius: "50%",
-                  display: "flex", alignItems: "center", justifyContent: "center"
-                }}>
-                  {activeCount}
-                </span>
+                <span style={{ background: mobileFiltersOpen ? "white" : "#dc2626", color: mobileFiltersOpen ? "#dc2626" : "white",
+                  fontSize: "11px", fontWeight: 700, width: "18px", height: "18px", borderRadius: "50%",
+                  display: "flex", alignItems: "center", justifyContent: "center" }}>{activeCount}</span>
               )}
             </button>
           </div>
         </div>
 
-        {/* Filtre Paneli - Mobile (açılır/kapanır) */}
         {mobileFiltersOpen && (
           <div style={{ padding: "16px 20px", borderBottom: "1px solid #e5e5e5", background: "#fafafa" }}>
-            {/* Kategori */}
-            <FilterSection title={t("dokuman.filter.kategori")} isOpen={openSections.category !== false} onToggle={() => toggleSection("category")}>
+            <FilterSection title={isEn ? "Category" : "Kategori"} isOpen={openSections.category !== false} onToggle={() => toggleSection("category")}>
               {categories.map(cat => (
-                <FilterCheckbox
-                  key={cat}
-                  label={t(catLabelKeys[cat] || cat)}
-                  count={allDocuments.filter(d => d.category === cat).length}
-                  checked={selCategories.includes(cat)}
-                  onChange={() => {
-                    const next = toggleArr(selCategories, cat);
-                    setSelCategories(next);
-                    if (!next.includes(cat)) {
-                      const removedSubs = subsByCategory[cat] || [];
-                      setSelSubs(prev => prev.filter(s => !removedSubs.includes(s)));
-                      const removedProds = productsByCategory[cat] || [];
-                      setSelProducts(prev => prev.filter(p => !removedProds.includes(p)));
-                    }
-                  }}
-                />
+                <FilterCheckbox key={cat} label={cat} count={docs.filter(d => (isEn ? d.topCategoryNameEn : d.topCategoryNameTr) === cat).length}
+                  checked={selCategories.includes(cat)} onChange={() => { const next = toggleArr(selCategories, cat); setSelCategories(next); if (!next.includes(cat)) setSelProducts([]); }} />
               ))}
             </FilterSection>
-
-            {/* Alt Kategori */}
-            {selCategories.length > 0 && availableSubs.length > 1 && (
-              <FilterSection title={t("dokuman.filter.altKategori")} isOpen={openSections.sub !== false} onToggle={() => toggleSection("sub")}>
-                {availableSubs.map(sub => (
-                  <FilterCheckbox
-                    key={sub}
-                    label={t(subLabelKeys[sub] || sub)}
-                    count={allDocuments.filter(d => selCategories.includes(d.category) && d.sub === sub).length}
-                    checked={selSubs.includes(sub)}
-                    onChange={() => {
-                      const next = toggleArr(selSubs, sub);
-                      setSelSubs(next);
-                      setSelProducts([]);
-                    }}
-                  />
-                ))}
-              </FilterSection>
-            )}
-
-            {/* Ürün */}
             {selCategories.length > 0 && availableProducts.length > 0 && (
-              <FilterSection title={t("dokuman.filter.urun")} isOpen={openSections.product !== false} onToggle={() => toggleSection("product")}>
+              <FilterSection title={isEn ? "Product" : "Ürün"} isOpen={openSections.product !== false} onToggle={() => toggleSection("product")}>
                 {availableProducts.map(prod => (
-                  <FilterCheckbox
-                    key={prod}
-                    label={prod}
-                    count={allDocuments.filter(d => d.name === prod && selCategories.includes(d.category) && (selSubs.length === 0 || selSubs.includes(d.sub))).length}
-                    checked={selProducts.includes(prod)}
-                    onChange={() => setSelProducts(toggleArr(selProducts, prod))}
-                  />
+                  <FilterCheckbox key={prod} label={prod}
+                    count={docs.filter(d => (isEn ? d.productNameEn : d.productNameTr) === prod && selCategories.includes(isEn ? d.topCategoryNameEn : d.topCategoryNameTr)).length}
+                    checked={selProducts.includes(prod)} onChange={() => setSelProducts(toggleArr(selProducts, prod))} />
                 ))}
               </FilterSection>
             )}
-
-            {/* Doküman Tipi */}
-            <FilterSection title={t("dokuman.filter.tip")} isOpen={openSections.type !== false} onToggle={() => toggleSection("type")}>
-              {typeKeys.map(typeKey => (
-                <FilterCheckbox
-                  key={typeKey}
-                  label={t(typeLabelKeys[typeKey])}
-                  count={allDocuments.filter(d => d.type === typeKey).length}
-                  checked={selTypes.includes(typeKey)}
-                  onChange={() => setSelTypes(toggleArr(selTypes, typeKey))}
-                />
+            <FilterSection title={isEn ? "Document Type" : "Doküman Tipi"} isOpen={openSections.type !== false} onToggle={() => toggleSection("type")}>
+              {typeKeys.map(tk => (
+                <FilterCheckbox key={tk} label={tl(tk)} count={docs.filter(d => d.type === tk).length}
+                  checked={selTypes.includes(tk)} onChange={() => setSelTypes(toggleArr(selTypes, tk))} />
               ))}
             </FilterSection>
-
-            <button
-              onClick={() => setMobileFiltersOpen(false)}
-              style={{
-                width: "100%", padding: "12px", marginTop: "8px",
-                fontSize: "14px", fontWeight: 600, color: "white",
-                background: "#dc2626", border: "none", borderRadius: "10px",
-                cursor: "pointer"
-              }}
-            >
-              {filtered.length} {t("dokuman.showing")} — {t("dokuman.filter.kategori")}
+            <button onClick={() => setMobileFiltersOpen(false)}
+              style={{ width: "100%", padding: "12px", marginTop: "8px", fontSize: "14px", fontWeight: 600, color: "white",
+                background: "#dc2626", border: "none", borderRadius: "10px", cursor: "pointer" }}>
+              {filtered.length} {isEn ? "document(s)" : "doküman"}
             </button>
           </div>
         )}
 
-        {/* Doküman Grid - Mobile (tek sütun) */}
         <div style={{ padding: "20px 20px 60px" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-            {filtered.map((doc, i) => (
-              <a key={`${doc.link}-${i}`} href={doc.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "block" }}>
+            {filtered.map((doc) => (
+              <a key={doc.id} href={doc.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "block" }}>
                 <div style={{ background: "#f5f5f7", border: "1px solid #e5e5e5", height: "100%", display: "flex", flexDirection: "column" }}>
                   <div style={{ height: "80px", display: "flex", alignItems: "center", justifyContent: "center", borderBottom: "1px solid #e5e5e5" }}>
-                    <div style={{ transform: "scale(0.7)" }}>
-                      <DocIcon type={doc.type} />
-                    </div>
+                    <div style={{ transform: "scale(0.7)" }}><DocIcon type={doc.type} /></div>
                   </div>
                   <div style={{ padding: "12px 14px 14px", flex: 1, display: "flex", flexDirection: "column" }}>
-                    <p style={{ fontSize: "10px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "#dc2626", marginBottom: "6px" }}>
-                      {t(typeLabelKeys[doc.type])}
-                    </p>
-                    <h3 style={{ fontSize: "13px", fontWeight: 600, color: "#1d1d1f", lineHeight: 1.3, marginBottom: "4px" }}>
-                      {doc.name}
-                    </h3>
-                    <p style={{ fontSize: "11px", color: "#86868b", marginBottom: "auto" }}>
-                      {t(subLabelKeys[doc.sub] || doc.sub)}
-                    </p>
+                    <p style={{ fontSize: "10px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "#dc2626", marginBottom: "6px" }}>{tl(doc.type)}</p>
+                    <h3 style={{ fontSize: "13px", fontWeight: 600, color: "#1d1d1f", lineHeight: 1.3, marginBottom: "4px" }}>{isEn ? doc.nameEn : doc.nameTr}</h3>
+                    <p style={{ fontSize: "11px", color: "#86868b", marginBottom: "auto" }}>{isEn ? doc.productNameEn : doc.productNameTr}</p>
                     <div style={{ marginTop: "10px", paddingTop: "8px", borderTop: "1px solid #e5e5e5", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <span style={{ fontSize: "10px", fontWeight: 500, color: "#86868b" }}>{t(catLabelKeys[doc.category] || doc.category)}</span>
-                      <span style={{ fontSize: "10px", fontWeight: 700, color: "#dc2626", textTransform: "uppercase" }}>{t("dokuman.download")}</span>
+                      <span style={{ fontSize: "10px", fontWeight: 500, color: "#86868b" }}>{isEn ? doc.topCategoryNameEn : doc.topCategoryNameTr}</span>
+                      <span style={{ fontSize: "10px", fontWeight: 700, color: "#dc2626", textTransform: "uppercase" }}>{isEn ? "Download" : "İndir"}</span>
                     </div>
                   </div>
                 </div>
               </a>
             ))}
           </div>
-
           {filtered.length === 0 && (
             <div style={{ border: "1px solid #e5e5e5", padding: "60px 20px", textAlign: "center" }}>
               <p style={{ fontSize: "28px", marginBottom: "10px" }}>—</p>
-              <h3 style={{ fontSize: "16px", fontWeight: 600, color: "#1d1d1f", marginBottom: "6px" }}>{t("dokuman.noResult")}</h3>
-              <p style={{ color: "#86868b", fontSize: "13px", marginBottom: "14px" }}>{t("dokuman.noResultDesc")}</p>
-              <button onClick={clearAll} style={{ fontSize: "13px", fontWeight: 600, color: "#dc2626", background: "none", border: "none", cursor: "pointer" }}>{t("dokuman.clearFilters")}</button>
+              <h3 style={{ fontSize: "16px", fontWeight: 600, color: "#1d1d1f", marginBottom: "6px" }}>{isEn ? "No documents found" : "Doküman bulunamadı"}</h3>
+              <p style={{ color: "#86868b", fontSize: "13px", marginBottom: "14px" }}>{isEn ? "Try adjusting your filters." : "Filtre ayarlarını değiştirmeyi deneyin."}</p>
+              <button onClick={clearAll} style={{ fontSize: "13px", fontWeight: 600, color: "#dc2626", background: "none", border: "none", cursor: "pointer" }}>{isEn ? "Clear filters" : "Filtreleri temizle"}</button>
             </div>
           )}
         </div>
-
-        <Footer theme="white" />
       </div>
     );
   }
 
-  // ===== MASAÜSTÜ: Orijinal döküman merkezi sayfası (hiç değişmedi) =====
   return (
     <div style={{ minHeight: "100vh", background: "#ffffff", paddingTop: "48px" }}>
       {/* Hero */}
       <div style={{ background: "#dc2626", padding: "120px 0 60px" }}>
         <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 80px" }}>
-          <p style={{ fontSize: "13px", fontWeight: 600, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "16px" }}>
-            {t("dokuman.taytech")}
-          </p>
+          <p style={{ fontSize: "13px", fontWeight: 600, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "16px" }}>Taytech</p>
           <h1 style={{ fontSize: "52px", fontWeight: 700, color: "white", lineHeight: 1.1, marginBottom: "12px" }}>
-            {t("dokuman.title")}
+            {isEn ? "Document Center" : "Doküman Merkezi"}
           </h1>
           <p style={{ fontSize: "18px", color: "rgba(255,255,255,0.7)", fontWeight: 450, maxWidth: "500px" }}>
-            {t("dokuman.desc")}
+            {isEn ? "Access datasheets, user manuals and technical documents for all our products." : "Tüm ürünlerimize ait teknik veri sayfaları, kullanım kılavuzları ve teknik dokümanlara ulaşın."}
           </p>
         </div>
       </div>
@@ -448,13 +315,8 @@ export default function DokumanMerkeziPage() {
         <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 80px" }}>
           <div style={{ position: "relative", padding: "20px 0" }}>
             <Search size={18} style={{ position: "absolute", left: "0", top: "50%", transform: "translateY(-50%)", color: "#86868b" }} />
-            <input
-              type="text"
-              placeholder={t("dokuman.search")}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              style={{ width: "100%", padding: "8px 32px 8px 32px", background: "transparent", border: "none", color: "#1d1d1f", fontSize: "16px", outline: "none", fontFamily: "inherit" }}
-            />
+            <input type="text" placeholder={isEn ? "Search documents..." : "Doküman ara..."} value={search} onChange={(e) => setSearch(e.target.value)}
+              style={{ width: "100%", padding: "8px 32px 8px 32px", background: "transparent", border: "none", color: "#1d1d1f", fontSize: "16px", outline: "none", fontFamily: "inherit" }} />
             {search && (
               <button onClick={() => setSearch("")} style={{ position: "absolute", right: "0", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "#86868b" }}>
                 <X size={16} />
@@ -470,42 +332,38 @@ export default function DokumanMerkeziPage() {
           {/* Sol - Grid */}
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "32px" }}>
-              <p style={{ fontSize: "14px", color: "#86868b" }}>{filtered.length} {t("dokuman.showing")}</p>
+              <p style={{ fontSize: "14px", color: "#86868b" }}>{filtered.length} {isEn ? "document(s)" : "doküman"}</p>
               {activeCount > 0 && (
                 <button onClick={clearAll} style={{ fontSize: "13px", fontWeight: 600, color: "#dc2626", background: "none", border: "none", cursor: "pointer", textDecoration: "underline", textUnderlineOffset: "3px" }}>
-                  {activeCount} {t("dokuman.activeFilters")}
+                  {activeCount} {isEn ? "active filter(s)" : "aktif filtre"}
                 </button>
               )}
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
-              {filtered.map((doc, i) => (
-                <a key={`${doc.link}-${i}`} href={doc.link} target="_blank" rel="noopener noreferrer" className="group" style={{ textDecoration: "none", display: "block" }}>
-                  <div
-                    style={{ background: "#f5f5f7", border: "1px solid #e5e5e5", transition: "all 0.2s ease", cursor: "pointer", height: "100%", display: "flex", flexDirection: "column" }}
-                    className="group-hover:!bg-[#dc2626] group-hover:!border-[#dc2626]"
-                  >
-                    <div
-                      style={{ height: "140px", display: "flex", alignItems: "center", justifyContent: "center", borderBottom: "1px solid #e5e5e5", transition: "all 0.2s" }}
-                      className="group-hover:!border-white/20"
-                    >
+              {filtered.map((doc) => (
+                <a key={doc.id} href={doc.url} target="_blank" rel="noopener noreferrer" className="group" style={{ textDecoration: "none", display: "block" }}>
+                  <div style={{ background: "#f5f5f7", border: "1px solid #e5e5e5", transition: "all 0.2s ease", cursor: "pointer", height: "100%", display: "flex", flexDirection: "column" }}
+                    className="group-hover:!bg-[#dc2626] group-hover:!border-[#dc2626]">
+                    <div style={{ height: "140px", display: "flex", alignItems: "center", justifyContent: "center", borderBottom: "1px solid #e5e5e5", transition: "all 0.2s" }}
+                      className="group-hover:!border-white/20">
                       <div style={{ transition: "all 0.2s" }} className="group-hover:!brightness-0 group-hover:!invert">
                         <DocIcon type={doc.type} />
                       </div>
                     </div>
                     <div style={{ padding: "20px 24px 24px", flex: 1, display: "flex", flexDirection: "column" }}>
                       <p style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "#dc2626", marginBottom: "10px", transition: "color 0.2s" }} className="group-hover:!text-white/70">
-                        {t(typeLabelKeys[doc.type])}
+                        {tl(doc.type)}
                       </p>
                       <h3 style={{ fontSize: "16px", fontWeight: 600, color: "#1d1d1f", lineHeight: 1.3, marginBottom: "6px", transition: "color 0.2s" }} className="group-hover:!text-white">
-                        {doc.name}
+                        {isEn ? doc.nameEn : doc.nameTr}
                       </h3>
                       <p style={{ fontSize: "13px", color: "#86868b", marginBottom: "auto", transition: "color 0.2s" }} className="group-hover:!text-white/60">
-                        {t(subLabelKeys[doc.sub] || doc.sub)}
-                    </p>
+                        {isEn ? doc.productNameEn : doc.productNameTr}
+                      </p>
                       <div style={{ marginTop: "16px", paddingTop: "12px", borderTop: "1px solid #e5e5e5", display: "flex", alignItems: "center", justifyContent: "space-between", transition: "border-color 0.2s" }} className="group-hover:!border-white/20">
-                        <span style={{ fontSize: "11px", fontWeight: 500, color: "#86868b", transition: "color 0.2s" }} className="group-hover:!text-white/50">{t(catLabelKeys[doc.category] || doc.category)}</span>
-                        <span style={{ fontSize: "11px", fontWeight: 700, color: "#dc2626", textTransform: "uppercase", letterSpacing: "0.05em", transition: "color 0.2s" }} className="group-hover:!text-white">{t("dokuman.download")}</span>
+                        <span style={{ fontSize: "11px", fontWeight: 500, color: "#86868b", transition: "color 0.2s" }} className="group-hover:!text-white/50">{isEn ? doc.topCategoryNameEn : doc.topCategoryNameTr}</span>
+                        <span style={{ fontSize: "11px", fontWeight: 700, color: "#dc2626", textTransform: "uppercase", letterSpacing: "0.05em", transition: "color 0.2s" }} className="group-hover:!text-white">{isEn ? "Download" : "İndir"}</span>
                       </div>
                     </div>
                   </div>
@@ -516,9 +374,9 @@ export default function DokumanMerkeziPage() {
             {filtered.length === 0 && (
               <div style={{ border: "1px solid #e5e5e5", padding: "80px 40px", textAlign: "center" }}>
                 <p style={{ fontSize: "32px", marginBottom: "12px" }}>—</p>
-                <h3 style={{ fontSize: "18px", fontWeight: 600, color: "#1d1d1f", marginBottom: "6px" }}>{t("dokuman.noResult")}</h3>
-                <p style={{ color: "#86868b", fontSize: "14px", marginBottom: "16px" }}>{t("dokuman.noResultDesc")}</p>
-                <button onClick={clearAll} style={{ fontSize: "13px", fontWeight: 600, color: "#dc2626", background: "none", border: "none", cursor: "pointer" }}>{t("dokuman.clearFilters")}</button>
+                <h3 style={{ fontSize: "18px", fontWeight: 600, color: "#1d1d1f", marginBottom: "6px" }}>{isEn ? "No documents found" : "Doküman bulunamadı"}</h3>
+                <p style={{ color: "#86868b", fontSize: "14px", marginBottom: "16px" }}>{isEn ? "Try adjusting your filters." : "Filtre ayarlarını değiştirmeyi deneyin."}</p>
+                <button onClick={clearAll} style={{ fontSize: "13px", fontWeight: 600, color: "#dc2626", background: "none", border: "none", cursor: "pointer" }}>{isEn ? "Clear filters" : "Filtreleri temizle"}</button>
               </div>
             )}
           </div>
@@ -526,116 +384,55 @@ export default function DokumanMerkeziPage() {
           {/* Sağ - Filtreler */}
           <div style={{ width: "240px", flexShrink: 0 }}>
             <div className="sticky" style={{ top: "80px" }}>
-
-              {/* Kategori */}
-              <FilterSection title={t("dokuman.filter.kategori")} isOpen={openSections.category !== false} onToggle={() => toggleSection("category")}>
+              <FilterSection title={isEn ? "Category" : "Kategori"} isOpen={openSections.category !== false} onToggle={() => toggleSection("category")}>
                 {categories.map(cat => (
-                  <FilterCheckbox
-                    key={cat}
-                    label={t(catLabelKeys[cat] || cat)}
-                    count={allDocuments.filter(d => d.category === cat).length}
+                  <FilterCheckbox key={cat} label={cat} count={docs.filter(d => (isEn ? d.topCategoryNameEn : d.topCategoryNameTr) === cat).length}
                     checked={selCategories.includes(cat)}
                     onChange={() => {
                       const next = toggleArr(selCategories, cat);
                       setSelCategories(next);
-                      // Kaldırılan kategoriye ait sub ve ürün filtrelerini temizle
-                      if (!next.includes(cat)) {
-                        const removedSubs = subsByCategory[cat] || [];
-                        setSelSubs(prev => prev.filter(s => !removedSubs.includes(s)));
-                        const removedProds = productsByCategory[cat] || [];
-                        setSelProducts(prev => prev.filter(p => !removedProds.includes(p)));
-                      }
-                    }}
-                  />
+                      if (!next.includes(cat)) setSelProducts([]);
+                    }} />
                 ))}
               </FilterSection>
 
-              {/* Alt Kategori — sadece kategori seçiliyken */}
-              {selCategories.length > 0 && availableSubs.length > 1 && (
-                <FilterSection title={t("dokuman.filter.altKategori")} isOpen={openSections.sub !== false} onToggle={() => toggleSection("sub")}>
-                  {availableSubs.map(sub => (
-                    <FilterCheckbox
-                      key={sub}
-                      label={t(subLabelKeys[sub] || sub)}
-                      count={allDocuments.filter(d => selCategories.includes(d.category) && d.sub === sub).length}
-                      checked={selSubs.includes(sub)}
-                      onChange={() => {
-                        const next = toggleArr(selSubs, sub);
-                        setSelSubs(next);
-                        setSelProducts([]);
-                      }}
-                    />
-                  ))}
-                </FilterSection>
-              )}
-
-              {/* Ürün — sadece kategori seçiliyken */}
               {selCategories.length > 0 && availableProducts.length > 0 && (
-                <FilterSection title={t("dokuman.filter.urun")} isOpen={openSections.product !== false} onToggle={() => toggleSection("product")}>
+                <FilterSection title={isEn ? "Product" : "Ürün"} isOpen={openSections.product !== false} onToggle={() => toggleSection("product")}>
                   {availableProducts.map(prod => (
-                    <FilterCheckbox
-                      key={prod}
-                      label={prod}
-                      count={allDocuments.filter(d => d.name === prod && selCategories.includes(d.category) && (selSubs.length === 0 || selSubs.includes(d.sub))).length}
+                    <FilterCheckbox key={prod} label={prod}
+                      count={docs.filter(d => (isEn ? d.productNameEn : d.productNameTr) === prod && selCategories.includes(isEn ? d.topCategoryNameEn : d.topCategoryNameTr)).length}
                       checked={selProducts.includes(prod)}
-                      onChange={() => setSelProducts(toggleArr(selProducts, prod))}
-                    />
+                      onChange={() => setSelProducts(toggleArr(selProducts, prod))} />
                   ))}
                 </FilterSection>
               )}
 
-              {/* Doküman Tipi */}
-              <FilterSection title={t("dokuman.filter.tip")} isOpen={openSections.type !== false} onToggle={() => toggleSection("type")}>
-                {typeKeys.map(typeKey => (
-                  <FilterCheckbox
-                    key={typeKey}
-                    label={t(typeLabelKeys[typeKey])}
-                    count={allDocuments.filter(d => d.type === typeKey).length}
-                    checked={selTypes.includes(typeKey)}
-                    onChange={() => setSelTypes(toggleArr(selTypes, typeKey))}
-                  />
+              <FilterSection title={isEn ? "Document Type" : "Doküman Tipi"} isOpen={openSections.type !== false} onToggle={() => toggleSection("type")}>
+                {typeKeys.map(tk => (
+                  <FilterCheckbox key={tk} label={tl(tk)} count={docs.filter(d => d.type === tk).length}
+                    checked={selTypes.includes(tk)} onChange={() => setSelTypes(toggleArr(selTypes, tk))} />
                 ))}
               </FilterSection>
-
             </div>
           </div>
         </div>
       </div>
-
-      <Footer theme="white" />
     </div>
   );
 }
 
-/* ─── Filtre Bileşenleri ─── */
-
 function FilterSection({ title, isOpen, onToggle, children }: { title: string; isOpen: boolean; onToggle: () => void; children: React.ReactNode }) {
   return (
     <div style={{ marginBottom: "8px" }}>
-      <button
-        onClick={onToggle}
-        style={{
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "14px 0",
-          background: "none",
-          border: "none",
-          borderBottom: "2px solid #dc2626",
-          cursor: "pointer",
-          marginBottom: isOpen ? "8px" : "0",
-        }}
-      >
-        <span style={{ fontSize: "12px", fontWeight: 700, color: "#1d1d1f", textTransform: "uppercase", letterSpacing: "0.1em" }}>
-          {title}
-        </span>
+      <button onClick={onToggle}
+        style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+          padding: "14px 0", background: "none", border: "none", borderBottom: "2px solid #dc2626",
+          cursor: "pointer", marginBottom: isOpen ? "8px" : "0" }}>
+        <span style={{ fontSize: "12px", fontWeight: 700, color: "#1d1d1f", textTransform: "uppercase", letterSpacing: "0.1em" }}>{title}</span>
         <ChevronDown size={14} style={{ color: "#86868b", transition: "transform 0.2s", transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
       </button>
       {isOpen && (
-        <div style={{ display: "flex", flexDirection: "column", gap: "2px", paddingBottom: "16px" }}>
-          {children}
-        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "2px", paddingBottom: "16px" }}>{children}</div>
       )}
     </div>
   );
@@ -643,43 +440,19 @@ function FilterSection({ title, isOpen, onToggle, children }: { title: string; i
 
 function FilterCheckbox({ label, count, checked, onChange }: { label: string; count: number; checked: boolean; onChange: () => void }) {
   return (
-    <button
-      onClick={onChange}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "10px",
-        padding: "8px 0",
-        background: "none",
-        border: "none",
-        cursor: "pointer",
-        width: "100%",
-        textAlign: "left",
-      }}
-    >
-      {/* Checkbox */}
-      <span
-        style={{
-          width: "16px",
-          height: "16px",
-          border: checked ? "none" : "1.5px solid #c4c4c4",
-          background: checked ? "#dc2626" : "transparent",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexShrink: 0,
-          transition: "all 0.15s",
-        }}
-      >
+    <button onClick={onChange}
+      style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 0",
+        background: "none", border: "none", cursor: "pointer", width: "100%", textAlign: "left" }}>
+      <span style={{ width: "16px", height: "16px", border: checked ? "none" : "1.5px solid #c4c4c4",
+        background: checked ? "#dc2626" : "transparent", display: "flex", alignItems: "center",
+        justifyContent: "center", flexShrink: 0, transition: "all 0.15s" }}>
         {checked && (
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
             <path d="M2 5l2.5 2.5L8 3" stroke="white" strokeWidth="1.5" strokeLinecap="square" />
           </svg>
         )}
       </span>
-      <span style={{ fontSize: "13px", fontWeight: checked ? 600 : 400, color: checked ? "#dc2626" : "#424245", flex: 1, transition: "color 0.15s" }}>
-        {label}
-      </span>
+      <span style={{ fontSize: "13px", fontWeight: checked ? 600 : 400, color: checked ? "#dc2626" : "#424245", flex: 1, transition: "color 0.15s" }}>{label}</span>
       <span style={{ fontSize: "11px", color: "#86868b" }}>{count}</span>
     </button>
   );

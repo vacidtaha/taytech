@@ -1,6 +1,4 @@
 import Link from "next/link";
-import Footer from "@/components/Footer";
-
 export default function TaytechAkademi() {
   return (
     <div className="min-h-screen bg-[#f5f5f7] pt-12">
@@ -37,7 +35,6 @@ export default function TaytechAkademi() {
         </div>
       </section>
 
-      <Footer theme="white" />
     </div>
   );
 }

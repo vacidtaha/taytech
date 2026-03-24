@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Footer from "@/components/Footer";
 import { useLanguage } from "@/context/LanguageContext";
 
 // FAQ yapısı - anahtarlar çeviri dosyalarından çekilir
@@ -193,7 +192,6 @@ export default function SikcaSorulanSorular() {
           </div>
         </div>
 
-        <Footer theme="light" />
       </div>
     );
   }
@@ -361,7 +359,6 @@ export default function SikcaSorulanSorular() {
         </div>
       </div>
 
-      <Footer theme="light" />
     </div>
   );
 }

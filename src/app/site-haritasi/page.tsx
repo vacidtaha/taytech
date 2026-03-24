@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Footer from "@/components/Footer";
 import { useLanguage } from "@/context/LanguageContext";
 
 const sitemap = [
@@ -134,7 +133,6 @@ export default function SiteHaritasi() {
           </div>
         </div>
 
-        <Footer theme="light" />
       </div>
     );
   }
@@ -165,7 +163,6 @@ export default function SiteHaritasi() {
         </div>
       </div>
 
-      <Footer theme="light" />
     </div>
   );
 }

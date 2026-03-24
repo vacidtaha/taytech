@@ -3,9 +3,8 @@
 import { Hero } from "@/components";
 import Image from "next/image";
 import Link from "next/link";
-import Footer from "@/components/Footer";
 import { useLanguage } from "@/context/LanguageContext";
-import { 
+import {
   Building2, 
   Home as HomeIcon, 
   Heart, 
@@ -14,11 +13,12 @@ import {
   Flame, 
   Dumbbell, 
   Factory, 
-  GraduationCap
+  GraduationCap,
+  Package
 } from "lucide-react";
 
 export default function Home() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   return (
     <div className="min-h-screen bg-[#f5f5f7] pt-14 overflow-x-hidden">
       <Hero />
@@ -28,29 +28,32 @@ export default function Home() {
         {/* Ürün Grid */}
         <div className="mx-[8px] md:mx-[13px]">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-[8px] lg:gap-[13px]">
-            <Link href="/urunler/akilli-kontrol-panolari" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm">
-              <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.akilli")}</h3>
-              <Image src="/akilli-kontrol.png" alt={t("home.akilli")} width={280} height={210} className="absolute top-[36%] lg:top-[40%] object-contain max-w-[40%] lg:max-w-none" />
+            <Link href="/urunler/heat-network/isi-istasyonlari" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
+              <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat1")}</h3>
+              <Image src="/uploads/D-H-TR-DHW_U0A4-Render-Sağ-1774350452047.webp" alt={t("home.cat1")} width={350} height={350} className="absolute top-[32%] lg:top-[34%] object-contain max-w-[55%] lg:max-w-[65%]" />
             </Link>
-            <Link href="/urunler/isi-istasyonu" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm">
-              <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.isi")}</h3>
-              <Image src="/isikontrol-hazir.png" alt={t("home.isi")} width={350} height={260} className="absolute top-[36%] lg:top-[40%] object-contain max-w-[45%] lg:max-w-none" />
+            <Link href="/urunler/heat-network/manyetik-filtreler" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
+              <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat2")}</h3>
+              <Image src="/uploads/IronInox-Render-Sol-1774348282120.webp" alt={t("home.cat2")} width={400} height={400} className="absolute top-[28%] lg:top-[30%] object-contain max-w-[60%] lg:max-w-[75%]" />
             </Link>
-            <Link href="/urunler/manyetik-filtre" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm">
-              <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.manyetik")}</h3>
-              <Image src="/manyetik-filtre.png" alt={t("home.manyetik")} width={280} height={210} className="absolute top-[36%] lg:top-[40%] object-contain max-w-[40%] lg:max-w-none" />
+            <Link href="/urunler/kontrol-sistemleri/smart-serisi" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
+              <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat3")}</h3>
+              <Image src="/uploads/Smart-Booster-Front-1774349398054.webp" alt={t("home.cat3")} width={300} height={300} className="absolute top-[32%] lg:top-[34%] object-contain max-w-[45%] lg:max-w-[50%]" />
             </Link>
-            <Link href="/urunler/elektronik" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm">
-              <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.elektronik")}</h3>
-              <Image src="/elektronik.png" alt={t("home.elektronik")} width={350} height={260} className="absolute top-[36%] lg:top-[40%] object-contain max-w-[45%] lg:max-w-none" />
+            <Link href="/urunler/kontrol-sistemleri/electro-mechanical-panels" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
+              <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat4")}</h3>
+              <Image src="/uploads/Direct-Start-Front--ABS-1774350266194.webp" alt={t("home.cat4")} width={300} height={300} className="absolute top-[32%] lg:top-[34%] object-contain max-w-[45%] lg:max-w-[50%]" />
             </Link>
-            <Link href="/urunler/taytech-cloud" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm">
-              <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cloud")}</h3>
-              <Image src="/cloud.png" alt={t("home.cloud")} width={350} height={260} className="absolute top-[36%] lg:top-[40%] object-contain max-w-[45%] lg:max-w-none" />
+            <Link href="/urunler/veri-yonetim-sistemleri" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
+              <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat5")}</h3>
+              <Image src="/cloud.png" alt={t("home.cat5")} width={350} height={260} className="absolute top-[36%] lg:top-[40%] object-contain max-w-[45%] lg:max-w-none" />
             </Link>
-            <Link href="/urunler/temizleyici-sivilar" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm">
-              <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.sivilar")}</h3>
-              <Image src="/temizleyici.png" alt={t("home.sivilar")} width={180} height={135} className="absolute top-[36%] lg:top-[40%] object-contain max-w-[30%] lg:max-w-none" />
+            <Link href="/urunler/isitma-sogutma-ekipmanlari" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
+              <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat6")}</h3>
+              <div className="absolute top-[36%] lg:top-[40%] flex items-center justify-center">
+                <Package className="w-20 h-20 lg:w-32 lg:h-32 text-[#d2d2d7] group-hover:text-[#dc2626]/30 transition-colors duration-300" strokeWidth={1} />
+              </div>
+              <span className="absolute bottom-[12%] lg:bottom-[14%] text-[11px] lg:text-[13px] text-[#86868b] font-medium tracking-wide">{locale === "TR" ? "Çok Yakında" : "Coming Soon"}</span>
             </Link>
           </div>
         </div>
@@ -73,54 +76,33 @@ export default function Home() {
         </div>
         <div style={{ padding: "0 28px 32px" }} className="lg:!px-[100px] lg:!pb-[80px]">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
-            <a href="/smart-box-datasheet.pdf" target="_blank" rel="noopener noreferrer" className="group" style={{ textDecoration: "none" }}>
-              <div style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", transition: "all 0.2s" }} className="group-hover:!bg-white">
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", borderBottom: "1px solid rgba(255,255,255,0.08)", transition: "border-color 0.2s" }} className="group-hover:!border-[#e5e5e5] h-[70px] md:h-[120px]">
-                  <svg className="w-7 h-7 md:w-10 md:h-10" viewBox="0 0 48 48" fill="none"><rect x="6" y="4" width="28" height="36" className="stroke-white/50 group-hover:!stroke-[#dc2626]" strokeWidth="2" style={{ transition: "all 0.2s" }} /><line x1="12" y1="14" x2="28" y2="14" className="stroke-white/50 group-hover:!stroke-[#dc2626]" strokeWidth="1.5" style={{ transition: "all 0.2s" }} /><line x1="12" y1="20" x2="24" y2="20" className="stroke-white/30 group-hover:!stroke-[#dc2626]/50" strokeWidth="1" style={{ transition: "all 0.2s" }} /><line x1="12" y1="25" x2="26" y2="25" className="stroke-white/30 group-hover:!stroke-[#dc2626]/50" strokeWidth="1" style={{ transition: "all 0.2s" }} /><rect x="32" y="16" width="12" height="16" className="stroke-white/30 group-hover:!stroke-[#dc2626]" strokeWidth="1.5" strokeDasharray="3 2" style={{ transition: "all 0.2s" }} /><circle cx="38" cy="24" r="4" className="stroke-white/30 group-hover:!stroke-[#dc2626]" strokeWidth="1" style={{ transition: "all 0.2s" }} /></svg>
+            {[
+              { href: "/uploads/Smart-Box-2025-Katalog_rev00-1774349398228.pdf", type: t("home.dokuman.katalog"), title: "Smart Box", sub: locale === "TR" ? "Kontrol Paneli" : "Control Panel" },
+              { href: "/uploads/Katalog_2025_TR_Direct-HydroHexa-DHW_rev00-1774350452166.pdf", type: t("home.dokuman.katalog"), title: "HydroHexa DHW", sub: locale === "TR" ? "Isı İstasyonu" : "Heat Interface Unit" },
+              { href: "/uploads/Manyetik-Filtre-Katalogu-IronInox-1774348306323.pdf", type: t("home.dokuman.katalog"), title: "IronInox", sub: locale === "TR" ? "Manyetik Filtre" : "Magnetic Filter" },
+              { href: "/katalog.pdf", type: t("home.dokuman.katalog"), title: locale === "TR" ? "Taytech Genel Katalog" : "Taytech General Catalog", sub: locale === "TR" ? "Tüm Ürünler" : "All Products" },
+              { href: "/uploads/Kullanıcı-Kılavuzu_Smart-Booster_rev00-1774349398157.pdf", type: t("home.dokuman.kilavuz"), title: "Smart Booster", sub: locale === "TR" ? "Kontrol Paneli" : "Control Panel" },
+              { href: "/uploads/Kurulum-ve-Çalıştırma-Kılavuzu_Direct_ThermoHexa-DHW_Rev00-1774351690352.pdf", type: t("home.dokuman.kilavuz"), title: "ThermoHexa DHW", sub: locale === "TR" ? "Isı İstasyonu" : "Heat Interface Unit" },
+              { href: "/uploads/Direct-ThermoHexa-RH-Katalog-1774351690414.pdf", type: t("home.dokuman.katalog"), title: "ThermoHexa RH", sub: locale === "TR" ? "Isı İstasyonu" : "Heat Interface Unit" },
+              { href: "/uploads/Katalog_2025_TR_Indirect-SmartHexa_rev00-1774350985376.pdf", type: t("home.dokuman.katalog"), title: "SmartHexa", sub: locale === "TR" ? "Isı İstasyonu" : "Heat Interface Unit" },
+            ].map((doc, i) => (
+              <a key={i} href={doc.href} target="_blank" rel="noopener noreferrer" className="group" style={{ textDecoration: "none" }}>
+                <div style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", transition: "all 0.2s" }} className="group-hover:!bg-white">
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", borderBottom: "1px solid rgba(255,255,255,0.08)", transition: "border-color 0.2s" }} className="group-hover:!border-[#e5e5e5] h-[70px] md:h-[120px]">
+                    {doc.type === t("home.dokuman.kilavuz") ? (
+                      <svg className="w-7 h-7 md:w-10 md:h-10" viewBox="0 0 48 48" fill="none"><path d="M24 8C20 6 14 5 6 6v30c8-1 14 0 18 2 4-2 10-3 18-2V6c-8-1-14 0-18 2z" className="stroke-white/50 group-hover:!stroke-[#dc2626]" strokeWidth="2" strokeLinejoin="round" style={{ transition: "all 0.2s" }} /><line x1="24" y1="8" x2="24" y2="38" className="stroke-white/50 group-hover:!stroke-[#dc2626]" strokeWidth="1.5" style={{ transition: "all 0.2s" }} /><line x1="11" y1="14" x2="20" y2="14" className="stroke-white/30 group-hover:!stroke-[#dc2626]/50" strokeWidth="1" style={{ transition: "all 0.2s" }} /><line x1="11" y1="19" x2="19" y2="19" className="stroke-white/30 group-hover:!stroke-[#dc2626]/50" strokeWidth="1" style={{ transition: "all 0.2s" }} /><line x1="28" y1="14" x2="37" y2="14" className="stroke-white/30 group-hover:!stroke-[#dc2626]/50" strokeWidth="1" style={{ transition: "all 0.2s" }} /><line x1="28" y1="19" x2="36" y2="19" className="stroke-white/30 group-hover:!stroke-[#dc2626]/50" strokeWidth="1" style={{ transition: "all 0.2s" }} /></svg>
+                    ) : (
+                      <svg className="w-7 h-7 md:w-10 md:h-10" viewBox="0 0 48 48" fill="none"><rect x="6" y="4" width="28" height="36" className="stroke-white/50 group-hover:!stroke-[#dc2626]" strokeWidth="2" style={{ transition: "all 0.2s" }} /><line x1="12" y1="14" x2="28" y2="14" className="stroke-white/50 group-hover:!stroke-[#dc2626]" strokeWidth="1.5" style={{ transition: "all 0.2s" }} /><line x1="12" y1="20" x2="24" y2="20" className="stroke-white/30 group-hover:!stroke-[#dc2626]/50" strokeWidth="1" style={{ transition: "all 0.2s" }} /><line x1="12" y1="25" x2="26" y2="25" className="stroke-white/30 group-hover:!stroke-[#dc2626]/50" strokeWidth="1" style={{ transition: "all 0.2s" }} /><rect x="32" y="16" width="12" height="16" className="stroke-white/30 group-hover:!stroke-[#dc2626]" strokeWidth="1.5" strokeDasharray="3 2" style={{ transition: "all 0.2s" }} /><circle cx="38" cy="24" r="4" className="stroke-white/30 group-hover:!stroke-[#dc2626]" strokeWidth="1" style={{ transition: "all 0.2s" }} /></svg>
+                    )}
+                  </div>
+                  <div style={{ padding: "12px 12px 14px" }}>
+                    <p style={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", transition: "color 0.2s" }} className="text-[9px] md:text-[11px] mb-1 md:mb-2 text-white/40 group-hover:!text-[#dc2626]">{doc.type}</p>
+                    <h4 style={{ fontWeight: 600, marginBottom: "2px", transition: "color 0.2s" }} className="text-[12px] md:text-[15px] text-white group-hover:!text-[#1d1d1f]">{doc.title}</h4>
+                    <p style={{ fontSize: "12px", transition: "color 0.2s" }} className="text-white/40 group-hover:!text-[#86868b]">{doc.sub}</p>
+                  </div>
                 </div>
-                <div style={{ padding: "12px 12px 14px" }}>
-                  <p style={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", transition: "color 0.2s" }} className="text-[9px] md:text-[11px] mb-1 md:mb-2 text-white/40 group-hover:!text-[#dc2626]">{t("home.dokuman.datasheet")}</p>
-                  <h4 style={{ fontWeight: 600, marginBottom: "2px", transition: "color 0.2s" }} className="text-[12px] md:text-[15px] text-white group-hover:!text-[#1d1d1f]">Smart Box</h4>
-                  <p style={{ fontSize: "12px", transition: "color 0.2s" }} className="text-white/40 group-hover:!text-[#86868b]">{t("home.dokuman.sub1")}</p>
-                </div>
-              </div>
-            </a>
-            <a href="/thermohexa-datasheet.pdf" target="_blank" rel="noopener noreferrer" className="group" style={{ textDecoration: "none" }}>
-              <div style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", transition: "all 0.2s" }} className="group-hover:!bg-white">
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", borderBottom: "1px solid rgba(255,255,255,0.08)", transition: "border-color 0.2s" }} className="group-hover:!border-[#e5e5e5] h-[70px] md:h-[120px]">
-                  <svg className="w-7 h-7 md:w-10 md:h-10" viewBox="0 0 48 48" fill="none"><rect x="6" y="4" width="28" height="36" className="stroke-white/50 group-hover:!stroke-[#dc2626]" strokeWidth="2" style={{ transition: "all 0.2s" }} /><line x1="12" y1="14" x2="28" y2="14" className="stroke-white/50 group-hover:!stroke-[#dc2626]" strokeWidth="1.5" style={{ transition: "all 0.2s" }} /><line x1="12" y1="20" x2="24" y2="20" className="stroke-white/30 group-hover:!stroke-[#dc2626]/50" strokeWidth="1" style={{ transition: "all 0.2s" }} /><line x1="12" y1="25" x2="26" y2="25" className="stroke-white/30 group-hover:!stroke-[#dc2626]/50" strokeWidth="1" style={{ transition: "all 0.2s" }} /><rect x="32" y="16" width="12" height="16" className="stroke-white/30 group-hover:!stroke-[#dc2626]" strokeWidth="1.5" strokeDasharray="3 2" style={{ transition: "all 0.2s" }} /><circle cx="38" cy="24" r="4" className="stroke-white/30 group-hover:!stroke-[#dc2626]" strokeWidth="1" style={{ transition: "all 0.2s" }} /></svg>
-                </div>
-                <div style={{ padding: "12px 12px 14px" }}>
-                  <p style={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", transition: "color 0.2s" }} className="text-[9px] md:text-[11px] mb-1 md:mb-2 text-white/40 group-hover:!text-[#dc2626]">{t("home.dokuman.datasheet")}</p>
-                  <h4 style={{ fontWeight: 600, marginBottom: "2px", transition: "color 0.2s" }} className="text-[12px] md:text-[15px] text-white group-hover:!text-[#1d1d1f]">ThermoHexa</h4>
-                  <p style={{ fontSize: "12px", transition: "color 0.2s" }} className="text-white/40 group-hover:!text-[#86868b]">{t("home.dokuman.sub2")}</p>
-                </div>
-              </div>
-            </a>
-            <a href="/fxa-kullanim.pdf" target="_blank" rel="noopener noreferrer" className="group" style={{ textDecoration: "none" }}>
-              <div style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", transition: "all 0.2s" }} className="group-hover:!bg-white">
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", borderBottom: "1px solid rgba(255,255,255,0.08)", transition: "border-color 0.2s" }} className="group-hover:!border-[#e5e5e5] h-[70px] md:h-[120px]">
-                  <svg className="w-7 h-7 md:w-10 md:h-10" viewBox="0 0 48 48" fill="none"><path d="M24 8C20 6 14 5 6 6v30c8-1 14 0 18 2 4-2 10-3 18-2V6c-8-1-14 0-18 2z" className="stroke-white/50 group-hover:!stroke-[#dc2626]" strokeWidth="2" strokeLinejoin="round" style={{ transition: "all 0.2s" }} /><line x1="24" y1="8" x2="24" y2="38" className="stroke-white/50 group-hover:!stroke-[#dc2626]" strokeWidth="1.5" style={{ transition: "all 0.2s" }} /><line x1="11" y1="14" x2="20" y2="14" className="stroke-white/30 group-hover:!stroke-[#dc2626]/50" strokeWidth="1" style={{ transition: "all 0.2s" }} /><line x1="11" y1="19" x2="19" y2="19" className="stroke-white/30 group-hover:!stroke-[#dc2626]/50" strokeWidth="1" style={{ transition: "all 0.2s" }} /><line x1="28" y1="14" x2="37" y2="14" className="stroke-white/30 group-hover:!stroke-[#dc2626]/50" strokeWidth="1" style={{ transition: "all 0.2s" }} /><line x1="28" y1="19" x2="36" y2="19" className="stroke-white/30 group-hover:!stroke-[#dc2626]/50" strokeWidth="1" style={{ transition: "all 0.2s" }} /></svg>
-                </div>
-                <div style={{ padding: "12px 12px 14px" }}>
-                  <p style={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", transition: "color 0.2s" }} className="text-[9px] md:text-[11px] mb-1 md:mb-2 text-white/40 group-hover:!text-[#dc2626]">{t("home.dokuman.kilavuz")}</p>
-                  <h4 style={{ fontWeight: 600, marginBottom: "2px", transition: "color 0.2s" }} className="text-[12px] md:text-[15px] text-white group-hover:!text-[#1d1d1f]">FXA</h4>
-                  <p style={{ fontSize: "12px", transition: "color 0.2s" }} className="text-white/40 group-hover:!text-[#86868b]">{t("home.dokuman.sub1")}</p>
-                </div>
-              </div>
-            </a>
-            <a href="/katalog.pdf" target="_blank" rel="noopener noreferrer" className="group" style={{ textDecoration: "none" }}>
-              <div style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", transition: "all 0.2s" }} className="group-hover:!bg-white">
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", borderBottom: "1px solid rgba(255,255,255,0.08)", transition: "border-color 0.2s" }} className="group-hover:!border-[#e5e5e5] h-[70px] md:h-[120px]">
-                  <svg className="w-7 h-7 md:w-10 md:h-10" viewBox="0 0 48 48" fill="none"><path d="M4 12h16l4-4h20v32H4V12z" className="stroke-white/50 group-hover:!stroke-[#dc2626]" strokeWidth="2" strokeLinejoin="round" style={{ transition: "all 0.2s" }} /><line x1="4" y1="18" x2="44" y2="18" className="stroke-white/50 group-hover:!stroke-[#dc2626]" strokeWidth="1.5" style={{ transition: "all 0.2s" }} /><rect x="16" y="24" width="16" height="2" className="fill-white/20 group-hover:!fill-[#dc2626]/30" style={{ transition: "all 0.2s" }} /><rect x="18" y="30" width="12" height="2" className="fill-white/20 group-hover:!fill-[#dc2626]/30" style={{ transition: "all 0.2s" }} /></svg>
-                </div>
-                <div style={{ padding: "12px 12px 14px" }}>
-                  <p style={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", transition: "color 0.2s" }} className="text-[9px] md:text-[11px] mb-1 md:mb-2 text-white/40 group-hover:!text-[#dc2626]">{t("home.dokuman.katalog")}</p>
-                  <h4 style={{ fontWeight: 600, marginBottom: "2px", transition: "color 0.2s" }} className="text-white group-hover:!text-[#1d1d1f]">Taytech Genel Katalog</h4>
-                  <p style={{ fontSize: "12px", transition: "color 0.2s" }} className="text-white/40 group-hover:!text-[#86868b]">{t("home.dokuman.sub3")}</p>
-                </div>
-              </div>
-            </a>
+              </a>
+            ))}
           </div>
         </div>
       </div>
@@ -312,7 +294,6 @@ export default function Home() {
       </div>
       
       <div style={{ height: '13px', backgroundColor: '#f5f5f7' }} />
-      <Footer theme="white" />
     </div>
   );
 }

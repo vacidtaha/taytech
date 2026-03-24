@@ -1,143 +1,168 @@
 "use client";
 
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ChevronLeft } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
+interface MenuItem {
+  tr: string;
+  en: string;
+  href: string;
+  children?: MenuItem[];
+}
+
+type Locale = "TR" | "EN";
+function ml(item: MenuItem, locale: Locale) {
+  return locale === "EN" ? item.en : item.tr;
+}
+
+const HN = "/urunler/heat-network";
+const HIU = `${HN}/isi-istasyonlari`;
+const ISE = "/urunler/isitma-sogutma-ekipmanlari";
+const VYS = "/urunler/veri-yonetim-sistemleri";
+const KS = "/urunler/kontrol-sistemleri";
+
+function m(tr: string, en: string, href: string, children?: MenuItem[]): MenuItem {
+  return children ? { tr, en, href, children } : { tr, en, href };
+}
+
+const menuTree: MenuItem[] = [
+  m("Isı Şebekesi", "Heat Network", HN, [
+    m("Isı İstasyonları (HIU)", "Heat Interface Units (HIU)", HIU, [
+      m("SmartHexa Serisi", "SmartHexa Series", `${HIU}/smarthexa-series`, [
+        m("Indirect SmartHexa", "Indirect SmartHexa", `${HIU}/smarthexa-series/indirect-smarthexa`),
+        m("Direct SmartHexa - DHW", "Direct SmartHexa - DHW", `${HIU}/smarthexa-series/direct-smarthexa/direct-smarthexa-dhw`),
+        m("Direct SmartHexa - RH", "Direct SmartHexa - RH", `${HIU}/smarthexa-series/direct-smarthexa/direct-smarthexa-rh`),
+        m("Direct SmartHexa - UFH", "Direct SmartHexa - UFH", `${HIU}/smarthexa-series/direct-smarthexa/direct-smarthexa-ufh`),
+      ]),
+      m("Hydro-EM Serisi", "Hydro-EM Series", `${HIU}/hydro-em-series`, [
+        m("Direct Hydro EM RH", "Direct Hydro EM RH", `${HIU}/hydro-em-series/direct-hydro-em-rh`),
+        m("Direct Hydro EM UFH", "Direct Hydro EM UFH", `${HIU}/hydro-em-series/direct-hydro-em-ufh`),
+      ]),
+      m("HydroHexa Serisi", "HydroHexa Series", `${HIU}/hydrohexa-series`, [
+        m("Indirect HydroHexa", "Indirect HydroHexa", `${HIU}/hydrohexa-series/indirect-hydrohexa`),
+        m("Direct HydroHexa - DHW", "Direct HydroHexa - DHW", `${HIU}/hydrohexa-series/direct-hydrohexa/direct-hydrohexa-dhw`),
+        m("Direct HydroHexa - RH", "Direct HydroHexa - RH", `${HIU}/hydrohexa-series/direct-hydrohexa/direct-hydrohexa-rh`),
+        m("Direct HydroHexa - UFH", "Direct HydroHexa - UFH", `${HIU}/hydrohexa-series/direct-hydrohexa/direct-hydrohexa-ufh`),
+      ]),
+      m("ThermoHexa Serisi", "ThermoHexa Series", `${HIU}/thermohexa-series`, [
+        m("Indirect ThermoHexa", "Indirect ThermoHexa", `${HIU}/thermohexa-series/indirect-thermohexa`),
+        m("Direct ThermoHexa - DHW", "Direct ThermoHexa - DHW", `${HIU}/thermohexa-series/direct-thermohexa/direct-thermohexa-dhw`),
+        m("Direct ThermoHexa - RH", "Direct ThermoHexa - RH", `${HIU}/thermohexa-series/direct-thermohexa/direct-thermohexa-rh`),
+        m("Direct ThermoHexa - UFH", "Direct ThermoHexa - UFH", `${HIU}/thermohexa-series/direct-thermohexa/direct-thermohexa-ufh`),
+      ]),
+    ]),
+    m("Endüstriyel Isı İstasyonları", "Industrial Heat Stations", `${HN}/endustriyel-isi-istasyonlari`, [
+      m("Bölgesel Isıtma Alt İstasyonları", "District Heating Substations", `${HN}/endustriyel-isi-istasyonlari/district-heating-substations`),
+      m("Bölgesel Soğutma Alt İstasyonları", "District Cooling Substations", `${HN}/endustriyel-isi-istasyonlari/district-cooling-substations`),
+    ]),
+    m("Sayaç İstasyonları", "Metering Stations", `${HN}/sayac-istasyonlari`, [
+      m("Meter Tech - W1", "Meter Tech - W1", `${HN}/sayac-istasyonlari/meter-tech-w1`),
+      m("Meter Tech - W2", "Meter Tech - W2", `${HN}/sayac-istasyonlari/meter-tech-w2`),
+      m("Meter Tech - W3", "Meter Tech - W3", `${HN}/sayac-istasyonlari/meter-tech-w3`),
+      m("Meter Tech - W4", "Meter Tech - W4", `${HN}/sayac-istasyonlari/meter-tech-w4`),
+    ]),
+    m("Veri Yönetim Sistemleri (BLES)", "Data Management Systems (BLES)", `${HN}/bles-heat-network`),
+    m("Manyetik Filtreler (IRONTRAP)", "Magnetic Filters (IRONTRAP)", `${HN}/manyetik-filtreler`, [
+      m("IronTrap", "IronTrap", `${HN}/manyetik-filtreler/irontrap`),
+      m("IronInox", "IronInox", `${HN}/manyetik-filtreler/ironinox`),
+    ]),
+    m("Isı İstasyonu Aksesuarları", "HIU Accessories", `${HN}/isi-istasyonu-aksesuarlari`, [
+      m("İlk Kurulum Kiti", "First Fix Rail Kit", `${HN}/isi-istasyonu-aksesuarlari/first-fix-rail-kit`),
+      m("Bağlantı Kutuları", "Junction Boxes", `${HN}/isi-istasyonu-aksesuarlari/junction-boxes`),
+      m("Re-Sirkülasyon Kitleri", "Re-Circulation Kits", `${HN}/isi-istasyonu-aksesuarlari/re-circulation-kits`),
+      m("Fark Basınç Vanası", "Differential Pressure Valve", `${HN}/isi-istasyonu-aksesuarlari/differential-pressure-valve`),
+      m("Termal By-Pass Vanası", "Thermal By-Pass Valve", `${HN}/isi-istasyonu-aksesuarlari/thermal-by-pass-valve`),
+      m("Kabin", "Cabinet", `${HN}/isi-istasyonu-aksesuarlari/cabinet`),
+    ]),
+    m("Sayaçlar", "Meters", `${HN}/sayaclar`, [
+      m("Isı Sayacı", "Heat Meter", `${HN}/sayaclar/heat-meter`),
+      m("Soğutma Sayacı", "Cooling Meter", `${HN}/sayaclar/cooling-meter`),
+      m("Su Sayacı", "Water Meter", `${HN}/sayaclar/water-meter`),
+    ]),
+  ]),
+  m("Isıtma Soğutma Ekipmanları", "Heating & Cooling Equipment", ISE, [
+    m("Termal Aktüatörler", "Thermal Actuators", `${ISE}/termal-aktuatorler`),
+    m("Oda Termostatları", "Room Thermostats", `${ISE}/oda-termostatlari`),
+    m("Karışım Vanaları", "Mixing Valves", `${ISE}/mixing-valves`),
+    m("Kollektörler", "Manifolds", `${ISE}/manifolds`),
+  ]),
+  m("Veri Yönetim Sistemleri (BLES)", "Data Management Systems (BLES)", VYS, [
+    m("Yazılım Platformları", "Software Platforms", `${VYS}/yazilim-platformlari`),
+    m("Veri Yönetim Cihazları", "Data Management Devices", `${VYS}/veri-yonetim-cihazlari`, [
+      m("M-Bus Converter", "M-Bus Converter", `${VYS}/veri-yonetim-cihazlari/m-bus-converter`),
+      m("TTSmart Box", "TTSmart Box", `${VYS}/veri-yonetim-cihazlari/ttsmart-box`),
+      m("Data Logger", "Data Logger", `${VYS}/veri-yonetim-cihazlari/data-logger`),
+      m("Gateway", "Gateway", `${VYS}/veri-yonetim-cihazlari/gateway`),
+    ]),
+  ]),
+  m("Kontrol Sistemleri", "Control Systems", KS, [
+    m("Smart Serisi", "Smart Series", `${KS}/smart-serisi`, [
+      m("Smart Booster", "Smart Booster", `${KS}/smart-serisi/smart-booster`),
+      m("Smart Bore Hole", "Smart Bore Hole", `${KS}/smart-serisi/smart-bore-hole`),
+      m("Smart Box", "Smart Box", `${KS}/smart-serisi/smart-box`),
+      m("Smart Exclusive", "Smart Exclusive", `${KS}/smart-serisi/smart-exclusive`),
+      m("Smart Grinder", "Smart Grinder", `${KS}/smart-serisi/smart-grinder`),
+      m("Smart Wastewater", "Smart Wastewater", `${KS}/smart-serisi/smart-wastewater`),
+    ]),
+    m("Elektromekanik Panolar", "Electro Mechanical Panels", `${KS}/electro-mechanical-panels`, [
+      m("Doğrudan Yol Verme", "Direct Start", `${KS}/electro-mechanical-panels/em-direct-start`),
+      m("Yıldız Üçgen", "Star & Delta Start", `${KS}/electro-mechanical-panels/em-star-delta-start`),
+    ]),
+    m("Yangın Söndürme Sistem Kontrol Panoları", "Fire Fighting System Control Panels", `${KS}/fire-fighting-panels`, [
+      m("NFPA / UL & FM Serisi", "NFPA / UL & FM Series", `${KS}/fire-fighting-panels/nfpa-ul-fm-series`, [
+        m("Dizel Motor Tahrikli", "Diesel Engine Driven", `${KS}/fire-fighting-panels/nfpa-ul-fm-series/nfpa-diesel`),
+        m("Elektrik Motor Tahrikli", "Electric Motor Driven", `${KS}/fire-fighting-panels/nfpa-ul-fm-series/nfpa-electric`),
+        m("Jokey Serisi", "Jockey Series", `${KS}/fire-fighting-panels/nfpa-ul-fm-series/nfpa-jockey`),
+      ]),
+      m("EN Serisi", "EN Series", `${KS}/fire-fighting-panels/en-series`, [
+        m("Dizel Serisi EN 12845", "Diesel Series EN 12845", `${KS}/fire-fighting-panels/en-series/diesel-en-12845`),
+        m("Elektrik Serisi EN 12845", "Electric Series EN 12845", `${KS}/fire-fighting-panels/en-series/electric-en-12845`),
+        m("Jokey Serisi", "Jockey Series", `${KS}/fire-fighting-panels/en-series/jockey-en-series`),
+      ]),
+    ]),
+  ]),
+];
+
+const bilgiMerkeziItems: MenuItem[] = [
+  m("SSS", "FAQ", "/bilgi-merkezi/sikca-sorulan-sorular"),
+  m("Doküman Merkezi", "Document Center", "/dokuman-merkezi"),
+  m("Teknik Destek", "Technical Support", "/iletisim"),
+  m("Taytech Akademi", "Taytech Academy", "/bilgi-merkezi/taytech-akademi"),
+  m("Video Arşivi", "Video Archive", "/bilgi-merkezi/video-arsivi"),
+];
+
 const navItems = [
-  { labelKey: "nav.urunler", href: "#", hasDropdown: true, dropdownType: "products" as const },
-  { labelKey: "nav.cozumler", href: "/cozumler", hasDropdown: false, dropdownType: null },
-  { labelKey: "nav.dokuman", href: "/dokuman-merkezi", hasDropdown: false, dropdownType: null },
-  { labelKey: "nav.haberler", href: "/haberler", hasDropdown: false, dropdownType: null },
-  { labelKey: "nav.bilgi", href: "#", hasDropdown: true, dropdownType: "bilgi-merkezi" as const },
-  { labelKey: "nav.kurumsal", href: "/kurumsal", hasDropdown: false, dropdownType: null },
-  { labelKey: "nav.iletisim", href: "/iletisim", hasDropdown: false, dropdownType: null },
+  { tr: "Ürünler", en: "Products", hasDropdown: true },
+  { tr: "Çözümler", en: "Solutions", href: "/cozumler" },
+  { tr: "Doküman Merkezi", en: "Documents", href: "/dokuman-merkezi" },
+  { tr: "Haberler", en: "News", href: "/haberler" },
+  { tr: "Bilgi Merkezi", en: "Knowledge Base", hasDropdown: true },
+  { tr: "Kurumsal", en: "Corporate", href: "/kurumsal" },
+  { tr: "İletişim", en: "Contact", href: "/iletisim" },
 ];
 
-const bilgiMerkeziItems = [
-  { labelKey: "mega.bilgi.sss", href: "/bilgi-merkezi/sikca-sorulan-sorular" },
-  { labelKey: "mega.bilgi.dokuman", href: "/dokuman-merkezi" },
-  { labelKey: "mega.bilgi.destek", href: "/iletisim" },
-  { labelKey: "mega.bilgi.akademi", href: "/bilgi-merkezi/taytech-akademi" },
-  { labelKey: "mega.bilgi.video", href: "/bilgi-merkezi/video-arsivi" },
-];
+const LIGHT_PATHS = ["/", "/urunler", "/iletisim", "/kurumsal", "/cozumler", "/haberler", "/bilgi-merkezi", "/dokuman-merkezi", "/gizlilik-politikasi", "/kullanim-kosullari", "/site-haritasi"];
 
-const products = [
-  { labelKey: "mega.prod.akilli", matchKey: "akilli", href: "/urunler/akilli-kontrol-panolari" },
-  { labelKey: "mega.prod.isi", matchKey: "isi-istasyonu", href: "/urunler/isi-istasyonu" },
-  { labelKey: "mega.prod.elektronik", matchKey: "elektronik", href: "/urunler/elektronik" },
-  { labelKey: "mega.prod.cloud", matchKey: "cloud", href: "/urunler/taytech-cloud" },
-  { labelKey: "mega.prod.manyetik", matchKey: "manyetik-filtre", href: "/urunler/manyetik-filtre" },
-  { labelKey: "mega.prod.sivilar", matchKey: "sivilar", href: "/urunler/temizleyici-sivilar" },
-];
+function has(item: MenuItem): boolean {
+  return !!item.children && item.children.length > 0;
+}
 
-const languages = [
-  { code: "TR", label: "Türkçe" },
-  { code: "EN", label: "English" },
-];
-
-const cloudItems = [
-  { id: "c1", label: "Dataloger", href: "/urunler/taytech-cloud?urun=dataloger" },
-  { id: "c2", label: "Dataloger Gateway", href: "/urunler/taytech-cloud?urun=dataloger-gateway" },
-  { id: "c3", label: "GSM Modem", href: "/urunler/taytech-cloud?urun=gsm-modem" },
-  { id: "c4", label: "RF Repater", href: "/urunler/taytech-cloud?urun=rf-repater" },
-  { id: "c5", label: "M-Bus Converter", href: "/urunler/taytech-cloud?urun=m-bus-converter" },
-];
-
-const sivilarCategories = [
-  { labelKey: "mega.prod.koruyucu", key: "koruyucu", href: "/urunler/temizleyici-sivilar/koruyucu",
-    items: [
-      { id: "ks1", label: "TP100+", href: "/urunler/temizleyici-sivilar/koruyucu?urun=tp100" },
-      { id: "ks2", label: "TP120+", href: "/urunler/temizleyici-sivilar/koruyucu?urun=tp120" },
-      { id: "ks3", label: "TP130+", href: "/urunler/temizleyici-sivilar/koruyucu?urun=tp130" },
-    ]
-  },
-  { labelKey: "mega.prod.temizleyici", key: "temizleyici", href: "/urunler/temizleyici-sivilar/temizleyici",
-    items: [
-      { id: "ts1", label: "TC200+", href: "/urunler/temizleyici-sivilar/temizleyici?urun=tc200" },
-      { id: "ts2", label: "TC210+", href: "/urunler/temizleyici-sivilar/temizleyici?urun=tc210" },
-      { id: "ts3", label: "TC220+", href: "/urunler/temizleyici-sivilar/temizleyici?urun=tc220" },
-    ]
-  },
-];
-
-const elektronikCategories = [
-  { labelKey: "mega.prod.smartEnd", key: "smart-endustriyel", href: "/urunler/elektronik/smart-endustriyel",
-    items: [
-      { id: "se1", labelKey: "mega.prod.grinder", href: "/urunler/elektronik/smart-endustriyel?urun=grinder" },
-      { id: "se2", labelKey: "mega.prod.hidrofor", href: "/urunler/elektronik/smart-endustriyel?urun=hidrofor" },
-      { id: "se3", labelKey: "mega.prod.atikSu", href: "/urunler/elektronik/smart-endustriyel?urun=atik-su" },
-      { id: "se4", labelKey: "mega.prod.derinKuyu", href: "/urunler/elektronik/smart-endustriyel?urun=derin-kuyu" },
-    ]
-  },
-  { labelKey: "mega.prod.isiKontrol", key: "isi-istasyonu-kontrolorleri", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri",
-    items: [
-      { id: "isk1", labelKey: "ESS-86", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=ess-86" },
-      { id: "isk2", labelKey: "CHS18", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=chs18" },
-      { id: "isk3", labelKey: "DE10", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=de10" },
-      { id: "isk4", labelKey: "DE15", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=de15" },
-      { id: "isk5", labelKey: "DE20", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=de20" },
-      { id: "isk6", labelKey: "DE25", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=de25" },
-      { id: "isk7", labelKey: "DE30", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri?urun=de30" },
-    ]
-  },
-  { labelKey: "mega.prod.yerden", key: "yerden-isitma", href: "/urunler/elektronik/yerden-isitma",
-    items: [
-      { id: "yi1", labelKey: "mega.prod.tboxYerden", href: "/urunler/elektronik/yerden-isitma?urun=t-box" },
-    ]
-  },
-];
-
-const kontrolPanolariCategories = [
-  { labelKey: "mega.prod.elektronikPano", key: "elektronik", href: "/urunler/akilli-kontrol-panolari/elektronik",
-    items: [
-      { id: "e1", label: "Direct Start", href: "/urunler/akilli-kontrol-panolari/elektronik/direct-start" },
-      { id: "e2", labelKey: "mega.prod.invertor", href: "/urunler/akilli-kontrol-panolari/elektronik/invertor" },
-      { id: "e3", labelKey: "mega.prod.softStarter", href: "/urunler/akilli-kontrol-panolari/elektronik/soft-starter" },
-      { id: "e4", labelKey: "mega.prod.yildizUcgen", href: "/urunler/akilli-kontrol-panolari/elektronik/yildiz-ucgen" },
-    ]
-  },
-  { labelKey: "mega.prod.elektromekanikPano", key: "elektromekanik", href: "/urunler/akilli-kontrol-panolari/elektromekanik",
-    items: [
-      { id: "em1", labelKey: "mega.prod.dogrudan", href: "/urunler/akilli-kontrol-panolari/elektromekanik/dogrudan-yol-verme" },
-      { id: "em2", labelKey: "mega.prod.yildizUcgenEM", href: "/urunler/akilli-kontrol-panolari/elektromekanik/yildiz-ucgen" },
-    ]
-  },
-  { labelKey: "mega.prod.yanginPano", key: "yangin", href: "/urunler/akilli-kontrol-panolari/yangin-sistemleri",
-    items: [
-      { id: "y1", labelKey: "mega.prod.jokey", href: "/urunler/akilli-kontrol-panolari/yangin-sistemleri/jokey" },
-      { id: "y2", labelKey: "mega.prod.elektrikli", href: "/urunler/akilli-kontrol-panolari/yangin-sistemleri/elektrikli" },
-      { id: "y3", labelKey: "mega.prod.dizel", href: "/urunler/akilli-kontrol-panolari/yangin-sistemleri/dizel" },
-    ]
-  },
-];
-
-const isiIstasyonuSubCategories = {
-  direct: {
-    label: "Direct",
-    href: "/urunler/isi-istasyonu/direct",
-    items: [
-      { id: "d1", label: "ThermoHexa", href: "/urunler/isi-istasyonu/direct?urun=thermohexa" },
-      { id: "d2", label: "ThermoHexa-UVH", href: "/urunler/isi-istasyonu/direct?urun=thermohexa-uvh" },
-      { id: "d3", label: "HydroHexa", href: "/urunler/isi-istasyonu/direct?urun=hydrohexa" },
-      { id: "d4", label: "HydroHexa UVH", href: "/urunler/isi-istasyonu/direct?urun=hydrohexa-uvh" },
-    ]
-  },
-  indirect: {
-    label: "Indirect",
-    href: "/urunler/isi-istasyonu/indirect",
-    items: [
-      { id: "i1", label: "Indirect HydroHexa", href: "/urunler/isi-istasyonu/indirect?urun=hydrohexa" },
-      { id: "i2", label: "Indirect ThermoHexa", href: "/urunler/isi-istasyonu/indirect?urun=thermohexa" },
-      { id: "i3", label: "Smart Hexa", href: "/urunler/isi-istasyonu/indirect?urun=smart-hexa" },
-    ]
+function getAt(path: number[]): MenuItem | null {
+  let current: MenuItem[] = menuTree;
+  let node: MenuItem | null = null;
+  for (const idx of path) {
+    if (!current[idx]) return null;
+    node = current[idx];
+    current = node.children ?? [];
   }
-};
+  return node;
+}
 
 interface HeaderProps {
   theme?: "dark" | "light";
@@ -147,1027 +172,404 @@ interface HeaderProps {
 
 export default function Header({ theme, isFixed = true, onMenuOpenChange }: HeaderProps) {
   const pathname = usePathname();
-  const { locale, setLocale, t } = useLanguage();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  // Drill-down mobil menü: "main" | "products" | "bilgi" | "akilli" | "isi" | "elektronik" | "cloud" | "sivilar" | sub detaylar
-  const [mobileScreen, setMobileScreen] = useState<string>("main");
-  const [mobileSubScreen, setMobileSubScreen] = useState<string | null>(null);
-  const currentLang = locale;
-  const setCurrentLang = (code: string) => setLocale(code as "TR" | "EN");
-  const [isProductsOpen, setIsProductsOpenInternal] = useState(false);
-  const [isBilgiMerkeziOpen, setIsBilgiMerkeziOpenInternal] = useState(false);
-  
-  // Wrapper function to call callback when menu state changes
-  const setIsProductsOpen = (value: boolean) => {
-    setIsProductsOpenInternal(value);
-    onMenuOpenChange?.(value || isBilgiMerkeziOpen);
-  };
-  
-  const setIsBilgiMerkeziOpen = (value: boolean) => {
-    setIsBilgiMerkeziOpenInternal(value);
-    onMenuOpenChange?.(value || isProductsOpen);
-  };
-  
-  // Otomatik theme belirleme - ana sayfa ve ürün sayfalarında light
-  const lightPages = ["/urunler/akilli-kontrol-panolari", "/urunler/isi-istasyonu", "/urunler/elektronik", "/urunler/taytech-cloud", "/urunler/manyetik-filtre", "/urunler/temizleyici-sivilar", "/iletisim", "/kurumsal", "/cozumler", "/haberler", "/bilgi-merkezi", "/dokuman-merkezi", "/gizlilik-politikasi", "/kullanim-kosullari", "/site-haritasi"];
-  const isLightPage = pathname === "/" || lightPages.some(page => pathname?.startsWith(page));
-  const autoTheme = isLightPage ? "light" : "dark";
-  const isDark = (theme ?? autoTheme) === "dark";
-  const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
-  const [hoveredSubCategory, setHoveredSubCategory] = useState<string | null>(null);
-  const [hoveredPanoCategory, setHoveredPanoCategory] = useState<string | null>(null);
-  const [hoveredElektronikCategory, setHoveredElektronikCategory] = useState<string | null>(null);
-  const [hoveredSivilarCategory, setHoveredSivilarCategory] = useState<string | null>(null);
-  // Alt ürünler için hover state'leri
-  const [hoveredCloudItem, setHoveredCloudItem] = useState<string | null>(null);
-  const [hoveredSivilarItem, setHoveredSivilarItem] = useState<string | null>(null);
-  const [hoveredElektronikItem, setHoveredElektronikItem] = useState<string | null>(null);
-  const [hoveredPanoItem, setHoveredPanoItem] = useState<string | null>(null);
-  const [hoveredIsiItem, setHoveredIsiItem] = useState<string | null>(null);
-  // Bilgi Merkezi hover state
-  const [hoveredBilgiMerkeziItem, setHoveredBilgiMerkeziItem] = useState<string | null>(null);
-  // Menüyü kapat fonksiyonu
-  const closeMenu = () => {
-    setIsProductsOpen(false);
-    setIsBilgiMerkeziOpen(false);
-    setHoveredProduct(null);
-    setHoveredSubCategory(null);
-    setHoveredPanoCategory(null);
-    setHoveredElektronikCategory(null);
-    setHoveredSivilarCategory(null);
-    setHoveredCloudItem(null);
-    setHoveredSivilarItem(null);
-    setHoveredElektronikItem(null);
-    setHoveredPanoItem(null);
-    setHoveredIsiItem(null);
-    setHoveredBilgiMerkeziItem(null);
-  };
+  const { locale, setLocale } = useLanguage();
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [hoverPath, setHoverPath] = useState<number[]>([0]);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileStack, setMobileStack] = useState<{ title: string; items: MenuItem[] }[]>([]);
+  const megaRef = useRef<HTMLDivElement>(null);
 
-  const currentLangLabel = languages.find(l => l.code === currentLang)?.label || "Türkçe";
+  const resolvedTheme = theme ?? (LIGHT_PATHS.some((p) => pathname === p || (p !== "/" && pathname.startsWith(p))) ? "light" : "dark");
+  const isDark = resolvedTheme === "dark";
+  const isMenuOpen = activeMenu !== null || mobileOpen;
+
+  useEffect(() => { onMenuOpenChange?.(isMenuOpen); }, [isMenuOpen, onMenuOpenChange]);
+  useEffect(() => { setActiveMenu(null); setMobileOpen(false); setMobileStack([]); }, [pathname]);
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+  useEffect(() => {
+    if (activeMenu === "Ürünler") setHoverPath([0]);
+    else setHoverPath([]);
+  }, [activeMenu]);
+
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const scheduleMegaClose = useCallback(() => {
+    closeTimer.current = setTimeout(() => { setActiveMenu(null); setHoverPath([]); }, 120);
+  }, []);
+
+  const cancelMegaClose = useCallback(() => {
+    if (closeTimer.current) { clearTimeout(closeTimer.current); closeTimer.current = null; }
+  }, []);
+
+  const closeMega = useCallback(() => { cancelMegaClose(); setActiveMenu(null); setHoverPath([]); }, [cancelMegaClose]);
+  const closeMobile = useCallback(() => { setMobileOpen(false); setMobileStack([]); }, []);
+
+  const setLevel = useCallback((level: number, index: number) => {
+    setHoverPath((prev) => {
+      const next = prev.slice(0, level);
+      next[level] = index;
+      return next;
+    });
+  }, []);
+
+  const l1Node = getAt(hoverPath.slice(0, 1));
+  const l2Node = hoverPath.length >= 2 ? getAt(hoverPath.slice(0, 2)) : null;
+  const l3Node = hoverPath.length >= 3 ? getAt(hoverPath.slice(0, 3)) : null;
 
   return (
     <>
-      {/* Blur Backdrop - Sayfa içeriğini blurlar */}
-      <AnimatePresence>
-        {(isProductsOpen || isBilgiMerkeziOpen) && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, transition: { duration: 0.3, ease: "easeInOut", delay: 0.35 } }}
-            exit={{ opacity: 0, transition: { duration: 0.2, ease: "easeOut", delay: 0 } }}
-            className="fixed inset-0 z-40 backdrop-blur-md bg-black/20"
-            style={{ top: "calc(48px + 42vh)" }}
-          />
+      <header
+        className={cn(
+          "z-50 w-full transition-colors duration-300",
+          isFixed ? "fixed top-0 left-0" : "relative",
+          activeMenu ? "bg-white/95 backdrop-blur-xl" : isDark ? "bg-black/60 backdrop-blur-xl" : "bg-white/80 backdrop-blur-xl",
         )}
-      </AnimatePresence>
+      >
+        <nav className="mx-auto flex h-12 max-w-[1200px] items-center justify-between px-4 lg:px-6">
+          <Link href="/" className="shrink-0" onClick={closeMega}>
+            <Image
+              src="/logo.png"
+              alt="Taytech"
+              width={90}
+              height={28}
+              priority
+              className={cn("h-7 w-auto transition-all", activeMenu || !isDark ? "" : "brightness-0 invert")}
+            />
+          </Link>
 
-      <header className={cn(isFixed ? "fixed top-0 left-0 right-0" : "relative", "z-50")}>
-        {/* Main Header Bar */}
-        <div className={cn(
-          "h-14 transition-colors duration-200 border-b border-[#dc2626]/40",
-          isDark 
-            ? ((isProductsOpen || isBilgiMerkeziOpen) ? "bg-[#1a1a1a]" : "bg-[#1a1a1a]/70 backdrop-blur-md")
-            : "bg-white"
-        )}>
-          <div className="h-full px-5 md:px-8 flex items-center justify-between relative">
-            {/* Mobile: Left spacer for centering logo */}
-            <div className="w-10 md:hidden"></div>
-            {/* Desktop: Left Spacer */}
-            <div className="hidden md:block w-[120px]"></div>
-
-            {/* Center - Logo + Navigation */}
-            <div className="flex items-center gap-20 md:relative absolute md:static left-1/2 -translate-x-1/2 md:translate-x-0">
-              {/* Logo */}
-              <Link href="/" className="flex-shrink-0">
-                <Image
-                  src="/sonlogo.png"
-                  alt="TayTech Logo"
-                  width={120}
-                  height={28}
-                  className="h-7 w-auto"
-                  priority
-                />
-              </Link>
-
-              {/* Desktop Navigation */}
-              <nav className="hidden md:flex items-center gap-10">
-                {navItems.map((item) => (
-                  <div
-                    key={item.labelKey}
-                    className={cn(
-                      "relative",
-                      item.hasDropdown && "pb-4 -mb-4"
-                    )}
-                    onMouseEnter={() => {
-                      if (item.dropdownType === "products") {
-                        setIsBilgiMerkeziOpen(false);
-                        setHoveredBilgiMerkeziItem(null);
-                        setIsProductsOpen(true);
-                      } else if (item.dropdownType === "bilgi-merkezi") {
-                        setIsProductsOpen(false);
-                        setHoveredProduct(null);
-                        setHoveredSubCategory(null);
-                        setHoveredPanoCategory(null);
-                        setHoveredElektronikCategory(null);
-                        setHoveredSivilarCategory(null);
-                        setHoveredCloudItem(null);
-                        setHoveredSivilarItem(null);
-                        setHoveredElektronikItem(null);
-                        setHoveredPanoItem(null);
-                        setHoveredIsiItem(null);
-                        setIsBilgiMerkeziOpen(true);
-                      }
-                    }}
-                  >
-                    {item.hasDropdown ? (
-                      <span
-                        className={cn(
-                          "text-[16px] font-[450] transition-colors duration-75 cursor-pointer",
-                          isDark 
-                            ? "text-[#cacacc] hover:text-[#dc2626]" 
-                            : "text-black hover:text-[#dc2626]"
-                        )}
-                      >
-                        {t(item.labelKey)}
-                      </span>
-                    ) : item.labelKey === "nav.iletisim" ? (
-                      <Link
-                        href={item.href}
-                        style={{
-                          backgroundColor: '#dc2626',
-                          color: '#ffffff',
-                          fontSize: '16px',
-                          fontWeight: 500,
-                          padding: '7px 18px',
-                          borderRadius: '6px',
-                          display: 'inline-block',
-                          lineHeight: '1',
-                          textDecoration: 'none',
-                          whiteSpace: 'nowrap',
-                          transition: 'background-color 0.2s',
-                        }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#b91c1c')}
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#dc2626')}
-                      >
-                        {t(item.labelKey)}
-                      </Link>
-                    ) : (
-                      <Link
-                        href={item.href}
-                        className={cn(
-                          "text-[16px] font-[450] transition-colors duration-75",
-                          isDark 
-                            ? "text-[#cacacc] hover:text-[#dc2626]" 
-                            : "text-black hover:text-[#dc2626]"
-                        )}
-                      >
-                        {t(item.labelKey)}
-                      </Link>
-                    )}
-                  </div>
-                ))}
-              </nav>
-            </div>
-
-            {/* Right Side - Language Toggle */}
-            <div className="hidden md:flex items-center gap-1" style={{ marginRight: '100px' }}>
-              {languages.map((lang, i) => (
-                <span key={lang.code} className="flex items-center">
-                  <button
-                    onClick={() => setCurrentLang(lang.code)}
-                    className={cn(
-                      "text-[13px] font-[450] py-1 px-1.5 transition-colors",
-                      currentLang === lang.code
-                        ? (isDark ? "text-white" : "text-[#1d1d1f]")
-                        : (isDark ? "text-[#cacacc]/40 hover:text-white" : "text-gray-400 hover:text-[#1d1d1f]")
-                    )}
-                  >
-                    {lang.code}
-                  </button>
-                  {i < languages.length - 1 && (
-                    <span className={cn("text-[11px] mx-0.5", isDark ? "text-[#cacacc]/30" : "text-gray-300")}>|</span>
+          <ul className="hidden items-center gap-6 lg:flex">
+            {navItems.map((item) => {
+              const label = locale === "EN" ? item.en : item.tr;
+              const key = item.tr;
+              return (
+                <li key={key}>
+                  {item.hasDropdown ? (
+                    <button
+                      onMouseEnter={() => { cancelMegaClose(); setActiveMenu(key); }}
+                      onMouseLeave={scheduleMegaClose}
+                      onClick={() => setActiveMenu((prev) => (prev === key ? null : key))}
+                      className={cn(
+                        "text-[15px] font-normal transition-colors duration-150",
+                        activeMenu === key ? "text-[#e30613]" : activeMenu || !isDark ? "text-[#1d1d1f] hover:text-[#e30613]" : "text-white/90 hover:text-white",
+                      )}
+                    >
+                      {label}
+                    </button>
+                  ) : (
+                    <Link
+                      href={item.href!}
+                      onMouseEnter={closeMega}
+                      className={cn(
+                        "text-[15px] font-normal transition-colors duration-150",
+                        activeMenu || !isDark ? "text-[#1d1d1f] hover:text-[#e30613]" : "text-white/90 hover:text-white",
+                      )}
+                    >
+                      {label}
+                    </Link>
                   )}
-                </span>
-              ))}
-            </div>
+                </li>
+              );
+            })}
+          </ul>
 
-            {/* Mobile Menu Button */}
+          <div className="flex items-center gap-3">
             <button
-              onClick={() => {
-                setIsMobileMenuOpen(!isMobileMenuOpen);
-                if (isMobileMenuOpen) { setMobileScreen("main"); setMobileSubScreen(null); }
-              }}
-              className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-[5px]"
-              aria-label="Menüyü Aç"
+              onClick={() => setLocale(locale === "TR" ? "EN" : "TR")}
+              className={cn("text-[13px] font-medium transition-colors", activeMenu || !isDark ? "text-[#1d1d1f] hover:text-[#e30613]" : "text-white/90 hover:text-white")}
             >
-              <span className={cn(
-                "block w-[18px] h-[1.5px] rounded-full transition-all duration-300 origin-center",
-                isDark ? "bg-white" : "bg-[#1d1d1f]",
-                isMobileMenuOpen && "rotate-45 translate-y-[6.5px]"
-              )} />
-              <span className={cn(
-                "block w-[18px] h-[1.5px] rounded-full transition-all duration-300",
-                isDark ? "bg-white" : "bg-[#1d1d1f]",
-                isMobileMenuOpen && "opacity-0 scale-0"
-              )} />
-              <span className={cn(
-                "block w-[18px] h-[1.5px] rounded-full transition-all duration-300 origin-center",
-                isDark ? "bg-white" : "bg-[#1d1d1f]",
-                isMobileMenuOpen && "-rotate-45 -translate-y-[6.5px]"
-              )} />
+              {locale === "TR" ? "EN" : "TR"}
+            </button>
+            <button
+              onClick={() => { closeMega(); setMobileOpen((v) => !v); }}
+              className="relative z-50 flex h-9 w-9 flex-col items-center justify-center gap-[5px] lg:hidden"
+              aria-label="Menu"
+            >
+              <span className={cn("block h-[1.5px] w-[18px] origin-center transition-all duration-300", mobileOpen ? "translate-y-[3.25px] rotate-45" : "", activeMenu || mobileOpen || !isDark ? "bg-[#1d1d1f]" : "bg-white")} />
+              <span className={cn("block h-[1.5px] w-[18px] origin-center transition-all duration-300", mobileOpen ? "-translate-y-[3.25px] -rotate-45" : "", activeMenu || mobileOpen || !isDark ? "bg-[#1d1d1f]" : "bg-white")} />
             </button>
           </div>
-        </div>
+        </nav>
+      </header>
 
-        {/* Products Mega Menu */}
-        <AnimatePresence>
-          {isProductsOpen && (
+      {/* ── DESKTOP MEGA MENU: ÜRÜNLER ── */}
+      <AnimatePresence>
+        {activeMenu === "Ürünler" && (
+          <>
             <motion.div
-            initial={{ opacity: 0, scaleY: 0 }}
-            animate={{ opacity: 1, scaleY: 1 }}
-            exit={{ opacity: 0, scaleY: 0, transition: { duration: 0 } }}
-            transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-            className={cn("hidden md:block w-full overflow-hidden origin-top", isDark ? "bg-[#1a1a1a]" : "bg-white")}
-            style={{ height: "42vh", willChange: "transform, opacity" }}
-            onMouseLeave={() => {
-              setIsProductsOpen(false);
-              setHoveredProduct(null);
-              setHoveredSubCategory(null);
-              setHoveredPanoCategory(null);
-              setHoveredElektronikCategory(null);
-              setHoveredSivilarCategory(null);
-              setHoveredCloudItem(null);
-              setHoveredSivilarItem(null);
-              setHoveredElektronikItem(null);
-              setHoveredPanoItem(null);
-              setHoveredIsiItem(null);
-            }}
-            >
-              <div 
-                className="h-full flex gap-24 items-center" 
-                style={{ paddingLeft: 'calc(50% - 408px)' }}
-              >
-                {/* Sol Kolon - Ana Ürünler */}
-                <div className="flex flex-col min-w-[280px]">
-                  <motion.h3 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0, transition: { duration: 0 } }}
-                    transition={{ duration: 1.2, delay: 0.1, ease: "easeOut" }}
-                    className={cn("text-[12px] font-medium mb-20 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}
-                  >
-                    {t("mega.urunlerimiz")}
-                  </motion.h3>
-                  <div className="flex flex-col gap-4">
-                    {products.map((product, index) => (
-                      <motion.div
-                        key={product.href}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0, transition: { duration: 0 } }}
-                        transition={{ duration: 1.2, delay: 0.15 + index * 0.08, ease: "easeOut" }}
-                        onMouseEnter={() => {
-                          // Tüm alt menü hover state'lerini sıfırla
-                          setHoveredSubCategory(null);
-                          setHoveredPanoCategory(null);
-                          setHoveredElektronikCategory(null);
-                          setHoveredSivilarCategory(null);
-                          setHoveredCloudItem(null);
-                          setHoveredSivilarItem(null);
-                          setHoveredElektronikItem(null);
-                          setHoveredPanoItem(null);
-                          setHoveredIsiItem(null);
-                          
-                          if (product.matchKey === "isi-istasyonu") {
-                            setHoveredProduct("isi-istasyonu");
-                          } else if (product.matchKey === "akilli") {
-                            setHoveredProduct("kontrol-panolari");
-                          } else if (product.matchKey === "elektronik") {
-                            setHoveredProduct("elektronik");
-                          } else if (product.matchKey === "cloud") {
-                            setHoveredProduct("cloud");
-                          } else if (product.matchKey === "sivilar") {
-                            setHoveredProduct("sivilar");
-                          } else if (product.matchKey === "manyetik-filtre") {
-                            setHoveredProduct("manyetik-filtre");
-                          } else {
-                            setHoveredProduct(null);
-                          }
-                        }}
-                      >
-                        <Link
-                          href={product.href}
-                          onClick={closeMenu}
-                          className={cn(
-                            "text-xl font-medium transition-all duration-200 flex items-center gap-2",
-                            isDark ? "text-white/90 hover:text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]",
-                            // Seçili olan kırmızı
-                            hoveredProduct && (
-                              (product.matchKey === "isi-istasyonu" && hoveredProduct === "isi-istasyonu") ||
-                              (product.matchKey === "akilli" && hoveredProduct === "kontrol-panolari") ||
-                              (product.matchKey === "elektronik" && hoveredProduct === "elektronik") ||
-                              (product.matchKey === "cloud" && hoveredProduct === "cloud") ||
-                              (product.matchKey === "sivilar" && hoveredProduct === "sivilar") ||
-                              (product.matchKey === "manyetik-filtre" && hoveredProduct === "manyetik-filtre")
-                            ) && "!text-[#dc2626]",
-                            // Seçili olmayan soluk
-                            hoveredProduct && (
-                              (product.matchKey === "isi-istasyonu" && hoveredProduct !== "isi-istasyonu") ||
-                              (product.matchKey === "akilli" && hoveredProduct !== "kontrol-panolari") ||
-                              (product.matchKey === "elektronik" && hoveredProduct !== "elektronik") ||
-                              (product.matchKey === "cloud" && hoveredProduct !== "cloud") ||
-                              (product.matchKey === "sivilar" && hoveredProduct !== "sivilar") ||
-                              (product.matchKey === "manyetik-filtre" && hoveredProduct !== "manyetik-filtre")
-                            ) && "opacity-40"
-                          )}
-                        >
-                          {t(product.labelKey)}
-                          {(product.matchKey === "isi-istasyonu" || product.matchKey === "akilli" || product.matchKey === "elektronik" || product.matchKey === "cloud" || product.matchKey === "sivilar") && (
-                            <ChevronRight size={16} className={cn(isDark ? "text-white/50" : "text-gray-400", "transition-opacity duration-200")} />
-                          )}
-                        </Link>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Sıvılar Kategorileri */}
-                {hoveredProduct === "sivilar" && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex flex-col min-w-[200px]"
-                  >
-                    <h3 className={cn("text-[13px] font-medium mb-16 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}>
-                      {t("mega.kategori")}
-                    </h3>
-                    <div className="flex flex-col gap-3">
-                      {sivilarCategories.map((category) => (
-                        <Link
-                          key={category.key}
-                          href={category.href}
-                          onClick={closeMenu}
-                          onMouseEnter={() => { setHoveredSivilarCategory(category.key); setHoveredSivilarItem(null); }}
-                          className="cursor-pointer flex items-center gap-2"
-                        >
-                          <span className={cn(
-                            "text-lg font-medium transition-all duration-200",
-                            isDark 
-                              ? (hoveredSivilarCategory === category.key ? "text-[#dc2626]" : "text-white/90 hover:text-[#dc2626]")
-                              : (hoveredSivilarCategory === category.key ? "text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]"),
-                            hoveredSivilarCategory && hoveredSivilarCategory !== category.key && "opacity-40"
-                          )}>
-                            {t(category.labelKey)}
-                          </span>
-                          {category.items.length > 0 && (
-                            <ChevronRight size={12} className={cn(isDark ? "text-white/50" : "text-gray-400", hoveredSivilarCategory && hoveredSivilarCategory !== category.key && "opacity-40")} />
-                          )}
-                        </Link>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Sıvılar Alt Ürünleri */}
-                {hoveredProduct === "sivilar" && hoveredSivilarCategory && (sivilarCategories.find(c => c.key === hoveredSivilarCategory)?.items?.length ?? 0) > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex flex-col min-w-[150px]"
-                  >
-                    <h3 className={cn("text-[13px] font-medium mb-16 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}>
-                      {t("mega.urunler")}
-                    </h3>
-                    <div className="flex flex-col gap-3">
-                      {sivilarCategories.find(c => c.key === hoveredSivilarCategory)?.items.map((item) => (
-                        <Link
-                          key={item.id}
-                          href={item.href}
-                          onClick={closeMenu}
-                          onMouseEnter={() => setHoveredSivilarItem(item.id)}
-                          className={cn(
-                            "text-lg font-medium transition-all duration-200",
-                            isDark ? "text-white/90 hover:text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]",
-                            hoveredSivilarItem && hoveredSivilarItem === item.id && "!text-[#dc2626]",
-                            hoveredSivilarItem && hoveredSivilarItem !== item.id && "opacity-40"
-                          )}
-                        >
-                          {t("labelKey" in item ? (item as { labelKey: string }).labelKey : ("label" in item ? (item as { label: string }).label : ""))}
-                        </Link>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Cloud Alt Menüsü */}
-                {hoveredProduct === "cloud" && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex flex-col min-w-[200px]"
-                  >
-                    <h3 className={cn("text-[13px] font-medium mb-16 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}>
-                      {t("mega.urunler")}
-                    </h3>
-                    <div className="flex flex-col gap-3">
-                      {cloudItems.map((item) => (
-                        <Link
-                          key={item.id}
-                          href={item.href}
-                          onClick={closeMenu}
-                          onMouseEnter={() => setHoveredCloudItem(item.id)}
-                          className={cn(
-                            "text-lg font-medium transition-all duration-200",
-                            isDark ? "text-white/90 hover:text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]",
-                            hoveredCloudItem && hoveredCloudItem === item.id && "!text-[#dc2626]",
-                            hoveredCloudItem && hoveredCloudItem !== item.id && "opacity-40"
-                          )}
-                        >
-                          {t("labelKey" in item ? (item as { labelKey: string }).labelKey : ("label" in item ? (item as { label: string }).label : ""))}
-                        </Link>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Elektronik Kategorileri */}
-                {hoveredProduct === "elektronik" && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex flex-col min-w-[280px]"
-                  >
-                    <h3 className={cn("text-[13px] font-medium mb-16 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}>
-                      {t("mega.kategori")}
-                    </h3>
-                    <div className="flex flex-col gap-3">
-                      {elektronikCategories.map((category) => (
-                        <Link
-                          key={category.key}
-                          href={category.href}
-                          onClick={closeMenu}
-                          onMouseEnter={() => { setHoveredElektronikCategory(category.key); setHoveredElektronikItem(null); }}
-                          className="cursor-pointer flex items-center gap-2"
-                        >
-                          <span className={cn(
-                            "text-lg font-medium transition-all duration-200",
-                            isDark 
-                              ? (hoveredElektronikCategory === category.key ? "text-[#dc2626]" : "text-white/90 hover:text-[#dc2626]")
-                              : (hoveredElektronikCategory === category.key ? "text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]"),
-                            hoveredElektronikCategory && hoveredElektronikCategory !== category.key && "opacity-40"
-                          )}>
-                            {t(category.labelKey)}
-                          </span>
-                          {category.items.length > 0 && (
-                            <ChevronRight size={12} className={cn(isDark ? "text-white/50" : "text-gray-400", hoveredElektronikCategory && hoveredElektronikCategory !== category.key && "opacity-40")} />
-                          )}
-                        </Link>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Elektronik Alt Ürünleri */}
-                {hoveredProduct === "elektronik" && hoveredElektronikCategory && (elektronikCategories.find(c => c.key === hoveredElektronikCategory)?.items?.length ?? 0) > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex flex-col min-w-[280px]"
-                  >
-                    <h3 className={cn("text-[13px] font-medium mb-16 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}>
-                      {t("mega.urunler")}
-                    </h3>
-                    <div className="flex flex-col gap-3">
-                      {elektronikCategories.find(c => c.key === hoveredElektronikCategory)?.items.map((item) => (
-                        <Link
-                          key={item.id}
-                          href={item.href}
-                          onClick={closeMenu}
-                          onMouseEnter={() => setHoveredElektronikItem(item.id)}
-                          className={cn(
-                            "text-lg font-medium transition-all duration-200",
-                            isDark ? "text-white/90 hover:text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]",
-                            hoveredElektronikItem && hoveredElektronikItem === item.id && "!text-[#dc2626]",
-                            hoveredElektronikItem && hoveredElektronikItem !== item.id && "opacity-40"
-                          )}
-                        >
-                          {t("labelKey" in item ? (item as { labelKey: string }).labelKey : ("label" in item ? (item as { label: string }).label : ""))}
-                        </Link>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Kontrol Panoları Kategorileri */}
-                {hoveredProduct === "kontrol-panolari" && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex flex-col min-w-[280px]"
-                  >
-                    <h3 className={cn("text-[13px] font-medium mb-16 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}>
-                      {t("mega.kategori")}
-                    </h3>
-                    <div className="flex flex-col gap-3">
-                      {kontrolPanolariCategories.map((category) => (
-                        <Link
-                          key={category.key}
-                          href={category.href}
-                          onClick={closeMenu}
-                          onMouseEnter={() => { setHoveredPanoCategory(category.key); setHoveredPanoItem(null); }}
-                          className="cursor-pointer flex items-center gap-2"
-                        >
-                          <span className={cn(
-                            "text-lg font-medium transition-all duration-200",
-                            isDark 
-                              ? (hoveredPanoCategory === category.key ? "text-[#dc2626]" : "text-white/90 hover:text-[#dc2626]")
-                              : (hoveredPanoCategory === category.key ? "text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]"),
-                            hoveredPanoCategory && hoveredPanoCategory !== category.key && "opacity-40"
-                          )}>
-                            {t(category.labelKey)}
-                          </span>
-                          {category.items.length > 0 && (
-                            <ChevronRight size={12} className={cn(isDark ? "text-white/50" : "text-gray-400", hoveredPanoCategory && hoveredPanoCategory !== category.key && "opacity-40")} />
-                          )}
-                        </Link>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Kontrol Panoları Alt Ürünleri */}
-                {hoveredProduct === "kontrol-panolari" && hoveredPanoCategory && (kontrolPanolariCategories.find(c => c.key === hoveredPanoCategory)?.items?.length ?? 0) > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex flex-col min-w-[280px]"
-                  >
-                    <h3 className={cn("text-[13px] font-medium mb-16 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}>
-                      {t("mega.urunler")}
-                    </h3>
-                    <div className="flex flex-col gap-3">
-                      {kontrolPanolariCategories.find(c => c.key === hoveredPanoCategory)?.items.map((item) => (
-                        <Link
-                          key={item.id}
-                          href={item.href}
-                          onClick={closeMenu}
-                          onMouseEnter={() => setHoveredPanoItem(item.id)}
-                          className={cn(
-                            "text-lg font-medium transition-all duration-200",
-                            isDark ? "text-white/90 hover:text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]",
-                            hoveredPanoItem && hoveredPanoItem === item.id && "!text-[#dc2626]",
-                            hoveredPanoItem && hoveredPanoItem !== item.id && "opacity-40"
-                          )}
-                        >
-                          {t("labelKey" in item ? (item as { labelKey: string }).labelKey : ("label" in item ? (item as { label: string }).label : ""))}
-                        </Link>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Orta Kolon - Alt Kategoriler (Direct/Indirect) */}
-                {hoveredProduct === "isi-istasyonu" && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex flex-col min-w-[120px]"
-                  >
-                    <h3 className={cn("text-[13px] font-medium mb-16 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}>
-                      {t("mega.kategori")}
-                    </h3>
-                    <div className="flex flex-col gap-3">
-                      <Link
-                        href="/urunler/isi-istasyonu/direct"
-                        onClick={closeMenu}
-                        onMouseEnter={() => { setHoveredSubCategory("direct"); setHoveredIsiItem(null); }}
-                        className="cursor-pointer flex items-center gap-2"
-                      >
-                        <span className={cn(
-                          "text-lg font-medium transition-all duration-200",
-                          isDark 
-                            ? (hoveredSubCategory === "direct" ? "text-[#dc2626]" : "text-white/90 hover:text-[#dc2626]")
-                            : (hoveredSubCategory === "direct" ? "text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]"),
-                          hoveredSubCategory && hoveredSubCategory !== "direct" && "opacity-40"
-                        )}>
-                          Direct
-                        </span>
-                        <ChevronRight size={12} className={cn(isDark ? "text-white/50" : "text-gray-400", hoveredSubCategory && hoveredSubCategory !== "direct" && "opacity-40")} />
-                      </Link>
-                      <Link
-                        href="/urunler/isi-istasyonu/indirect"
-                        onClick={closeMenu}
-                        onMouseEnter={() => { setHoveredSubCategory("indirect"); setHoveredIsiItem(null); }}
-                        className="cursor-pointer flex items-center gap-2"
-                      >
-                        <span className={cn(
-                          "text-lg font-medium transition-all duration-200",
-                          isDark 
-                            ? (hoveredSubCategory === "indirect" ? "text-[#dc2626]" : "text-white/90 hover:text-[#dc2626]")
-                            : (hoveredSubCategory === "indirect" ? "text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]"),
-                          hoveredSubCategory && hoveredSubCategory !== "indirect" && "opacity-40"
-                        )}>
-                          Indirect
-                        </span>
-                        <ChevronRight size={12} className={cn(isDark ? "text-white/50" : "text-gray-400", hoveredSubCategory && hoveredSubCategory !== "indirect" && "opacity-40")} />
-                      </Link>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Sağ Kolon - Ürünler (Direct/Indirect altındakiler) */}
-                {(hoveredSubCategory === "direct" || hoveredSubCategory === "indirect") && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex flex-col min-w-[180px]"
-                  >
-                    <h3 className={cn("text-[13px] font-medium mb-16 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}>
-                      {t("mega.urunler")}
-                    </h3>
-                    <div className="flex flex-col gap-3">
-                      {(hoveredSubCategory === "direct" 
-                        ? isiIstasyonuSubCategories.direct.items 
-                        : isiIstasyonuSubCategories.indirect.items
-                      ).map((item) => (
-                        <Link
-                          key={item.id}
-                          href={item.href}
-                          onClick={closeMenu}
-                          onMouseEnter={() => setHoveredIsiItem(item.id)}
-                          className={cn(
-                            "text-lg font-medium transition-all duration-200",
-                            isDark ? "text-white/90 hover:text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]",
-                            hoveredIsiItem && hoveredIsiItem === item.id && "!text-[#dc2626]",
-                            hoveredIsiItem && hoveredIsiItem !== item.id && "opacity-40"
-                          )}
-                        >
-                          {t("labelKey" in item ? (item as { labelKey: string }).labelKey : ("label" in item ? (item as { label: string }).label : ""))}
-                        </Link>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Bilgi Merkezi Mega Menu */}
-        <AnimatePresence>
-          {isBilgiMerkeziOpen && (
-            <motion.div
-              initial={{ opacity: 0, scaleY: 0 }}
-              animate={{ opacity: 1, scaleY: 1 }}
-              exit={{ opacity: 0, scaleY: 0, transition: { duration: 0 } }}
-              transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-              className={cn("hidden md:block w-full overflow-hidden origin-top", isDark ? "bg-[#1a1a1a]" : "bg-white")}
-              style={{ height: "42vh", willChange: "transform, opacity" }}
-              onMouseLeave={() => {
-                setIsBilgiMerkeziOpen(false);
-                setHoveredBilgiMerkeziItem(null);
-              }}
-            >
-              <div 
-                className="h-full flex gap-24 items-center" 
-                style={{ paddingLeft: 'calc(50% - 408px)' }}
-              >
-                {/* Sol Kolon - Başlık ve Açıklama */}
-                <div className="flex flex-col min-w-[320px] max-w-[360px]">
-                  <motion.h3 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0, transition: { duration: 0 } }}
-                    transition={{ duration: 1.2, delay: 0.1, ease: "easeOut" }}
-                    className={cn("text-[12px] font-medium mb-20 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}
-                  >
-                    {t("mega.bilgiMerkezi")}
-                  </motion.h3>
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0, transition: { duration: 0 } }}
-                    transition={{ duration: 1.2, delay: 0.15, ease: "easeOut" }}
-                  >
-                    <h2 className="text-4xl font-bold mb-5 text-[#dc2626]">
-                      {t("mega.bilgiMerkezi")}
-                    </h2>
-                    <p className={cn(
-                      "text-lg leading-relaxed",
-                      isDark ? "text-white/60" : "text-[#86868b]"
-                    )}>
-                      {t("mega.bilgiDesc")}
-                    </p>
-                  </motion.div>
-                </div>
-
-                {/* Sağ Kolon - Bağlantılar */}
-                <div className="flex flex-col min-w-[280px]">
-                  <motion.h3 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0, transition: { duration: 0 } }}
-                    transition={{ duration: 1.2, delay: 0.1, ease: "easeOut" }}
-                    className={cn("text-[12px] font-medium mb-20 tracking-wider", isDark ? "text-white/60" : "text-gray-400")}
-                  >
-                    {t("mega.kesfet")}
-                  </motion.h3>
-                  <div className="flex flex-col gap-4">
-                    {bilgiMerkeziItems.map((item, index) => (
-                      <motion.div
-                        key={item.href}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0, transition: { duration: 0 } }}
-                        transition={{ duration: 1.2, delay: 0.15 + index * 0.08, ease: "easeOut" }}
-                        onMouseEnter={() => setHoveredBilgiMerkeziItem(item.href)}
-                      >
-                        <Link
-                          href={item.href}
-                          onClick={closeMenu}
-                          className={cn(
-                            "text-xl font-medium transition-all duration-200 flex items-center gap-2",
-                            isDark ? "text-white/90 hover:text-[#dc2626]" : "text-gray-700 hover:text-[#dc2626]",
-                            hoveredBilgiMerkeziItem && hoveredBilgiMerkeziItem === item.href && "!text-[#dc2626]",
-                            hoveredBilgiMerkeziItem && hoveredBilgiMerkeziItem !== item.href && "opacity-40"
-                          )}
-                        >
-                          {t(item.labelKey)}
-                        </Link>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* ========== MOBILE DRILL-DOWN MENU ========== */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
+              key="mega-products"
+              ref={megaRef}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              className="md:hidden fixed inset-0 top-12 z-50 bg-white overflow-hidden"
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              className="fixed top-12 right-0 left-0 z-40 hidden bg-white/95 shadow-lg backdrop-blur-xl lg:block"
+              onMouseEnter={cancelMegaClose}
+              onMouseLeave={scheduleMegaClose}
             >
-              <div className="h-full overflow-y-auto" style={{ WebkitOverflowScrolling: "touch" }}>
-
-                  {/* ====== SCREEN: MAIN ====== */}
-                  {mobileScreen === "main" && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
-                      className="flex flex-col items-center justify-center min-h-full py-16 px-8"
+              <div className="mx-auto flex max-w-[1200px] min-h-[480px]">
+                {/* Panel 1 — Ana kategoriler */}
+                <div className="w-[240px] shrink-0 py-8">
+                  {menuTree.map((l1, i) => (
+                    <button
+                      key={l1.tr}
+                      onMouseEnter={() => setLevel(0, i)}
+                      onClick={() => { closeMega(); window.location.href = l1.href; }}
+                      className={cn(
+                        "flex w-full items-center justify-between px-6 py-3.5 text-left text-[14px] font-medium transition-colors duration-150",
+                        hoverPath[0] === i ? "text-[#e30613]" : "text-[#1d1d1f]",
+                      )}
                     >
-                      {navItems.map((item) => (
-                        item.hasDropdown ? (
-                          <button
-                            key={item.labelKey}
-                            onClick={() => setMobileScreen(item.dropdownType === "products" ? "products" : "bilgi")}
-                            className="py-[18px]"
-                          >
-                            <span className="text-[26px] font-medium text-[#1d1d1f]">{t(item.labelKey)}</span>
-                          </button>
-                        ) : (
-                          <Link
-                            key={item.labelKey}
-                            href={item.href}
-                            onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
-                            className="py-[18px]"
-                          >
-                            <span className="text-[26px] font-medium text-[#1d1d1f]">{t(item.labelKey)}</span>
-                          </Link>
-                        )
-                      ))}
-
-                      {/* Dil Seçimi — İletişim'in altında */}
-                      <div className="flex items-center gap-3 mt-10">
-                        {languages.map((lang) => (
-                          <button
-                            key={lang.code}
-                            onClick={() => setCurrentLang(lang.code)}
-                            className={cn(
-                              "text-[15px] font-semibold w-11 h-11 rounded-full flex items-center justify-center transition-all",
-                              currentLang === lang.code
-                                ? "bg-[#1d1d1f] text-white"
-                                : "bg-[#f5f5f7] text-[#86868b]"
-                            )}
-                          >
-                            {lang.code}
-                          </button>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-
-                  {/* ====== SCREEN: PRODUCTS ====== */}
-                  {mobileScreen === "products" && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
-                      className="flex flex-col items-center justify-center min-h-full py-16 px-8"
-                    >
-                      <button onClick={() => { setMobileScreen("main"); setMobileSubScreen(null); }} className="flex items-center gap-1.5 mb-10">
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                          <path d="M9 2.5L4.5 7L9 11.5" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                        <span className="text-[14px] font-medium text-[#dc2626]">{t("nav.urunler")}</span>
-                      </button>
-
-                      {products.map((product) => {
-                        const hasChildren = ["akilli", "isi-istasyonu", "elektronik", "cloud", "sivilar"].includes(product.matchKey);
-                        return hasChildren ? (
-                          <button
-                            key={product.href}
-                            onClick={() => { setMobileScreen("sub-" + product.matchKey); setMobileSubScreen(null); }}
-                            className="py-[14px]"
-                          >
-                            <span className="text-[24px] font-medium text-[#1d1d1f]">{t(product.labelKey)}</span>
-                          </button>
-                        ) : (
-                          <Link
-                            key={product.href}
-                            href={product.href}
-                            onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
-                            className="py-[14px]"
-                          >
-                            <span className="text-[24px] font-medium text-[#1d1d1f]">{t(product.labelKey)}</span>
-                          </Link>
-                        );
-                      })}
-                    </motion.div>
-                  )}
-
-                  {/* ====== SCREEN: BILGI MERKEZI ====== */}
-                  {mobileScreen === "bilgi" && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
-                      className="flex flex-col items-center justify-center min-h-full py-16 px-8"
-                    >
-                      <button onClick={() => setMobileScreen("main")} className="flex items-center gap-1.5 mb-10">
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                          <path d="M9 2.5L4.5 7L9 11.5" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                        <span className="text-[14px] font-medium text-[#dc2626]">{t("nav.bilgi")}</span>
-                      </button>
-                      {bilgiMerkeziItems.map((bItem) => (
-                        <Link key={bItem.href} href={bItem.href}
-                          onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
-                          className="py-[14px]"
-                        >
-                          <span className="text-[24px] font-medium text-[#1d1d1f]">{t(bItem.labelKey)}</span>
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-
-                  {/* ====== SCREEN: AKILLI KONTROL PANOLARI ====== */}
-                  {mobileScreen === "sub-akilli" && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
-                      className="flex flex-col items-center justify-center min-h-full py-16 px-8"
-                    >
-                      <button onClick={() => setMobileScreen("products")} className="flex items-center gap-1.5 mb-10">
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2.5L4.5 7L9 11.5" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                        <span className="text-[14px] font-medium text-[#dc2626]">{t("mega.prod.akilli")}</span>
-                      </button>
-                      <div className="space-y-10 text-center">
-                        {kontrolPanolariCategories.map((cat) => (
-                          <div key={cat.key}>
-                            <Link href={cat.href} onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
-                              className="block text-[15px] font-semibold text-[#1d1d1f] uppercase tracking-wider mb-4">{t(cat.labelKey)}</Link>
-                            <div className="space-y-3.5">
-                              {cat.items.map((sub) => (
-                                <Link key={sub.id} href={sub.href} onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
-                                  className="block text-[20px] font-medium text-[#86868b]">
-                                  {"labelKey" in sub ? t((sub as {labelKey:string}).labelKey) : ("label" in sub ? (sub as {label:string}).label : "")}
-                                </Link>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-
-                  {/* ====== SCREEN: ISI ISTASYONU ====== */}
-                  {mobileScreen === "sub-isi-istasyonu" && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
-                      className="flex flex-col items-center justify-center min-h-full py-16 px-8"
-                    >
-                      <button onClick={() => setMobileScreen("products")} className="flex items-center gap-1.5 mb-10">
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2.5L4.5 7L9 11.5" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                        <span className="text-[14px] font-medium text-[#dc2626]">{t("mega.prod.isi")}</span>
-                      </button>
-                      <div className="space-y-10 text-center">
-                        {Object.entries(isiIstasyonuSubCategories).map(([key, cat]) => (
-                          <div key={key}>
-                            <Link href={cat.href} onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
-                              className="block text-[15px] font-semibold text-[#1d1d1f] uppercase tracking-wider mb-4">{cat.label}</Link>
-                            <div className="space-y-3.5">
-                              {cat.items.map((sub) => (
-                                <Link key={sub.id} href={sub.href} onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
-                                  className="block text-[20px] font-medium text-[#86868b]">{sub.label}</Link>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-
-                  {/* ====== SCREEN: ELEKTRONIK ====== */}
-                  {mobileScreen === "sub-elektronik" && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
-                      className="flex flex-col items-center justify-center min-h-full py-16 px-8"
-                    >
-                      <button onClick={() => setMobileScreen("products")} className="flex items-center gap-1.5 mb-10">
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2.5L4.5 7L9 11.5" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                        <span className="text-[14px] font-medium text-[#dc2626]">{t("mega.prod.elektronik")}</span>
-                      </button>
-                      <div className="space-y-10 text-center">
-                        {elektronikCategories.map((cat) => (
-                          <div key={cat.key}>
-                            <Link href={cat.href} onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
-                              className="block text-[15px] font-semibold text-[#1d1d1f] uppercase tracking-wider mb-4">{t(cat.labelKey)}</Link>
-                            <div className="space-y-3.5">
-                              {cat.items.map((sub) => (
-                                <Link key={sub.id} href={sub.href} onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
-                                  className="block text-[20px] font-medium text-[#86868b]">
-                                  {"labelKey" in sub ? t((sub as {labelKey:string}).labelKey) : ("label" in sub ? (sub as {label:string}).label : "")}
-                                </Link>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-
-                  {/* ====== SCREEN: CLOUD ====== */}
-                  {mobileScreen === "sub-cloud" && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
-                      className="flex flex-col items-center justify-center min-h-full py-16 px-8"
-                    >
-                      <button onClick={() => setMobileScreen("products")} className="flex items-center gap-1.5 mb-10">
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2.5L4.5 7L9 11.5" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                        <span className="text-[14px] font-medium text-[#dc2626]">{t("mega.prod.cloud")}</span>
-                      </button>
-                      {cloudItems.map((sub) => (
-                        <Link key={sub.id} href={sub.href} onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
-                          className="py-[14px]"
-                        >
-                          <span className="text-[24px] font-medium text-[#1d1d1f]">{sub.label}</span>
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-
-                  {/* ====== SCREEN: SIVILAR ====== */}
-                  {mobileScreen === "sub-sivilar" && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
-                      className="flex flex-col items-center justify-center min-h-full py-16 px-8"
-                    >
-                      <button onClick={() => setMobileScreen("products")} className="flex items-center gap-1.5 mb-10">
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2.5L4.5 7L9 11.5" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                        <span className="text-[14px] font-medium text-[#dc2626]">{t("mega.prod.sivilar")}</span>
-                      </button>
-                      <div className="space-y-10 text-center">
-                        {sivilarCategories.map((cat) => (
-                          <div key={cat.key}>
-                            <Link href={cat.href} onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
-                              className="block text-[15px] font-semibold text-[#1d1d1f] uppercase tracking-wider mb-4">{t(cat.labelKey)}</Link>
-                            <div className="space-y-3.5">
-                              {cat.items.map((sub) => (
-                                <Link key={sub.id} href={sub.href} onClick={() => { setIsMobileMenuOpen(false); setMobileScreen("main"); }}
-                                  className="block text-[20px] font-medium text-[#86868b]">{sub.label}</Link>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-
+                      <span>{ml(l1, locale)}</span>
+                      <ChevronRight className={cn("h-4 w-4 transition-colors duration-150", hoverPath[0] === i ? "text-[#e30613]" : "text-[#c4c4c4]")} />
+                    </button>
+                  ))}
                 </div>
+
+                <AnimatePresence mode="wait">
+                  {l1Node && has(l1Node) && (
+                    <motion.div
+                      key={`p2-${hoverPath[0]}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.18 }}
+                      className="w-[260px] shrink-0 py-8"
+                    >
+                      <p className="mb-3 px-6 text-[11px] font-semibold uppercase tracking-wider text-[#86868b]">
+                        {ml(l1Node, locale)}
+                      </p>
+                      {l1Node.children!.map((item, j) => (
+                        <Link
+                          key={item.tr}
+                          href={item.href}
+                          onMouseEnter={() => setLevel(1, j)}
+                          onClick={closeMega}
+                          className={cn(
+                            "flex w-full items-center justify-between px-6 py-3 text-left text-[13px] transition-colors duration-150",
+                            hoverPath[1] === j && has(item) ? "text-[#e30613]" : "text-[#424245] hover:text-[#e30613]",
+                          )}
+                        >
+                          <span>{ml(item, locale)}</span>
+                          {has(item) && (
+                            <ChevronRight className={cn("h-3.5 w-3.5 transition-colors duration-150", hoverPath[1] === j ? "text-[#e30613]" : "text-[#c4c4c4]")} />
+                          )}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <AnimatePresence mode="wait">
+                  {l2Node && has(l2Node) && (
+                    <motion.div
+                      key={`p3-${hoverPath[0]}-${hoverPath[1]}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.18 }}
+                      className="w-[260px] shrink-0 py-8"
+                    >
+                      <p className="mb-3 px-6 text-[11px] font-semibold uppercase tracking-wider text-[#86868b]">
+                        {ml(l2Node, locale)}
+                      </p>
+                      {l2Node.children!.map((item, k) => (
+                        <Link
+                          key={item.tr}
+                          href={item.href}
+                          onMouseEnter={() => setLevel(2, k)}
+                          onClick={closeMega}
+                          className={cn(
+                            "flex w-full items-center justify-between px-6 py-3 text-left text-[13px] transition-colors duration-150",
+                            hoverPath[2] === k && has(item) ? "text-[#e30613]" : "text-[#424245] hover:text-[#e30613]",
+                          )}
+                        >
+                          <span>{ml(item, locale)}</span>
+                          {has(item) && (
+                            <ChevronRight className={cn("h-3.5 w-3.5 transition-colors duration-150", hoverPath[2] === k ? "text-[#e30613]" : "text-[#c4c4c4]")} />
+                          )}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <AnimatePresence mode="wait">
+                  {l3Node && has(l3Node) && (
+                    <motion.div
+                      key={`p4-${hoverPath[0]}-${hoverPath[1]}-${hoverPath[2]}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.18 }}
+                      className="flex-1 py-8"
+                    >
+                      <p className="mb-3 px-6 text-[11px] font-semibold uppercase tracking-wider text-[#86868b]">
+                        {ml(l3Node, locale)}
+                      </p>
+                      {l3Node.children!.map((item) => (
+                        <Link
+                          key={item.tr}
+                          href={item.href}
+                          onClick={closeMega}
+                          className="block px-6 py-3 text-[13px] text-[#424245] transition-colors duration-150 hover:text-[#e30613]"
+                        >
+                          {ml(item, locale)}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </header>
+
+            <motion.div
+              key="overlay-products"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="fixed inset-0 z-30 hidden bg-black/20 lg:block"
+              onClick={closeMega}
+            />
+          </>
+        )}
+
+        {activeMenu === "Bilgi Merkezi" && (
+          <>
+            <motion.div
+              key="dropdown-bilgi"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed top-12 right-0 left-0 z-40 hidden bg-white/95 shadow-sm backdrop-blur-xl lg:block"
+              onMouseEnter={cancelMegaClose}
+              onMouseLeave={scheduleMegaClose}
+            >
+              <div className="mx-auto max-w-[1200px] px-6 py-6">
+                <ul className="flex gap-8">
+                  {bilgiMerkeziItems.map((item) => (
+                    <li key={item.tr}>
+                      <Link href={item.href} onClick={closeMega} className="text-[15px] text-[#424245] transition-colors duration-150 hover:text-[#e30613]">
+                        {ml(item, locale)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+            <motion.div
+              key="overlay-bilgi"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-30 hidden bg-black/20 lg:block"
+              onClick={closeMega}
+            />
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* ── MOBILE MENU ── */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-40 overflow-y-auto bg-white pt-12 lg:hidden"
+          >
+            <div className="px-6 py-6">
+              <AnimatePresence mode="wait">
+                {mobileStack.length === 0 ? (
+                  <motion.ul
+                    key="root"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.15 }}
+                    className="space-y-0"
+                  >
+                    {navItems.map((item) => {
+                      const label = locale === "EN" ? item.en : item.tr;
+                      return (
+                        <li key={item.tr}>
+                          {item.hasDropdown ? (
+                            <button
+                              onClick={() => {
+                                if (item.tr === "Ürünler") {
+                                  setMobileStack([{ title: locale === "EN" ? "Products" : "Ürünler", items: menuTree }]);
+                                } else {
+                                  setMobileStack([{ title: locale === "EN" ? "Knowledge Base" : "Bilgi Merkezi", items: bilgiMerkeziItems }]);
+                                }
+                              }}
+                              className="flex w-full items-center justify-between py-3.5 text-[17px] font-semibold text-[#1d1d1f]"
+                            >
+                              {label}
+                              <ChevronRight className="h-5 w-5 text-[#c4c4c4]" />
+                            </button>
+                          ) : (
+                            <Link href={item.href!} onClick={closeMobile} className="block py-3.5 text-[17px] font-semibold text-[#1d1d1f]">
+                              {label}
+                            </Link>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </motion.ul>
+                ) : (
+                  <motion.div
+                    key={`stack-${mobileStack.length}`}
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 30 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    <button
+                      onClick={() => setMobileStack((s) => s.slice(0, -1))}
+                      className="mb-3 flex items-center gap-1 text-[13px] text-[#e30613]"
+                    >
+                      <ChevronLeft className="h-4 w-4" /> {locale === "EN" ? "Back" : "Geri"}
+                    </button>
+                    <h2 className="mb-5 text-[22px] font-bold text-[#1d1d1f]">
+                      {mobileStack[mobileStack.length - 1].title}
+                    </h2>
+                    <ul className="space-y-0">
+                      {mobileStack[mobileStack.length - 1].items.map((item) => (
+                        <li key={item.tr}>
+                          {has(item) ? (
+                            <button
+                              onClick={() => setMobileStack((s) => [...s, { title: ml(item, locale), items: item.children! }])}
+                              className="flex w-full items-center justify-between py-3.5 text-[15px] text-[#1d1d1f]"
+                            >
+                              {ml(item, locale)}
+                              <ChevronRight className="h-4 w-4 text-[#c4c4c4]" />
+                            </button>
+                          ) : (
+                            <Link
+                              href={item.href}
+                              onClick={closeMobile}
+                              className="block py-3.5 text-[15px] text-[#1d1d1f] transition-colors duration-150 hover:text-[#e30613]"
+                            >
+                              {ml(item, locale)}
+                            </Link>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

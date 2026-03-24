@@ -1,14 +1,11 @@
 "use client";
 
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function KurumsalPage() {
   const { t } = useLanguage();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("muhendislik");
   const [isMobile, setIsMobile] = useState(false);
 
@@ -41,17 +38,13 @@ export default function KurumsalPage() {
   if (isMobile) {
     return (
       <div className="min-h-screen bg-white">
-        <Header theme="light" isFixed={false} onMenuOpenChange={setIsMenuOpen} />
-        
-        {/* İkinci Header - Mobile */}
-        {!isMenuOpen && (
-          <div className="sticky top-0 z-50 bg-white border-b border-gray-200">
-            <div className="h-12 px-4 flex items-center">
-              <span className="text-[16px] font-normal text-[#dc2626]">{t("corp.nav.taytech")}</span>
-              <span className="ml-3 text-[16px] font-semibold text-[#dc2626]">{t("corp.nav.kurumsal")}</span>
-            </div>
+        {/* Sub-navigation bar - Mobile */}
+        <div className="sticky top-0 z-50 bg-white border-b border-gray-200">
+          <div className="h-12 px-4 flex items-center">
+            <span className="text-[16px] font-normal text-[#dc2626]">{t("corp.nav.taytech")}</span>
+            <span className="ml-3 text-[16px] font-semibold text-[#dc2626]">{t("corp.nav.kurumsal")}</span>
           </div>
-        )}
+        </div>
 
         {/* Hero - Mobile */}
         <div id="muhendislik" className="w-full">
@@ -248,7 +241,6 @@ export default function KurumsalPage() {
         </div>
         
         <div style={{ height: '80px' }}></div>
-        <Footer theme="light" />
       </div>
     );
   }
@@ -256,33 +248,29 @@ export default function KurumsalPage() {
   // ===== MASAÜSTÜ: Orijinal kurumsal sayfası (hiç değişmedi) =====
   return (
     <div className="min-h-screen bg-white">
-      <Header theme="light" isFixed={false} onMenuOpenChange={setIsMenuOpen} />
-      
-      {/* İkinci Header */}
-      {!isMenuOpen && (
-        <div className="sticky top-0 z-50 bg-white border-b border-gray-200">
-          <div className="h-12 px-8 flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="hidden md:block w-[180px]"></div>
-              <span className="text-[21px] font-normal text-[#dc2626]">{t("corp.nav.taytech")}</span>
-              <span className="ml-6 text-[21px] font-semibold text-[#dc2626]">{t("corp.nav.kurumsal")}</span>
-            </div>
-            <nav className="hidden md:flex items-center gap-8" style={{ marginRight: '100px' }}>
-              {[
-                { id: "muhendislik", key: "corp.nav.muhendislik" },
-                { id: "rakamlar", key: "corp.nav.rakamlar" },
-                { id: "standartlar", key: "corp.nav.standartlar" },
-                { id: "surdurulebilirlik", key: "corp.nav.surdurulebilirlik" },
-                { id: "destek", key: "corp.nav.destek" },
-              ].map((item) => (
-                <a key={item.id} href={`#${item.id}`} className={`text-[13px] transition-colors ${activeSection === item.id ? "font-medium text-[#dc2626]" : "text-[#424245] hover:text-[#dc2626]"}`}>
-                  {t(item.key)}
-                </a>
-              ))}
-            </nav>
+      {/* Sub-navigation bar - Desktop */}
+      <div className="sticky top-0 z-50 bg-white border-b border-gray-200">
+        <div className="h-12 px-8 flex items-center justify-between">
+          <div className="flex items-center">
+            <div className="hidden md:block w-[180px]"></div>
+            <span className="text-[21px] font-normal text-[#dc2626]">{t("corp.nav.taytech")}</span>
+            <span className="ml-6 text-[21px] font-semibold text-[#dc2626]">{t("corp.nav.kurumsal")}</span>
           </div>
+          <nav className="hidden md:flex items-center gap-8" style={{ marginRight: '100px' }}>
+            {[
+              { id: "muhendislik", key: "corp.nav.muhendislik" },
+              { id: "rakamlar", key: "corp.nav.rakamlar" },
+              { id: "standartlar", key: "corp.nav.standartlar" },
+              { id: "surdurulebilirlik", key: "corp.nav.surdurulebilirlik" },
+              { id: "destek", key: "corp.nav.destek" },
+            ].map((item) => (
+              <a key={item.id} href={`#${item.id}`} className={`text-[13px] transition-colors ${activeSection === item.id ? "font-medium text-[#dc2626]" : "text-[#424245] hover:text-[#dc2626]"}`}>
+                {t(item.key)}
+              </a>
+            ))}
+          </nav>
         </div>
-      )}
+      </div>
 
       {/* Hero */}
       <div id="muhendislik" className="w-full">
@@ -496,7 +484,6 @@ export default function KurumsalPage() {
       </div>
       
       <div className="h-[100px] bg-white"></div>
-      <Footer theme="light" />
     </div>
   );
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import Footer from "@/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState, useEffect } from "react";
@@ -183,8 +182,6 @@ export default function CozumlerPage() {
         
         {/* Boşluk */}
         <div style={{ height: '15vh' }}></div>
-        
-        <Footer theme="white" />
       </div>
     );
   }
@@ -293,8 +290,6 @@ export default function CozumlerPage() {
       
       {/* Boşluk */}
       <div style={{ height: '25vh' }}></div>
-      
-      <Footer theme="white" />
     </div>
   );
 }

@@ -18,7 +18,7 @@ const slides = [
     titleKey: "hero.slide2.title",
     subtitleKey: "hero.slide2.subtitle",
     btnKey: "hero.slide2.btn",
-    btnHref: "/urunler/akilli-kontrol-panolari",
+    btnHref: "/urunler/kontrol-sistemleri/smart-serisi",
   },
   {
     id: 3,
@@ -26,15 +26,16 @@ const slides = [
     titleKey: "hero.slide3.title",
     subtitleKey: "hero.slide3.subtitle",
     btnKey: "hero.slide3.btn",
-    btnHref: "/urunler/elektronik",
+    btnHref: "/urunler/heat-network/manyetik-filtreler",
   },
   {
     id: 4,
-    image: "/sonhero.png",
+    image: "/uploads/I-S-TR_U0A6-Render-Kabin-1774350985256.webp",
     titleKey: "hero.slide5.title",
     subtitleKey: "hero.slide5.subtitle",
     btnKey: "hero.slide5.btn",
-    btnHref: "/urunler/isi-istasyonu",
+    btnHref: "/urunler/heat-network/isi-istasyonlari",
+    isProduct: true,
   },
   {
     id: 5,
@@ -136,9 +137,13 @@ export default function Hero() {
               <div
                 key={i}
                 className="relative flex-shrink-0 overflow-hidden rounded-2xl h-full"
-                style={{ width: `${cardW}vw` }}
+                style={{ width: `${cardW}vw`, background: slide.isProduct ? '#1a1a1a' : undefined }}
               >
-                <Image src={slide.image} alt="Hero" fill className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={i === pos} />
+                {slide.isProduct ? (
+                  <Image src={slide.image} alt="Hero" width={400} height={400} className="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 object-contain w-[45%] max-h-[65%]" priority={i === pos} />
+                ) : (
+                  <Image src={slide.image} alt="Hero" fill className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={i === pos} />
+                )}
                 {slide.btnKey && slide.btnHref ? (
                   <Link href={slide.btnHref} className="absolute inset-0 z-10 flex items-center justify-center px-6">
                     <div className="text-center" style={{ maxWidth: '85%' }}>
@@ -188,13 +193,17 @@ export default function Hero() {
             <div
               key={i}
               className="relative flex-shrink-0 overflow-hidden h-full cursor-pointer"
-              style={{ width: `${cardW}vw`, borderRadius: '48px' }}
+              style={{ width: `${cardW}vw`, borderRadius: '48px', background: slide.isProduct ? '#1a1a1a' : undefined }}
               onClick={() => {
                 const clickedReal = i % total;
                 goToSlide(clickedReal);
               }}
             >
-              <Image src={slide.image} alt="Hero" fill className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={i === pos} />
+              {slide.isProduct ? (
+                <Image src={slide.image} alt="Hero" width={600} height={600} className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 object-contain" style={{ width: '28%', maxHeight: '60%' }} priority={i === pos} />
+              ) : (
+                <Image src={slide.image} alt="Hero" fill className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={i === pos} />
+              )}
               <div className="absolute inset-0 z-10 flex items-center justify-center px-6">
                 {slide.btnKey ? (
                   <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between" style={{ padding: '0 80px 70px' }}>

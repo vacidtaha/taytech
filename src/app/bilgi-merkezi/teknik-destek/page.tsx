@@ -1,6 +1,4 @@
 import Link from "next/link";
-import Footer from "@/components/Footer";
-
 export default function TeknikDestek() {
   return (
     <div className="min-h-screen bg-[#f5f5f7] pt-12">
@@ -38,7 +36,6 @@ export default function TeknikDestek() {
         </div>
       </section>
 
-      <Footer theme="white" />
     </div>
   );
 }

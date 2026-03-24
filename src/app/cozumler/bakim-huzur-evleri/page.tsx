@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Footer from "@/components/Footer";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function BakimHuzurEvleri() {
@@ -42,7 +41,6 @@ export default function BakimHuzurEvleri() {
           </div>
         </div>
         <div style={{ height: "40px" }} />
-        <Footer theme="light" />
       </div>
     );
   }
@@ -74,7 +72,6 @@ export default function BakimHuzurEvleri() {
         </div>
       </div>
       <div style={{ height: "80px" }} />
-      <Footer theme="light" />
     </div>
   );
 }

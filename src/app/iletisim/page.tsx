@@ -1,6 +1,5 @@
 "use client";
 
-import Footer from "@/components/Footer";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
@@ -428,7 +427,6 @@ export default function IletisimPage() {
           </div>
         </div>
 
-        <Footer theme="light" />
       </div>
     );
   }
@@ -784,7 +782,6 @@ export default function IletisimPage() {
         </div>
       </div>
 
-      <Footer theme="light" />
     </div>
   );
 }

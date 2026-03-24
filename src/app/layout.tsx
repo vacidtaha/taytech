@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { neueHaasDisplay } from "@/fonts";
-import { Header, QuickContact } from "@/components";
+import SiteShell from "@/components/SiteShell";
 import { LanguageProvider } from "@/context/LanguageContext";
 import "./globals.css";
 
@@ -71,11 +70,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="tr">
-      <body className={`${neueHaasDisplay.variable} antialiased`}>
+      <body className="antialiased">
         <LanguageProvider>
-          <Header />
-          <main>{children}</main>
-          <QuickContact />
+          <SiteShell>{children}</SiteShell>
         </LanguageProvider>
       </body>
     </html>
