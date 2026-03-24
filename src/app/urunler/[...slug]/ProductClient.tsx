@@ -206,6 +206,7 @@ interface ProductDoc {
   nameTr: string;
   nameEn: string;
   url: string;
+  urlEn: string | null;
   type: string;
 }
 
@@ -379,7 +380,7 @@ export function ProductClient({ product, slug }: { product: Product; slug: strin
                   {product.documents.map((doc) => (
                     <a
                       key={doc.id}
-                      href={doc.url}
+                      href={(isEn && doc.urlEn) ? doc.urlEn : doc.url}
                       target="_blank"
                       rel="noreferrer"
                       className="flex items-center gap-3 p-3.5 rounded-xl bg-[#f5f5f7] hover:bg-[#e8e8ed] transition-colors group"
@@ -455,7 +456,7 @@ export function ProductClient({ product, slug }: { product: Product; slug: strin
 
         {/* Teknik Veri Tabloları (Varyantlar) */}
         {product.specTableData && (() => {
-          let tables: { name: string; data: string[][] }[];
+          let tables: { name: string; data: string[][]; dataEn?: string[][] }[];
           try {
             const parsed = JSON.parse(product.specTableData);
             if (Array.isArray(parsed) && parsed.length > 0 && Array.isArray(parsed[0]) && typeof parsed[0][0] === "string") {
@@ -469,7 +470,8 @@ export function ProductClient({ product, slug }: { product: Product; slug: strin
           return (
             <div className="mt-16 space-y-12">
               {tables.map((variant, vi) => {
-                if (variant.data.length < 2) return null;
+                const tableData = (isEn && variant.dataEn && variant.dataEn.length > 1) ? variant.dataEn : variant.data;
+                if (tableData.length < 2) return null;
                 return (
                   <div key={vi}>
                     <h2 className="text-[13px] font-semibold text-[#86868b] uppercase tracking-wider mb-4 text-center">
@@ -479,7 +481,7 @@ export function ProductClient({ product, slug }: { product: Product; slug: strin
                       <table className="w-full text-[14px]">
                         <thead>
                           <tr className="bg-[#f5f5f7]">
-                            {variant.data[0].map((h, i) => (
+                            {tableData[0].map((h, i) => (
                               <th key={i} className="px-5 py-3.5 text-left font-semibold text-[#1d1d1f] border-b border-[#e5e5ea] whitespace-nowrap">
                                 {h}
                               </th>
@@ -487,7 +489,7 @@ export function ProductClient({ product, slug }: { product: Product; slug: strin
                           </tr>
                         </thead>
                         <tbody>
-                          {variant.data.slice(1).map((row, ri) => (
+                          {tableData.slice(1).map((row, ri) => (
                             <tr key={ri} className="border-b border-[#f0f0f0] last:border-0 hover:bg-[#fafafa] transition-colors">
                               {row.map((cell, ci) => (
                                 <td key={ci} className={`px-5 py-3 whitespace-nowrap ${ci === 0 ? "font-medium text-[#1d1d1f]" : "text-[#424245]"}`}>

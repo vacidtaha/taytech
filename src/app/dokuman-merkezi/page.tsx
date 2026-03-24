@@ -9,6 +9,7 @@ interface DocItem {
   nameTr: string;
   nameEn: string;
   url: string;
+  urlEn: string | null;
   type: string;
   productNameTr: string;
   productNameEn: string;
@@ -103,6 +104,7 @@ export default function DokumanMerkeziPage() {
           nameTr: "Taytech Genel Katalog",
           nameEn: "Taytech General Catalog",
           url: "/katalog.pdf",
+          urlEn: null,
           type: "genel",
           productNameTr: "Taytech",
           productNameEn: "Taytech",
@@ -168,6 +170,7 @@ export default function DokumanMerkeziPage() {
   const activeCount = selCategories.length + selTypes.length + selProducts.length;
 
   const tl = (type: string) => typeLabels[type]?.[isEn ? "en" : "tr"] ?? type;
+  const docUrl = (doc: DocItem) => (isEn && doc.urlEn) ? doc.urlEn : doc.url;
 
   if (loading) {
     return (
@@ -264,7 +267,7 @@ export default function DokumanMerkeziPage() {
         <div style={{ padding: "20px 20px 60px" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
             {filtered.map((doc) => (
-              <a key={doc.id} href={doc.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "block" }}>
+              <a key={doc.id} href={docUrl(doc)} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "block" }}>
                 <div style={{ background: "#f5f5f7", border: "1px solid #e5e5e5", height: "100%", display: "flex", flexDirection: "column" }}>
                   <div style={{ height: "80px", display: "flex", alignItems: "center", justifyContent: "center", borderBottom: "1px solid #e5e5e5" }}>
                     <div style={{ transform: "scale(0.7)" }}><DocIcon type={doc.type} /></div>
@@ -342,7 +345,7 @@ export default function DokumanMerkeziPage() {
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
               {filtered.map((doc) => (
-                <a key={doc.id} href={doc.url} target="_blank" rel="noopener noreferrer" className="group" style={{ textDecoration: "none", display: "block" }}>
+                <a key={doc.id} href={docUrl(doc)} target="_blank" rel="noopener noreferrer" className="group" style={{ textDecoration: "none", display: "block" }}>
                   <div style={{ background: "#f5f5f7", border: "1px solid #e5e5e5", transition: "all 0.2s ease", cursor: "pointer", height: "100%", display: "flex", flexDirection: "column" }}
                     className="group-hover:!bg-[#dc2626] group-hover:!border-[#dc2626]">
                     <div style={{ height: "140px", display: "flex", alignItems: "center", justifyContent: "center", borderBottom: "1px solid #e5e5e5", transition: "all 0.2s" }}

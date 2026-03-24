@@ -10,6 +10,7 @@ interface ProductDoc {
   nameTr: string;
   nameEn: string;
   url: string;
+  urlEn: string | null;
   type: string;
 }
 
@@ -44,8 +45,8 @@ export default function EditProductPage() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  interface DocSlot { nameTr: string; nameEn: string; url: string; type: string; uploading: boolean }
-  const emptySlot: DocSlot = { nameTr: "", nameEn: "", url: "", type: "", uploading: false };
+  interface DocSlot { nameTr: string; nameEn: string; url: string; urlEn: string; type: string; uploading: boolean; uploadingEn: boolean }
+  const emptySlot: DocSlot = { nameTr: "", nameEn: "", url: "", urlEn: "", type: "", uploading: false, uploadingEn: false };
   const [docSlots, setDocSlots] = useState<DocSlot[]>([{ ...emptySlot }]);
 
   useEffect(() => {
@@ -120,7 +121,7 @@ export default function EditProductPage() {
     const docRes = await fetch(`/api/admin/products/${product.id}/documents`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nameTr, nameEn, url: uploadData.url, type: slot.type }),
+      body: JSON.stringify({ nameTr, nameEn, url: uploadData.url, urlEn: slot.urlEn || null, type: slot.type }),
     });
     const newDoc = await docRes.json();
     setProduct((prev) => prev ? { ...prev, documents: [...prev.documents, newDoc] } : null);
@@ -128,6 +129,37 @@ export default function EditProductPage() {
       const next = prev.filter((_, i) => i !== idx);
       return next.length === 0 ? [{ ...emptySlot }] : next;
     });
+  };
+
+  const handleSlotEnFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, idx: number) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    updateSlot(idx, "uploadingEn", true);
+    const fd = new FormData();
+    fd.append("file", file);
+    const uploadRes = await fetch("/api/admin/upload", { method: "POST", body: fd });
+    const uploadData = await uploadRes.json();
+    updateSlot(idx, "uploadingEn", false);
+    if (uploadData.url) updateSlot(idx, "urlEn", uploadData.url);
+  };
+
+  const handleExistingDocEnUpload = async (e: React.ChangeEvent<HTMLInputElement>, docId: number) => {
+    const file = e.target.files?.[0];
+    if (!file || !product) return;
+    const fd = new FormData();
+    fd.append("file", file);
+    const uploadRes = await fetch("/api/admin/upload", { method: "POST", body: fd });
+    const uploadData = await uploadRes.json();
+    if (!uploadData.url) return;
+    await fetch(`/api/admin/products/${product.id}/documents`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ docId, urlEn: uploadData.url }),
+    });
+    setProduct((prev) => prev ? {
+      ...prev,
+      documents: prev.documents.map((d) => d.id === docId ? { ...d, urlEn: uploadData.url } : d),
+    } : null);
   };
 
   const handleSaveAllDocs = async () => {
@@ -152,7 +184,7 @@ export default function EditProductPage() {
   };
 
   // Spec tables (multiple variants)
-  interface SpecVariant { name: string; data: string[][] }
+  interface SpecVariant { name: string; data: string[][]; dataEn?: string[][] }
   const [newVariantName, setNewVariantName] = useState("");
 
   const parseSpecTables = (): SpecVariant[] => {
@@ -169,6 +201,29 @@ export default function EditProductPage() {
 
   const saveSpecTables = (tables: SpecVariant[]) => {
     update("specTableData", tables.length > 0 ? JSON.stringify(tables) : null);
+  };
+
+  const handleSpecEnFileUpload = (e: React.ChangeEvent<HTMLInputElement>, variantIdx: number) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const isCSV = file.name.toLowerCase().endsWith(".csv");
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const data = evt.target?.result;
+      const wb = isCSV
+        ? XLSX.read(data as string, { type: "string" })
+        : XLSX.read(data, { type: "array" });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows: string[][] = XLSX.utils.sheet_to_json(ws, { header: 1, defval: "", raw: false });
+      if (rows.length > 0) {
+        const next = [...specTables];
+        next[variantIdx] = { ...next[variantIdx], dataEn: rows };
+        saveSpecTables(next);
+      }
+    };
+    if (isCSV) reader.readAsText(file, "UTF-8");
+    else reader.readAsArrayBuffer(file);
+    e.target.value = "";
   };
 
   const handleSpecFileUpload = (e: React.ChangeEvent<HTMLInputElement>, variantIdx: number) => {
@@ -437,29 +492,26 @@ export default function EditProductPage() {
               {product.documents.length > 0 && (
                 <div className="space-y-2 mb-5">
                   {product.documents.map((doc) => (
-                    <div key={doc.id} className="flex items-center gap-3 p-3 rounded-lg bg-[#f5f5f7] group">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#86868b" strokeWidth="1.5" className="shrink-0">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                        <polyline points="14 2 14 8 20 8" />
-                      </svg>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[13px] text-[#1d1d1f] truncate">{doc.nameTr}</p>
-                        <p className="text-[11px] text-[#acacb0]">{doc.nameEn} · {doc.type}</p>
+                    <div key={doc.id} className="p-3 rounded-lg bg-[#f5f5f7] group">
+                      <div className="flex items-center gap-3">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#86868b" strokeWidth="1.5" className="shrink-0">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                          <polyline points="14 2 14 8 20 8" />
+                        </svg>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[13px] text-[#1d1d1f] truncate">{doc.nameTr}</p>
+                          <p className="text-[11px] text-[#acacb0]">{doc.nameEn} · {doc.type}</p>
+                        </div>
+                        <a href={doc.url} target="_blank" rel="noreferrer" className="text-[12px] text-[#0071e3] hover:underline shrink-0">TR</a>
+                        {doc.urlEn && <a href={doc.urlEn} target="_blank" rel="noreferrer" className="text-[12px] text-[#0071e3] hover:underline shrink-0">EN</a>}
+                        <button onClick={() => handleDeleteDoc(doc.id)} className="text-[12px] text-[#acacb0] hover:text-[#ff3b30] transition-colors shrink-0">Sil</button>
                       </div>
-                      <a
-                        href={doc.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-[12px] text-[#0071e3] hover:underline shrink-0"
-                      >
-                        Görüntüle
-                      </a>
-                      <button
-                        onClick={() => handleDeleteDoc(doc.id)}
-                        className="text-[12px] text-[#acacb0] hover:text-[#ff3b30] transition-colors shrink-0"
-                      >
-                        Sil
-                      </button>
+                      {!doc.urlEn && (
+                        <label className="mt-2 flex h-7 rounded-md border border-dashed border-[#d2d2d7] text-[11px] text-[#86868b] items-center justify-center gap-1 cursor-pointer hover:border-[#0071e3] hover:text-[#0071e3] transition-colors">
+                          + EN dosyası ekle
+                          <input type="file" className="hidden" onChange={(e) => handleExistingDocEnUpload(e, doc.id)} />
+                        </label>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -539,17 +591,31 @@ export default function EditProductPage() {
                               <Field label="Doküman Adı (TR)" value={slot.nameTr} onChange={(v) => updateSlot(idx, "nameTr", v)} placeholder="Teknik Katalog" />
                               <Field label="Doküman Adı (EN)" value={slot.nameEn} onChange={(v) => updateSlot(idx, "nameEn", v)} placeholder="Technical Catalog" />
                             </div>
-                            <div>
-                              <label className="block text-[12px] font-medium text-[#86868b] mb-1.5">Dosya</label>
-                              <label className={`flex h-10 rounded-lg border text-[13px] items-center justify-center gap-2 cursor-pointer transition-colors ${slot.uploading ? "border-[#0071e3] text-[#0071e3] bg-[#0071e3]/5" : "border-[#d2d2d7] text-[#86868b] hover:border-[#acacb0]"}`}>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                  <polyline points="17 8 12 3 7 8" />
-                                  <line x1="12" y1="3" x2="12" y2="15" />
-                                </svg>
-                                {slot.uploading ? "Kaydediliyor..." : "Dosya Seç"}
-                                <input type="file" className="hidden" onChange={(e) => handleSlotFileUpload(e, idx)} />
-                              </label>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div>
+                                <label className="block text-[12px] font-medium text-[#86868b] mb-1.5">TR Dosyası</label>
+                                <label className={`flex h-10 rounded-lg border text-[13px] items-center justify-center gap-2 cursor-pointer transition-colors ${slot.uploading ? "border-[#0071e3] text-[#0071e3] bg-[#0071e3]/5" : "border-[#d2d2d7] text-[#86868b] hover:border-[#acacb0]"}`}>
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <polyline points="17 8 12 3 7 8" />
+                                    <line x1="12" y1="3" x2="12" y2="15" />
+                                  </svg>
+                                  {slot.uploading ? "Kaydediliyor..." : "TR Dosya Seç"}
+                                  <input type="file" className="hidden" onChange={(e) => handleSlotFileUpload(e, idx)} />
+                                </label>
+                              </div>
+                              <div>
+                                <label className="block text-[12px] font-medium text-[#86868b] mb-1.5">EN Dosyası <span className="text-[#acacb0]">(opsiyonel)</span></label>
+                                <label className={`flex h-10 rounded-lg border text-[13px] items-center justify-center gap-2 cursor-pointer transition-colors ${slot.uploadingEn ? "border-[#0071e3] text-[#0071e3] bg-[#0071e3]/5" : slot.urlEn ? "border-[#34c759] text-[#34c759] bg-[#34c759]/5" : "border-[#d2d2d7] text-[#86868b] hover:border-[#acacb0]"}`}>
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <polyline points="17 8 12 3 7 8" />
+                                    <line x1="12" y1="3" x2="12" y2="15" />
+                                  </svg>
+                                  {slot.uploadingEn ? "Yükleniyor..." : slot.urlEn ? "EN Yüklendi ✓" : "EN Dosya Seç"}
+                                  <input type="file" className="hidden" onChange={(e) => handleSlotEnFileUpload(e, idx)} />
+                                </label>
+                              </div>
                             </div>
                           </>
                         )}
@@ -709,7 +775,7 @@ export default function EditProductPage() {
                       </div>
 
                       {/* Tablo kontrolleri */}
-                      <div className="flex gap-2 px-4 py-3 border-t border-[#f0f0f0]">
+                      <div className="flex flex-wrap gap-2 px-4 py-3 border-t border-[#f0f0f0]">
                         <button onClick={() => addSpecRow(vi)} className="h-7 px-3 rounded-md border border-dashed border-[#d2d2d7] text-[11px] text-[#86868b] hover:text-[#0071e3] hover:border-[#0071e3] transition-colors">
                           + Satır
                         </button>
@@ -717,8 +783,12 @@ export default function EditProductPage() {
                           + Sütun
                         </button>
                         <label className="h-7 px-3 rounded-md border border-[#d2d2d7] text-[11px] text-[#86868b] hover:border-[#acacb0] transition-colors inline-flex items-center gap-1 cursor-pointer">
-                          Dosyadan Değiştir
+                          TR Dosyadan Değiştir
                           <input type="file" accept=".xlsx,.xls,.csv" className="hidden" onChange={(e) => handleSpecFileUpload(e, vi)} />
+                        </label>
+                        <label className={`h-7 px-3 rounded-md border text-[11px] inline-flex items-center gap-1 cursor-pointer transition-colors ${variant.dataEn && variant.dataEn.length > 0 ? "border-[#34c759] text-[#34c759] bg-[#34c759]/5" : "border-[#d2d2d7] text-[#86868b] hover:border-[#acacb0]"}`}>
+                          {variant.dataEn && variant.dataEn.length > 0 ? "EN Tablo ✓ (Değiştir)" : "EN Tablo Yükle"}
+                          <input type="file" accept=".xlsx,.xls,.csv" className="hidden" onChange={(e) => handleSpecEnFileUpload(e, vi)} />
                         </label>
                       </div>
                     </>

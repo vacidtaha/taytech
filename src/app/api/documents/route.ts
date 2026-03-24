@@ -38,6 +38,7 @@ export async function GET() {
       nameTr: doc.nameTr,
       nameEn: doc.nameEn,
       url: doc.url,
+      urlEn: doc.urlEn,
       type: doc.type,
       productNameTr: doc.product.nameTr,
       productNameEn: doc.product.nameEn,

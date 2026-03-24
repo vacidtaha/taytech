@@ -59,6 +59,7 @@ model ProductDocument {
   nameTr    String
   nameEn    String
   url       String
+  urlEn     String?
   type      String   @default("datasheet")
   sortOrder Int      @default(0)
   createdAt DateTime @default(now())

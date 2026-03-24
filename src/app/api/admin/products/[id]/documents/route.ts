@@ -14,11 +14,21 @@ export async function POST(
       nameTr: body.nameTr,
       nameEn: body.nameEn,
       url: body.url,
+      urlEn: body.urlEn || null,
       type: body.type || "datasheet",
       sortOrder: body.sortOrder || 0,
     },
   });
   return NextResponse.json(doc, { status: 201 });
+}
+
+export async function PUT(request: NextRequest) {
+  const body = await request.json();
+  const doc = await prisma.productDocument.update({
+    where: { id: body.docId },
+    data: { urlEn: body.urlEn ?? null },
+  });
+  return NextResponse.json(doc);
 }
 
 export async function DELETE(request: NextRequest) {
