@@ -50,9 +50,9 @@ export default function KurumsalPage() {
         <div id="muhendislik" className="w-full">
           <div className="w-full bg-[#f5f5f7] flex items-center justify-center" style={{ padding: '80px 28px' }}>
             <div className="text-center">
-              <h2 className="text-2xl font-semibold mb-10" style={{ background: 'linear-gradient(to bottom right, #dc2626, #991b1b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              <h1 className="text-2xl font-semibold mb-10" style={{ background: 'linear-gradient(to bottom right, #dc2626, #991b1b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 {t("corp.hero.title")}
-              </h2>
+              </h1>
               <p className="text-base text-[#424245] leading-relaxed">{t("corp.hero.desc")}</p>
             </div>
           </div>
@@ -276,9 +276,9 @@ export default function KurumsalPage() {
       <div id="muhendislik" className="w-full">
         <div className="w-full h-[550px] bg-[#f5f5f7] flex items-center justify-center">
           <div className="max-w-3xl text-center px-8">
-            <h2 className="text-4xl md:text-5xl font-semibold mb-14" style={{ background: 'linear-gradient(to bottom right, #dc2626, #991b1b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            <h1 className="text-4xl md:text-5xl font-semibold mb-14" style={{ background: 'linear-gradient(to bottom right, #dc2626, #991b1b)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
               {t("corp.hero.title")}
-            </h2>
+            </h1>
             <p className="text-xl md:text-2xl text-[#424245] leading-relaxed">{t("corp.hero.desc")}</p>
           </div>
         </div>

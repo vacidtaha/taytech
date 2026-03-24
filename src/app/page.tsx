@@ -21,6 +21,7 @@ export default function Home() {
   const { t, locale } = useLanguage();
   return (
     <div className="min-h-screen bg-[#f5f5f7] pt-14 overflow-x-hidden">
+      <h1 className="sr-only">Taytech - Akıllı Kontrol Panoları & Isı İstasyonları</h1>
       <Hero />
       
       {/* Content Area */}

@@ -140,14 +140,14 @@ export default function Hero() {
                 style={{ width: `${cardW}vw`, background: slide.isProduct ? '#1a1a1a' : undefined }}
               >
                 {slide.isProduct ? (
-                  <Image src={slide.image} alt="Hero" width={400} height={400} className="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 object-contain w-[45%] max-h-[65%]" priority={i === pos} />
+                  <Image src={slide.image} alt={t(slide.titleKey)} width={400} height={400} className="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 object-contain w-[45%] max-h-[65%]" priority={i === pos} />
                 ) : (
-                  <Image src={slide.image} alt="Hero" fill className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={i === pos} />
+                  <Image src={slide.image} alt={t(slide.titleKey)} fill className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={i === pos} />
                 )}
                 {slide.btnKey && slide.btnHref ? (
                   <Link href={slide.btnHref} className="absolute inset-0 z-10 flex items-center justify-center px-6">
                     <div className="text-center" style={{ maxWidth: '85%' }}>
-                      <h1 className="text-2xl font-bold tracking-tight text-white" style={{ lineHeight: 1.2 }}>{t(slide.titleKey)}</h1>
+                      <p className="text-2xl font-bold tracking-tight text-white" style={{ lineHeight: 1.2 }}>{t(slide.titleKey)}</p>
                       {t(slide.subtitleKey) && (
                         <p className="text-xs text-white/70 font-medium" style={{ marginTop: '6px', lineHeight: 1.4 }}>{t(slide.subtitleKey)}</p>
                       )}
@@ -155,8 +155,8 @@ export default function Hero() {
                   </Link>
                 ) : (
                   <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4">
-                    <h1 className="text-4xl font-bold tracking-tight text-white">{t(slide.titleKey)}</h1>
-                    {t(slide.subtitleKey) && <h2 className="text-sm font-bold tracking-tight text-white mt-1">{t(slide.subtitleKey)}</h2>}
+                    <p className="text-4xl font-bold tracking-tight text-white">{t(slide.titleKey)}</p>
+                    {t(slide.subtitleKey) && <p className="text-sm font-bold tracking-tight text-white mt-1">{t(slide.subtitleKey)}</p>}
                   </div>
                 )}
               </div>
@@ -200,15 +200,15 @@ export default function Hero() {
               }}
             >
               {slide.isProduct ? (
-                <Image src={slide.image} alt="Hero" width={600} height={600} className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 object-contain" style={{ width: '28%', maxHeight: '60%' }} priority={i === pos} />
+                <Image src={slide.image} alt={t(slide.titleKey)} width={600} height={600} className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 object-contain" style={{ width: '28%', maxHeight: '60%' }} priority={i === pos} />
               ) : (
-                <Image src={slide.image} alt="Hero" fill className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={i === pos} />
+                <Image src={slide.image} alt={t(slide.titleKey)} fill className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={i === pos} />
               )}
               <div className="absolute inset-0 z-10 flex items-center justify-center px-6">
                 {slide.btnKey ? (
                   <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between" style={{ padding: '0 80px 70px' }}>
                     <div style={{ maxWidth: '55%' }}>
-                      <h1 className="text-5xl font-bold tracking-tight text-white" style={{ lineHeight: 1.2 }}>{t(slide.titleKey)}</h1>
+                      <p className="text-5xl font-bold tracking-tight text-white" style={{ lineHeight: 1.2 }}>{t(slide.titleKey)}</p>
                       {t(slide.subtitleKey) && (
                         <p className="text-lg text-white/70 font-medium" style={{ marginTop: '12px', lineHeight: 1.5 }}>{t(slide.subtitleKey)}</p>
                       )}
@@ -237,8 +237,8 @@ export default function Hero() {
                   </div>
                 ) : (
                   <>
-                    <h1 className="text-9xl font-bold tracking-tight text-white">{t(slide.titleKey)}</h1>
-                    {t(slide.subtitleKey) && <h2 className="text-5xl font-bold tracking-tight text-white absolute" style={{ marginTop: '180px' }}>{t(slide.subtitleKey)}</h2>}
+                    <p className="text-9xl font-bold tracking-tight text-white">{t(slide.titleKey)}</p>
+                    {t(slide.subtitleKey) && <p className="text-5xl font-bold tracking-tight text-white absolute" style={{ marginTop: '180px' }}>{t(slide.subtitleKey)}</p>}
                   </>
                 )}
               </div>
