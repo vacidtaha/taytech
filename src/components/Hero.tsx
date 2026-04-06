@@ -35,7 +35,6 @@ const slides = [
     subtitleKey: "hero.slide5.subtitle",
     btnKey: "hero.slide5.btn",
     btnHref: "/urunler/heat-network/isi-istasyonlari",
-    isProduct: true,
   },
   {
     id: 5,
@@ -137,13 +136,9 @@ export default function Hero() {
               <div
                 key={i}
                 className="relative flex-shrink-0 overflow-hidden rounded-2xl h-full"
-                style={{ width: `${cardW}vw`, background: slide.isProduct ? '#1a1a1a' : undefined }}
+                style={{ width: `${cardW}vw` }}
               >
-                {slide.isProduct ? (
-                  <Image src={slide.image} alt={t(slide.titleKey)} width={400} height={400} className="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 object-contain w-[45%] max-h-[65%]" priority={Math.abs(i - pos) <= 1} />
-                ) : (
-                  <Image src={slide.image} alt={t(slide.titleKey)} fill sizes="100vw" className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={Math.abs(i - pos) <= 1} />
-                )}
+                <Image src={slide.image} alt={t(slide.titleKey)} fill sizes="100vw" className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={Math.abs(i - pos) <= 1} />
                 {slide.btnKey && slide.btnHref ? (
                   <Link href={slide.btnHref} className="absolute inset-0 z-10 flex items-center justify-center px-6">
                     <div className="text-center" style={{ maxWidth: '85%' }}>
@@ -193,17 +188,13 @@ export default function Hero() {
             <div
               key={i}
               className="relative flex-shrink-0 overflow-hidden h-full cursor-pointer"
-              style={{ width: `${cardW}vw`, borderRadius: '48px', background: slide.isProduct ? '#1a1a1a' : undefined }}
+              style={{ width: `${cardW}vw`, borderRadius: '48px' }}
               onClick={() => {
                 const clickedReal = i % total;
                 goToSlide(clickedReal);
               }}
             >
-              {slide.isProduct ? (
-                <Image src={slide.image} alt={t(slide.titleKey)} width={600} height={600} sizes="25vw" className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 object-contain" style={{ width: '28%', maxHeight: '60%' }} priority={Math.abs(i - pos) <= 1} />
-              ) : (
-                <Image src={slide.image} alt={t(slide.titleKey)} fill sizes="80vw" className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={Math.abs(i - pos) <= 1} />
-              )}
+              <Image src={slide.image} alt={t(slide.titleKey)} fill sizes="80vw" className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={Math.abs(i - pos) <= 1} />
               <div className="absolute inset-0 z-10 flex items-center justify-center px-6">
                 {slide.btnKey ? (
                   <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between" style={{ padding: '0 80px 70px' }}>
