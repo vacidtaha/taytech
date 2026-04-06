@@ -213,6 +213,7 @@ interface ProductDoc {
 interface ProductImg {
   id: number;
   url: string;
+  urlEn: string | null;
   sortOrder: number;
 }
 
@@ -224,7 +225,9 @@ interface Product {
   descriptionTr: string;
   descriptionEn: string;
   image: string | null;
+  imageEn: string | null;
   applicationImage: string | null;
+  applicationImageEn: string | null;
   specTableData: string | null;
   images?: ProductImg[];
   category: { slug: string; nameTr: string; nameEn: string };
@@ -253,11 +256,15 @@ export function ProductClient({ product, slug }: { product: Product; slug: strin
   const isEn = locale === "EN";
   const n = (tr: string, en: string) => (isEn ? en : tr);
 
+  const mainImg = (isEn && product.imageEn) ? product.imageEn : product.image;
+  const appImg = (isEn && product.applicationImageEn) ? product.applicationImageEn : product.applicationImage;
+
   const allImages: string[] = [];
-  if (product.image) allImages.push(product.image);
+  if (mainImg) allImages.push(mainImg);
   if (product.images) {
     product.images.forEach((img) => {
-      if (!allImages.includes(img.url)) allImages.push(img.url);
+      const url = (isEn && img.urlEn) ? img.urlEn : img.url;
+      if (!allImages.includes(url)) allImages.push(url);
     });
   }
 
@@ -439,14 +446,14 @@ export function ProductClient({ product, slug }: { product: Product; slug: strin
         </div>
 
         {/* Uygulama Fotoğrafı */}
-        {product.applicationImage && (
+        {(product.applicationImage || product.applicationImageEn) && (
           <div className="mt-16">
             <h2 className="text-[13px] font-semibold text-[#86868b] uppercase tracking-wider mb-4 text-center">
               {isEn ? "Application" : "Uygulama"}
             </h2>
             <div className="rounded-2xl overflow-hidden bg-[#f5f5f7]">
               <img
-                src={product.applicationImage}
+                src={appImg || product.applicationImage || ""}
                 alt={isEn ? "Application photo" : "Uygulama fotoğrafı"}
                 className="w-full h-auto object-cover max-h-[500px]"
               />

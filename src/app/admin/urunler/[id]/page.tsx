@@ -17,6 +17,7 @@ interface ProductDoc {
 interface ProductImage {
   id: number;
   url: string;
+  urlEn: string | null;
   sortOrder: number;
 }
 
@@ -30,7 +31,9 @@ interface Product {
   categoryId: number;
   isActive: boolean;
   image: string | null;
+  imageEn: string | null;
   applicationImage: string | null;
+  applicationImageEn: string | null;
   specTableData: string | null;
   images: ProductImage[];
   category: { id: number; nameTr: string; nameEn: string };
@@ -88,7 +91,9 @@ export default function EditProductPage() {
         categoryId: product.categoryId,
         isActive: product.isActive,
         image: product.image,
+        imageEn: product.imageEn,
         applicationImage: product.applicationImage,
+        applicationImageEn: product.applicationImageEn,
         specTableData: product.specTableData,
       }),
     });
@@ -382,6 +387,22 @@ export default function EditProductPage() {
                 )}
               </div>
 
+              {/* EN Ana Görsel */}
+              <div className="border-t border-[#e5e5ea] pt-4 mb-4">
+                <p className="text-[12px] font-medium text-[#86868b] mb-2">EN Main Image</p>
+                {product.imageEn ? (
+                  <div className="relative aspect-square rounded-lg bg-[#f5f5f7] overflow-hidden mb-2 w-24">
+                    <img src={product.imageEn} alt="" className="w-full h-full object-contain p-2" />
+                    <button onClick={() => update("imageEn", null)} className="absolute top-1 right-1 w-5 h-5 rounded-full bg-[#ff3b30] text-white text-[10px] flex items-center justify-center">✕</button>
+                  </div>
+                ) : (
+                  <label className="w-full h-9 rounded-lg border border-dashed border-[#d2d2d7] text-[12px] text-[#86868b] hover:border-[#0071e3] hover:text-[#0071e3] transition-colors inline-flex items-center justify-center gap-2 cursor-pointer">
+                    EN Ana Görsel Yükle
+                    <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, (url) => update("imageEn", url))} />
+                  </label>
+                )}
+              </div>
+
               {/* Ek görseller */}
               <div className="border-t border-[#e5e5ea] pt-4">
                 <p className="text-[12px] font-medium text-[#86868b] mb-3">Ek Görseller ({product.images?.length || 0}/5)</p>
@@ -638,35 +659,45 @@ export default function EditProductPage() {
             {/* Uygulama Fotoğrafı */}
             <div className="bg-white rounded-xl border border-[#e5e5ea] p-5">
               <h3 className="text-[13px] font-semibold text-[#1d1d1f] mb-4">Uygulama Fotoğrafı</h3>
-              <div className="aspect-[16/9] rounded-xl bg-[#f5f5f7] flex items-center justify-center overflow-hidden mb-3">
-                {product.applicationImage ? (
-                  <img src={product.applicationImage} alt="" className="w-full h-full object-cover" />
-                ) : (
-                  <div className="text-center">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#acacb0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-2">
-                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                      <circle cx="8.5" cy="8.5" r="1.5" />
-                      <polyline points="21 15 16 10 5 21" />
-                    </svg>
-                    <p className="text-[12px] text-[#acacb0]">Uygulama görseli yok</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-[12px] font-medium text-[#86868b] mb-2">TR</p>
+                  <div className="aspect-[16/9] rounded-xl bg-[#f5f5f7] flex items-center justify-center overflow-hidden mb-2">
+                    {product.applicationImage ? (
+                      <img src={product.applicationImage} alt="" className="w-full h-full object-cover" />
+                    ) : (
+                      <p className="text-[12px] text-[#acacb0]">Yok</p>
+                    )}
                   </div>
-                )}
-              </div>
-              <div className="flex gap-2">
-                <label className="flex-1 h-9 rounded-lg border border-[#d2d2d7] text-[13px] text-[#86868b] hover:border-[#acacb0] transition-colors inline-flex items-center justify-center gap-2 cursor-pointer">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                    <polyline points="17 8 12 3 7 8" />
-                    <line x1="12" y1="3" x2="12" y2="15" />
-                  </svg>
-                  Yükle
-                  <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, (url) => update("applicationImage", url))} />
-                </label>
-                {product.applicationImage && (
-                  <button onClick={() => update("applicationImage", null)} className="h-9 px-3 rounded-lg border border-[#d2d2d7] text-[13px] text-[#ff3b30] hover:border-[#ff3b30] transition-colors">
-                    Kaldır
-                  </button>
-                )}
+                  <div className="flex gap-2">
+                    <label className="flex-1 h-8 rounded-lg border border-[#d2d2d7] text-[12px] text-[#86868b] hover:border-[#acacb0] transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer">
+                      Yükle
+                      <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, (url) => update("applicationImage", url))} />
+                    </label>
+                    {product.applicationImage && (
+                      <button onClick={() => update("applicationImage", null)} className="h-8 px-2 rounded-lg border border-[#d2d2d7] text-[12px] text-[#ff3b30] hover:border-[#ff3b30] transition-colors">✕</button>
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <p className="text-[12px] font-medium text-[#86868b] mb-2">EN</p>
+                  <div className="aspect-[16/9] rounded-xl bg-[#f5f5f7] flex items-center justify-center overflow-hidden mb-2">
+                    {product.applicationImageEn ? (
+                      <img src={product.applicationImageEn} alt="" className="w-full h-full object-cover" />
+                    ) : (
+                      <p className="text-[12px] text-[#acacb0]">Yok</p>
+                    )}
+                  </div>
+                  <div className="flex gap-2">
+                    <label className="flex-1 h-8 rounded-lg border border-[#d2d2d7] text-[12px] text-[#86868b] hover:border-[#acacb0] transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer">
+                      Yükle
+                      <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, (url) => update("applicationImageEn", url))} />
+                    </label>
+                    {product.applicationImageEn && (
+                      <button onClick={() => update("applicationImageEn", null)} className="h-8 px-2 rounded-lg border border-[#d2d2d7] text-[12px] text-[#ff3b30] hover:border-[#ff3b30] transition-colors">✕</button>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

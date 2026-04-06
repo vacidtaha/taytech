@@ -170,6 +170,15 @@ interface HeaderProps {
   onMenuOpenChange?: (isOpen: boolean) => void;
 }
 
+function isLeafProduct(item: MenuItem): boolean {
+  return !item.children && item.href.startsWith("/urunler/") && item.href.split("/").length > 3;
+}
+
+function getSlugFromHref(href: string): string {
+  const parts = href.split("/");
+  return parts[parts.length - 1];
+}
+
 export default function Header({ theme, isFixed = true, onMenuOpenChange }: HeaderProps) {
   const pathname = usePathname();
   const { locale, setLocale } = useLanguage();
@@ -178,6 +187,14 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileStack, setMobileStack] = useState<{ title: string; items: MenuItem[] }[]>([]);
   const megaRef = useRef<HTMLDivElement>(null);
+  const [activeSlugs, setActiveSlugs] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    fetch("/api/active-products")
+      .then((r) => r.json())
+      .then((slugs: string[]) => setActiveSlugs(new Set(slugs)))
+      .catch(() => {});
+  }, []);
 
   const resolvedTheme = theme ?? (LIGHT_PATHS.some((p) => pathname === p || (p !== "/" && pathname.startsWith(p))) ? "light" : "dark");
   const isDark = resolvedTheme === "dark";
@@ -341,23 +358,38 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                       <p className="mb-3 px-6 text-[11px] font-semibold uppercase tracking-wider text-[#86868b]">
                         {ml(l1Node, locale)}
                       </p>
-                      {l1Node.children!.map((item, j) => (
-                        <Link
-                          key={item.tr}
-                          href={item.href}
-                          onMouseEnter={() => setLevel(1, j)}
-                          onClick={closeMega}
-                          className={cn(
-                            "flex w-full items-center justify-between px-6 py-3 text-left text-[13px] transition-colors duration-150",
-                            hoverPath[1] === j && has(item) ? "text-[#e30613]" : "text-[#424245] hover:text-[#e30613]",
-                          )}
-                        >
-                          <span>{ml(item, locale)}</span>
-                          {has(item) && (
-                            <ChevronRight className={cn("h-3.5 w-3.5 transition-colors duration-150", hoverPath[1] === j ? "text-[#e30613]" : "text-[#c4c4c4]")} />
-                          )}
-                        </Link>
-                      ))}
+                      {l1Node.children!.map((item, j) => {
+                        const leaf = isLeafProduct(item);
+                        const disabled = leaf && !activeSlugs.has(getSlugFromHref(item.href));
+                        if (disabled) {
+                          return (
+                            <span
+                              key={item.tr}
+                              onMouseEnter={() => setLevel(1, j)}
+                              className="flex w-full items-center justify-between px-6 py-3 text-left text-[13px] text-[#424245] cursor-default"
+                            >
+                              <span>{ml(item, locale)}</span>
+                            </span>
+                          );
+                        }
+                        return (
+                          <Link
+                            key={item.tr}
+                            href={item.href}
+                            onMouseEnter={() => setLevel(1, j)}
+                            onClick={closeMega}
+                            className={cn(
+                              "flex w-full items-center justify-between px-6 py-3 text-left text-[13px] transition-colors duration-150",
+                              hoverPath[1] === j && has(item) ? "text-[#e30613]" : "text-[#424245] hover:text-[#e30613]",
+                            )}
+                          >
+                            <span>{ml(item, locale)}</span>
+                            {has(item) && (
+                              <ChevronRight className={cn("h-3.5 w-3.5 transition-colors duration-150", hoverPath[1] === j ? "text-[#e30613]" : "text-[#c4c4c4]")} />
+                            )}
+                          </Link>
+                        );
+                      })}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -375,23 +407,38 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                       <p className="mb-3 px-6 text-[11px] font-semibold uppercase tracking-wider text-[#86868b]">
                         {ml(l2Node, locale)}
                       </p>
-                      {l2Node.children!.map((item, k) => (
-                        <Link
-                          key={item.tr}
-                          href={item.href}
-                          onMouseEnter={() => setLevel(2, k)}
-                          onClick={closeMega}
-                          className={cn(
-                            "flex w-full items-center justify-between px-6 py-3 text-left text-[13px] transition-colors duration-150",
-                            hoverPath[2] === k && has(item) ? "text-[#e30613]" : "text-[#424245] hover:text-[#e30613]",
-                          )}
-                        >
-                          <span>{ml(item, locale)}</span>
-                          {has(item) && (
-                            <ChevronRight className={cn("h-3.5 w-3.5 transition-colors duration-150", hoverPath[2] === k ? "text-[#e30613]" : "text-[#c4c4c4]")} />
-                          )}
-                        </Link>
-                      ))}
+                      {l2Node.children!.map((item, k) => {
+                        const leaf = isLeafProduct(item);
+                        const disabled = leaf && !activeSlugs.has(getSlugFromHref(item.href));
+                        if (disabled) {
+                          return (
+                            <span
+                              key={item.tr}
+                              onMouseEnter={() => setLevel(2, k)}
+                              className="flex w-full items-center justify-between px-6 py-3 text-left text-[13px] text-[#424245] cursor-default"
+                            >
+                              <span>{ml(item, locale)}</span>
+                            </span>
+                          );
+                        }
+                        return (
+                          <Link
+                            key={item.tr}
+                            href={item.href}
+                            onMouseEnter={() => setLevel(2, k)}
+                            onClick={closeMega}
+                            className={cn(
+                              "flex w-full items-center justify-between px-6 py-3 text-left text-[13px] transition-colors duration-150",
+                              hoverPath[2] === k && has(item) ? "text-[#e30613]" : "text-[#424245] hover:text-[#e30613]",
+                            )}
+                          >
+                            <span>{ml(item, locale)}</span>
+                            {has(item) && (
+                              <ChevronRight className={cn("h-3.5 w-3.5 transition-colors duration-150", hoverPath[2] === k ? "text-[#e30613]" : "text-[#c4c4c4]")} />
+                            )}
+                          </Link>
+                        );
+                      })}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -409,16 +456,30 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                       <p className="mb-3 px-6 text-[11px] font-semibold uppercase tracking-wider text-[#86868b]">
                         {ml(l3Node, locale)}
                       </p>
-                      {l3Node.children!.map((item) => (
-                        <Link
-                          key={item.tr}
-                          href={item.href}
-                          onClick={closeMega}
-                          className="block px-6 py-3 text-[13px] text-[#424245] transition-colors duration-150 hover:text-[#e30613]"
-                        >
-                          {ml(item, locale)}
-                        </Link>
-                      ))}
+                      {l3Node.children!.map((item) => {
+                        const leaf = isLeafProduct(item);
+                        const disabled = leaf && !activeSlugs.has(getSlugFromHref(item.href));
+                        if (disabled) {
+                          return (
+                            <span
+                              key={item.tr}
+                              className="block px-6 py-3 text-[13px] text-[#424245] cursor-default"
+                            >
+                              {ml(item, locale)}
+                            </span>
+                          );
+                        }
+                        return (
+                          <Link
+                            key={item.tr}
+                            href={item.href}
+                            onClick={closeMega}
+                            className="block px-6 py-3 text-[13px] text-[#424245] transition-colors duration-150 hover:text-[#e30613]"
+                          >
+                            {ml(item, locale)}
+                          </Link>
+                        );
+                      })}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -541,27 +602,35 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                       {mobileStack[mobileStack.length - 1].title}
                     </h2>
                     <ul className="space-y-0">
-                      {mobileStack[mobileStack.length - 1].items.map((item) => (
-                        <li key={item.tr}>
-                          {has(item) ? (
-                            <button
-                              onClick={() => setMobileStack((s) => [...s, { title: ml(item, locale), items: item.children! }])}
-                              className="flex w-full items-center justify-between py-3.5 text-[15px] text-[#1d1d1f]"
-                            >
-                              {ml(item, locale)}
-                              <ChevronRight className="h-4 w-4 text-[#c4c4c4]" />
-                            </button>
-                          ) : (
-                            <Link
-                              href={item.href}
-                              onClick={closeMobile}
-                              className="block py-3.5 text-[15px] text-[#1d1d1f] transition-colors duration-150 hover:text-[#e30613]"
-                            >
-                              {ml(item, locale)}
-                            </Link>
-                          )}
-                        </li>
-                      ))}
+                      {mobileStack[mobileStack.length - 1].items.map((item) => {
+                        const leaf = isLeafProduct(item);
+                        const disabled = leaf && !activeSlugs.has(getSlugFromHref(item.href));
+                        return (
+                          <li key={item.tr}>
+                            {has(item) ? (
+                              <button
+                                onClick={() => setMobileStack((s) => [...s, { title: ml(item, locale), items: item.children! }])}
+                                className="flex w-full items-center justify-between py-3.5 text-[15px] text-[#1d1d1f]"
+                              >
+                                {ml(item, locale)}
+                                <ChevronRight className="h-4 w-4 text-[#c4c4c4]" />
+                              </button>
+                            ) : disabled ? (
+                              <span className="block py-3.5 text-[15px] text-[#1d1d1f] cursor-default">
+                                {ml(item, locale)}
+                              </span>
+                            ) : (
+                              <Link
+                                href={item.href}
+                                onClick={closeMobile}
+                                className="block py-3.5 text-[15px] text-[#1d1d1f] transition-colors duration-150 hover:text-[#e30613]"
+                              >
+                                {ml(item, locale)}
+                              </Link>
+                            )}
+                          </li>
+                        );
+                      })}
                     </ul>
                   </motion.div>
                 )}

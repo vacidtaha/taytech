@@ -81,6 +81,15 @@ export default async function ProductOrCategoryPage({ params }: Props) {
       products: {
         where: { isActive: true },
         orderBy: { sortOrder: "asc" },
+        select: {
+          id: true,
+          slug: true,
+          nameTr: true,
+          nameEn: true,
+          image: true,
+          imageEn: true,
+          descriptionTr: true,
+        },
       },
     },
   });
