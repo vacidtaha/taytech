@@ -250,10 +250,10 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
             <Image
               src={locale === "EN" ? "/taytechuklogo.webp" : "/taytechlogo.webp"}
               alt="Taytech"
-              width={90}
-              height={28}
+              width={220}
+              height={124}
               priority
-              className={cn("h-7 w-auto transition-all", activeMenu || !isDark ? "" : "brightness-0 invert")}
+              className={cn("h-14 w-auto transition-all", activeMenu || !isDark ? "" : "brightness-0 invert")}
             />
           </Link>
 

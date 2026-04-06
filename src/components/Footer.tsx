@@ -62,8 +62,8 @@ export default function Footer() {
             <Image
               src={isEn ? "/taytechuklogo.webp" : "/taytechlogo.webp"}
               alt="Taytech"
-              width={140}
-              height={44}
+              width={280}
+              height={158}
               className="mb-4"
             />
             <p className="text-[13px] text-black/40 max-w-[220px] leading-relaxed">
@@ -127,13 +127,35 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Addresses */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-14">
+          <div>
+            <h4 className="text-[11px] font-semibold text-black/40 uppercase tracking-wider mb-3">Türkiye</h4>
+            <p className="text-[13px] text-black/60 font-medium mb-1">Taytech Enerji Teknolojileri San. ve Tic. A.Ş.</p>
+            <p className="text-[12px] text-black/40 leading-relaxed">
+              İnönü Mahallesi Gebze Plastikçiler OSB<br />
+              Atatürk Bulvarı No:7/2<br />
+              Gebze / Kocaeli, Türkiye
+            </p>
+          </div>
+          <div>
+            <h4 className="text-[11px] font-semibold text-black/40 uppercase tracking-wider mb-3">United Kingdom</h4>
+            <p className="text-[13px] text-black/60 font-medium mb-1">Taytech Technologies Ltd.</p>
+            <p className="text-[12px] text-black/40 leading-relaxed">
+              17 Green Lanes<br />
+              London N16 9BS<br />
+              United Kingdom
+            </p>
+          </div>
+        </div>
+
         {/* Divider */}
         <div className="border-t border-black/10" />
 
         {/* Bottom bar */}
         <div className="pt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-black/30">
-            <span>© {currentYear} Taytech Otomasyon ve Bilişim A.Ş.</span>
+            <span>© {currentYear} Taytech Enerji Teknolojileri San. ve Tic. A.Ş.</span>
             <Link href="/gizlilik-politikasi" className="hover:text-black/60 transition-colors">
               {isEn ? "Privacy Policy" : "Gizlilik Politikası"}
             </Link>

@@ -26,9 +26,9 @@ export const metadata: Metadata = {
     "Smart Booster", "Smart Exclusive", "HVAC", "bina otomasyonu",
     "heat station", "magnetic filter", "control panel", "Gebze", "Kocaeli",
   ],
-  authors: [{ name: "Taytech Otomasyon ve Bilişim A.Ş.", url: "https://taytech.com.tr" }],
+  authors: [{ name: "Taytech Enerji Teknolojileri San. ve Tic. A.Ş.", url: "https://taytech.com.tr" }],
   creator: "Taytech",
-  publisher: "Taytech Otomasyon ve Bilişim A.Ş.",
+  publisher: "Taytech Enerji Teknolojileri San. ve Tic. A.Ş.",
   metadataBase: new URL("https://taytech.com.tr"),
   alternates: {
     canonical: "/",
@@ -84,7 +84,7 @@ export const metadata: Metadata = {
 const organizationLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Taytech Otomasyon ve Bilişim A.Ş.",
+  name: "Taytech Enerji Teknolojileri San. ve Tic. A.Ş.",
   alternateName: "Taytech",
   url: "https://taytech.com.tr",
   logo: "https://taytech.com.tr/taytechlogo.webp",
@@ -118,7 +118,7 @@ const websiteLd = {
   url: "https://taytech.com.tr",
   publisher: {
     "@type": "Organization",
-    name: "Taytech Otomasyon ve Bilişim A.Ş.",
+    name: "Taytech Enerji Teknolojileri San. ve Tic. A.Ş.",
   },
   inLanguage: ["tr-TR", "en-US"],
 };

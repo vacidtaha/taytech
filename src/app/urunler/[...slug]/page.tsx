@@ -138,7 +138,7 @@ export default async function ProductOrCategoryPage({ params }: Props) {
       brand: { "@type": "Brand", name: "Taytech" },
       manufacturer: {
         "@type": "Organization",
-        name: "Taytech Otomasyon ve Bilişim A.Ş.",
+        name: "Taytech Enerji Teknolojileri San. ve Tic. A.Ş.",
         url: "https://taytech.com.tr",
       },
       url: `https://taytech.com.tr${fullPath}`,

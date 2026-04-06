@@ -2,12 +2,12 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Gizlilik Politikası",
-  description: "Taytech Otomasyon ve Bilişim A.Ş. gizlilik politikası. Kişisel verilerinizin korunması ve işlenmesi hakkında bilgilendirme.",
+  description: "Taytech Enerji Teknolojileri San. ve Tic. A.Ş. gizlilik politikası. Kişisel verilerinizin korunması ve işlenmesi hakkında bilgilendirme.",
   alternates: { canonical: "/gizlilik-politikasi" },
   robots: { index: true, follow: true },
   openGraph: {
     title: "Gizlilik Politikası | Taytech",
-    description: "Taytech Otomasyon ve Bilişim A.Ş. gizlilik politikası. Kişisel verilerinizin korunması ve işlenmesi hakkında bilgilendirme.",
+    description: "Taytech Enerji Teknolojileri San. ve Tic. A.Ş. gizlilik politikası. Kişisel verilerinizin korunması ve işlenmesi hakkında bilgilendirme.",
     url: "https://taytech.com.tr/gizlilik-politikasi",
     type: "website",
   },

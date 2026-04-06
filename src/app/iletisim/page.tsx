@@ -369,37 +369,39 @@ export default function IletisimPage() {
             </h2>
             
             <div className="text-center" style={{ color: 'rgb(29, 29, 31)', marginTop: '28px' }}>
-              <div style={{ marginBottom: '24px' }}>
-                <p style={{ fontSize: '16px', fontWeight: 500 }}>{t("contact.companyName")}</p>
+              {/* Ortak Bilgiler */}
+              <div style={{ marginBottom: '20px' }}>
+                <h3 style={{ fontSize: '15px', fontWeight: 500, marginBottom: '6px' }}>{t("contact.phoneLabel")}</h3>
+                <p style={{ fontSize: '14px', fontWeight: 450 }}>{t("contact.phone1")}</p>
+                <p style={{ fontSize: '14px', fontWeight: 450 }}>{t("contact.phone2")}</p>
               </div>
-              
-              <div style={{ marginBottom: '24px' }}>
-                <h3 style={{ fontSize: '16px', fontWeight: 500, marginBottom: '6px' }}>{t("contact.hq")}</h3>
-                <p style={{ fontSize: '15px', fontWeight: 450 }}>{t("contact.hqAddr1")}</p>
-                <p style={{ fontSize: '15px', fontWeight: 450 }}>{t("contact.hqAddr2")}</p>
+
+              <div style={{ marginBottom: '20px' }}>
+                <h3 style={{ fontSize: '15px', fontWeight: 500, marginBottom: '6px' }}>{t("contact.fax")}</h3>
+                <p style={{ fontSize: '14px', fontWeight: 450 }}>{t("contact.faxNum")}</p>
               </div>
-              
+
               <div style={{ marginBottom: '24px' }}>
-                <h3 style={{ fontSize: '16px', fontWeight: 500, marginBottom: '6px' }}>{t("contact.phoneLabel")}</h3>
-                <p style={{ fontSize: '15px', fontWeight: 450 }}>{t("contact.phone1")}</p>
-                <p style={{ fontSize: '15px', fontWeight: 450 }}>{t("contact.phone2")}</p>
+                <h3 style={{ fontSize: '15px', fontWeight: 500, marginBottom: '6px' }}>{t("contact.emailLabel")}</h3>
+                <p style={{ fontSize: '14px', fontWeight: 450 }}>{t("contact.emailAddr")}</p>
               </div>
-              
-              <div style={{ marginBottom: '24px' }}>
-                <h3 style={{ fontSize: '16px', fontWeight: 500, marginBottom: '6px' }}>{t("contact.fax")}</h3>
-                <p style={{ fontSize: '15px', fontWeight: 450 }}>{t("contact.faxNum")}</p>
-              </div>
-              
-              <div style={{ marginBottom: '24px' }}>
-                <h3 style={{ fontSize: '16px', fontWeight: 500, marginBottom: '6px' }}>{t("contact.emailLabel")}</h3>
-                <p style={{ fontSize: '15px', fontWeight: 450 }}>{t("contact.emailAddr")}</p>
-              </div>
-              
-              <div style={{ marginBottom: '16px' }}>
-                <h3 style={{ fontSize: '16px', fontWeight: 500, marginBottom: '6px' }}>{t("contact.factory")}</h3>
-                <p style={{ fontSize: '15px', fontWeight: 450 }}>{t("contact.factoryAddr1")}</p>
-                <p style={{ fontSize: '15px', fontWeight: 450 }}>{t("contact.factoryAddr2")}</p>
-                <p style={{ fontSize: '15px', fontWeight: 450 }}>{t("contact.factoryAddr3")}</p>
+
+              {/* Adresler - Alt Alta (mobil) */}
+              <div style={{ borderTop: '1px solid rgb(210, 210, 215)', paddingTop: '24px' }}>
+                {/* Türkiye */}
+                <div style={{ marginBottom: '24px' }}>
+                  <h3 style={{ fontSize: '12px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgb(134, 134, 139)', marginBottom: '10px' }}>Türkiye</h3>
+                  <p style={{ fontSize: '14px', fontWeight: 500, marginBottom: '10px' }}>Taytech Enerji Teknolojileri San. ve Tic. A.Ş.</p>
+                  <p style={{ fontSize: '13px', fontWeight: 450 }}>{t("contact.hqAddr1")}, {t("contact.hqAddr2")}</p>
+                  <p style={{ fontSize: '13px', fontWeight: 450, marginTop: '6px' }}>{t("contact.factoryAddr1")}, {t("contact.factoryAddr2")}, {t("contact.factoryAddr3")}</p>
+                </div>
+
+                <div style={{ borderTop: '1px solid rgb(210, 210, 215)', paddingTop: '24px', marginBottom: '16px' }}>
+                  <h3 style={{ fontSize: '12px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgb(134, 134, 139)', marginBottom: '10px' }}>United Kingdom</h3>
+                  <p style={{ fontSize: '14px', fontWeight: 500, marginBottom: '10px' }}>Taytech Technologies Ltd.</p>
+                  <p style={{ fontSize: '13px', fontWeight: 450 }}>17 Green Lanes, London N16 9BS</p>
+                  <p style={{ fontSize: '13px', fontWeight: 450 }}>United Kingdom</p>
+                </div>
               </div>
             </div>
           </div>
@@ -724,16 +726,7 @@ export default function IletisimPage() {
           </h2>
           
           <div className="text-center" style={{ color: 'rgb(29, 29, 31)', marginTop: '50px' }}>
-            <div style={{ marginBottom: '35px' }}>
-              <p style={{ fontSize: '18px', fontWeight: 500 }}>{t("contact.companyName")}</p>
-            </div>
-            
-            <div style={{ marginBottom: '35px' }}>
-              <h3 style={{ fontSize: '18px', fontWeight: 500, marginBottom: '8px' }}>{t("contact.hq")}</h3>
-              <p style={{ fontSize: '18px', fontWeight: 450 }}>{t("contact.hqAddr1")}</p>
-              <p style={{ fontSize: '18px', fontWeight: 450 }}>{t("contact.hqAddr2")}</p>
-            </div>
-            
+            {/* Ortak Bilgiler */}
             <div style={{ marginBottom: '35px' }}>
               <h3 style={{ fontSize: '18px', fontWeight: 500, marginBottom: '8px' }}>{t("contact.phoneLabel")}</h3>
               <p style={{ fontSize: '18px', fontWeight: 450 }}>{t("contact.phone1")}</p>
@@ -749,12 +742,40 @@ export default function IletisimPage() {
               <h3 style={{ fontSize: '18px', fontWeight: 500, marginBottom: '8px' }}>{t("contact.emailLabel")}</h3>
               <p style={{ fontSize: '18px', fontWeight: 450 }}>{t("contact.emailAddr")}</p>
             </div>
-            
-            <div style={{ marginBottom: '35px' }}>
-              <h3 style={{ fontSize: '18px', fontWeight: 500, marginBottom: '8px' }}>{t("contact.factory")}</h3>
-              <p style={{ fontSize: '18px', fontWeight: 450 }}>{t("contact.factoryAddr1")}</p>
-              <p style={{ fontSize: '18px', fontWeight: 450 }}>{t("contact.factoryAddr2")}</p>
-              <p style={{ fontSize: '18px', fontWeight: 450 }}>{t("contact.factoryAddr3")}</p>
+
+            {/* Adresler - Yan Yana */}
+            <div style={{ borderTop: '1px solid rgb(210, 210, 215)', paddingTop: '35px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
+              {/* Türkiye */}
+              <div style={{ borderRight: '1px solid rgb(210, 210, 215)', paddingRight: '40px' }}>
+                <h3 style={{ fontSize: '13px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgb(134, 134, 139)', marginBottom: '14px' }}>Türkiye</h3>
+                <p style={{ fontSize: '17px', fontWeight: 500, marginBottom: '16px' }}>Taytech Enerji Teknolojileri San. ve Tic. A.Ş.</p>
+                
+                <div style={{ marginBottom: '14px' }}>
+                  <h4 style={{ fontSize: '13px', fontWeight: 500, color: 'rgb(134, 134, 139)', marginBottom: '4px' }}>{t("contact.hq")}</h4>
+                  <p style={{ fontSize: '16px', fontWeight: 450 }}>{t("contact.hqAddr1")}</p>
+                  <p style={{ fontSize: '16px', fontWeight: 450 }}>{t("contact.hqAddr2")}</p>
+                </div>
+                
+                <div>
+                  <h4 style={{ fontSize: '13px', fontWeight: 500, color: 'rgb(134, 134, 139)', marginBottom: '4px' }}>{t("contact.factory")}</h4>
+                  <p style={{ fontSize: '16px', fontWeight: 450 }}>{t("contact.factoryAddr1")}</p>
+                  <p style={{ fontSize: '16px', fontWeight: 450 }}>{t("contact.factoryAddr2")}</p>
+                  <p style={{ fontSize: '16px', fontWeight: 450 }}>{t("contact.factoryAddr3")}</p>
+                </div>
+              </div>
+
+              {/* United Kingdom */}
+              <div style={{ paddingLeft: '40px' }}>
+                <h3 style={{ fontSize: '13px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgb(134, 134, 139)', marginBottom: '14px' }}>United Kingdom</h3>
+                <p style={{ fontSize: '17px', fontWeight: 500, marginBottom: '16px' }}>Taytech Technologies Ltd.</p>
+                
+                <div>
+                  <h4 style={{ fontSize: '13px', fontWeight: 500, color: 'rgb(134, 134, 139)', marginBottom: '4px' }}>Address</h4>
+                  <p style={{ fontSize: '16px', fontWeight: 450 }}>17 Green Lanes</p>
+                  <p style={{ fontSize: '16px', fontWeight: 450 }}>London N16 9BS</p>
+                  <p style={{ fontSize: '16px', fontWeight: 450 }}>United Kingdom</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

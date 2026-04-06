@@ -42,7 +42,7 @@ export default function GizlilikPolitikasi() {
                 )}
                 {n === 8 && (
                   <div style={{ marginTop: "14px", padding: "20px", background: "#f5f5f7", borderRadius: "12px" }}>
-                    <p style={{ fontSize: "14px", color: "#1d1d1f", fontWeight: 500 }}>Taytech Otomasyon ve Bilişim A.Ş.</p>
+                    <p style={{ fontSize: "14px", color: "#1d1d1f", fontWeight: 500 }}>Taytech Enerji Teknolojileri San. ve Tic. A.Ş.</p>
                     <p style={{ fontSize: "13px", color: "#6e6e73", marginTop: "4px" }}>info@taytech.com.tr</p>
                     <p style={{ fontSize: "13px", color: "#6e6e73", marginTop: "2px" }}>(0262) 502 51 49</p>
                   </div>
@@ -142,7 +142,7 @@ export default function GizlilikPolitikasi() {
             <h2 style={{ fontSize: "28px", fontWeight: 600, color: "#1d1d1f", marginBottom: "16px" }}>{t("privacy.s8.title")}</h2>
             <p style={{ fontSize: "17px", color: "#424245", lineHeight: 1.8 }}>{t("privacy.s8.p1")}</p>
             <div style={{ marginTop: "16px", padding: "24px", background: "#f5f5f7", borderRadius: "12px" }}>
-              <p style={{ fontSize: "16px", color: "#1d1d1f", fontWeight: 500 }}>Taytech Otomasyon ve Bilişim A.Ş.</p>
+              <p style={{ fontSize: "16px", color: "#1d1d1f", fontWeight: 500 }}>Taytech Enerji Teknolojileri San. ve Tic. A.Ş.</p>
               <p style={{ fontSize: "15px", color: "#6e6e73", marginTop: "4px" }}>info@taytech.com.tr</p>
               <p style={{ fontSize: "15px", color: "#6e6e73", marginTop: "2px" }}>(0262) 502 51 49</p>
             </div>

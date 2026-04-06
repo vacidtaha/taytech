@@ -150,7 +150,7 @@ export default function AdminLoginPage() {
         </div>
 
         <p className="text-center text-[11px] text-[#c7c7cc] mt-6">
-          Taytech Otomasyon · Yetkisiz erişim yasaktır
+          Taytech Enerji Teknolojileri · Yetkisiz erişim yasaktır
         </p>
       </div>
     </div>
