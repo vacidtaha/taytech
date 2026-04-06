@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     description: "Akıllı kontrol panoları, ısı istasyonları, manyetik filtreler ve endüstriyel otomasyon çözümleri. ISO 9001, ISO 14001, ISO 45001 sertifikalı Türk üretici.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
         alt: "Taytech - Akıllı Kontrol Panoları & Isı İstasyonları",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Taytech | Akıllı Kontrol Panoları & Isı İstasyonları",
     description: "Akıllı kontrol panoları, ısı istasyonları, manyetik filtreler ve endüstriyel otomasyon çözümleri.",
-    images: ["/og-image.png"],
+    images: ["/opengraph-image"],
   },
   robots: {
     index: true,
@@ -68,8 +68,11 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "/fav.png",
-    shortcut: "/fav.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/fav.png", sizes: "1024x1024", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
     apple: "/fav.png",
   },
   category: "technology",
@@ -85,7 +88,7 @@ const organizationLd = {
   alternateName: "Taytech",
   url: "https://taytech.com.tr",
   logo: "https://taytech.com.tr/logo.png",
-  image: "https://taytech.com.tr/og-image.png",
+  image: "https://taytech.com.tr/opengraph-image",
   description: "Akıllı kontrol panoları, ısı istasyonları, manyetik filtreler ve endüstriyel otomasyon çözümleri üreten ISO sertifikalı Türk üretici.",
   foundingDate: "2010",
   address: {
