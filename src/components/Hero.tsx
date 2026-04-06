@@ -8,13 +8,13 @@ import { useLanguage } from "@/context/LanguageContext";
 const slides = [
   {
     id: 1,
-    image: "/taytechdiscekim.png",
+    image: "/taytechdiscekim.webp",
     titleKey: "hero.title",
     subtitleKey: "hero.subtitle",
   },
   {
     id: 2,
-    image: "/2.hero.png",
+    image: "/2.hero.webp",
     titleKey: "hero.slide2.title",
     subtitleKey: "hero.slide2.subtitle",
     btnKey: "hero.slide2.btn",
@@ -22,7 +22,7 @@ const slides = [
   },
   {
     id: 3,
-    image: "/3.hero.png",
+    image: "/3.hero.webp",
     titleKey: "hero.slide3.title",
     subtitleKey: "hero.slide3.subtitle",
     btnKey: "hero.slide3.btn",
@@ -39,7 +39,7 @@ const slides = [
   },
   {
     id: 5,
-    image: "/hero2.png",
+    image: "/hero2.webp",
     titleKey: "hero.slide4.title",
     subtitleKey: "hero.slide4.subtitle",
     btnKey: "hero.slide4.btn",
@@ -49,7 +49,7 @@ const slides = [
 
 export default function Hero() {
   const { t } = useLanguage();
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
   const [pos, setPos] = useState(slides.length); // orta gruptan başla
   const [isTransitioning, setIsTransitioning] = useState(true);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -122,7 +122,7 @@ export default function Hero() {
     const centerOffset = (100 - cardW) / 2;
 
     return (
-      <section className="relative w-full bg-[#f5f5f7] overflow-hidden" style={{ paddingTop: '72px', paddingBottom: '20px' }}>
+      <section className="relative w-full bg-[#f5f5f7] overflow-hidden" style={{ paddingTop: '72px', paddingBottom: '20px', minHeight: '45vh' }}>
         <div className="relative flex items-center overflow-hidden" style={{ height: '35vh' }}>
           <div
             ref={trackRef}
@@ -140,9 +140,9 @@ export default function Hero() {
                 style={{ width: `${cardW}vw`, background: slide.isProduct ? '#1a1a1a' : undefined }}
               >
                 {slide.isProduct ? (
-                  <Image src={slide.image} alt={t(slide.titleKey)} width={400} height={400} className="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 object-contain w-[45%] max-h-[65%]" priority={i === pos} />
+                  <Image src={slide.image} alt={t(slide.titleKey)} width={400} height={400} className="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 object-contain w-[45%] max-h-[65%]" priority={Math.abs(i - pos) <= 1} />
                 ) : (
-                  <Image src={slide.image} alt={t(slide.titleKey)} fill className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={i === pos} />
+                  <Image src={slide.image} alt={t(slide.titleKey)} fill className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={Math.abs(i - pos) <= 1} />
                 )}
                 {slide.btnKey && slide.btnHref ? (
                   <Link href={slide.btnHref} className="absolute inset-0 z-10 flex items-center justify-center px-6">
@@ -200,9 +200,9 @@ export default function Hero() {
               }}
             >
               {slide.isProduct ? (
-                <Image src={slide.image} alt={t(slide.titleKey)} width={600} height={600} className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 object-contain" style={{ width: '28%', maxHeight: '60%' }} priority={i === pos} />
+                <Image src={slide.image} alt={t(slide.titleKey)} width={600} height={600} className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 object-contain" style={{ width: '28%', maxHeight: '60%' }} priority={Math.abs(i - pos) <= 1} />
               ) : (
-                <Image src={slide.image} alt={t(slide.titleKey)} fill className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={i === pos} />
+                <Image src={slide.image} alt={t(slide.titleKey)} fill className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={Math.abs(i - pos) <= 1} />
               )}
               <div className="absolute inset-0 z-10 flex items-center justify-center px-6">
                 {slide.btnKey ? (

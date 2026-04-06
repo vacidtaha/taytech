@@ -31,23 +31,23 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-[8px] lg:gap-[13px]">
             <Link href="/urunler/heat-network/isi-istasyonlari" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat1")}</h3>
-              <Image src="/uploads/D-H-TR-DHW_U0A4-Render-Sağ-1774350452047.webp" alt={t("home.cat1")} width={350} height={350} className="absolute top-[32%] lg:top-[34%] object-contain max-w-[55%] lg:max-w-[65%]" />
+              <Image src="/uploads/D-H-TR-DHW_U0A4-Render-Sağ-1774350452047.webp" alt={t("home.cat1")} width={350} height={350} sizes="(max-width: 1024px) 55vw, 22vw" className="absolute top-[32%] lg:top-[34%] object-contain max-w-[55%] lg:max-w-[65%]" />
             </Link>
             <Link href="/urunler/heat-network/manyetik-filtreler" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat2")}</h3>
-              <Image src="/uploads/IronInox-Render-Sol-1774348282120.webp" alt={t("home.cat2")} width={400} height={400} className="absolute top-[28%] lg:top-[30%] object-contain max-w-[60%] lg:max-w-[75%]" />
+              <Image src="/uploads/IronInox-Render-Sol-1774348282120.webp" alt={t("home.cat2")} width={400} height={400} sizes="(max-width: 1024px) 60vw, 25vw" className="absolute top-[28%] lg:top-[30%] object-contain max-w-[60%] lg:max-w-[75%]" />
             </Link>
             <Link href="/urunler/kontrol-sistemleri/smart-serisi" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat3")}</h3>
-              <Image src="/uploads/Smart-Booster-Front-1774349398054.webp" alt={t("home.cat3")} width={300} height={300} className="absolute top-[32%] lg:top-[34%] object-contain max-w-[45%] lg:max-w-[50%]" />
+              <Image src="/uploads/Smart-Booster-Front-1774349398054.webp" alt={t("home.cat3")} width={300} height={300} sizes="(max-width: 1024px) 45vw, 17vw" className="absolute top-[32%] lg:top-[34%] object-contain max-w-[45%] lg:max-w-[50%]" />
             </Link>
             <Link href="/urunler/kontrol-sistemleri/electro-mechanical-panels" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat4")}</h3>
-              <Image src="/uploads/Direct-Start-Front--ABS-1774350266194.webp" alt={t("home.cat4")} width={300} height={300} className="absolute top-[32%] lg:top-[34%] object-contain max-w-[45%] lg:max-w-[50%]" />
+              <Image src="/uploads/Direct-Start-Front--ABS-1774350266194.webp" alt={t("home.cat4")} width={300} height={300} sizes="(max-width: 1024px) 45vw, 17vw" className="absolute top-[32%] lg:top-[34%] object-contain max-w-[45%] lg:max-w-[50%]" />
             </Link>
             <Link href="/urunler/veri-yonetim-sistemleri" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat5")}</h3>
-              <Image src="/cloud.png" alt={t("home.cat5")} width={350} height={260} className="absolute top-[36%] lg:top-[40%] object-contain max-w-[45%] lg:max-w-none" />
+              <Image src="/cloud.webp" alt={t("home.cat5")} width={350} height={260} sizes="(max-width: 1024px) 45vw, 22vw" className="absolute top-[36%] lg:top-[40%] object-contain max-w-[45%] lg:max-w-none" />
             </Link>
             <Link href="/urunler/isitma-sogutma-ekipmanlari" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat6")}</h3>
@@ -147,7 +147,7 @@ export default function Home() {
             <Link href="/cozumler/toplu-konutlar" className="group" style={{ textDecoration: "none" }}>
               <div>
                 <div className="relative h-[200px] lg:h-[480px] overflow-hidden">
-                  <Image src="/akıllısehir.jpg" alt={t("home.cozumler.toplu")} fill style={{ objectFit: "cover" }} />
+                  <Image src="/akıllısehir.webp" alt={t("home.cozumler.toplu")} fill sizes="(max-width: 1024px) 100vw, 33vw" style={{ objectFit: "cover" }} />
                 </div>
                 <div className="group-hover:!bg-[#dc2626]" style={{ padding: "20px 24px 24px", background: "white", transition: "background-color 0.3s" }}>
                   <p className="group-hover:!text-white/60" style={{ fontSize: "11px", fontWeight: 600, color: "#dc2626", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "8px", transition: "color 0.3s" }}>{t("home.cozumler.label")}</p>
@@ -159,7 +159,7 @@ export default function Home() {
             <Link href="/cozumler/endustriyel-kazan-dairesi" className="group" style={{ textDecoration: "none" }}>
               <div>
                 <div className="relative h-[200px] lg:h-[480px] overflow-hidden">
-                  <Image src="/kazan-dairesi.jpg" alt={t("home.cozumler.kazan")} fill style={{ objectFit: "cover" }} />
+                  <Image src="/kazan-dairesi.webp" alt={t("home.cozumler.kazan")} fill sizes="(max-width: 1024px) 100vw, 33vw" style={{ objectFit: "cover" }} />
                 </div>
                 <div className="group-hover:!bg-[#dc2626]" style={{ padding: "20px 24px 24px", background: "white", transition: "background-color 0.3s" }}>
                   <p className="group-hover:!text-white/60" style={{ fontSize: "11px", fontWeight: 600, color: "#dc2626", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "8px", transition: "color 0.3s" }}>{t("home.cozumler.label")}</p>
@@ -171,7 +171,7 @@ export default function Home() {
             <Link href="/cozumler/hastaneler" className="group" style={{ textDecoration: "none" }}>
               <div>
                 <div className="relative h-[200px] lg:h-[480px] overflow-hidden">
-                  <Image src="/hastane.jpg" alt={t("home.cozumler.hastane")} fill style={{ objectFit: "cover" }} />
+                  <Image src="/hastane.webp" alt={t("home.cozumler.hastane")} fill sizes="(max-width: 1024px) 100vw, 33vw" style={{ objectFit: "cover" }} />
                 </div>
                 <div className="group-hover:!bg-[#dc2626]" style={{ padding: "20px 24px 24px", background: "white", transition: "background-color 0.3s" }}>
                   <p className="group-hover:!text-white/60" style={{ fontSize: "11px", fontWeight: 600, color: "#dc2626", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "8px", transition: "color 0.3s" }}>{t("home.cozumler.label")}</p>
@@ -243,7 +243,7 @@ export default function Home() {
           <div className="group lg:row-span-2 col-span-2 lg:col-span-1" style={{ borderRadius: '16px', overflow: 'hidden', position: 'relative', cursor: 'pointer' }}>
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.9) 100%)', zIndex: 1 }} />
             <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.3)', zIndex: 2 }} />
-            <Image src="/akıllıbina.jpg" alt={t("news.1")} fill style={{ objectFit: 'cover' }} />
+            <Image src="/akıllıbina.webp" alt={t("news.1")} fill style={{ objectFit: 'cover' }} />
             <div style={{ position: 'absolute', bottom: '24px', left: '24px', right: '24px', zIndex: 2 }}>
               <h3 className="text-2xl font-bold text-white leading-tight">{t("news.1")}</h3>
               <p className="text-white/60 text-sm mt-2">16 Ekim 2023</p>
@@ -252,7 +252,7 @@ export default function Home() {
           <div style={{ borderRadius: '16px', overflow: 'hidden', position: 'relative', cursor: 'pointer' }} className="group">
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 20%, rgba(0,0,0,0.85) 100%)', zIndex: 1 }} />
             <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.3)', zIndex: 2 }} />
-            <Image src="/akıllısehir.jpg" alt={t("news.2")} fill style={{ objectFit: 'cover' }} />
+            <Image src="/akıllısehir.webp" alt={t("news.2")} fill style={{ objectFit: 'cover' }} />
             <div style={{ position: 'absolute', bottom: '16px', left: '16px', right: '16px', zIndex: 2 }}>
               <h3 className="text-base font-semibold text-white leading-tight">{t("news.2")}</h3>
             </div>
@@ -260,7 +260,7 @@ export default function Home() {
           <div className="group col-span-2" style={{ borderRadius: '16px', overflow: 'hidden', position: 'relative', cursor: 'pointer' }}>
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(0,0,0,0.8) 0%, transparent 60%)', zIndex: 1 }} />
             <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.3)', zIndex: 2 }} />
-            <Image src="/konferans.jpg" alt={t("news.3")} fill style={{ objectFit: 'cover' }} />
+            <Image src="/konferans.webp" alt={t("news.3")} fill style={{ objectFit: 'cover' }} />
             <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', left: '24px', right: '40%', zIndex: 2 }}>
               <h3 className="text-xl font-bold text-white leading-tight">{t("news.3")}</h3>
               <p className="text-white/60 text-sm mt-2">8 Kasım 2023</p>
@@ -269,7 +269,7 @@ export default function Home() {
           <div style={{ borderRadius: '16px', overflow: 'hidden', position: 'relative', cursor: 'pointer' }} className="group">
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 20%, rgba(0,0,0,0.85) 100%)', zIndex: 1 }} />
             <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.3)', zIndex: 2 }} />
-            <Image src="/yenilik.jpg" alt={t("news.4")} fill style={{ objectFit: 'cover' }} />
+            <Image src="/yenilik.webp" alt={t("news.4")} fill style={{ objectFit: 'cover' }} />
             <div style={{ position: 'absolute', bottom: '16px', left: '16px', right: '16px', zIndex: 2 }}>
               <h3 className="text-base font-semibold text-white leading-tight">{t("news.4")}</h3>
             </div>
@@ -277,7 +277,7 @@ export default function Home() {
           <div style={{ borderRadius: '16px', overflow: 'hidden', position: 'relative', cursor: 'pointer' }} className="group">
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 20%, rgba(0,0,0,0.85) 100%)', zIndex: 1 }} />
             <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.3)', zIndex: 2 }} />
-            <Image src="/tesis.jpeg" alt={t("news.5")} fill style={{ objectFit: 'cover' }} />
+            <Image src="/tesis.webp" alt={t("news.5")} fill style={{ objectFit: 'cover' }} />
             <div style={{ position: 'absolute', bottom: '16px', left: '16px', right: '16px', zIndex: 2 }}>
               <h3 className="text-base font-semibold text-white leading-tight">{t("news.5")}</h3>
             </div>

@@ -6,12 +6,12 @@ import { useRef, useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 
 const cozumlerData = [
-  { nameKey: "cozumler.ticari", descKey: "cozumler.ticariDesc", slug: "ticari-tesisler", image: "/akıllıbina.jpg" },
-  { nameKey: "cozumler.toplu", descKey: "cozumler.topluDesc", slug: "toplu-konutlar", image: "/akıllısehir.jpg" },
+  { nameKey: "cozumler.ticari", descKey: "cozumler.ticariDesc", slug: "ticari-tesisler", image: "/akıllıbina.webp" },
+  { nameKey: "cozumler.toplu", descKey: "cozumler.topluDesc", slug: "toplu-konutlar", image: "/akıllısehir.webp" },
   { nameKey: "cozumler.bakim", descKey: "cozumler.bakimDesc", slug: "bakim-huzur-evleri", image: "/bakimevi.jpg" },
-  { nameKey: "cozumler.yeni", descKey: "cozumler.yeniDesc", slug: "yeni-projeler", image: "/konferans.jpg" },
-  { nameKey: "cozumler.hastane", descKey: "cozumler.hastaneDesc", slug: "hastaneler", image: "/hastane.jpg" },
-  { nameKey: "cozumler.kazan", descKey: "cozumler.kazanDesc", slug: "endustriyel-kazan-dairesi", image: "/kazan-dairesi.jpg" },
+  { nameKey: "cozumler.yeni", descKey: "cozumler.yeniDesc", slug: "yeni-projeler", image: "/konferans.webp" },
+  { nameKey: "cozumler.hastane", descKey: "cozumler.hastaneDesc", slug: "hastaneler", image: "/hastane.webp" },
+  { nameKey: "cozumler.kazan", descKey: "cozumler.kazanDesc", slug: "endustriyel-kazan-dairesi", image: "/kazan-dairesi.webp" },
   { nameKey: "cozumler.spor", descKey: "cozumler.sporDesc", slug: "spor-eglence-tesisleri", image: "/spor-tesisi.jpg" },
   { nameKey: "cozumler.saha", descKey: "cozumler.sahaDesc", slug: "saha-disi-uretim", image: "/akıllıtasıma.jpg" },
   { nameKey: "cozumler.egitim", descKey: "cozumler.egitimDesc", slug: "egitim-yapilari", image: "/okul.jpg" },
@@ -97,7 +97,7 @@ export default function CozumlerPage() {
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '32px', padding: '0 20px' }}>
           <div style={{ width: '100%', height: '240px', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 15px 30px -8px rgba(0, 0, 0, 0.12)' }}>
             <Image 
-              src="/hero2.png"
+              src="/hero2.webp"
               alt="Hero"
               width={768}
               height={400}
@@ -203,7 +203,7 @@ export default function CozumlerPage() {
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '60px' }}>
         <div style={{ width: '1000px', height: '500px', borderRadius: '48px', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.15)' }}>
           <Image 
-            src="/hero2.png"
+            src="/hero2.webp"
             alt="Hero"
             width={800}
             height={400}

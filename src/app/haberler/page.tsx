@@ -6,11 +6,11 @@ import { useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 
 const haberler = [
-  { id: 1, titleKey: "news.1", date: "16 Ekim 2023", image: "/akıllıbina.jpg", size: "large" },
-  { id: 2, titleKey: "news.2", date: "12 Ekim 2023", image: "/akıllısehir.jpg", size: "normal" },
-  { id: 3, titleKey: "news.3", date: "8 Kasım 2023", image: "/konferans.jpg", size: "wide" },
-  { id: 4, titleKey: "news.4", date: "5 Kasım 2023", image: "/yenilik.jpg", size: "normal" },
-  { id: 5, titleKey: "news.5", date: "1 Kasım 2023", image: "/tesis.jpeg", size: "normal" },
+  { id: 1, titleKey: "news.1", date: "16 Ekim 2023", image: "/akıllıbina.webp", size: "large" },
+  { id: 2, titleKey: "news.2", date: "12 Ekim 2023", image: "/akıllısehir.webp", size: "normal" },
+  { id: 3, titleKey: "news.3", date: "8 Kasım 2023", image: "/konferans.webp", size: "wide" },
+  { id: 4, titleKey: "news.4", date: "5 Kasım 2023", image: "/yenilik.webp", size: "normal" },
+  { id: 5, titleKey: "news.5", date: "1 Kasım 2023", image: "/tesis.webp", size: "normal" },
   { id: 6, titleKey: "news.6", date: "25 Ekim 2023", image: "/taytechcloudfoto.avif", size: "normal" },
   { id: 7, titleKey: "news.7", date: "20 Ekim 2023", image: "/akıllıenerji.avif", size: "large" },
   { id: 8, titleKey: "news.8", date: "15 Ekim 2023", image: "/akıllıtarım.jpg", size: "wide" },

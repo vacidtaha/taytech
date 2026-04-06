@@ -61,7 +61,7 @@ export default function KurumsalPage() {
         <div style={{ height: '100px' }}></div>
         
         <div className="flex items-center justify-center" style={{ padding: '0 28px', paddingBottom: '40px' }}>
-          <Image src="/taytechdiscekim.png" alt="Taytech" width={800} height={500} className="w-full h-auto object-contain rounded-2xl" />
+          <Image src="/taytechdiscekim.webp" alt="Taytech" width={800} height={500} className="w-full h-auto object-contain rounded-2xl" />
         </div>
         
         <div style={{ height: '100px' }}></div>
@@ -287,7 +287,7 @@ export default function KurumsalPage() {
       <div className="h-[120px] bg-white"></div>
       
       <div className="bg-white pb-20 flex items-center justify-center">
-        <Image src="/taytechdiscekim.png" alt="Taytech" width={800} height={500} className="w-full max-w-4xl h-auto object-contain px-8 rounded-4xl" />
+        <Image src="/taytechdiscekim.webp" alt="Taytech" width={800} height={500} className="w-full max-w-4xl h-auto object-contain px-8 rounded-4xl" />
       </div>
       
       <div className="h-[120px] bg-white"></div>
