@@ -242,7 +242,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
         className={cn(
           "z-50 w-full transition-colors duration-300",
           isFixed ? "fixed top-0 left-0" : "relative",
-          activeMenu ? "bg-white/95 backdrop-blur-xl" : isDark ? "bg-black/60 backdrop-blur-xl" : "bg-white/80 backdrop-blur-xl",
+          activeMenu || mobileOpen ? "bg-white" : isDark ? "bg-black/60 backdrop-blur-xl" : "bg-white/80 backdrop-blur-xl",
         )}
       >
         <nav className="mx-auto flex h-12 max-w-[1200px] items-center justify-between px-4 lg:px-6">
@@ -546,105 +546,127 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
       {/* ── MOBILE MENU ── */}
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
-            key="mobile-menu"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 overflow-y-auto bg-white pt-12 lg:hidden"
-          >
-            <div className="px-6 py-6">
-              <AnimatePresence mode="wait">
-                {mobileStack.length === 0 ? (
-                  <motion.ul
-                    key="root"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.15 }}
-                    className="space-y-0"
-                  >
-                    {navItems.map((item) => {
-                      const label = locale === "EN" ? item.en : item.tr;
-                      return (
-                        <li key={item.tr}>
-                          {item.hasDropdown ? (
-                            <button
-                              onClick={() => {
-                                if (item.tr === "Ürünler") {
-                                  setMobileStack([{ title: locale === "EN" ? "Products" : "Ürünler", items: menuTree }]);
-                                } else {
-                                  setMobileStack([{ title: locale === "EN" ? "Knowledge Base" : "Bilgi Merkezi", items: bilgiMerkeziItems }]);
-                                }
-                              }}
-                              className="flex w-full items-center justify-between py-3.5 text-[17px] font-semibold text-[#1d1d1f]"
-                            >
-                              {label}
-                              <ChevronRight className="h-5 w-5 text-[#c4c4c4]" />
-                            </button>
-                          ) : (
-                            <Link href={item.href!} onClick={closeMobile} className="block py-3.5 text-[17px] font-semibold text-[#1d1d1f]">
-                              {label}
-                            </Link>
-                          )}
-                        </li>
-                      );
-                    })}
-                  </motion.ul>
-                ) : (
-                  <motion.div
-                    key={`stack-${mobileStack.length}`}
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 30 }}
-                    transition={{ duration: 0.15 }}
-                  >
-                    <button
-                      onClick={() => setMobileStack((s) => s.slice(0, -1))}
-                      className="mb-3 flex items-center gap-1 text-[13px] text-[#e30613]"
+          <>
+            <motion.div
+              key="mobile-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="fixed inset-0 z-30 bg-black/30 lg:hidden"
+              onClick={closeMobile}
+            />
+            <motion.div
+              key="mobile-menu"
+              initial={{ clipPath: 'inset(0 0 100% 0)' }}
+              animate={{ clipPath: 'inset(0 0 0% 0)' }}
+              exit={{ clipPath: 'inset(0 0 100% 0)' }}
+              transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+              className="fixed top-12 left-0 right-0 z-40 max-h-[80vh] overflow-y-auto bg-white shadow-xl lg:hidden"
+              style={{ borderBottomLeftRadius: '16px', borderBottomRightRadius: '16px' }}
+            >
+              <div className="px-6 py-5">
+                <AnimatePresence mode="wait">
+                  {mobileStack.length === 0 ? (
+                    <motion.ul
+                      key="root"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="space-y-0"
                     >
-                      <ChevronLeft className="h-4 w-4" /> {locale === "EN" ? "Back" : "Geri"}
-                    </button>
-                    <h2 className="mb-5 text-[22px] font-bold text-[#1d1d1f]">
-                      {mobileStack[mobileStack.length - 1].title}
-                    </h2>
-                    <ul className="space-y-0">
-                      {mobileStack[mobileStack.length - 1].items.map((item) => {
-                        const leaf = isLeafProduct(item);
-                        const disabled = leaf && !activeSlugs.has(getSlugFromHref(item.href));
+                      {navItems.map((item, idx) => {
+                        const label = locale === "EN" ? item.en : item.tr;
                         return (
-                          <li key={item.tr}>
-                            {has(item) ? (
+                          <motion.li
+                            key={item.tr}
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.25, delay: idx * 0.04 }}
+                          >
+                            {item.hasDropdown ? (
                               <button
-                                onClick={() => setMobileStack((s) => [...s, { title: ml(item, locale), items: item.children! }])}
-                                className="flex w-full items-center justify-between py-3.5 text-[15px] text-[#1d1d1f]"
+                                onClick={() => {
+                                  if (item.tr === "Ürünler") {
+                                    setMobileStack([{ title: locale === "EN" ? "Products" : "Ürünler", items: menuTree }]);
+                                  } else {
+                                    setMobileStack([{ title: locale === "EN" ? "Knowledge Base" : "Bilgi Merkezi", items: bilgiMerkeziItems }]);
+                                  }
+                                }}
+                                className="flex w-full items-center justify-between py-3.5 text-[17px] font-semibold text-[#1d1d1f]"
                               >
-                                {ml(item, locale)}
-                                <ChevronRight className="h-4 w-4 text-[#c4c4c4]" />
+                                {label}
+                                <ChevronRight className="h-5 w-5 text-[#c4c4c4]" />
                               </button>
-                            ) : disabled ? (
-                              <span className="block py-3.5 text-[15px] text-[#1d1d1f] cursor-default">
-                                {ml(item, locale)}
-                              </span>
                             ) : (
-                              <Link
-                                href={item.href}
-                                onClick={closeMobile}
-                                className="block py-3.5 text-[15px] text-[#1d1d1f] transition-colors duration-150 hover:text-[#e30613]"
-                              >
-                                {ml(item, locale)}
+                              <Link href={item.href!} onClick={closeMobile} className="block py-3.5 text-[17px] font-semibold text-[#1d1d1f]">
+                                {label}
                               </Link>
                             )}
-                          </li>
+                          </motion.li>
                         );
                       })}
-                    </ul>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </motion.div>
+                    </motion.ul>
+                  ) : (
+                    <motion.div
+                      key={`stack-${mobileStack.length}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <button
+                        onClick={() => setMobileStack((s) => s.slice(0, -1))}
+                        className="mb-3 flex items-center gap-1 text-[13px] text-[#e30613]"
+                      >
+                        <ChevronLeft className="h-4 w-4" /> {locale === "EN" ? "Back" : "Geri"}
+                      </button>
+                      <h2 className="mb-5 text-[22px] font-bold text-[#1d1d1f]">
+                        {mobileStack[mobileStack.length - 1].title}
+                      </h2>
+                      <ul className="space-y-0">
+                        {mobileStack[mobileStack.length - 1].items.map((item, idx) => {
+                          const leaf = isLeafProduct(item);
+                          const disabled = leaf && !activeSlugs.has(getSlugFromHref(item.href));
+                          return (
+                            <motion.li
+                              key={item.tr}
+                              initial={{ opacity: 0, y: 6 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.2, delay: idx * 0.03 }}
+                            >
+                              {has(item) ? (
+                                <button
+                                  onClick={() => setMobileStack((s) => [...s, { title: ml(item, locale), items: item.children! }])}
+                                  className="flex w-full items-center justify-between py-3.5 text-[15px] text-[#1d1d1f]"
+                                >
+                                  {ml(item, locale)}
+                                  <ChevronRight className="h-4 w-4 text-[#c4c4c4]" />
+                                </button>
+                              ) : disabled ? (
+                                <span className="block py-3.5 text-[15px] text-[#1d1d1f] cursor-default">
+                                  {ml(item, locale)}
+                                </span>
+                              ) : (
+                                <Link
+                                  href={item.href}
+                                  onClick={closeMobile}
+                                  className="block py-3.5 text-[15px] text-[#1d1d1f] transition-colors duration-150 hover:text-[#e30613]"
+                                >
+                                  {ml(item, locale)}
+                                </Link>
+                              )}
+                            </motion.li>
+                          );
+                        })}
+                      </ul>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>

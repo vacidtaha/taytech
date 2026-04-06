@@ -113,16 +113,44 @@ export default function Hero() {
 
   const currentReal = ((pos % total) + total) % total;
 
+  const touchStartX = useRef(0);
+  const touchDelta = useRef(0);
+  const isSwiping = useRef(false);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    isSwiping.current = true;
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!isSwiping.current) return;
+    touchDelta.current = e.touches[0].clientX - touchStartX.current;
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    if (!isSwiping.current) return;
+    isSwiping.current = false;
+    if (touchDelta.current < -50) nextSlide();
+    else if (touchDelta.current > 50) prevSlide();
+    touchDelta.current = 0;
+  }, [nextSlide, prevSlide]);
+
   // ===== MOBİL =====
   if (isMobile) {
-    const cardW = 92;
+    const cardW = 82;
     const gapW = 3;
     const unit = cardW + gapW;
     const centerOffset = (100 - cardW) / 2;
 
     return (
-      <section className="relative w-full bg-[#f5f5f7] overflow-hidden" style={{ paddingTop: '72px', paddingBottom: '20px', minHeight: '45vh' }}>
-        <div className="relative flex items-center overflow-hidden" style={{ height: '35vh' }}>
+      <section className="relative w-full bg-[#f5f5f7] overflow-hidden" style={{ paddingTop: '10px', paddingBottom: '10px' }}>
+        <div
+          className="relative flex items-center overflow-hidden"
+          style={{ height: '38vh' }}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           <div
             ref={trackRef}
             className="flex items-center h-full"
@@ -138,20 +166,21 @@ export default function Hero() {
                 className="relative flex-shrink-0 overflow-hidden rounded-2xl h-full"
                 style={{ width: `${cardW}vw` }}
               >
-                <Image src={slide.image} alt={t(slide.titleKey)} fill sizes="100vw" className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={Math.abs(i - pos) <= 1} />
+                <Image src={slide.image} alt={t(slide.titleKey)} fill sizes="100vw" className="object-cover" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={Math.abs(i - pos) <= 1} />
+                {slide.id !== 1 && <div className="absolute inset-0 z-[1]" style={{ backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)', maskImage: 'linear-gradient(to top, black 0%, black 15%, transparent 45%)', WebkitMaskImage: 'linear-gradient(to top, black 0%, black 15%, transparent 45%)' }} />}
                 {slide.btnKey && slide.btnHref ? (
-                  <Link href={slide.btnHref} className="absolute inset-0 z-10 flex items-center justify-center px-6">
-                    <div className="text-center" style={{ maxWidth: '85%' }}>
-                      <p className="text-2xl font-bold tracking-tight text-white" style={{ lineHeight: 1.2 }}>{t(slide.titleKey)}</p>
+                  <Link href={slide.btnHref} className="absolute inset-0 z-10 flex items-end px-5 pb-5" style={{ transform: 'translateZ(0)' }}>
+                    <div className="text-left">
+                      <p className="text-xl font-bold tracking-tight text-white" style={{ lineHeight: 1.2 }}>{t(slide.titleKey)}</p>
                       {t(slide.subtitleKey) && (
-                        <p className="text-xs text-white/70 font-medium" style={{ marginTop: '6px', lineHeight: 1.4 }}>{t(slide.subtitleKey)}</p>
+                        <p className="text-[11px] text-white/70 font-medium" style={{ marginTop: '4px', lineHeight: 1.4 }}>{t(slide.subtitleKey)}</p>
                       )}
                     </div>
                   </Link>
                 ) : (
-                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4">
-                    <p className="text-4xl font-bold tracking-tight text-white">{t(slide.titleKey)}</p>
-                    {t(slide.subtitleKey) && <p className="text-sm font-bold tracking-tight text-white mt-1">{t(slide.subtitleKey)}</p>}
+                  <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4" style={{ transform: 'translateZ(0)' }}>
+                    <p className="text-5xl font-bold tracking-tight text-white">{t(slide.titleKey)}</p>
+                    {t(slide.subtitleKey) && <p className="text-base font-bold tracking-tight text-white/80 mt-2">{t(slide.subtitleKey)}</p>}
                   </div>
                 )}
               </div>
@@ -194,8 +223,9 @@ export default function Hero() {
                 goToSlide(clickedReal);
               }}
             >
-              <Image src={slide.image} alt={t(slide.titleKey)} fill sizes="80vw" className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={Math.abs(i - pos) <= 1} />
-              <div className="absolute inset-0 z-10 flex items-center justify-center px-6">
+              <Image src={slide.image} alt={t(slide.titleKey)} fill sizes="80vw" className="object-cover" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={Math.abs(i - pos) <= 1} />
+              {slide.id !== 1 && <div className="absolute inset-0 z-[1]" style={{ backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', maskImage: 'linear-gradient(to top, black 0%, black 15%, transparent 40%)', WebkitMaskImage: 'linear-gradient(to top, black 0%, black 15%, transparent 40%)' }} />}
+              <div className="absolute inset-0 z-10 flex items-center justify-center px-6" style={{ transform: 'translateZ(0)' }}>
                 {slide.btnKey ? (
                   <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between" style={{ padding: '0 80px 70px' }}>
                     <div style={{ maxWidth: '55%' }}>
@@ -207,20 +237,23 @@ export default function Hero() {
                     <Link
                       href={slide.btnHref || '#'}
                       style={{
-                        backgroundColor: '#dc2626',
+                        backgroundColor: 'rgba(255,255,255,0.1)',
+                        backdropFilter: 'blur(12px)',
+                        WebkitBackdropFilter: 'blur(12px)',
                         color: '#fff',
                         fontSize: '16px',
                         fontWeight: 600,
                         padding: '12px 32px',
                         borderRadius: '8px',
+                        border: '1.5px solid rgba(255,255,255,0.7)',
                         textDecoration: 'none',
                         display: 'inline-block',
                         whiteSpace: 'nowrap',
-                        transition: 'background-color 0.2s',
+                        transition: 'all 0.3s',
                         marginBottom: '4px',
                       }}
-                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#b91c1c')}
-                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#dc2626')}
+                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#dc2626'; e.currentTarget.style.borderColor = '#dc2626'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.borderColor = '#dc2626'; }}
                       onClick={(e) => e.stopPropagation()}
                     >
                       {t(slide.btnKey)}
