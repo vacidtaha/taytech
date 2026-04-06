@@ -59,13 +59,22 @@ export default function Footer() {
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 mb-14">
           {/* Logo */}
           <div className="shrink-0">
-            <Image
-              src={isEn ? "/taytechuklogo.webp" : "/taytechlogo.webp"}
-              alt="Taytech"
-              width={280}
-              height={158}
-              className="mb-4"
-            />
+            <div className="flex items-center gap-3 mb-4">
+              <Image
+                src="/taytechlogo.webp"
+                alt="Taytech TR"
+                width={200}
+                height={112}
+                className="h-16 w-auto"
+              />
+              <Image
+                src="/taytechuklogo.webp"
+                alt="Taytech UK"
+                width={200}
+                height={112}
+                className="h-16 w-auto"
+              />
+            </div>
             <p className="text-[13px] text-black/40 max-w-[220px] leading-relaxed">
               {isEn
                 ? "Industrial automation solutions from Turkey to the world."

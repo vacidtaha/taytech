@@ -246,14 +246,22 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
         )}
       >
         <nav className="mx-auto flex h-12 max-w-[1200px] items-center justify-between px-4 lg:px-6">
-          <Link href="/" className="shrink-0" onClick={closeMega}>
+          <Link href="/" className="shrink-0 flex items-center gap-2" onClick={closeMega}>
             <Image
-              src={locale === "EN" ? "/taytechuklogo.webp" : "/taytechlogo.webp"}
-              alt="Taytech"
-              width={220}
-              height={124}
+              src="/taytechlogo.webp"
+              alt="Taytech TR"
+              width={180}
+              height={100}
               priority
-              className={cn("h-14 w-auto transition-all", activeMenu || !isDark ? "" : "brightness-0 invert")}
+              className={cn("h-[60px] w-auto transition-all", activeMenu || !isDark ? "" : "brightness-0 invert")}
+            />
+            <Image
+              src="/taytechuklogo.webp"
+              alt="Taytech UK"
+              width={180}
+              height={100}
+              priority
+              className={cn("h-[60px] w-auto transition-all mt-1", activeMenu || !isDark ? "" : "brightness-0 invert")}
             />
           </Link>
 
