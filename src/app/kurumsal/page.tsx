@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function KurumsalPage() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const [activeSection, setActiveSection] = useState("muhendislik");
   const [isMobile, setIsMobile] = useState(false);
 
@@ -132,7 +132,7 @@ export default function KurumsalPage() {
             <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-red-600 rounded-bl"></div>
             <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-red-600 rounded-br"></div>
             <div className="flex justify-center" style={{ marginBottom: '24px' }}>
-              <Image src="/logo.png" alt="Taytech Logo" width={120} height={40} className="h-auto" />
+              <Image src={locale === "EN" ? "/taytechuklogo.webp" : "/taytechlogo.webp"} alt="Taytech Logo" width={120} height={40} className="h-auto" />
             </div>
             <h3 className="text-center font-bold text-[#dc2626]" style={{ fontSize: '16px', lineHeight: '1.4', marginBottom: '24px' }}>
               {t("corp.standartlar.politikaBaslik")}
@@ -372,7 +372,7 @@ export default function KurumsalPage() {
                 <div className="absolute bottom-0 left-0 w-10 h-10 border-b-4 border-l-4 border-red-600 rounded-bl"></div>
                 <div className="absolute bottom-0 right-0 w-10 h-10 border-b-4 border-r-4 border-red-600 rounded-br"></div>
                 <div className="flex justify-center mb-10 -mt-2">
-                  <Image src="/logo.png" alt="Taytech Logo" width={180} height={60} className="h-auto" />
+                  <Image src={locale === "EN" ? "/taytechuklogo.webp" : "/taytechlogo.webp"} alt="Taytech Logo" width={180} height={60} className="h-auto" />
                 </div>
                 <h3 className="text-center font-bold text-[#dc2626] mb-10" style={{ fontSize: '24px', lineHeight: '1.4' }}>
                   {t("corp.standartlar.politikaBaslik")}

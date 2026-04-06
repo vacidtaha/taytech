@@ -87,7 +87,7 @@ const organizationLd = {
   name: "Taytech Otomasyon ve Bilişim A.Ş.",
   alternateName: "Taytech",
   url: "https://taytech.com.tr",
-  logo: "https://taytech.com.tr/logo.png",
+  logo: "https://taytech.com.tr/taytechlogo.webp",
   image: "https://taytech.com.tr/opengraph-image",
   description: "Akıllı kontrol panoları, ısı istasyonları, manyetik filtreler ve endüstriyel otomasyon çözümleri üreten ISO sertifikalı Türk üretici.",
   foundingDate: "2010",

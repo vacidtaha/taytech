@@ -248,7 +248,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
         <nav className="mx-auto flex h-12 max-w-[1200px] items-center justify-between px-4 lg:px-6">
           <Link href="/" className="shrink-0" onClick={closeMega}>
             <Image
-              src="/logo.png"
+              src={locale === "EN" ? "/taytechuklogo.webp" : "/taytechlogo.webp"}
               alt="Taytech"
               width={90}
               height={28}

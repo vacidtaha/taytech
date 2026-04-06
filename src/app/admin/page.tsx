@@ -19,7 +19,7 @@ export default function AdminDashboard() {
       <nav className="h-14 bg-white/80 backdrop-blur-xl border-b border-[#e5e5ea] sticky top-0 z-50">
         <div className="max-w-5xl mx-auto h-full px-6 flex items-center justify-between">
           <Link href="/admin" className="flex items-center gap-3">
-            <Image src="/logo.png" alt="Taytech" width={110} height={36} className="h-auto" />
+            <Image src="/taytechlogo.webp" alt="Taytech" width={110} height={36} className="h-auto" />
             <span className="text-[12px] font-medium text-[#86868b] bg-[#f5f5f7] px-2.5 py-1 rounded-md">
               Admin
             </span>

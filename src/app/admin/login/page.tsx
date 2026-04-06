@@ -46,7 +46,7 @@ export default function AdminLoginPage() {
           {/* Logo */}
           <div className="flex justify-center mb-8">
             <Image
-              src="/logo.png"
+              src="/taytechlogo.webp"
               alt="Taytech"
               width={140}
               height={46}

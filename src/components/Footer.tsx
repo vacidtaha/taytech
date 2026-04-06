@@ -60,7 +60,7 @@ export default function Footer() {
           {/* Logo */}
           <div className="shrink-0">
             <Image
-              src="/logo.png"
+              src={isEn ? "/taytechuklogo.webp" : "/taytechlogo.webp"}
               alt="Taytech"
               width={140}
               height={44}
