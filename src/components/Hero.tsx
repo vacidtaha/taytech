@@ -49,8 +49,8 @@ const slides = [
 
 export default function Hero() {
   const { t } = useLanguage();
-  const [isMobile, setIsMobile] = useState(true);
-  const [pos, setPos] = useState(slides.length); // orta gruptan başla
+  const [isMobile, setIsMobile] = useState(false);
+  const [pos, setPos] = useState(slides.length);
   const [isTransitioning, setIsTransitioning] = useState(true);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -142,7 +142,7 @@ export default function Hero() {
                 {slide.isProduct ? (
                   <Image src={slide.image} alt={t(slide.titleKey)} width={400} height={400} className="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 object-contain w-[45%] max-h-[65%]" priority={Math.abs(i - pos) <= 1} />
                 ) : (
-                  <Image src={slide.image} alt={t(slide.titleKey)} fill className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={Math.abs(i - pos) <= 1} />
+                  <Image src={slide.image} alt={t(slide.titleKey)} fill sizes="100vw" className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={Math.abs(i - pos) <= 1} />
                 )}
                 {slide.btnKey && slide.btnHref ? (
                   <Link href={slide.btnHref} className="absolute inset-0 z-10 flex items-center justify-center px-6">
@@ -200,9 +200,9 @@ export default function Hero() {
               }}
             >
               {slide.isProduct ? (
-                <Image src={slide.image} alt={t(slide.titleKey)} width={600} height={600} className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 object-contain" style={{ width: '28%', maxHeight: '60%' }} priority={Math.abs(i - pos) <= 1} />
+                <Image src={slide.image} alt={t(slide.titleKey)} width={600} height={600} sizes="25vw" className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 object-contain" style={{ width: '28%', maxHeight: '60%' }} priority={Math.abs(i - pos) <= 1} />
               ) : (
-                <Image src={slide.image} alt={t(slide.titleKey)} fill className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={Math.abs(i - pos) <= 1} />
+                <Image src={slide.image} alt={t(slide.titleKey)} fill sizes="80vw" className="object-cover brightness-[0.65]" style={slide.btnKey ? { transform: 'scale(1.15)' } : undefined} priority={Math.abs(i - pos) <= 1} />
               )}
               <div className="absolute inset-0 z-10 flex items-center justify-center px-6">
                 {slide.btnKey ? (
@@ -247,27 +247,33 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Dot noktaları - tam orta */}
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-3">
+      {/* Dot noktaları */}
+      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-1">
         {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => goToSlide(i)}
-            className="transition-all duration-300 rounded-full"
-            style={{
-              width: currentReal === i ? '32px' : '10px',
-              height: '10px',
-              backgroundColor: currentReal === i ? '#dc2626' : 'rgba(0,0,0,0.15)',
-            }}
-          />
+            aria-label={`Slide ${i + 1}`}
+            className="flex items-center justify-center"
+            style={{ width: '44px', height: '44px' }}
+          >
+            <span
+              className="rounded-full transition-all duration-300 block"
+              style={{
+                width: currentReal === i ? '32px' : '10px',
+                height: '10px',
+                backgroundColor: currentReal === i ? '#dc2626' : 'rgba(0,0,0,0.15)',
+              }}
+            />
+          </button>
         ))}
       </div>
-      {/* Ok butonları - sağ taraf */}
+      {/* Ok butonları */}
       <div className="absolute bottom-4 right-[11%] flex gap-3">
-        <button onClick={prevSlide} className="w-11 h-11 rounded-full bg-black/10 flex items-center justify-center hover:bg-black/20 transition-colors">
+        <button onClick={prevSlide} aria-label="Önceki slayt" className="w-11 h-11 rounded-full bg-black/10 flex items-center justify-center hover:bg-black/20 transition-colors">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1d1d1f" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
-        <button onClick={nextSlide} className="w-11 h-11 rounded-full bg-black/10 flex items-center justify-center hover:bg-black/20 transition-colors">
+        <button onClick={nextSlide} aria-label="Sonraki slayt" className="w-11 h-11 rounded-full bg-black/10 flex items-center justify-center hover:bg-black/20 transition-colors">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1d1d1f" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
         </button>
       </div>

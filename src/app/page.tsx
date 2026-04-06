@@ -26,35 +26,35 @@ export default function Home() {
       
       {/* Content Area */}
       <section className="bg-[#f5f5f7]" style={{ paddingTop: "13px" }}>
-        {/* Ürün Grid */}
+        <h2 className="sr-only">{locale === "TR" ? "Ürünlerimiz" : "Our Products"}</h2>
         <div className="mx-[8px] md:mx-[13px]">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-[8px] lg:gap-[13px]">
             <Link href="/urunler/heat-network/isi-istasyonlari" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat1")}</h3>
-              <Image src="/uploads/D-H-TR-DHW_U0A4-Render-Sağ-1774350452047.webp" alt={t("home.cat1")} width={350} height={350} sizes="(max-width: 1024px) 55vw, 22vw" className="absolute top-[32%] lg:top-[34%] object-contain max-w-[55%] lg:max-w-[65%]" />
+              <Image src="/uploads/D-H-TR-DHW_U0A4-Render-Sağ-1774350452047.webp" alt={`Taytech ${t("home.cat1")} - HydroHexa DHW`} width={350} height={350} sizes="(max-width: 1024px) 55vw, 22vw" className="absolute top-[32%] lg:top-[34%] object-contain max-w-[55%] lg:max-w-[65%]" />
             </Link>
             <Link href="/urunler/heat-network/manyetik-filtreler" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat2")}</h3>
-              <Image src="/uploads/IronInox-Render-Sol-1774348282120.webp" alt={t("home.cat2")} width={400} height={400} sizes="(max-width: 1024px) 60vw, 25vw" className="absolute top-[28%] lg:top-[30%] object-contain max-w-[60%] lg:max-w-[75%]" />
+              <Image src="/uploads/IronInox-Render-Sol-1774348282120.webp" alt={`Taytech ${t("home.cat2")} - IronInox`} width={400} height={400} sizes="(max-width: 1024px) 60vw, 25vw" className="absolute top-[28%] lg:top-[30%] object-contain max-w-[60%] lg:max-w-[75%]" />
             </Link>
             <Link href="/urunler/kontrol-sistemleri/smart-serisi" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat3")}</h3>
-              <Image src="/uploads/Smart-Booster-Front-1774349398054.webp" alt={t("home.cat3")} width={300} height={300} sizes="(max-width: 1024px) 45vw, 17vw" className="absolute top-[32%] lg:top-[34%] object-contain max-w-[45%] lg:max-w-[50%]" />
+              <Image src="/uploads/Smart-Booster-Front-1774349398054.webp" alt={`Taytech ${t("home.cat3")} - Smart Booster`} width={300} height={300} sizes="(max-width: 1024px) 45vw, 17vw" className="absolute top-[32%] lg:top-[34%] object-contain max-w-[45%] lg:max-w-[50%]" />
             </Link>
             <Link href="/urunler/kontrol-sistemleri/electro-mechanical-panels" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat4")}</h3>
-              <Image src="/uploads/Direct-Start-Front--ABS-1774350266194.webp" alt={t("home.cat4")} width={300} height={300} sizes="(max-width: 1024px) 45vw, 17vw" className="absolute top-[32%] lg:top-[34%] object-contain max-w-[45%] lg:max-w-[50%]" />
+              <Image src="/uploads/Direct-Start-Front--ABS-1774350266194.webp" alt={`Taytech ${t("home.cat4")} - Direct Start`} width={300} height={300} sizes="(max-width: 1024px) 45vw, 17vw" className="absolute top-[32%] lg:top-[34%] object-contain max-w-[45%] lg:max-w-[50%]" />
             </Link>
             <Link href="/urunler/veri-yonetim-sistemleri" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat5")}</h3>
-              <Image src="/cloud.webp" alt={t("home.cat5")} width={350} height={260} sizes="(max-width: 1024px) 45vw, 22vw" className="absolute top-[36%] lg:top-[40%] object-contain max-w-[45%] lg:max-w-none" />
+              <Image src="/cloud.webp" alt={`Taytech ${t("home.cat5")} - BLES`} width={350} height={260} sizes="(max-width: 1024px) 45vw, 22vw" className="absolute top-[36%] lg:top-[40%] object-contain max-w-[45%] lg:max-w-none" />
             </Link>
             <Link href="/urunler/isitma-sogutma-ekipmanlari" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat6")}</h3>
               <div className="absolute top-[36%] lg:top-[40%] flex items-center justify-center">
                 <Package className="w-20 h-20 lg:w-32 lg:h-32 text-[#d2d2d7] group-hover:text-[#dc2626]/30 transition-colors duration-300" strokeWidth={1} />
               </div>
-              <span className="absolute bottom-[12%] lg:bottom-[14%] text-[11px] lg:text-[13px] text-[#86868b] font-medium tracking-wide">{locale === "TR" ? "Çok Yakında" : "Coming Soon"}</span>
+              <span className="absolute bottom-[12%] lg:bottom-[14%] text-[11px] lg:text-[13px] text-[#6e6e73] font-medium tracking-wide">{locale === "TR" ? "Çok Yakında" : "Coming Soon"}</span>
             </Link>
           </div>
         </div>
@@ -65,9 +65,9 @@ export default function Home() {
         <div style={{ padding: "32px 28px" }} className="lg:!px-[100px] lg:!pt-[80px] lg:!pb-[50px]">
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-end gap-6">
             <div>
-              <p className="text-[13px] font-semibold uppercase tracking-wider mb-4" style={{ color: "rgba(255,255,255,0.45)" }}>{t("home.dokuman.taytech")}</p>
+              <p className="text-[13px] font-semibold uppercase tracking-wider mb-4" style={{ color: "rgba(255,255,255,0.7)" }}>{t("home.dokuman.taytech")}</p>
               <h2 className="text-[26px] lg:text-[48px] font-bold text-white leading-tight mb-3">{t("home.dokuman.title")}</h2>
-              <p className="text-[14px] lg:text-[18px] leading-relaxed" style={{ color: "rgba(255,255,255,0.65)", fontWeight: 450 }}>{t("home.dokuman.desc")}</p>
+              <p className="text-[14px] lg:text-[18px] leading-relaxed" style={{ color: "rgba(255,255,255,0.85)", fontWeight: 450 }}>{t("home.dokuman.desc")}</p>
             </div>
             <Link href="/dokuman-merkezi" className="self-start lg:self-auto hover:!bg-white hover:!text-[#dc2626] hover:!border-white" style={{ display: "inline-flex", alignItems: "center", gap: "10px", fontSize: "14px", fontWeight: 600, color: "white", textDecoration: "none", border: "1.5px solid rgba(255,255,255,0.3)", padding: "10px 22px", transition: "all 0.2s", whiteSpace: "nowrap" }}>
               {t("home.dokuman.btn")}
@@ -97,9 +97,9 @@ export default function Home() {
                     )}
                   </div>
                   <div style={{ padding: "12px 12px 14px" }}>
-                    <p style={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", transition: "color 0.2s" }} className="text-[9px] md:text-[11px] mb-1 md:mb-2 text-white/40 group-hover:!text-[#dc2626]">{doc.type}</p>
-                    <h4 style={{ fontWeight: 600, marginBottom: "2px", transition: "color 0.2s" }} className="text-[12px] md:text-[15px] text-white group-hover:!text-[#1d1d1f]">{doc.title}</h4>
-                    <p style={{ fontSize: "12px", transition: "color 0.2s" }} className="text-white/40 group-hover:!text-[#86868b]">{doc.sub}</p>
+                    <p style={{ fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", transition: "color 0.2s" }} className="text-[9px] md:text-[11px] mb-1 md:mb-2 text-white/70 group-hover:!text-[#dc2626]">{doc.type}</p>
+                    <h3 style={{ fontWeight: 600, marginBottom: "2px", transition: "color 0.2s" }} className="text-[12px] md:text-[15px] text-white group-hover:!text-[#1d1d1f]">{doc.title}</h3>
+                    <p style={{ fontSize: "12px", transition: "color 0.2s" }} className="text-white/70 group-hover:!text-[#86868b]">{doc.sub}</p>
                   </div>
                 </div>
               </a>
@@ -120,7 +120,7 @@ export default function Home() {
         
         <div style={{ padding: "60px 28px 0" }} className="lg:!pt-[120px] lg:!px-0 w-full flex flex-col items-center">
           <h2 className="text-2xl lg:text-4xl text-center mb-3 z-10" style={{ fontWeight: 450, color: '#dc2626' }}>{t("home.cozumler.title")}</h2>
-          <p className="text-sm lg:text-xl text-[#86868b] text-center z-10 px-4" style={{ marginBottom: '40px', fontWeight: 450 }}>{t("home.cozumler.desc")}</p>
+          <p className="text-sm lg:text-xl text-[#6e6e73] text-center z-10 px-4" style={{ marginBottom: '40px', fontWeight: 450 }}>{t("home.cozumler.desc")}</p>
         </div>
         
         <div className="flex flex-col items-center gap-6 lg:gap-10 z-10 px-6">
