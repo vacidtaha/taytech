@@ -11,7 +11,10 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/admin/", "/api/"],
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: [
+      `${baseUrl}/sitemap.xml`,
+      "https://taytech.com/sitemap.xml",
+    ],
     host: baseUrl,
   };
 }
