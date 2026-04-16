@@ -253,7 +253,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
         className={cn(
           "z-50 w-full transition-colors duration-300",
           isFixed ? "fixed top-0 left-0" : "relative",
-          activeMenu || mobileOpen ? "bg-white" : isDark ? "bg-black/60 backdrop-blur-xl" : "bg-white/80 backdrop-blur-xl",
+          activeMenu || mobileOpen ? "bg-white" : isDark ? "bg-black/60 backdrop-blur-xl" : isFixed ? "bg-white/80 backdrop-blur-xl" : "bg-white",
         )}
       >
         <nav className="mx-auto flex h-12 max-w-[1200px] items-center justify-between px-4 lg:px-6">
