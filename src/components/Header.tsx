@@ -30,8 +30,6 @@ function m(tr: string, en: string, href: string, children?: MenuItem[]): MenuIte
   return children ? { tr, en, href, children } : { tr, en, href };
 }
 
-const ISE = "/urunler/isitma-sogutma-ekipmanlari";
-
 const menuTree: MenuItem[] = [
   m("Motor Kontrol Panoları", "Motor Control Panels", KP, [
     m("Elektronik Kontrol Panelleri", "Electronic Control Panels", `${KP}/elektronik-kontrol-panelleri`, [
@@ -64,12 +62,6 @@ const menuTree: MenuItem[] = [
       m("Data Logger", "Data Logger", `${BLES}/veri-yonetim-cihazlari/data-logger`),
       m("Gateway", "Gateway", `${BLES}/veri-yonetim-cihazlari/gateway`),
     ]),
-  ]),
-  m("Isıtma Soğutma Ekipmanları", "Heating & Cooling Equipment", ISE, [
-    m("Termal Aktüatörler", "Thermal Actuators", `${ISE}/termal-aktuatorler`),
-    m("Oda Termostatları", "Room Thermostats", `${ISE}/oda-termostatlari`),
-    m("Karışım Vanaları", "Mixing Valves", `${ISE}/karisim-vanalari`),
-    m("Kollektörler", "Manifolds", `${ISE}/kollektorler`),
   ]),
   m("Isı Ağları", "Heat Network", HN, [
     m("Isı İstasyonları", "Heat Interface Units", HIU, [

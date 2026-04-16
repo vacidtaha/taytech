@@ -24,7 +24,6 @@ const sitemap = [
         { name: "Yazılım Platformu", href: "/urunler/enerji-yonetim-platformu/yazilim-platformu" },
         { name: "Veri Yönetim Cihazları", href: "/urunler/enerji-yonetim-platformu/veri-yonetim-cihazlari" },
       ]},
-      { name: "Isıtma Soğutma Ekipmanları", href: "/urunler/isitma-sogutma-ekipmanlari" },
       { name: "Isı Ağları (Heat Network)", href: "/urunler/heat-network", children: [
         { name: "Isı İstasyonları", href: "/urunler/heat-network/isi-istasyonlari", children: [
           { name: "SmartHexa Serisi", href: "/urunler/heat-network/isi-istasyonlari/smarthexa-serisi" },
