@@ -8,37 +8,36 @@ const sitemap = [
   {
     titleKey: "nav.urunler",
     links: [
-      { nameKey: "mega.prod.akilli", href: "/urunler/akilli-kontrol-panolari", children: [
-        { nameKey: "mega.prod.elektronikPano", href: "/urunler/akilli-kontrol-panolari/elektronik", children: [
-          { name: "Direct Start", href: "/urunler/akilli-kontrol-panolari/elektronik/direct-start" },
-          { nameKey: "mega.prod.invertor", href: "/urunler/akilli-kontrol-panolari/elektronik/invertor" },
-          { nameKey: "mega.prod.softStarter", href: "/urunler/akilli-kontrol-panolari/elektronik/soft-starter" },
-          { nameKey: "mega.prod.yildizUcgen", href: "/urunler/akilli-kontrol-panolari/elektronik/yildiz-ucgen" },
+      { name: "Motor Kontrol Panoları", href: "/urunler/kontrol-panelleri", children: [
+        { name: "Elektronik Kontrol Panelleri", href: "/urunler/kontrol-panelleri/elektronik-kontrol-panelleri", children: [
+          { name: "Smart Serisi", href: "/urunler/kontrol-panelleri/elektronik-kontrol-panelleri/smart-serisi" },
+          { name: "Frekans İnvertör Serisi", href: "/urunler/kontrol-panelleri/elektronik-kontrol-panelleri/frekans-invertor-serisi" },
+          { name: "Soft Starter Serisi", href: "/urunler/kontrol-panelleri/elektronik-kontrol-panelleri/soft-starter-serisi" },
         ]},
-        { nameKey: "mega.prod.elektromekanikPano", href: "/urunler/akilli-kontrol-panolari/elektromekanik", children: [
-          { nameKey: "mega.prod.dogrudan", href: "/urunler/akilli-kontrol-panolari/elektromekanik/dogrudan-yol-verme" },
-          { nameKey: "mega.prod.yildizUcgenEM", href: "/urunler/akilli-kontrol-panolari/elektromekanik/yildiz-ucgen" },
-        ]},
-        { nameKey: "mega.prod.yanginPano", href: "/urunler/akilli-kontrol-panolari/yangin-sistemleri", children: [
-          { nameKey: "mega.prod.jokey", href: "/urunler/akilli-kontrol-panolari/yangin-sistemleri/jokey" },
-          { nameKey: "mega.prod.elektrikli", href: "/urunler/akilli-kontrol-panolari/yangin-sistemleri/elektrikli" },
-          { nameKey: "mega.prod.dizel", href: "/urunler/akilli-kontrol-panolari/yangin-sistemleri/dizel" },
+        { name: "Elektro Mekanik Paneller", href: "/urunler/kontrol-panelleri/elektro-mekanik-paneller" },
+        { name: "Yangın Pompa Kontrol Panoları", href: "/urunler/kontrol-panelleri/yangin-pompa-kontrol-panolari", children: [
+          { name: "NFPA / UL & FM Serisi", href: "/urunler/kontrol-panelleri/yangin-pompa-kontrol-panolari/nfpa-ul-fm-serisi" },
+          { name: "EN Serisi", href: "/urunler/kontrol-panelleri/yangin-pompa-kontrol-panolari/en-serisi" },
         ]},
       ]},
-      { nameKey: "mega.prod.isi", href: "/urunler/isi-istasyonu", children: [
-        { name: "Direct", href: "/urunler/isi-istasyonu/direct" },
-        { name: "Indirect", href: "/urunler/isi-istasyonu/indirect" },
+      { name: "Enerji Yönetim Platformu (BLES)", href: "/urunler/enerji-yonetim-platformu", children: [
+        { name: "Yazılım Platformu", href: "/urunler/enerji-yonetim-platformu/yazilim-platformu" },
+        { name: "Veri Yönetim Cihazları", href: "/urunler/enerji-yonetim-platformu/veri-yonetim-cihazlari" },
       ]},
-      { nameKey: "mega.prod.elektronik", href: "/urunler/elektronik", children: [
-        { nameKey: "mega.prod.smartEnd", href: "/urunler/elektronik/smart-endustriyel" },
-        { nameKey: "mega.prod.isiKontrol", href: "/urunler/elektronik/isi-istasyonu-kontrolorleri" },
-        { nameKey: "mega.prod.yerden", href: "/urunler/elektronik/yerden-isitma" },
-      ]},
-      { nameKey: "mega.prod.cloud", href: "/urunler/taytech-cloud" },
-      { nameKey: "mega.prod.manyetik", href: "/urunler/manyetik-filtre" },
-      { nameKey: "mega.prod.sivilar", href: "/urunler/temizleyici-sivilar", children: [
-        { nameKey: "mega.prod.koruyucu", href: "/urunler/temizleyici-sivilar/koruyucu" },
-        { nameKey: "mega.prod.temizleyici", href: "/urunler/temizleyici-sivilar/temizleyici" },
+      { name: "Isıtma Soğutma Ekipmanları", href: "/urunler/isitma-sogutma-ekipmanlari" },
+      { name: "Isı Ağları (Heat Network)", href: "/urunler/heat-network", children: [
+        { name: "Isı İstasyonları", href: "/urunler/heat-network/isi-istasyonlari", children: [
+          { name: "SmartHexa Serisi", href: "/urunler/heat-network/isi-istasyonlari/smarthexa-serisi" },
+          { name: "HydroHexa Serisi", href: "/urunler/heat-network/isi-istasyonlari/hydrohexa-serisi" },
+          { name: "ThermoHexa Serisi", href: "/urunler/heat-network/isi-istasyonlari/thermohexa-serisi" },
+          { name: "Hydro EM Serisi", href: "/urunler/heat-network/isi-istasyonlari/hydro-em-serisi" },
+        ]},
+        { name: "Endüstriyel Isı İstasyonları", href: "/urunler/heat-network/endustriyel-isi-istasyonlari" },
+        { name: "Sayaç İstasyonları", href: "/urunler/heat-network/sayac-istasyonlari" },
+        { name: "Manyetik Filtreler", href: "/urunler/heat-network/manyetik-filtreler" },
+        { name: "Aksesuarlar", href: "/urunler/heat-network/aksesuarlar" },
+        { name: "Sayaçlar", href: "/urunler/heat-network/sayaclar" },
+        { name: "Ön Ödemeli Sayaçlar", href: "/urunler/heat-network/on-odemeli-sayaclar" },
       ]},
     ]
   },

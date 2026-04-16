@@ -15,7 +15,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "Taytech | Akıllı Kontrol Panoları & Isı İstasyonları",
+    default: "Taytech | Motor Kontrol Panoları & Isı İstasyonları",
     template: "%s | Taytech",
   },
   description: "Taytech, akıllı kontrol panoları, ısı istasyonları, manyetik filtre, elektronik kontrolörler ve Taytech Cloud ile endüstriyel otomasyon çözümleri sunan ISO sertifikalı Türk üreticisidir. Gebze, Kocaeli.",
@@ -39,20 +39,20 @@ export const metadata: Metadata = {
     alternateLocale: "en_US",
     url: "https://taytech.com.tr",
     siteName: "Taytech",
-    title: "Taytech | Akıllı Kontrol Panoları & Isı İstasyonları",
+    title: "Taytech | Motor Kontrol Panoları & Isı İstasyonları",
     description: "Akıllı kontrol panoları, ısı istasyonları, manyetik filtreler ve endüstriyel otomasyon çözümleri. ISO 9001, ISO 14001, ISO 45001 sertifikalı Türk üretici.",
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Taytech - Akıllı Kontrol Panoları & Isı İstasyonları",
+        alt: "Taytech - Motor Kontrol Panoları & Isı İstasyonları",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Taytech | Akıllı Kontrol Panoları & Isı İstasyonları",
+    title: "Taytech | Motor Kontrol Panoları & Isı İstasyonları",
     description: "Akıllı kontrol panoları, ısı istasyonları, manyetik filtreler ve endüstriyel otomasyon çözümleri.",
     images: ["/opengraph-image"],
   },

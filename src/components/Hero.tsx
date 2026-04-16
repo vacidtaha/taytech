@@ -18,7 +18,7 @@ const slides = [
     titleKey: "hero.slide2.title",
     subtitleKey: "hero.slide2.subtitle",
     btnKey: "hero.slide2.btn",
-    btnHref: "/urunler/kontrol-sistemleri/smart-serisi",
+    btnHref: "/urunler/kontrol-panelleri/elektronik-kontrol-panelleri",
   },
   {
     id: 3,
@@ -30,7 +30,7 @@ const slides = [
   },
   {
     id: 4,
-    image: "/uploads/I-S-TR_U0A6-Render-Kabin-1774350985256.webp",
+    image: "/3.hero.webp",
     titleKey: "hero.slide5.title",
     subtitleKey: "hero.slide5.subtitle",
     btnKey: "hero.slide5.btn",

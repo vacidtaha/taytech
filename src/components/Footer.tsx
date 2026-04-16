@@ -11,29 +11,30 @@ export default function Footer() {
 
   const productColumns = [
     {
-      title: isEn ? "Heat Network" : "Isı Şebekesi",
+      title: isEn ? "Motor Control Panels" : "Motor Kontrol Panoları",
       links: [
-        { label: isEn ? "Heat Interface Units (HIU)" : "Isı İstasyonları (HIU)", href: "/urunler/heat-network/isi-istasyonlari" },
-        { label: isEn ? "Industrial Heat Stations" : "Endüstriyel Isı İstasyonları", href: "/urunler/heat-network/endustriyel-isi-istasyonlari" },
+        { label: isEn ? "Smart Series" : "Smart Serisi", href: "/urunler/kontrol-panelleri/elektronik-kontrol-panelleri/smart-serisi" },
+        { label: isEn ? "Electro Mechanical Panels" : "Elektro Mekanik Paneller", href: "/urunler/kontrol-panelleri/elektro-mekanik-paneller" },
+        { label: isEn ? "Fire Fighting Panels" : "Yangın Pompa Kontrol Panoları", href: "/urunler/kontrol-panelleri/yangin-pompa-kontrol-panolari" },
+      ],
+    },
+    {
+      title: isEn ? "Heat Interface Units" : "Isı İstasyonları",
+      links: [
+        { label: "SmartHexa", href: "/urunler/heat-network/isi-istasyonlari/smarthexa-serisi" },
+        { label: "HydroHexa", href: "/urunler/heat-network/isi-istasyonlari/hydrohexa-serisi" },
+        { label: "ThermoHexa", href: "/urunler/heat-network/isi-istasyonlari/thermohexa-serisi" },
+      ],
+    },
+    {
+      title: isEn ? "Heat Network" : "Isı Ağları",
+      links: [
+        { label: isEn ? "Sub-Stations" : "Endüstriyel Isı İstasyonları", href: "/urunler/heat-network/endustriyel-isi-istasyonlari" },
         { label: isEn ? "Metering Stations" : "Sayaç İstasyonları", href: "/urunler/heat-network/sayac-istasyonlari" },
         { label: isEn ? "Magnetic Filters" : "Manyetik Filtreler", href: "/urunler/heat-network/manyetik-filtreler" },
+        { label: isEn ? "Accessories" : "Aksesuarlar", href: "/urunler/heat-network/aksesuarlar" },
         { label: isEn ? "Meters" : "Sayaçlar", href: "/urunler/heat-network/sayaclar" },
-        { label: isEn ? "HIU Accessories" : "Isı İstasyonu Aksesuarları", href: "/urunler/heat-network/isi-istasyonu-aksesuarlari" },
-      ],
-    },
-    {
-      title: isEn ? "Control Systems" : "Kontrol Sistemleri",
-      links: [
-        { label: isEn ? "Smart Series" : "Smart Serisi", href: "/urunler/kontrol-sistemleri/smart-serisi" },
-        { label: isEn ? "Electro Mechanical Panels" : "Elektromekanik Panolar", href: "/urunler/kontrol-sistemleri/electro-mechanical-panels" },
-        { label: isEn ? "Fire Fighting Panels" : "Yangın Söndürme Panoları", href: "/urunler/kontrol-sistemleri/fire-fighting-panels" },
-      ],
-    },
-    {
-      title: isEn ? "Other Products" : "Diğer Ürünler",
-      links: [
-        { label: isEn ? "Heating & Cooling Equipment" : "Isıtma Soğutma Ekipmanları", href: "/urunler/isitma-sogutma-ekipmanlari" },
-        { label: isEn ? "Data Management (BLES)" : "Veri Yönetim Sistemleri (BLES)", href: "/urunler/veri-yonetim-sistemleri" },
+        { label: isEn ? "BLES" : "Enerji Yönetim Platformu", href: "/urunler/enerji-yonetim-platformu" },
       ],
     },
   ];

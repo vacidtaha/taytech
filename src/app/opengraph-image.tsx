@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import * as fs from "fs";
 import * as path from "path";
 
-export const alt = "Taytech - Akıllı Kontrol Panoları & Isı İstasyonları";
+export const alt = "Taytech - Motor Kontrol Panoları & Isı İstasyonları";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -42,7 +42,7 @@ export default async function Image() {
           }}
         >
           <span style={{ fontSize: 28, color: "#1d1d1f", fontWeight: 500 }}>
-            Akıllı Kontrol Panoları & Isı İstasyonları
+            Motor Kontrol Panoları & Isı İstasyonları
           </span>
           <span style={{ fontSize: 18, color: "#6e6e73" }}>
             Endüstriyel Otomasyon Çözümleri | ISO Sertifikalı Türk Üretici

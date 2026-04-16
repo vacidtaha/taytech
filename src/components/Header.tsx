@@ -21,45 +21,101 @@ function ml(item: MenuItem, locale: Locale) {
   return locale === "EN" ? item.en : item.tr;
 }
 
+const KP = "/urunler/kontrol-panelleri";
+const BLES = "/urunler/enerji-yonetim-platformu";
 const HN = "/urunler/heat-network";
 const HIU = `${HN}/isi-istasyonlari`;
-const ISE = "/urunler/isitma-sogutma-ekipmanlari";
-const VYS = "/urunler/veri-yonetim-sistemleri";
-const KS = "/urunler/kontrol-sistemleri";
 
 function m(tr: string, en: string, href: string, children?: MenuItem[]): MenuItem {
   return children ? { tr, en, href, children } : { tr, en, href };
 }
 
+const ISE = "/urunler/isitma-sogutma-ekipmanlari";
+
 const menuTree: MenuItem[] = [
-  m("Isı Şebekesi", "Heat Network", HN, [
-    m("Isı İstasyonları (HIU)", "Heat Interface Units (HIU)", HIU, [
-      m("SmartHexa Serisi", "SmartHexa Series", `${HIU}/smarthexa-series`, [
-        m("Indirect SmartHexa", "Indirect SmartHexa", `${HIU}/smarthexa-series/indirect-smarthexa`),
-        m("Direct SmartHexa - DHW", "Direct SmartHexa - DHW", `${HIU}/smarthexa-series/direct-smarthexa/direct-smarthexa-dhw`),
-        m("Direct SmartHexa - RH", "Direct SmartHexa - RH", `${HIU}/smarthexa-series/direct-smarthexa/direct-smarthexa-rh`),
-        m("Direct SmartHexa - UFH", "Direct SmartHexa - UFH", `${HIU}/smarthexa-series/direct-smarthexa/direct-smarthexa-ufh`),
+  m("Motor Kontrol Panoları", "Motor Control Panels", KP, [
+    m("Elektronik Kontrol Panelleri", "Electronic Control Panels", `${KP}/elektronik-kontrol-panelleri`, [
+      m("Smart Serisi", "Smart Series", `${KP}/elektronik-kontrol-panelleri/smart-serisi`),
+      m("Frekans İnvertör Serisi", "VFD Series", `${KP}/elektronik-kontrol-panelleri/frekans-invertor-serisi`),
+      m("Soft Starter Serisi", "Soft Start Series", `${KP}/elektronik-kontrol-panelleri/soft-starter-serisi`),
+    ]),
+    m("Elektro Mekanik Paneller", "Electro Mechanical Panels", `${KP}/elektro-mekanik-paneller`, [
+      m("Direkt Başlatma", "Direct Start", `${KP}/elektro-mekanik-paneller/direkt-baslatma`),
+      m("Yıldız & Üçgen Başlatma", "Star & Delta Start", `${KP}/elektro-mekanik-paneller/yildiz-ucgen-baslatma`),
+    ]),
+    m("Yangın Pompa Kontrol Panoları", "Fire Fighting System Control Panels", `${KP}/yangin-pompa-kontrol-panolari`, [
+      m("NFPA / UL & FM Serisi", "NFPA / UL & FM Series", `${KP}/yangin-pompa-kontrol-panolari/nfpa-ul-fm-serisi`, [
+        m("Dizel Motor Kontrol Panosu", "Diesel Engine Driven", `${KP}/yangin-pompa-kontrol-panolari/nfpa-ul-fm-serisi/nfpa-dizel-motor-kontrol-panosu`),
+        m("Elektrik Motor Kontrol Panosu", "Electric Motor Driven", `${KP}/yangin-pompa-kontrol-panolari/nfpa-ul-fm-serisi/nfpa-elektrik-motor-kontrol-panosu`),
+        m("Jokey Pompa Kontrol Panosu", "Jockey Series", `${KP}/yangin-pompa-kontrol-panolari/nfpa-ul-fm-serisi/nfpa-jokey-pompa-kontrol-panosu`),
       ]),
-      m("Hydro-EM Serisi", "Hydro-EM Series", `${HIU}/hydro-em-series`, [
-        m("Direct Hydro EM RH", "Direct Hydro EM RH", `${HIU}/hydro-em-series/direct-hydro-em-rh`),
-        m("Direct Hydro EM UFH", "Direct Hydro EM UFH", `${HIU}/hydro-em-series/direct-hydro-em-ufh`),
-      ]),
-      m("HydroHexa Serisi", "HydroHexa Series", `${HIU}/hydrohexa-series`, [
-        m("Indirect HydroHexa", "Indirect HydroHexa", `${HIU}/hydrohexa-series/indirect-hydrohexa`),
-        m("Direct HydroHexa - DHW", "Direct HydroHexa - DHW", `${HIU}/hydrohexa-series/direct-hydrohexa/direct-hydrohexa-dhw`),
-        m("Direct HydroHexa - RH", "Direct HydroHexa - RH", `${HIU}/hydrohexa-series/direct-hydrohexa/direct-hydrohexa-rh`),
-        m("Direct HydroHexa - UFH", "Direct HydroHexa - UFH", `${HIU}/hydrohexa-series/direct-hydrohexa/direct-hydrohexa-ufh`),
-      ]),
-      m("ThermoHexa Serisi", "ThermoHexa Series", `${HIU}/thermohexa-series`, [
-        m("Indirect ThermoHexa", "Indirect ThermoHexa", `${HIU}/thermohexa-series/indirect-thermohexa`),
-        m("Direct ThermoHexa - DHW", "Direct ThermoHexa - DHW", `${HIU}/thermohexa-series/direct-thermohexa/direct-thermohexa-dhw`),
-        m("Direct ThermoHexa - RH", "Direct ThermoHexa - RH", `${HIU}/thermohexa-series/direct-thermohexa/direct-thermohexa-rh`),
-        m("Direct ThermoHexa - UFH", "Direct ThermoHexa - UFH", `${HIU}/thermohexa-series/direct-thermohexa/direct-thermohexa-ufh`),
+      m("EN Serisi", "EN Series", `${KP}/yangin-pompa-kontrol-panolari/en-serisi`, [
+        m("Dizel Serisi EN 12845", "Diesel Series EN 12845", `${KP}/yangin-pompa-kontrol-panolari/en-serisi/dizel-serisi-en-12845`),
+        m("Elektrik Serisi EN 12845", "Electric Series EN 12845", `${KP}/yangin-pompa-kontrol-panolari/en-serisi/elektrik-serisi-en-12845`),
+        m("Jokey Serisi", "Jockey Series", `${KP}/yangin-pompa-kontrol-panolari/en-serisi/jokey-serisi`),
       ]),
     ]),
-    m("Endüstriyel Isı İstasyonları", "Industrial Heat Stations", `${HN}/endustriyel-isi-istasyonlari`, [
-      m("Bölgesel Isıtma Alt İstasyonları", "District Heating Substations", `${HN}/endustriyel-isi-istasyonlari/district-heating-substations`),
-      m("Bölgesel Soğutma Alt İstasyonları", "District Cooling Substations", `${HN}/endustriyel-isi-istasyonlari/district-cooling-substations`),
+  ]),
+  m("Enerji Yönetim Platformu (BLES)", "Building Management System (BLES)", BLES, [
+    m("Yazılım Platformu", "Software Platforms", `${BLES}/yazilim-platformu`),
+    m("Veri Yönetim Cihazları", "Data Management Devices", `${BLES}/veri-yonetim-cihazlari`, [
+      m("M-Bus Converter", "M-Bus Converter", `${BLES}/veri-yonetim-cihazlari/m-bus-converter`),
+      m("TT Smart Box", "TT Smart Box", `${BLES}/veri-yonetim-cihazlari/ttsmart-box`),
+      m("Data Logger", "Data Logger", `${BLES}/veri-yonetim-cihazlari/data-logger`),
+      m("Gateway", "Gateway", `${BLES}/veri-yonetim-cihazlari/gateway`),
+    ]),
+  ]),
+  m("Isıtma Soğutma Ekipmanları", "Heating & Cooling Equipment", ISE, [
+    m("Termal Aktüatörler", "Thermal Actuators", `${ISE}/termal-aktuatorler`),
+    m("Oda Termostatları", "Room Thermostats", `${ISE}/oda-termostatlari`),
+    m("Karışım Vanaları", "Mixing Valves", `${ISE}/karisim-vanalari`),
+    m("Kollektörler", "Manifolds", `${ISE}/kollektorler`),
+  ]),
+  m("Isı Ağları", "Heat Network", HN, [
+    m("Isı İstasyonları", "Heat Interface Units", HIU, [
+      m("SmartHexa Serisi", "SmartHexa Series", `${HIU}/smarthexa-serisi`, [
+        m("Indirect SmartHexa", "Indirect SmartHexa", `${HIU}/smarthexa-serisi/indirect-smarthexa`, [
+          m("Indirect SmartHexa DHW-SH", "Indirect SmartHexa DHW-SH", `${HIU}/smarthexa-serisi/indirect-smarthexa/indirect-smarthexa-dhw-sh`),
+          m("Indirect SmartHexa SH", "Indirect SmartHexa SH", `${HIU}/smarthexa-serisi/indirect-smarthexa/indirect-smarthexa-sh`),
+        ]),
+        m("Direct SmartHexa", "Direct SmartHexa", `${HIU}/smarthexa-serisi/direct-smarthexa`, [
+          m("Direct SmartHexa - DHW", "Direct SmartHexa - DHW", `${HIU}/smarthexa-serisi/direct-smarthexa/direct-smarthexa-dhw`),
+          m("Direct SmartHexa - RH", "Direct SmartHexa - RH", `${HIU}/smarthexa-serisi/direct-smarthexa/direct-smarthexa-rh`),
+          m("Direct SmartHexa - UFH", "Direct SmartHexa - UFH", `${HIU}/smarthexa-serisi/direct-smarthexa/direct-smarthexa-ufh`),
+        ]),
+      ]),
+      m("HydroHexa Serisi", "HydroHexa Series", `${HIU}/hydrohexa-serisi`, [
+        m("Indirect HydroHexa", "Indirect HydroHexa", `${HIU}/hydrohexa-serisi/indirect-hydrohexa`, [
+          m("Indirect HydroHexa DHW-SH", "Indirect HydroHexa DHW-SH", `${HIU}/hydrohexa-serisi/indirect-hydrohexa/indirect-hydrohexa-dhw-sh`),
+        ]),
+        m("Direct HydroHexa", "Direct HydroHexa", `${HIU}/hydrohexa-serisi/direct-hydrohexa`, [
+          m("Direct HydroHexa - DHW", "Direct HydroHexa - DHW", `${HIU}/hydrohexa-serisi/direct-hydrohexa/direct-hydrohexa-dhw`),
+          m("Direct HydroHexa - RH", "Direct HydroHexa - RH", `${HIU}/hydrohexa-serisi/direct-hydrohexa/direct-hydrohexa-rh`),
+          m("Direct HydroHexa - UFH", "Direct HydroHexa - UFH", `${HIU}/hydrohexa-serisi/direct-hydrohexa/direct-hydrohexa-ufh`),
+        ]),
+      ]),
+      m("ThermoHexa Serisi", "ThermoHexa Series", `${HIU}/thermohexa-serisi`, [
+        m("Indirect ThermoHexa", "Indirect ThermoHexa", `${HIU}/thermohexa-serisi/indirect-thermohexa`, [
+          m("Indirect ThermoHexa DHW-SH", "Indirect ThermoHexa DHW-SH", `${HIU}/thermohexa-serisi/indirect-thermohexa/indirect-thermohexa-dhw-sh`),
+          m("Indirect ThermoHexa SH", "Indirect ThermoHexa SH", `${HIU}/thermohexa-serisi/indirect-thermohexa/indirect-thermohexa-sh`),
+        ]),
+        m("Direct ThermoHexa", "Direct ThermoHexa", `${HIU}/thermohexa-serisi/direct-thermohexa`, [
+          m("Direct ThermoHexa - DHW", "Direct ThermoHexa - DHW", `${HIU}/thermohexa-serisi/direct-thermohexa/direct-thermohexa-dhw`),
+          m("Direct ThermoHexa - RH", "Direct ThermoHexa - RH", `${HIU}/thermohexa-serisi/direct-thermohexa/direct-thermohexa-rh`),
+          m("Direct ThermoHexa - UFH", "Direct ThermoHexa - UFH", `${HIU}/thermohexa-serisi/direct-thermohexa/direct-thermohexa-ufh`),
+        ]),
+      ]),
+    ]),
+    m("Hydro EM Serisi", "Hydro EM Series", `${HIU}/hydro-em-serisi`, [
+      m("Indirect Hydro EM DHW-SH", "Indirect Hydro EM DHW-SH", `${HIU}/hydro-em-serisi/indirect-hydro-em-dhw-sh`),
+      m("Direct Hydro EM", "Direct Hydro EM", `${HIU}/hydro-em-serisi/direct-hydro-em`, [
+        m("Direct Hydro EM RH", "Direct Hydro EM RH", `${HIU}/hydro-em-serisi/direct-hydro-em/direct-hydro-em-rh`),
+        m("Direct Hydro EM UFH", "Direct Hydro EM UFH", `${HIU}/hydro-em-serisi/direct-hydro-em/direct-hydro-em-ufh`),
+      ]),
+    ]),
+    m("Endüstriyel Isı İstasyonları", "Sub-Stations", `${HN}/endustriyel-isi-istasyonlari`, [
+      m("Bölgesel Isıtma İstasyonları", "District Heating Substations", `${HN}/endustriyel-isi-istasyonlari/bolgesel-isitma-istasyonlari`),
+      m("Bölgesel Soğutma İstasyonları", "District Cooling Substations", `${HN}/endustriyel-isi-istasyonlari/bolgesel-sogutma-istasyonlari`),
     ]),
     m("Sayaç İstasyonları", "Metering Stations", `${HN}/sayac-istasyonlari`, [
       m("Meter Tech - W1", "Meter Tech - W1", `${HN}/sayac-istasyonlari/meter-tech-w1`),
@@ -67,64 +123,26 @@ const menuTree: MenuItem[] = [
       m("Meter Tech - W3", "Meter Tech - W3", `${HN}/sayac-istasyonlari/meter-tech-w3`),
       m("Meter Tech - W4", "Meter Tech - W4", `${HN}/sayac-istasyonlari/meter-tech-w4`),
     ]),
-    m("Veri Yönetim Sistemleri (BLES)", "Data Management Systems (BLES)", `${HN}/bles-heat-network`),
-    m("Manyetik Filtreler (IRONTRAP)", "Magnetic Filters (IRONTRAP)", `${HN}/manyetik-filtreler`, [
+    m("Manyetik Filtreler", "Magnetic Filters", `${HN}/manyetik-filtreler`, [
       m("IronTrap", "IronTrap", `${HN}/manyetik-filtreler/irontrap`),
       m("IronInox", "IronInox", `${HN}/manyetik-filtreler/ironinox`),
     ]),
-    m("Isı İstasyonu Aksesuarları", "HIU Accessories", `${HN}/isi-istasyonu-aksesuarlari`, [
-      m("İlk Kurulum Kiti", "First Fix Rail Kit", `${HN}/isi-istasyonu-aksesuarlari/first-fix-rail-kit`),
-      m("Bağlantı Kutuları", "Junction Boxes", `${HN}/isi-istasyonu-aksesuarlari/junction-boxes`),
-      m("Re-Sirkülasyon Kitleri", "Re-Circulation Kits", `${HN}/isi-istasyonu-aksesuarlari/re-circulation-kits`),
-      m("Fark Basınç Vanası", "Differential Pressure Valve", `${HN}/isi-istasyonu-aksesuarlari/differential-pressure-valve`),
-      m("Termal By-Pass Vanası", "Thermal By-Pass Valve", `${HN}/isi-istasyonu-aksesuarlari/thermal-by-pass-valve`),
-      m("Kabin", "Cabinet", `${HN}/isi-istasyonu-aksesuarlari/cabinet`),
+    m("Aksesuarlar", "Accessories", `${HN}/aksesuarlar`, [
+      m("İlk Montaj Kiti", "First Fix Rail Kit", `${HN}/aksesuarlar/ilk-montaj-kiti`),
+      m("Bağlantı Kutuları", "Junction Boxes", `${HN}/aksesuarlar/baglanti-kutulari`),
+      m("Re-Sirkülasyon Kitleri", "Re-Circulation Kits", `${HN}/aksesuarlar/re-sirkulasyon-kitleri`),
+      m("Fark Basınç Vanası", "Differential Pressure Valve", `${HN}/aksesuarlar/fark-basinc-vanasi`),
+      m("Termal By-Pass Vanası", "Thermal By-Pass Valve", `${HN}/aksesuarlar/termal-bypass-vanasi`),
+      m("Kabin", "Cabinet", `${HN}/aksesuarlar/kabin`),
     ]),
     m("Sayaçlar", "Meters", `${HN}/sayaclar`, [
-      m("Isı Sayacı", "Heat Meter", `${HN}/sayaclar/heat-meter`),
-      m("Soğutma Sayacı", "Cooling Meter", `${HN}/sayaclar/cooling-meter`),
-      m("Su Sayacı", "Water Meter", `${HN}/sayaclar/water-meter`),
+      m("Isıtma Kalorimetresi", "Heat Meter", `${HN}/sayaclar/isitma-kalorimetresi`),
+      m("Soğutma Kalorimetresi", "Cooling Meter", `${HN}/sayaclar/sogutma-kalorimetresi`),
+      m("Su Sayacı", "Water Meter", `${HN}/sayaclar/su-sayaci`),
     ]),
-  ]),
-  m("Isıtma Soğutma Ekipmanları", "Heating & Cooling Equipment", ISE, [
-    m("Termal Aktüatörler", "Thermal Actuators", `${ISE}/termal-aktuatorler`),
-    m("Oda Termostatları", "Room Thermostats", `${ISE}/oda-termostatlari`),
-    m("Karışım Vanaları", "Mixing Valves", `${ISE}/mixing-valves`),
-    m("Kollektörler", "Manifolds", `${ISE}/manifolds`),
-  ]),
-  m("Veri Yönetim Sistemleri (BLES)", "Data Management Systems (BLES)", VYS, [
-    m("Yazılım Platformları", "Software Platforms", `${VYS}/yazilim-platformlari`),
-    m("Veri Yönetim Cihazları", "Data Management Devices", `${VYS}/veri-yonetim-cihazlari`, [
-      m("M-Bus Converter", "M-Bus Converter", `${VYS}/veri-yonetim-cihazlari/m-bus-converter`),
-      m("TTSmart Box", "TTSmart Box", `${VYS}/veri-yonetim-cihazlari/ttsmart-box`),
-      m("Data Logger", "Data Logger", `${VYS}/veri-yonetim-cihazlari/data-logger`),
-      m("Gateway", "Gateway", `${VYS}/veri-yonetim-cihazlari/gateway`),
-    ]),
-  ]),
-  m("Kontrol Sistemleri", "Control Systems", KS, [
-    m("Smart Serisi", "Smart Series", `${KS}/smart-serisi`, [
-      m("Smart Booster", "Smart Booster", `${KS}/smart-serisi/smart-booster`),
-      m("Smart Bore Hole", "Smart Bore Hole", `${KS}/smart-serisi/smart-bore-hole`),
-      m("Smart Box", "Smart Box", `${KS}/smart-serisi/smart-box`),
-      m("Smart Exclusive", "Smart Exclusive", `${KS}/smart-serisi/smart-exclusive`),
-      m("Smart Grinder", "Smart Grinder", `${KS}/smart-serisi/smart-grinder`),
-      m("Smart Wastewater", "Smart Wastewater", `${KS}/smart-serisi/smart-wastewater`),
-    ]),
-    m("Elektromekanik Panolar", "Electro Mechanical Panels", `${KS}/electro-mechanical-panels`, [
-      m("Doğrudan Yol Verme", "Direct Start", `${KS}/electro-mechanical-panels/em-direct-start`),
-      m("Yıldız Üçgen", "Star & Delta Start", `${KS}/electro-mechanical-panels/em-star-delta-start`),
-    ]),
-    m("Yangın Söndürme Sistem Kontrol Panoları", "Fire Fighting System Control Panels", `${KS}/fire-fighting-panels`, [
-      m("NFPA / UL & FM Serisi", "NFPA / UL & FM Series", `${KS}/fire-fighting-panels/nfpa-ul-fm-series`, [
-        m("Dizel Motor Tahrikli", "Diesel Engine Driven", `${KS}/fire-fighting-panels/nfpa-ul-fm-series/nfpa-diesel`),
-        m("Elektrik Motor Tahrikli", "Electric Motor Driven", `${KS}/fire-fighting-panels/nfpa-ul-fm-series/nfpa-electric`),
-        m("Jokey Serisi", "Jockey Series", `${KS}/fire-fighting-panels/nfpa-ul-fm-series/nfpa-jockey`),
-      ]),
-      m("EN Serisi", "EN Series", `${KS}/fire-fighting-panels/en-series`, [
-        m("Dizel Serisi EN 12845", "Diesel Series EN 12845", `${KS}/fire-fighting-panels/en-series/diesel-en-12845`),
-        m("Elektrik Serisi EN 12845", "Electric Series EN 12845", `${KS}/fire-fighting-panels/en-series/electric-en-12845`),
-        m("Jokey Serisi", "Jockey Series", `${KS}/fire-fighting-panels/en-series/jockey-en-series`),
-      ]),
+    m("Ön Ödemeli Sayaçlar", "Pre-paid Meters", `${HN}/on-odemeli-sayaclar`, [
+      m("Ön Ödemeli Kalorimetre", "Pre-paid Heat Meter", `${HN}/on-odemeli-sayaclar/on-odemeli-kalorimetre`),
+      m("Ön Ödemeli Su Sayacı", "Pre-paid Water Meter", `${HN}/on-odemeli-sayaclar/on-odemeli-su-sayaci`),
     ]),
   ]),
 ];
@@ -235,6 +253,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
   const l1Node = getAt(hoverPath.slice(0, 1));
   const l2Node = hoverPath.length >= 2 ? getAt(hoverPath.slice(0, 2)) : null;
   const l3Node = hoverPath.length >= 3 ? getAt(hoverPath.slice(0, 3)) : null;
+  const l4Node = hoverPath.length >= 4 ? getAt(hoverPath.slice(0, 4)) : null;
 
   return (
     <>
@@ -336,7 +355,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
             >
               <div className="mx-auto flex max-w-[1200px] min-h-[480px]">
                 {/* Panel 1 — Ana kategoriler */}
-                <div className="w-[240px] shrink-0 py-8">
+                <div className="w-[200px] shrink-0 py-8">
                   {menuTree.map((l1, i) => (
                     <button
                       key={l1.tr}
@@ -361,7 +380,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.18 }}
-                      className="w-[260px] shrink-0 py-8"
+                      className="w-[220px] shrink-0 py-8"
                     >
                       <p className="mb-3 px-6 text-[11px] font-semibold uppercase tracking-wider text-[#86868b]">
                         {ml(l1Node, locale)}
@@ -410,7 +429,7 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.18 }}
-                      className="w-[260px] shrink-0 py-8"
+                      className="w-[220px] shrink-0 py-8"
                     >
                       <p className="mb-3 px-6 text-[11px] font-semibold uppercase tracking-wider text-[#86868b]">
                         {ml(l2Node, locale)}
@@ -459,12 +478,61 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.18 }}
-                      className="flex-1 py-8"
+                      className={cn(has(l3Node) && l3Node.children!.some(c => has(c)) ? "w-[200px] shrink-0" : "flex-1", "py-8")}
                     >
                       <p className="mb-3 px-6 text-[11px] font-semibold uppercase tracking-wider text-[#86868b]">
                         {ml(l3Node, locale)}
                       </p>
-                      {l3Node.children!.map((item) => {
+                      {l3Node.children!.map((item, n) => {
+                        const leaf = isLeafProduct(item);
+                        const disabled = leaf && !activeSlugs.has(getSlugFromHref(item.href));
+                        if (disabled) {
+                          return (
+                            <span
+                              key={item.tr}
+                              onMouseEnter={() => setLevel(3, n)}
+                              className="flex w-full items-center justify-between px-6 py-3 text-left text-[13px] text-[#424245] cursor-default"
+                            >
+                              <span>{ml(item, locale)}</span>
+                            </span>
+                          );
+                        }
+                        return (
+                          <Link
+                            key={item.tr}
+                            href={item.href}
+                            onMouseEnter={() => setLevel(3, n)}
+                            onClick={closeMega}
+                            className={cn(
+                              "flex w-full items-center justify-between px-6 py-3 text-left text-[13px] transition-colors duration-150",
+                              hoverPath[3] === n && has(item) ? "text-[#e30613]" : "text-[#424245] hover:text-[#e30613]",
+                            )}
+                          >
+                            <span>{ml(item, locale)}</span>
+                            {has(item) && (
+                              <ChevronRight className={cn("h-3.5 w-3.5 transition-colors duration-150", hoverPath[3] === n ? "text-[#e30613]" : "text-[#c4c4c4]")} />
+                            )}
+                          </Link>
+                        );
+                      })}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <AnimatePresence mode="wait">
+                  {l4Node && has(l4Node) && (
+                    <motion.div
+                      key={`p5-${hoverPath[0]}-${hoverPath[1]}-${hoverPath[2]}-${hoverPath[3]}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.18 }}
+                      className="flex-1 py-8"
+                    >
+                      <p className="mb-3 px-6 text-[11px] font-semibold uppercase tracking-wider text-[#86868b]">
+                        {ml(l4Node, locale)}
+                      </p>
+                      {l4Node.children!.map((item) => {
                         const leaf = isLeafProduct(item);
                         const disabled = leaf && !activeSlugs.has(getSlugFromHref(item.href));
                         if (disabled) {

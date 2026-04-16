@@ -21,7 +21,7 @@ export default function Home() {
   const { t, locale } = useLanguage();
   return (
     <div className="min-h-screen bg-[#f5f5f7] pt-14 overflow-x-hidden">
-      <h1 className="sr-only">Taytech - Akıllı Kontrol Panoları & Isı İstasyonları</h1>
+      <h1 className="sr-only">Taytech - Motor Kontrol Panoları & Isı İstasyonları</h1>
       <Hero />
       
       {/* Content Area */}
@@ -31,30 +31,29 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-[8px] lg:gap-[13px]">
             <Link href="/urunler/heat-network/isi-istasyonlari" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat1")}</h3>
-              <Image src="/uploads/D-H-TR-DHW_U0A4-Render-Sağ-1774350452047.webp" alt={`Taytech ${t("home.cat1")} - HydroHexa DHW`} width={350} height={350} sizes="(max-width: 1024px) 55vw, 22vw" className="absolute top-[32%] lg:top-[34%] object-contain max-w-[55%] lg:max-w-[65%]" />
+              <Image src="/uploads/d-hh-dhw-front.webp" alt={`Taytech ${t("home.cat1")} - HydroHexa DHW`} width={350} height={350} sizes="(max-width: 1024px) 55vw, 22vw" className="absolute top-[32%] lg:top-[34%] object-contain max-w-[55%] lg:max-w-[65%]" />
             </Link>
             <Link href="/urunler/heat-network/manyetik-filtreler" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat2")}</h3>
-              <Image src="/uploads/IronInox-Render-Sol-1774348282120.webp" alt={`Taytech ${t("home.cat2")} - IronInox`} width={400} height={400} sizes="(max-width: 1024px) 60vw, 25vw" className="absolute top-[28%] lg:top-[30%] object-contain max-w-[60%] lg:max-w-[75%]" />
+              <Image src="/uploads/ironinox-sol.webp" alt={`Taytech ${t("home.cat2")} - IronInox`} width={400} height={400} sizes="(max-width: 1024px) 60vw, 25vw" className="absolute top-[28%] lg:top-[30%] object-contain max-w-[60%] lg:max-w-[75%]" />
             </Link>
-            <Link href="/urunler/kontrol-sistemleri/smart-serisi" className="group bg-white aspect-[4/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
+            <Link href="/urunler/kontrol-panelleri/elektronik-kontrol-panelleri" className="group bg-white aspect-[4/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat3")}</h3>
-              <Image src="/uploads/Smart-Booster-Front-1774349398054.webp" alt={`Taytech ${t("home.cat3")} - Smart Booster`} width={300} height={300} sizes="(max-width: 1024px) 35vw, 17vw" className="absolute top-[30%] lg:top-[34%] object-contain max-w-[35%] lg:max-w-[50%]" />
+              <Image src="/uploads/smart-booster-front.webp" alt={`Taytech ${t("home.cat3")} - Smart Booster`} width={300} height={300} sizes="(max-width: 1024px) 35vw, 17vw" className="absolute top-[30%] lg:top-[34%] object-contain max-w-[35%] lg:max-w-[50%]" />
             </Link>
-            <Link href="/urunler/kontrol-sistemleri/electro-mechanical-panels" className="group bg-white aspect-[4/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
+            <Link href="/urunler/kontrol-panelleri/elektro-mekanik-paneller" className="group bg-white aspect-[4/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat4")}</h3>
-              <Image src="/uploads/Direct-Start-Front--ABS-1774350266194.webp" alt={`Taytech ${t("home.cat4")} - Direct Start`} width={300} height={300} sizes="(max-width: 1024px) 35vw, 17vw" className="absolute top-[30%] lg:top-[34%] object-contain max-w-[35%] lg:max-w-[50%]" />
+              <Image src="/uploads/direct-start-front.webp" alt={`Taytech ${t("home.cat4")} - Direct Start`} width={300} height={300} sizes="(max-width: 1024px) 35vw, 17vw" className="absolute top-[30%] lg:top-[34%] object-contain max-w-[35%] lg:max-w-[50%]" />
             </Link>
-            <Link href="/urunler/veri-yonetim-sistemleri" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
+            <Link href="/urunler/enerji-yonetim-platformu" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat5")}</h3>
               <Image src="/cloud.webp" alt={`Taytech ${t("home.cat5")} - BLES`} width={350} height={260} sizes="(max-width: 1024px) 45vw, 22vw" className="absolute top-[36%] lg:top-[40%] object-contain max-w-[45%] lg:max-w-none" />
             </Link>
-            <Link href="/urunler/isitma-sogutma-ekipmanlari" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
+            <Link href="/urunler/heat-network" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat6")}</h3>
               <div className="absolute top-[36%] lg:top-[40%] flex items-center justify-center">
                 <Package className="w-20 h-20 lg:w-32 lg:h-32 text-[#d2d2d7] group-hover:text-[#dc2626]/30 transition-colors duration-300" strokeWidth={1} />
               </div>
-              <span className="absolute bottom-[12%] lg:bottom-[14%] text-[11px] lg:text-[13px] text-[#6e6e73] font-medium tracking-wide">{locale === "TR" ? "Çok Yakında" : "Coming Soon"}</span>
             </Link>
           </div>
         </div>
@@ -78,14 +77,10 @@ export default function Home() {
         <div style={{ padding: "0 28px 32px" }} className="lg:!px-[100px] lg:!pb-[80px]">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
             {[
-              { href: locale === "TR" ? "/uploads/Smart-Box-2025-Katalog_rev00-1774349398228.pdf" : "/uploads/Catalogue_2025_EN_Smart-Box_rev00-EN-1774354328272.pdf", type: t("home.dokuman.katalog"), title: "Smart Box", sub: t("home.dokuman.sub.kontrolPaneli") },
-              { href: locale === "TR" ? "/uploads/Katalog_2025_TR_Direct-HydroHexa-DHW_rev00-1774350452166.pdf" : "/uploads/Catalogue_2025_UK_Direct-HydroHexa-DHW_rev00-EN-1774354328011.pdf", type: t("home.dokuman.katalog"), title: "HydroHexa DHW", sub: t("home.dokuman.sub.isiIstasyonu") },
-              { href: locale === "TR" ? "/uploads/Manyetik-Filtre-Katalogu-IronInox-1774348306323.pdf" : "/uploads/Magnetic-Filter-Catalogue_2025_EN_rev00-EN-1774354328232.pdf", type: t("home.dokuman.katalog"), title: "IronInox", sub: t("home.dokuman.sub.manyetikFiltre") },
-              { href: "/katalog.pdf", type: t("home.dokuman.katalog"), title: t("home.dokuman.title.genelKatalog"), sub: t("home.dokuman.sub.tumUrunler") },
-              { href: locale === "TR" ? "/uploads/Kullanıcı-Kılavuzu_Smart-Booster_rev00-1774349398157.pdf" : "/uploads/Instruction-Manual_Smart-Booster_rev00-EN-1774354328252.pdf", type: t("home.dokuman.kilavuz"), title: "Smart Booster", sub: t("home.dokuman.sub.kontrolPaneli") },
-              { href: locale === "TR" ? "/uploads/Kurulum-ve-Çalıştırma-Kılavuzu_Direct_ThermoHexa-DHW_Rev00-1774351690352.pdf" : "/uploads/Instruction-Manual_Direct_ThermoHexa-DHW_Rev00-EN-1774354328149.pdf", type: t("home.dokuman.kilavuz"), title: "ThermoHexa DHW", sub: t("home.dokuman.sub.isiIstasyonu") },
-              { href: locale === "TR" ? "/uploads/Direct-ThermoHexa-RH-Katalog-1774351690414.pdf" : "/uploads/Catalogue_2025_UK_Direct-ThermoHexa-RH_rev00-EN-1774354328154.pdf", type: t("home.dokuman.katalog"), title: "ThermoHexa RH", sub: t("home.dokuman.sub.isiIstasyonu") },
-              { href: locale === "TR" ? "/uploads/Katalog_2025_TR_Indirect-SmartHexa_rev00-1774350985376.pdf" : "/uploads/Catalogue_2025_UK_Indirect-SmartHexa_rev00-EN-1774354328121.pdf", type: t("home.dokuman.katalog"), title: "SmartHexa", sub: t("home.dokuman.sub.isiIstasyonu") },
+              { href: locale === "TR" ? "/uploads/manyetik-filtre-katalog-tr.pdf" : "/uploads/manyetik-filtre-katalog-en.pdf", type: t("home.dokuman.katalog"), title: "IRONTRAP®", sub: t("home.dokuman.sub.manyetikFiltre") },
+              { href: locale === "TR" ? "/uploads/manyetik-filtre-katalog-tr.pdf" : "/uploads/manyetik-filtre-katalog-en.pdf", type: t("home.dokuman.katalog"), title: "IRONINOX®", sub: t("home.dokuman.sub.manyetikFiltre") },
+              { href: "/dokuman-merkezi", type: t("home.dokuman.datasheet"), title: t("home.dokuman.sub.kontrolPaneli"), sub: t("home.dokuman.sub.tumUrunler") },
+              { href: "/dokuman-merkezi", type: t("home.dokuman.datasheet"), title: t("home.dokuman.sub.isiIstasyonu"), sub: t("home.dokuman.sub.tumUrunler") },
             ].map((doc, i) => (
               <a key={i} href={doc.href} target="_blank" rel="noopener noreferrer" className="group" style={{ textDecoration: "none" }}>
                 <div style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", transition: "all 0.2s" }} className="group-hover:!bg-white">

@@ -259,14 +259,17 @@ export function ProductClient({ product, slug }: { product: Product; slug: strin
   const mainImg = (isEn && product.imageEn) ? product.imageEn : product.image;
   const appImg = (isEn && product.applicationImageEn) ? product.applicationImageEn : product.applicationImage;
 
-  const allImages: string[] = [];
-  if (mainImg) allImages.push(mainImg);
-  if (product.images) {
-    product.images.forEach((img) => {
-      const url = (isEn && img.urlEn) ? img.urlEn : img.url;
-      if (!allImages.includes(url)) allImages.push(url);
-    });
-  }
+  const allImages = useMemo(() => {
+    const imgs: string[] = [];
+    if (mainImg) imgs.push(mainImg);
+    if (product.images) {
+      product.images.forEach((img) => {
+        const url = (isEn && img.urlEn) ? img.urlEn : img.url;
+        if (!imgs.includes(url)) imgs.push(url);
+      });
+    }
+    return imgs;
+  }, [mainImg, isEn, product.images]);
 
   const [activeIdx, setActiveIdx] = useState(0);
   const [zoomed, setZoomed] = useState(false);
@@ -320,6 +323,7 @@ export function ProductClient({ product, slug }: { product: Product; slug: strin
             >
               {allImages.length > 0 ? (
                 <img
+                  key={allImages[activeIdx]}
                   src={allImages[activeIdx]}
                   alt={n(product.nameTr, product.nameEn)}
                   className="w-full h-full object-contain p-8 transition-transform duration-300"
@@ -348,7 +352,7 @@ export function ProductClient({ product, slug }: { product: Product; slug: strin
               <div className="flex gap-2.5 mt-4 justify-center">
                 {allImages.map((img, i) => (
                   <button
-                    key={i}
+                    key={img}
                     onClick={() => setActiveIdx(i)}
                     className={`w-16 h-16 rounded-xl overflow-hidden border-2 transition-all ${
                       i === activeIdx ? "border-[#e30613]" : "border-transparent hover:border-[#d2d2d7]"
