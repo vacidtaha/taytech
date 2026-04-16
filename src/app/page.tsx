@@ -37,13 +37,13 @@ export default function Home() {
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat2")}</h3>
               <Image src="/uploads/IronInox-Render-Sol-1774348282120.webp" alt={`Taytech ${t("home.cat2")} - IronInox`} width={400} height={400} sizes="(max-width: 1024px) 60vw, 25vw" className="absolute top-[28%] lg:top-[30%] object-contain max-w-[60%] lg:max-w-[75%]" />
             </Link>
-            <Link href="/urunler/kontrol-sistemleri/smart-serisi" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
+            <Link href="/urunler/kontrol-sistemleri/smart-serisi" className="group bg-white aspect-[4/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat3")}</h3>
-              <Image src="/uploads/Smart-Booster-Front-1774349398054.webp" alt={`Taytech ${t("home.cat3")} - Smart Booster`} width={300} height={300} sizes="(max-width: 1024px) 45vw, 17vw" className="absolute top-[32%] lg:top-[34%] object-contain max-w-[45%] lg:max-w-[50%]" />
+              <Image src="/uploads/Smart-Booster-Front-1774349398054.webp" alt={`Taytech ${t("home.cat3")} - Smart Booster`} width={300} height={300} sizes="(max-width: 1024px) 35vw, 17vw" className="absolute top-[30%] lg:top-[34%] object-contain max-w-[35%] lg:max-w-[50%]" />
             </Link>
-            <Link href="/urunler/kontrol-sistemleri/electro-mechanical-panels" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
+            <Link href="/urunler/kontrol-sistemleri/electro-mechanical-panels" className="group bg-white aspect-[4/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat4")}</h3>
-              <Image src="/uploads/Direct-Start-Front--ABS-1774350266194.webp" alt={`Taytech ${t("home.cat4")} - Direct Start`} width={300} height={300} sizes="(max-width: 1024px) 45vw, 17vw" className="absolute top-[32%] lg:top-[34%] object-contain max-w-[45%] lg:max-w-[50%]" />
+              <Image src="/uploads/Direct-Start-Front--ABS-1774350266194.webp" alt={`Taytech ${t("home.cat4")} - Direct Start`} width={300} height={300} sizes="(max-width: 1024px) 35vw, 17vw" className="absolute top-[30%] lg:top-[34%] object-contain max-w-[35%] lg:max-w-[50%]" />
             </Link>
             <Link href="/urunler/veri-yonetim-sistemleri" className="group bg-white aspect-[5/4] lg:aspect-[5/6] rounded-[2px] px-6 relative flex flex-col items-center transition-all duration-300 hover:bg-[#f0f0f2] shadow-sm overflow-hidden">
               <h3 className="text-[#1d1d1f] text-[15px] lg:text-3xl font-medium text-center absolute top-[14%] lg:top-[18%] left-0 right-0 transition-colors duration-300 group-hover:text-[#dc2626]">{t("home.cat5")}</h3>
@@ -61,7 +61,7 @@ export default function Home() {
       </section>
 
       {/* Doküman Merkezi Bölümü */}
-      <div className="mx-[8px] lg:mx-[13px]" style={{ background: "#dc2626" }}>
+      <div className="mx-[8px] lg:mx-[13px]" style={{ background: "#dc2626", marginTop: "13px" }}>
         <div style={{ padding: "32px 28px" }} className="lg:!px-[100px] lg:!pt-[80px] lg:!pb-[50px]">
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-end gap-6">
             <div>
@@ -78,14 +78,14 @@ export default function Home() {
         <div style={{ padding: "0 28px 32px" }} className="lg:!px-[100px] lg:!pb-[80px]">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
             {[
-              { href: "/uploads/Smart-Box-2025-Katalog_rev00-1774349398228.pdf", type: t("home.dokuman.katalog"), title: "Smart Box", sub: locale === "TR" ? "Kontrol Paneli" : "Control Panel" },
-              { href: "/uploads/Katalog_2025_TR_Direct-HydroHexa-DHW_rev00-1774350452166.pdf", type: t("home.dokuman.katalog"), title: "HydroHexa DHW", sub: locale === "TR" ? "Isı İstasyonu" : "Heat Interface Unit" },
-              { href: "/uploads/Manyetik-Filtre-Katalogu-IronInox-1774348306323.pdf", type: t("home.dokuman.katalog"), title: "IronInox", sub: locale === "TR" ? "Manyetik Filtre" : "Magnetic Filter" },
-              { href: "/katalog.pdf", type: t("home.dokuman.katalog"), title: locale === "TR" ? "Taytech Genel Katalog" : "Taytech General Catalog", sub: locale === "TR" ? "Tüm Ürünler" : "All Products" },
-              { href: "/uploads/Kullanıcı-Kılavuzu_Smart-Booster_rev00-1774349398157.pdf", type: t("home.dokuman.kilavuz"), title: "Smart Booster", sub: locale === "TR" ? "Kontrol Paneli" : "Control Panel" },
-              { href: "/uploads/Kurulum-ve-Çalıştırma-Kılavuzu_Direct_ThermoHexa-DHW_Rev00-1774351690352.pdf", type: t("home.dokuman.kilavuz"), title: "ThermoHexa DHW", sub: locale === "TR" ? "Isı İstasyonu" : "Heat Interface Unit" },
-              { href: "/uploads/Direct-ThermoHexa-RH-Katalog-1774351690414.pdf", type: t("home.dokuman.katalog"), title: "ThermoHexa RH", sub: locale === "TR" ? "Isı İstasyonu" : "Heat Interface Unit" },
-              { href: "/uploads/Katalog_2025_TR_Indirect-SmartHexa_rev00-1774350985376.pdf", type: t("home.dokuman.katalog"), title: "SmartHexa", sub: locale === "TR" ? "Isı İstasyonu" : "Heat Interface Unit" },
+              { href: locale === "TR" ? "/uploads/Smart-Box-2025-Katalog_rev00-1774349398228.pdf" : "/uploads/Catalogue_2025_EN_Smart-Box_rev00-EN-1774354328272.pdf", type: t("home.dokuman.katalog"), title: "Smart Box", sub: t("home.dokuman.sub.kontrolPaneli") },
+              { href: locale === "TR" ? "/uploads/Katalog_2025_TR_Direct-HydroHexa-DHW_rev00-1774350452166.pdf" : "/uploads/Catalogue_2025_UK_Direct-HydroHexa-DHW_rev00-EN-1774354328011.pdf", type: t("home.dokuman.katalog"), title: "HydroHexa DHW", sub: t("home.dokuman.sub.isiIstasyonu") },
+              { href: locale === "TR" ? "/uploads/Manyetik-Filtre-Katalogu-IronInox-1774348306323.pdf" : "/uploads/Magnetic-Filter-Catalogue_2025_EN_rev00-EN-1774354328232.pdf", type: t("home.dokuman.katalog"), title: "IronInox", sub: t("home.dokuman.sub.manyetikFiltre") },
+              { href: "/katalog.pdf", type: t("home.dokuman.katalog"), title: t("home.dokuman.title.genelKatalog"), sub: t("home.dokuman.sub.tumUrunler") },
+              { href: locale === "TR" ? "/uploads/Kullanıcı-Kılavuzu_Smart-Booster_rev00-1774349398157.pdf" : "/uploads/Instruction-Manual_Smart-Booster_rev00-EN-1774354328252.pdf", type: t("home.dokuman.kilavuz"), title: "Smart Booster", sub: t("home.dokuman.sub.kontrolPaneli") },
+              { href: locale === "TR" ? "/uploads/Kurulum-ve-Çalıştırma-Kılavuzu_Direct_ThermoHexa-DHW_Rev00-1774351690352.pdf" : "/uploads/Instruction-Manual_Direct_ThermoHexa-DHW_Rev00-EN-1774354328149.pdf", type: t("home.dokuman.kilavuz"), title: "ThermoHexa DHW", sub: t("home.dokuman.sub.isiIstasyonu") },
+              { href: locale === "TR" ? "/uploads/Direct-ThermoHexa-RH-Katalog-1774351690414.pdf" : "/uploads/Catalogue_2025_UK_Direct-ThermoHexa-RH_rev00-EN-1774354328154.pdf", type: t("home.dokuman.katalog"), title: "ThermoHexa RH", sub: t("home.dokuman.sub.isiIstasyonu") },
+              { href: locale === "TR" ? "/uploads/Katalog_2025_TR_Indirect-SmartHexa_rev00-1774350985376.pdf" : "/uploads/Catalogue_2025_UK_Indirect-SmartHexa_rev00-EN-1774354328121.pdf", type: t("home.dokuman.katalog"), title: "SmartHexa", sub: t("home.dokuman.sub.isiIstasyonu") },
             ].map((doc, i) => (
               <a key={i} href={doc.href} target="_blank" rel="noopener noreferrer" className="group" style={{ textDecoration: "none" }}>
                 <div style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", transition: "all 0.2s" }} className="group-hover:!bg-white">
@@ -109,7 +109,7 @@ export default function Home() {
       </div>
 
       {/* Çözümler Container */}
-      <div className="w-full bg-white flex flex-col items-center relative overflow-hidden" style={{ marginTop: '13px' }}>
+      <div className="bg-white flex flex-col items-center relative overflow-hidden mx-[8px] lg:mx-[13px]" style={{ marginTop: '13px' }}>
         {/* Arka plan yazıları — sadece masaüstü */}
         <span className="hidden lg:block absolute text-xl font-medium smart-text" style={{ top: '5%', left: '7%', color: '#dc2626' }}>{t("home.bg.ticari")}</span>
         <span className="hidden lg:block absolute text-xl font-medium smart-text" style={{ top: '15%', left: '5%', color: '#dc2626' }}>{t("home.bg.toplu")}</span>
@@ -143,37 +143,37 @@ export default function Home() {
         </div>
 
         <div style={{ width: "100%", marginTop: "50px" }} className="lg:!mt-[80px] px-2 lg:px-[13px]">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-0">
-            <Link href="/cozumler/toplu-konutlar" className="group" style={{ textDecoration: "none" }}>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-4">
+            <Link href="/cozumler/toplu-konutlar" className="group rounded-2xl overflow-hidden" style={{ textDecoration: "none" }}>
               <div>
                 <div className="relative h-[200px] lg:h-[480px] overflow-hidden">
                   <Image src="/akıllısehir.webp" alt={t("home.cozumler.toplu")} fill sizes="(max-width: 1024px) 100vw, 33vw" style={{ objectFit: "cover" }} />
                 </div>
-                <div className="group-hover:!bg-[#dc2626]" style={{ padding: "20px 24px 24px", background: "white", transition: "background-color 0.3s" }}>
+                <div className="group-hover:!bg-[#dc2626] rounded-b-2xl" style={{ padding: "20px 24px 24px", background: "white", transition: "background-color 0.3s" }}>
                   <p className="group-hover:!text-white/60" style={{ fontSize: "11px", fontWeight: 600, color: "#dc2626", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "8px", transition: "color 0.3s" }}>{t("home.cozumler.label")}</p>
                   <h3 className="group-hover:!text-white text-[20px] lg:text-[26px]" style={{ fontWeight: 700, color: "#1d1d1f", lineHeight: 1.2, marginBottom: "8px", transition: "color 0.3s" }}>{t("home.cozumler.toplu")}</h3>
                   <p className="group-hover:!text-white/70 text-[13px] lg:text-[15px]" style={{ color: "#86868b", lineHeight: 1.6, transition: "color 0.3s" }}>{t("home.cozumler.topluDesc")}</p>
                 </div>
               </div>
             </Link>
-            <Link href="/cozumler/endustriyel-kazan-dairesi" className="group" style={{ textDecoration: "none" }}>
+            <Link href="/cozumler/endustriyel-kazan-dairesi" className="group rounded-2xl overflow-hidden" style={{ textDecoration: "none" }}>
               <div>
                 <div className="relative h-[200px] lg:h-[480px] overflow-hidden">
                   <Image src="/kazan-dairesi.webp" alt={t("home.cozumler.kazan")} fill sizes="(max-width: 1024px) 100vw, 33vw" style={{ objectFit: "cover" }} />
                 </div>
-                <div className="group-hover:!bg-[#dc2626]" style={{ padding: "20px 24px 24px", background: "white", transition: "background-color 0.3s" }}>
+                <div className="group-hover:!bg-[#dc2626] rounded-b-2xl" style={{ padding: "20px 24px 24px", background: "white", transition: "background-color 0.3s" }}>
                   <p className="group-hover:!text-white/60" style={{ fontSize: "11px", fontWeight: 600, color: "#dc2626", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "8px", transition: "color 0.3s" }}>{t("home.cozumler.label")}</p>
                   <h3 className="group-hover:!text-white text-[20px] lg:text-[26px]" style={{ fontWeight: 700, color: "#1d1d1f", lineHeight: 1.2, marginBottom: "8px", transition: "color 0.3s" }}>{t("home.cozumler.kazan")}</h3>
                   <p className="group-hover:!text-white/70 text-[13px] lg:text-[15px]" style={{ color: "#86868b", lineHeight: 1.6, transition: "color 0.3s" }}>{t("home.cozumler.kazanDesc")}</p>
                 </div>
               </div>
             </Link>
-            <Link href="/cozumler/hastaneler" className="group" style={{ textDecoration: "none" }}>
+            <Link href="/cozumler/hastaneler" className="group rounded-2xl overflow-hidden" style={{ textDecoration: "none" }}>
               <div>
                 <div className="relative h-[200px] lg:h-[480px] overflow-hidden">
                   <Image src="/hastane.webp" alt={t("home.cozumler.hastane")} fill sizes="(max-width: 1024px) 100vw, 33vw" style={{ objectFit: "cover" }} />
                 </div>
-                <div className="group-hover:!bg-[#dc2626]" style={{ padding: "20px 24px 24px", background: "white", transition: "background-color 0.3s" }}>
+                <div className="group-hover:!bg-[#dc2626] rounded-b-2xl" style={{ padding: "20px 24px 24px", background: "white", transition: "background-color 0.3s" }}>
                   <p className="group-hover:!text-white/60" style={{ fontSize: "11px", fontWeight: 600, color: "#dc2626", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "8px", transition: "color 0.3s" }}>{t("home.cozumler.label")}</p>
                   <h3 className="group-hover:!text-white text-[20px] lg:text-[26px]" style={{ fontWeight: 700, color: "#1d1d1f", lineHeight: 1.2, marginBottom: "8px", transition: "color 0.3s" }}>{t("home.cozumler.hastane")}</h3>
                   <p className="group-hover:!text-white/70 text-[13px] lg:text-[15px]" style={{ color: "#86868b", lineHeight: 1.6, transition: "color 0.3s" }}>{t("home.cozumler.hastaneDesc")}</p>
@@ -185,7 +185,7 @@ export default function Home() {
       </div>
 
       {/* Standartların Ötesinde */}
-      <div className="w-full bg-white grid grid-cols-1 lg:grid-cols-2" style={{ marginTop: '13px' }}>
+      <div className="bg-white grid grid-cols-1 lg:grid-cols-2 mx-[8px] lg:mx-[13px]" style={{ marginTop: '13px' }}>
         {/* Sol: Simge kutusu */}
         <div className="flex items-center justify-center lg:h-[650px]" style={{ paddingTop: '80px', paddingBottom: '40px' }}>
           <div className="w-44 h-44 lg:w-80 lg:h-80 rounded-2xl flex items-center justify-center relative overflow-hidden" style={{ background: 'radial-gradient(circle at center, #ff6b6b 0%, #dc2626 50%, #991b1b 100%)' }}>
@@ -228,7 +228,7 @@ export default function Home() {
       </div>
 
       {/* Haberler — sadece masaüstü */}
-      <div className="hidden lg:block w-full bg-white" style={{ marginTop: '13px' }}>
+      <div className="hidden lg:block bg-white mx-[8px] lg:mx-[13px]" style={{ marginTop: '13px' }}>
         <div style={{ padding: '48px 28px 0' }} className="lg:!px-[100px] lg:!pt-[80px]">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-10 lg:mb-20 gap-4">
             <h2 className="text-2xl lg:text-4xl font-bold text-[#dc2626]">{t("home.haberler.title")}</h2>

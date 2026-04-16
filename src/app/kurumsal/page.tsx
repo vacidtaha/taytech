@@ -61,7 +61,7 @@ export default function KurumsalPage() {
         <div style={{ height: '100px' }}></div>
         
         <div className="flex items-center justify-center" style={{ padding: '0 28px', paddingBottom: '40px' }}>
-          <Image src="/taytechdiscekim.webp" alt="Taytech" width={800} height={500} className="w-full h-auto object-contain rounded-2xl" />
+          <Image src="/taytechdiscekim.webp" alt="Taytech" width={1000} height={625} className="w-full h-auto object-contain rounded-3xl" />
         </div>
         
         <div style={{ height: '100px' }}></div>
@@ -253,11 +253,10 @@ export default function KurumsalPage() {
     <div className="min-h-screen bg-white">
       {/* Sub-navigation bar - Desktop */}
       <div className="sticky top-0 z-50 bg-white border-b border-gray-200">
-        <div className="h-12 px-8 flex items-center justify-between">
+        <div className="h-12 flex items-center justify-between" style={{ paddingLeft: 'calc(25vw - 224px + 32px)', paddingRight: '32px' }}>
           <div className="flex items-center">
-            <div className="hidden md:block w-[180px]"></div>
             <span className="text-[21px] font-normal text-[#dc2626]">{t("corp.nav.taytech")}</span>
-            <span className="ml-6 text-[21px] font-semibold text-[#dc2626]">{t("corp.nav.kurumsal")}</span>
+            <span className="ml-2 text-[21px] font-semibold text-[#dc2626]">{t("corp.nav.kurumsal")}</span>
           </div>
           <nav className="hidden md:flex items-center gap-8" style={{ marginRight: '100px' }}>
             {[
@@ -289,8 +288,10 @@ export default function KurumsalPage() {
       
       <div className="h-[120px] bg-white"></div>
       
-      <div className="bg-white pb-20 flex items-center justify-center">
-        <Image src="/taytechdiscekim.webp" alt="Taytech" width={800} height={500} className="w-full max-w-4xl h-auto object-contain px-8 rounded-4xl" />
+      <div className="bg-white pb-20 flex items-center justify-center px-12">
+        <div className="w-full max-w-7xl rounded-[2.5rem] overflow-hidden">
+          <Image src="/taytechdiscekim.webp" alt="Taytech" width={1400} height={875} className="w-full h-auto object-cover" />
+        </div>
       </div>
       
       <div className="h-[120px] bg-white"></div>
@@ -314,13 +315,13 @@ export default function KurumsalPage() {
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-center px-8" style={{ paddingTop: '70vh', paddingBottom: '300px' }}>
+          <div className="flex flex-col items-center px-8" style={{ paddingTop: '100vh', paddingBottom: '300px' }}>
             {[
               { val: "5.600 m²", label: "corp.rakamlar.alan", desc: "corp.rakamlar.alanDesc", bg: "#f7f7f9", z: 10 },
               { val: "4.750 m²", label: "corp.rakamlar.uretim", desc: "corp.rakamlar.uretimDesc", bg: "#f3f3f5", z: 20 },
               { val: "860 m²", label: "corp.rakamlar.arge", desc: "corp.rakamlar.argeDesc", bg: "#f0f0f2", z: 30 },
             ].map((card, i) => (
-              <div key={i} className={`sticky top-[calc(50vh-266px)] ${i < 2 ? 'mb-[-350px]' : ''}`} style={{ zIndex: card.z }}>
+              <div key={i} style={{ zIndex: card.z, position: 'sticky', top: 'calc(50vh - 266px)', height: '633px' }}>
                 <div className="rounded-3xl shadow-lg" style={{ width: '400px', height: '533px', padding: '48px 40px 40px 40px', backgroundColor: card.bg }}>
                   <span className="text-7xl font-semibold text-[#dc2626] leading-none block">{card.val}</span>
                   <p className="text-3xl text-[#dc2626] mt-6 font-semibold">{t(card.label)}</p>
@@ -369,7 +370,7 @@ export default function KurumsalPage() {
           </div>
           <div className="flex flex-col items-center px-8" style={{ paddingTop: '70vh', paddingBottom: '300px' }}>
             <div className="sticky top-[5vh] z-10">
-              <div className="bg-white shadow-2xl relative" style={{ width: '650px', padding: '70px 60px', borderRadius: '4px' }}>
+              <div className="bg-white shadow-2xl relative" style={{ width: '850px', padding: '70px 80px', borderRadius: '4px' }}>
                 <div className="absolute top-0 left-0 w-10 h-10 border-t-4 border-l-4 border-red-600 rounded-tl"></div>
                 <div className="absolute top-0 right-0 w-10 h-10 border-t-4 border-r-4 border-red-600 rounded-tr"></div>
                 <div className="absolute bottom-0 left-0 w-10 h-10 border-b-4 border-l-4 border-red-600 rounded-bl"></div>

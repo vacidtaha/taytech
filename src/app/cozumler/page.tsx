@@ -190,7 +190,7 @@ export default function CozumlerPage() {
   return (
     <div className="bg-[#f5f5f7] pt-12">
       {/* Başlık */}
-      <div style={{ paddingTop: '200px', paddingBottom: '20px', paddingLeft: '200px', paddingRight: '200px' }}>
+      <div style={{ paddingTop: '200px', paddingBottom: '20px', paddingLeft: 'calc(50vw - 500px)', paddingRight: 'calc(50vw - 500px)' }}>
         <h1 className="text-5xl md:text-6xl font-bold text-[#dc2626]" style={{ marginBottom: '24px' }}>
           {t("cozumler.title")}
         </h1>
