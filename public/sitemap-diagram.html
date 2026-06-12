@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TayTech - Site Map</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #fff;
+    color: #1a1a1a;
+    padding: 40px;
+  }
+  @media print {
+    body { padding: 20px; }
+    .no-print { display: none; }
+  }
+
+  h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { font-size: 12px; color: #888; margin-bottom: 32px; }
+
+  /* Tree */
+  .tree { padding-left: 0; }
+  .tree ul {
+    list-style: none;
+    padding-left: 24px;
+    position: relative;
+  }
+  .tree ul::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 12px;
+    width: 1px;
+    background: #d0d0d0;
+  }
+  .tree > ul { padding-left: 0; }
+  .tree > ul::before { display: none; }
+
+  .tree li {
+    position: relative;
+    padding: 3px 0 3px 0;
+  }
+  .tree ul > li::before {
+    content: '';
+    position: absolute;
+    left: -16px;
+    top: 13px;
+    width: 14px;
+    height: 1px;
+    background: #d0d0d0;
+  }
+
+  .node {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: default;
+    line-height: 1.4;
+  }
+
+  /* Levels */
+  .root {
+    background: #e30613;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 8px 18px;
+    border-radius: 6px;
+  }
+  .L1 {
+    background: #f1f5f9;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 6px 12px;
+    border: 1px solid #e2e8f0;
+  }
+  .L2 {
+    background: #f8fafc;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 4px 10px;
+    border: 1px solid #e2e8f0;
+  }
+  .L3 {
+    font-weight: 600;
+    font-size: 12px;
+    color: #334155;
+  }
+  .L4 {
+    font-weight: 400;
+    font-size: 12px;
+    color: #475569;
+  }
+  .L5 {
+    font-weight: 400;
+    font-size: 11px;
+    color: #64748b;
+  }
+
+  .route {
+    font-size: 10px;
+    color: #94a3b8;
+    font-family: monospace;
+  }
+  .tag {
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+  .tag-green { background: #dcfce7; color: #15803d; }
+  .tag-gray { background: #f1f5f9; color: #94a3b8; }
+  .tag-red { background: #fee2e2; color: #dc2626; }
+  .tag-blue { background: #dbeafe; color: #2563eb; }
+
+  .section-divider {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 16px 0;
+  }
+
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 8px 16px;
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .print-btn:hover { background: #333; }
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">Print / PDF</button>
+
+<h1>TAYTECH — Site Map & Product Tree</h1>
+<p class="subtitle">Page structure, category hierarchy and product distribution &bull; June 2025</p>
+
+<div class="tree">
+<ul>
+<li>
+  <span class="node root">TAYTECH</span>
+  <ul>
+
+    <!-- ═══ MAIN PAGES ═══ -->
+    <li>
+      <span class="node L1">Main Pages</span>
+      <ul>
+        <li><span class="node L2">Home</span> <span class="route">/</span></li>
+        <li><span class="node L2">Products</span> <span class="route">/urunler</span></li>
+        <li><span class="node L2">Solutions</span> <span class="route">/cozumler</span>
+          <ul>
+            <li><span class="node L4">Commercial Facilities</span></li>
+            <li><span class="node L4">Residential Complexes</span></li>
+            <li><span class="node L4">Care / Nursing Homes</span></li>
+            <li><span class="node L4">New Projects</span></li>
+            <li><span class="node L4">Hospitals</span></li>
+            <li><span class="node L4">Industrial Boiler Rooms</span></li>
+            <li><span class="node L4">Sports / Entertainment Facilities</span></li>
+            <li><span class="node L4">Off-site Production</span></li>
+            <li><span class="node L4">Educational Buildings</span></li>
+          </ul>
+        </li>
+        <li><span class="node L2">Corporate</span> <span class="route">/kurumsal</span></li>
+        <li><span class="node L2">Contact</span> <span class="route">/iletisim</span></li>
+        <li><span class="node L2">News</span> <span class="route">/haberler</span></li>
+        <li><span class="node L2">Document Center</span> <span class="route">/dokuman-merkezi</span></li>
+      </ul>
+    </li>
+
+    <!-- ═══ KNOWLEDGE BASE ═══ -->
+    <li>
+      <span class="node L1">Knowledge Base</span> <span class="route">/bilgi-merkezi</span>
+      <ul>
+        <li><span class="node L3">FAQ</span> <span class="route">/sikca-sorulan-sorular</span></li>
+        <li><span class="node L3">TayTech Academy</span> <span class="route">/taytech-akademi</span></li>
+        <li><span class="node L3">Video Archive</span> <span class="route">/video-arsivi</span></li>
+        <li><span class="node L3">Technical Support</span> <span class="route">/teknik-destek</span></li>
+        <li><span class="node L3">Document Download</span> <span class="route">/dokuman-indir</span></li>
+      </ul>
+    </li>
+
+    <!-- ═══ LEGAL ═══ -->
+    <li>
+      <span class="node L1">Legal & Other</span>
+      <ul>
+        <li><span class="node L3">Privacy Policy</span> <span class="route">/gizlilik-politikasi</span></li>
+        <li><span class="node L3">Terms of Use</span> <span class="route">/kullanim-kosullari</span></li>
+        <li><span class="node L3">Sitemap</span> <span class="route">/site-haritasi</span></li>
+      </ul>
+    </li>
+
+    <!-- ═══ ADMIN ═══ -->
+    <li>
+      <span class="node L1">Admin Panel</span> <span class="tag tag-red">PROTECTED</span>
+      <ul>
+        <li><span class="node L3">Login</span> <span class="route">/admin/login</span></li>
+        <li><span class="node L3">Dashboard</span> <span class="route">/admin</span></li>
+        <li><span class="node L3">Product Management</span> <span class="route">/admin/urunler</span></li>
+        <li><span class="node L3">Add New Product</span> <span class="route">/admin/urunler/yeni</span></li>
+        <li><span class="node L3">Edit Product</span> <span class="route">/admin/urunler/[id]</span></li>
+      </ul>
+    </li>
+
+    <li><hr class="section-divider"></li>
+
+    <!-- ═══════════════════════════════ -->
+    <!-- ═══ PRODUCT CATALOGUE ═══ -->
+    <!-- ═══════════════════════════════ -->
+    <li>
+      <span class="node L1">Product Catalogue</span> <span class="route">/urunler/[...slug]</span> <span class="tag tag-blue">23 ACTIVE PRODUCTS</span>
+      <ul>
+
+        <!-- ── 1. MOTOR CONTROL PANELS ── -->
+        <li>
+          <span class="node L2">1. Motor Control Panels</span> <span class="route">/urunler/kontrol-panelleri</span>
+          <ul>
+
+            <!-- Electronic -->
+            <li>
+              <span class="node L3">Electronic Control Panels</span>
+              <ul>
+                <!-- Smart -->
+                <li>
+                  <span class="node L3">Smart Series</span> <span class="tag tag-green">6 PRODUCTS</span>
+                  <ul>
+                    <li><span class="node L5">Smart Booster</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Smart Bore Hole</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Smart Box</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Smart Exclusive</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Smart Grinder</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Smart Wastewater</span> <span class="tag tag-green">ACTIVE</span></li>
+                  </ul>
+                </li>
+                <li><span class="node L4">VFD Series</span> <span class="tag tag-gray">EMPTY</span></li>
+                <li><span class="node L4">Soft Starter Series</span> <span class="tag tag-gray">EMPTY</span></li>
+              </ul>
+            </li>
+
+            <!-- Electro Mechanical -->
+            <li>
+              <span class="node L3">Electro Mechanical Panels</span> <span class="tag tag-green">2 PRODUCTS</span>
+              <ul>
+                <li><span class="node L5">Direct Start</span> <span class="tag tag-green">ACTIVE</span></li>
+                <li><span class="node L5">Star &amp; Delta Start</span> <span class="tag tag-green">ACTIVE</span></li>
+              </ul>
+            </li>
+
+            <!-- Fire Pump -->
+            <li>
+              <span class="node L3">Fire Pump Control Panels</span>
+              <ul>
+                <li>
+                  <span class="node L4">NFPA / UL &amp; FM Series</span> <span class="tag tag-green">3 PRODUCTS</span>
+                  <ul>
+                    <li><span class="node L5">Diesel Engine Control Panel</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Electric Motor Control Panel</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Jockey Pump Control Panel</span> <span class="tag tag-green">ACTIVE</span></li>
+                  </ul>
+                </li>
+                <li>
+                  <span class="node L4">EN Series (EN 12845)</span> <span class="tag tag-green">3 PRODUCTS</span>
+                  <ul>
+                    <li><span class="node L5">Diesel Series</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Electric Series</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Jockey Series</span> <span class="tag tag-green">ACTIVE</span></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
+          </ul>
+        </li>
+
+        <!-- ── 2. BLES ── -->
+        <li>
+          <span class="node L2">2. Building Energy Management Platform (BLES)</span> <span class="route">/urunler/enerji-yonetim-platformu</span>
+          <ul>
+            <li><span class="node L3">Software Platform</span> <span class="tag tag-gray">EMPTY</span></li>
+            <li>
+              <span class="node L3">Data Management Devices</span> <span class="tag tag-gray">EMPTY</span>
+              <ul>
+                <li><span class="node L5">M-Bus Converter</span></li>
+                <li><span class="node L5">TT Smart Box</span></li>
+                <li><span class="node L5">Data Logger</span></li>
+                <li><span class="node L5">Gateway</span></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <!-- ── 3. HEAT NETWORK ── -->
+        <li>
+          <span class="node L2">3. Heat Network</span> <span class="route">/urunler/heat-network</span>
+          <ul>
+
+            <!-- Heat Interface Units -->
+            <li>
+              <span class="node L3">Heat Interface Units (HIU)</span>
+              <ul>
+                <li>
+                  <span class="node L4">SmartHexa Series</span> <span class="tag tag-green">5 PRODUCTS</span>
+                  <ul>
+                    <li><span class="node L5">Indirect SmartHexa DHW-SH</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Indirect SmartHexa SH</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Direct SmartHexa DHW</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Direct SmartHexa RH</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Direct SmartHexa UFH</span> <span class="tag tag-green">ACTIVE</span></li>
+                  </ul>
+                </li>
+                <li>
+                  <span class="node L4">HydroHexa Series</span> <span class="tag tag-green">4 PRODUCTS</span>
+                  <ul>
+                    <li><span class="node L5">Indirect HydroHexa DHW-SH</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Direct HydroHexa DHW</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Direct HydroHexa RH</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Direct HydroHexa UFH</span> <span class="tag tag-green">ACTIVE</span></li>
+                  </ul>
+                </li>
+                <li>
+                  <span class="node L4">ThermoHexa Series</span> <span class="tag tag-green">5 PRODUCTS</span>
+                  <ul>
+                    <li><span class="node L5">Indirect ThermoHexa DHW-SH</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Indirect ThermoHexa SH</span></li>
+                    <li><span class="node L5">Direct ThermoHexa DHW</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Direct ThermoHexa RH</span> <span class="tag tag-green">ACTIVE</span></li>
+                    <li><span class="node L5">Direct ThermoHexa UFH</span> <span class="tag tag-green">ACTIVE</span></li>
+                  </ul>
+                </li>
+                <li><span class="node L4">Hydro EM Series</span> <span class="tag tag-gray">EMPTY</span></li>
+              </ul>
+            </li>
+
+            <!-- Industrial Sub-Stations -->
+            <li>
+              <span class="node L3">Industrial Sub-Stations</span> <span class="tag tag-gray">EMPTY</span>
+              <ul>
+                <li><span class="node L5">District Heating Substations</span></li>
+                <li><span class="node L5">District Cooling Substations</span></li>
+              </ul>
+            </li>
+
+            <!-- Metering Stations -->
+            <li>
+              <span class="node L3">Metering Stations</span> <span class="tag tag-gray">EMPTY</span>
+              <ul>
+                <li><span class="node L5">Meter Tech W1</span></li>
+                <li><span class="node L5">Meter Tech W2</span></li>
+                <li><span class="node L5">Meter Tech W3</span></li>
+                <li><span class="node L5">Meter Tech W4</span></li>
+              </ul>
+            </li>
+
+            <!-- Magnetic Filters -->
+            <li>
+              <span class="node L3">Magnetic Filters</span> <span class="tag tag-green">2 PRODUCTS</span>
+              <ul>
+                <li><span class="node L5">IRONTRAP&reg; Magnetic Filter</span> <span class="tag tag-green">ACTIVE</span></li>
+                <li><span class="node L5">IRONINOX&reg; Magnetic Filter</span> <span class="tag tag-green">ACTIVE</span></li>
+              </ul>
+            </li>
+
+            <!-- Accessories -->
+            <li>
+              <span class="node L3">Accessories</span> <span class="tag tag-gray">EMPTY</span>
+              <ul>
+                <li><span class="node L5">First Fix Rail Kit</span></li>
+                <li><span class="node L5">Junction Boxes</span></li>
+                <li><span class="node L5">Re-Circulation Kits</span></li>
+                <li><span class="node L5">Differential Pressure Valve</span></li>
+                <li><span class="node L5">Thermal By-Pass Valve</span></li>
+                <li><span class="node L5">Cabinet</span></li>
+              </ul>
+            </li>
+
+            <!-- Meters -->
+            <li>
+              <span class="node L3">Meters</span> <span class="tag tag-gray">EMPTY</span>
+              <ul>
+                <li><span class="node L5">Heat Meter</span></li>
+                <li><span class="node L5">Cooling Meter</span></li>
+                <li><span class="node L5">Water Meter</span></li>
+              </ul>
+            </li>
+
+            <!-- Pre-paid Meters -->
+            <li>
+              <span class="node L3">Pre-paid Meters</span> <span class="tag tag-gray">EMPTY</span>
+              <ul>
+                <li><span class="node L5">Pre-paid Heat Meter</span></li>
+                <li><span class="node L5">Pre-paid Water Meter</span></li>
+              </ul>
+            </li>
+
+          </ul>
+        </li>
+
+      </ul>
+    </li>
+
+  </ul>
+</li>
+</ul>
+</div>
+
+</body>
+</html>

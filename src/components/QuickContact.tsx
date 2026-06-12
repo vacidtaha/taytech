@@ -5,26 +5,28 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 export default function QuickContact() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [scrolledPastHero, setScrolledPastHero] = useState(false);
   const pathname = usePathname();
   const isHomePage = pathname === "/";
 
   useEffect(() => {
-    // Ana sayfa değilse anında göster
-    if (!isHomePage) {
-      setIsVisible(true);
-      return;
-    }
+    // Sadece ana sayfada scroll takibi gerekli
+    if (!isHomePage) return;
 
-    // Ana sayfada heroyu geçince göster
     const handleScroll = () => {
-      setIsVisible(window.scrollY > window.innerHeight * 0.8);
+      setScrolledPastHero(window.scrollY > window.innerHeight * 0.8);
     };
 
-    handleScroll(); // İlk yüklemede kontrol et
+    const raf = requestAnimationFrame(handleScroll); // İlk yüklemede kontrol et
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [isHomePage]);
+
+  // Ana sayfa değilse anında göster, ana sayfada heroyu geçince göster
+  const isVisible = !isHomePage || scrolledPastHero;
 
   if (!isVisible) return null;
 

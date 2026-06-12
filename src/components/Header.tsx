@@ -211,15 +211,27 @@ export default function Header({ theme, isFixed = true, onMenuOpenChange }: Head
   const isMenuOpen = activeMenu !== null || mobileOpen;
 
   useEffect(() => { onMenuOpenChange?.(isMenuOpen); }, [isMenuOpen, onMenuOpenChange]);
-  useEffect(() => { setActiveMenu(null); setMobileOpen(false); setMobileStack([]); }, [pathname]);
+
+  // Rota değişince menüleri kapat (render sırasında state senkronizasyonu)
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setActiveMenu(null);
+    setMobileOpen(false);
+    setMobileStack([]);
+  }
+
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
-  useEffect(() => {
-    if (activeMenu === "Ürünler") setHoverPath([0]);
-    else setHoverPath([]);
-  }, [activeMenu]);
+
+  // Aktif menü değişince hover yolunu sıfırla
+  const [prevActiveMenu, setPrevActiveMenu] = useState(activeMenu);
+  if (prevActiveMenu !== activeMenu) {
+    setPrevActiveMenu(activeMenu);
+    setHoverPath(activeMenu === "Ürünler" ? [0] : []);
+  }
 
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 

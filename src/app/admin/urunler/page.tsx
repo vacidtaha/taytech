@@ -73,9 +73,12 @@ export default function AdminProductsPage() {
 
   const countAll = useCallback(
     (catId: number): number => {
-      const direct = products.filter((p) => p.categoryId === catId).length;
-      const subs = categories.filter((c) => c.parentId === catId);
-      return direct + subs.reduce((s, sc) => s + countAll(sc.id), 0);
+      const walk = (id: number): number => {
+        const direct = products.filter((p) => p.categoryId === id).length;
+        const subs = categories.filter((c) => c.parentId === id);
+        return direct + subs.reduce((s, sc) => s + walk(sc.id), 0);
+      };
+      return walk(catId);
     },
     [categories, products]
   );
